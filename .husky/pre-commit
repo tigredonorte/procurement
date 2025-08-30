@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+# Run linters and formatters on staged files
+pnpm lint-staged
+

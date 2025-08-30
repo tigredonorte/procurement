@@ -84,7 +84,7 @@ When finishing A1:
 
 ### Tasks
 
-(in progress) A1. **Monorepo & Tooling** — updated: 2025-08-30 09:38 (America/Sao_Paulo)
+(completed) A1. **Monorepo & Tooling** — updated: 2025-08-30 09:49 (America/Sao_Paulo)
 
 * pnpm workspaces; root `tsconfig.base.json`; ESLint/Prettier shared configs.
 * Husky + lint-staged pre-commit hooks.
