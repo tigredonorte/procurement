@@ -1,88 +1,237 @@
-version: '3.8'
-
 services:
+  # Frontend Service - React + Vite
   frontend:
     build:
-      context: ./apps/frontend
-      dockerfile: Dockerfile.dev
-    working_dir: /workspace
-    command: sh -c "pnpm install && pnpm -C apps/frontend dev"
+      context: .
+      dockerfile: docker/frontend/Dockerfile
+      target: development
+    container_name: procurement-frontend
     ports:
       - "3000:3000"
     volumes:
-      - ./:/workspace
-      - frontend_node_modules:/workspace/apps/frontend/node_modules
-      - root_node_modules:/workspace/node_modules
+      - ./apps/frontend:/app/apps/frontend
+      - ./packages/shared:/app/packages/shared
+      - frontend_node_modules:/app/apps/frontend/node_modules
+      - shared_node_modules:/app/packages/shared/node_modules
+      - pnpm_store:/app/.pnpm-store
     environment:
       - NODE_ENV=development
-      - REACT_APP_API_URL=http://localhost:4000
-      - REACT_APP_KEYCLOAK_URL=http://localhost:8080
+      - VITE_API_URL=http://localhost:8080
+      - VITE_KEYCLOAK_URL=http://localhost:8180
+      - VITE_KEYCLOAK_REALM=procurement
+      - VITE_KEYCLOAK_CLIENT_ID=procurement-frontend
+      - CHOKIDAR_USEPOLLING=true
+    networks:
+      - procurement-network
+    depends_on:
+      - backend
+    restart: unless-stopped
 
+  # Backend Service - Node.js + Express
   backend:
     build:
-      context: ./apps/backend
-      dockerfile: Dockerfile.dev
-    working_dir: /workspace
-    command: sh -c "pnpm install && pnpm -C apps/backend dev"
+      context: .
+      dockerfile: docker/backend/Dockerfile
+      target: development
+    container_name: procurement-backend
     ports:
-      - "4000:4000"
+      - "8080:8080"
+      - "9229:9229" # Node.js debugger port
     volumes:
-      - ./:/workspace
-      - backend_node_modules:/workspace/apps/backend/node_modules
-      - root_node_modules:/workspace/node_modules
+      - ./apps/backend:/app/apps/backend
+      - ./packages/shared:/app/packages/shared
+      - backend_node_modules:/app/apps/backend/node_modules
+      - shared_node_modules:/app/packages/shared/node_modules
+      - pnpm_store:/app/.pnpm-store
     environment:
       - NODE_ENV=development
+      - PORT=8080
+      - MONGODB_URI=mongodb://admin:password@mongodb:27017/procurement?authSource=admin
+      - REDIS_URL=redis://redis:6379
+      - KEYCLOAK_URL=http://keycloak:8080
+      - KEYCLOAK_REALM=procurement
+      - KEYCLOAK_CLIENT_ID=procurement-backend
+      - KEYCLOAK_CLIENT_SECRET=backend-secret
+      - JWT_SECRET=development-jwt-secret
+      - NODE_OPTIONS=--inspect=0.0.0.0:9229
+    networks:
+      - procurement-network
     depends_on:
-      - mongodb
-      - redis
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+    restart: unless-stopped
 
+  # Worker Service - BullMQ processor
   worker:
     build:
-      context: ./apps/worker
-      dockerfile: Dockerfile.dev
-    working_dir: /workspace
-    command: sh -c "pnpm install && pnpm -C apps/worker dev"
+      context: .
+      dockerfile: docker/worker/Dockerfile
+      target: development
+    container_name: procurement-worker
     volumes:
-      - ./:/workspace
-      - worker_node_modules:/workspace/apps/worker/node_modules
-      - root_node_modules:/workspace/node_modules
+      - ./apps/worker:/app/apps/worker
+      - ./packages/shared:/app/packages/shared
+      - worker_node_modules:/app/apps/worker/node_modules
+      - shared_node_modules:/app/packages/shared/node_modules
+      - pnpm_store:/app/.pnpm-store
     environment:
       - NODE_ENV=development
+      - MONGODB_URI=mongodb://admin:password@mongodb:27017/procurement?authSource=admin
+      - REDIS_URL=redis://redis:6379
+      - SERPAPI_KEY=${SERPAPI_KEY:-your-serpapi-key}
+      - WORKER_CONCURRENCY=5
+      - MAX_RETRIES=3
+      - RETRY_DELAY=5000
+    networks:
+      - procurement-network
     depends_on:
-      - mongodb
-      - redis
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
 
+  # MongoDB Database
   mongodb:
-    image: mongo:6
+    image: mongo:7
+    container_name: procurement-mongodb
     ports:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+      - ./docker/mongodb/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=password
+      - MONGO_INITDB_DATABASE=procurement
+    networks:
+      - procurement-network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
 
+  # Redis Cache & Queue
   redis:
     image: redis:7-alpine
+    container_name: procurement-redis
     ports:
       - "6379:6379"
     volumes:
       - redis_data:/data
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    networks:
+      - procurement-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
 
+  # Keycloak Identity Provider
   keycloak:
-    image: quay.io/keycloak/keycloak:22.0
+    image: quay.io/keycloak/keycloak:26.0
+    container_name: procurement-keycloak
     ports:
-      - "8080:8080"
+      - "8180:8080"
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://keycloak-db:5432/keycloak
+      - KC_DB_USERNAME=keycloak
+      - KC_DB_PASSWORD=keycloak
+      - KC_HEALTH_ENABLED=true
+      - KC_METRICS_ENABLED=true
+      - KC_HTTP_ENABLED=true
+      - KC_HOSTNAME_STRICT=false
+      - KC_HOSTNAME_STRICT_HTTPS=false
     command: start-dev
+    networks:
+      - procurement-network
+    depends_on:
+      keycloak-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health/ready"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
 
+  # Keycloak Database (PostgreSQL)
+  keycloak-db:
+    image: postgres:16-alpine
+    container_name: procurement-keycloak-db
+    volumes:
+      - keycloak_db_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=keycloak
+      - POSTGRES_USER=keycloak
+      - POSTGRES_PASSWORD=keycloak
+    networks:
+      - procurement-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U keycloak"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  # BullMQ Dashboard (Bull Board)
+  bull-board:
+    image: deadly0/bull-board
+    container_name: procurement-bull-board
+    ports:
+      - "3001:3000"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=
+    networks:
+      - procurement-network
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+# Networks
+networks:
+  procurement-network:
+    driver: bridge
+    name: procurement-network
+
+# Volumes for persistent data
 volumes:
+  # Database volumes
   mongodb_data:
+    name: procurement-mongodb-data
+  mongodb_config:
+    name: procurement-mongodb-config
   redis_data:
+    name: procurement-redis-data
+  keycloak_db_data:
+    name: procurement-keycloak-db-data
+  
+  # Node modules volumes for better performance
   frontend_node_modules:
+    name: procurement-frontend-node-modules
   backend_node_modules:
+    name: procurement-backend-node-modules
   worker_node_modules:
-  root_node_modules:
-
+    name: procurement-worker-node-modules
+  shared_node_modules:
+    name: procurement-shared-node-modules
+  pnpm_store:
+    name: procurement-pnpm-store
