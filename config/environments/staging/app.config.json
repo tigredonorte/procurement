@@ -1,0 +1,48 @@
+{
+  "api": {
+    "baseUrl": "https://staging-api.requisio.com",
+    "timeout": 20000,
+    "retryAttempts": 3,
+    "retryDelay": 2000,
+    "rateLimit": {
+      "maxRequests": 500,
+      "windowMs": 60000
+    }
+  },
+  "cors": {
+    "allowedOrigins": ["https://staging.requisio.com"],
+    "credentials": true,
+    "maxAge": 86400
+  },
+  "features": {
+    "enableWebhooks": true,
+    "enableExport": true,
+    "enableBulkOperations": true,
+    "enableAdvancedSearch": true,
+    "maxConcurrentRequests": 10,
+    "enableDebugMode": false
+  },
+  "logging": {
+    "level": "info",
+    "format": "json",
+    "prettyPrint": false,
+    "timestampFormat": "ISO",
+    "enableRequestLogging": true,
+    "enablePerformanceLogging": true
+  },
+  "pagination": {
+    "defaultLimit": 25,
+    "maxLimit": 100
+  },
+  "cache": {
+    "enabled": true,
+    "defaultTTL": 600,
+    "searchResultsTTL": 1800,
+    "userSessionTTL": 7200
+  },
+  "uploads": {
+    "maxFileSize": 52428800,
+    "allowedMimeTypes": ["application/pdf", "text/csv", "application/json", "application/vnd.ms-excel"],
+    "tempDirectory": "/tmp/uploads"
+  }
+}

@@ -3,11 +3,18 @@
   "private": true,
   "version": "0.0.0",
   "packageManager": "pnpm@9.0.0",
+  "description": "A B2B procurement automation platform that transforms manual product research into an automated, data-driven process",
   "scripts": {
     "prepare": "husky install",
-    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
-    "format": "prettier -w .",
-    "typecheck": "tsc -p tsconfig.base.json --noEmit",
+    "dev": "pnpm --parallel --stream run dev",
+    "build": "pnpm --recursive run build",
+    "test": "pnpm --recursive run test",
+    "lint": "pnpm --recursive run lint",
+    "lint:fix": "pnpm --recursive run lint:fix",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml}\"",
+    "typecheck": "pnpm --recursive run typecheck",
+    "clean": "pnpm --recursive run clean && rm -rf node_modules",
     "lint-staged": "lint-staged"
   },
   "devDependencies": {
@@ -20,6 +27,9 @@
     "lint-staged": "^15.0.0",
     "prettier": "^3.2.0",
     "typescript": "^5.4.0"
+  },
+  "engines": {
+    "node": ">=24.0.0",
+    "pnpm": ">=9.0.0"
   }
 }
-

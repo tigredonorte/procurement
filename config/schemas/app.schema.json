@@ -1,0 +1,177 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Application Configuration",
+  "type": "object",
+  "required": ["api", "cors", "features", "logging", "pagination", "cache", "uploads"],
+  "properties": {
+    "api": {
+      "type": "object",
+      "required": ["baseUrl", "timeout", "retryAttempts", "retryDelay", "rateLimit"],
+      "properties": {
+        "baseUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "timeout": {
+          "type": "number",
+          "minimum": 1000,
+          "maximum": 60000
+        },
+        "retryAttempts": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "retryDelay": {
+          "type": "number",
+          "minimum": 100,
+          "maximum": 10000
+        },
+        "rateLimit": {
+          "type": "object",
+          "required": ["maxRequests", "windowMs"],
+          "properties": {
+            "maxRequests": {
+              "type": "number",
+              "minimum": 1
+            },
+            "windowMs": {
+              "type": "number",
+              "minimum": 1000
+            }
+          }
+        }
+      }
+    },
+    "cors": {
+      "type": "object",
+      "required": ["allowedOrigins", "credentials", "maxAge"],
+      "properties": {
+        "allowedOrigins": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "credentials": {
+          "type": "boolean"
+        },
+        "maxAge": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "features": {
+      "type": "object",
+      "required": ["enableWebhooks", "enableExport", "enableBulkOperations", "enableAdvancedSearch", "maxConcurrentRequests", "enableDebugMode"],
+      "properties": {
+        "enableWebhooks": {
+          "type": "boolean"
+        },
+        "enableExport": {
+          "type": "boolean"
+        },
+        "enableBulkOperations": {
+          "type": "boolean"
+        },
+        "enableAdvancedSearch": {
+          "type": "boolean"
+        },
+        "maxConcurrentRequests": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "enableDebugMode": {
+          "type": "boolean"
+        }
+      }
+    },
+    "logging": {
+      "type": "object",
+      "required": ["level", "format", "prettyPrint", "timestampFormat", "enableRequestLogging", "enablePerformanceLogging"],
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": ["debug", "info", "warn", "error", "fatal"]
+        },
+        "format": {
+          "type": "string",
+          "enum": ["json", "text"]
+        },
+        "prettyPrint": {
+          "type": "boolean"
+        },
+        "timestampFormat": {
+          "type": "string",
+          "enum": ["ISO", "unix", "epoch"]
+        },
+        "enableRequestLogging": {
+          "type": "boolean"
+        },
+        "enablePerformanceLogging": {
+          "type": "boolean"
+        }
+      }
+    },
+    "pagination": {
+      "type": "object",
+      "required": ["defaultLimit", "maxLimit"],
+      "properties": {
+        "defaultLimit": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "maxLimit": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 1000
+        }
+      }
+    },
+    "cache": {
+      "type": "object",
+      "required": ["enabled", "defaultTTL", "searchResultsTTL", "userSessionTTL"],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "defaultTTL": {
+          "type": "number",
+          "minimum": 0
+        },
+        "searchResultsTTL": {
+          "type": "number",
+          "minimum": 0
+        },
+        "userSessionTTL": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "uploads": {
+      "type": "object",
+      "required": ["maxFileSize", "allowedMimeTypes", "tempDirectory"],
+      "properties": {
+        "maxFileSize": {
+          "type": "number",
+          "minimum": 1
+        },
+        "allowedMimeTypes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "tempDirectory": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

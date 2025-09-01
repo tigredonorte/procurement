@@ -1,0 +1,111 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Database Configuration",
+  "type": "object",
+  "required": ["mongodb", "migrations", "indexing", "queryOptions"],
+  "properties": {
+    "mongodb": {
+      "type": "object",
+      "required": ["poolSize", "minPoolSize", "maxIdleTimeMs", "serverSelectionTimeoutMs", "socketTimeoutMs", "connectTimeoutMs", "retryWrites", "retryReads", "readPreference", "writeConcern"],
+      "properties": {
+        "poolSize": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "minPoolSize": {
+          "type": "number",
+          "minimum": 0
+        },
+        "maxIdleTimeMs": {
+          "type": "number",
+          "minimum": 0
+        },
+        "serverSelectionTimeoutMs": {
+          "type": "number",
+          "minimum": 1000
+        },
+        "socketTimeoutMs": {
+          "type": "number",
+          "minimum": 1000
+        },
+        "connectTimeoutMs": {
+          "type": "number",
+          "minimum": 1000
+        },
+        "retryWrites": {
+          "type": "boolean"
+        },
+        "retryReads": {
+          "type": "boolean"
+        },
+        "readPreference": {
+          "type": "string",
+          "enum": ["primary", "primaryPreferred", "secondary", "secondaryPreferred", "nearest"]
+        },
+        "writeConcern": {
+          "type": "object",
+          "required": ["w", "j", "wtimeout"],
+          "properties": {
+            "w": {
+              "oneOf": [
+                {"type": "number", "minimum": 0},
+                {"type": "string", "enum": ["majority"]}
+              ]
+            },
+            "j": {
+              "type": "boolean"
+            },
+            "wtimeout": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "migrations": {
+      "type": "object",
+      "required": ["autoRun", "validateBeforeRun", "backupBeforeMigration"],
+      "properties": {
+        "autoRun": {
+          "type": "boolean"
+        },
+        "validateBeforeRun": {
+          "type": "boolean"
+        },
+        "backupBeforeMigration": {
+          "type": "boolean"
+        }
+      }
+    },
+    "indexing": {
+      "type": "object",
+      "required": ["autoCreateIndexes", "backgroundIndexing"],
+      "properties": {
+        "autoCreateIndexes": {
+          "type": "boolean"
+        },
+        "backgroundIndexing": {
+          "type": "boolean"
+        }
+      }
+    },
+    "queryOptions": {
+      "type": "object",
+      "required": ["maxTimeMS", "allowDiskUse", "lean"],
+      "properties": {
+        "maxTimeMS": {
+          "type": "number",
+          "minimum": 1000
+        },
+        "allowDiskUse": {
+          "type": "boolean"
+        },
+        "lean": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}
