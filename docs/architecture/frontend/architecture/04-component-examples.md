@@ -246,7 +246,7 @@ interface ErrorBoundaryState {
 
 - [State Management](./02-state-management.md)
 - [Validation Schemas](./05-validation-schemas.md)
-- [Responsive Design](./07-responsive-design.md)
+- 
 
 ---
 

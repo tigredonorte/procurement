@@ -3,15 +3,15 @@
 ## Design System Foundation
 
 For complete design system documentation, see:
-- **[UI/UX Design System](./architecture/ui/Readme.md)** - Complete design philosophy, visual identity, and component library
-- **[Color System](./architecture/ui/03-color-system.md)** - Color palettes and semantic colors
-- **[Typography](./architecture/ui/04-typography.md)** - Font system and type scales
-- **[Component Architecture](./architecture/ui/07-component-architecture.md)** - Component library structure
+- **[UI/UX Design System](./architecture/frontend/ui/Readme.md)** - Complete design philosophy, visual identity, and component library
+- **[Color System](./architecture/frontend/ui/03-color-system.md)** - Color palettes and semantic colors
+- **[Typography](./architecture/frontend/ui/04-typography.md)** - Font system and type scales
+- **[Component Architecture](./architecture/frontend/ui/07-component-architecture.md)** - Component library structure
 
 ### Component Library
 - **Package**: `@requisio/ui` - Material UI-based component library
-- **See**: [Core Components](./architecture/ui/08-core-components.md) for complete component list
-- **See**: [Complex Components](./architecture/ui/09-complex-components.md) for advanced patterns
+- **See**: [Core Components](./architecture/frontend/ui/08-core-components.md) for complete component list
+- **See**: [Complex Components](./architecture/frontend/ui/09-complex-components.md) for advanced patterns
 
 ## 1. Authentication Screens
 
@@ -1196,26 +1196,26 @@ These specifications provide a complete blueprint for implementing all MVP scree
 
 ## Progressive Web App & Service Workers
 
-See **[PWA Configuration](./architecture/frontend-architecture/01-pwa-configuration.md)** for:
+See **[PWA Configuration](./architecture/frontend/architecture/01-pwa-configuration.md)** for:
 - PWA manifest configuration
 - Service worker implementation
 - Offline support strategies
 - Caching patterns
 
-See **[Service Workers & Mocking](./architecture/frontend-architecture/11-service-workers.md)** for:
+See **[Service Workers & Mocking](./architecture/frontend/architecture/11-service-workers.md)** for:
 - Mock Service Worker (MSW) setup
 - Development environment mocking
 - API simulation for testing
 
 ## Responsive Design & Accessibility
 
-See **[Responsive Design](./architecture/ui/10-responsive-design.md)** for:
+See **[Responsive Design](./architecture/frontend/ui/10-responsive-design.md)** for:
 - Breakpoint system
 - Mobile-first approach
 - Responsive patterns
 - Grid system
 
-See **[Accessibility Standards](./architecture/ui/12-accessibility.md)** for:
+See **[Accessibility Standards](./architecture/frontend/ui/12-accessibility.md)** for:
 - WCAG compliance guidelines
 - Keyboard navigation patterns
 - Screen reader support
@@ -1223,25 +1223,25 @@ See **[Accessibility Standards](./architecture/ui/12-accessibility.md)** for:
 
 ## Performance, Animations & Themes
 
-See **[Motion & Animation](./architecture/ui/06-motion-animation.md)** for:
+See **[Motion & Animation](./architecture/frontend/ui/06-motion-animation.md)** for:
 - Animation principles and presets
 - Performance guidelines
 - Accessibility considerations
 
-See **[Dark Mode Strategy](./architecture/ui/11-dark-mode.md)** for:
+See **[Dark Mode Strategy](./architecture/frontend/ui/11-dark-mode.md)** for:
 - Color mode implementation
 - Theme transitions
 - Component dark variants
 
 ## State Management & Architecture
 
-See **[State Management](./architecture/frontend-architecture/02-state-management.md)** for:
+See **[State Management](./architecture/frontend/architecture/02-state-management.md)** for:
 - Redux Toolkit configuration
 - RTK Query integration
 - State synchronization patterns
 - WebSocket real-time updates
 
-See **[Component Architecture](./architecture/frontend-architecture/03-component-architecture.md)** for:
+See **[Component Architecture](./architecture/frontend/architecture/03-component-architecture.md)** for:
 - Component organization
 - State patterns
 - Form validation with Zod

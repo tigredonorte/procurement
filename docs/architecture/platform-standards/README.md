@@ -23,15 +23,6 @@ This directory contains cross-cutting platform standards, guidelines, and specif
 - Security best practices
 - Documentation standards
 
-### [03 - Monitoring & Observability](./03-monitoring-observability.md)
-**System monitoring and observability strategy**
-- Logging strategy with structured logging
-- Metrics collection (application, business, infrastructure)
-- Health check endpoints and monitoring
-- Error tracking and handling
-- Distributed tracing with OpenTelemetry
-- Alerting rules and incident response
-- Performance monitoring guidelines
 
 ## Purpose
 
@@ -47,7 +38,6 @@ These standards ensure:
 ### For All Developers
 - Review [Tech Stack Versions](./01-tech-stack-versions.md) before adding dependencies
 - Follow [Development Standards](./02-development-standards.md) for all code contributions
-- Implement [Monitoring & Observability](./03-monitoring-observability.md) practices in all services
 
 ### For Team Leads
 - Enforce standards during code reviews
@@ -55,9 +45,8 @@ These standards ensure:
 - Ensure new team members review all documents
 
 ### For DevOps/SRE
-- Use [Monitoring & Observability](./03-monitoring-observability.md) for operational excellence
 - Maintain [Tech Stack Versions](./01-tech-stack-versions.md) for security updates
-- Implement alerting based on monitoring guidelines
+- Implement monitoring and alerting practices
 
 ## Governance
 
@@ -71,14 +60,13 @@ These standards ensure:
 ### Review Schedule
 - **Tech Stack**: Quarterly security review, semi-annual major version review
 - **Development Standards**: Quarterly team retrospective
-- **Monitoring**: Monthly metrics review, quarterly strategy update
 
 ## Related Documentation
 
-- [Backend Architecture](../backend-architecture/)
-- [Frontend Architecture](../frontend-architecture/)
-- [UI/UX Design System](../ui/)
-- [System Design](../../system-design/)
+- [Backend Architecture](../backend/Readme.md)
+- [Frontend Architecture](../frontend/architecture/Readme.md)
+- [UI/UX Design System](../frontend/ui/)
+- [System Design](../../system-design/Readme.md)
 
 ## Quick Reference
 

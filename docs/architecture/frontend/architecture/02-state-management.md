@@ -222,7 +222,7 @@ Redux error handling:
 ## Related Documentation
 
 - [Component Architecture](./03-component-architecture.md)
-- [API Integration](./10-api-integration.md)
+- 
 - [PWA Configuration](./01-pwa-configuration.md)
 
 ---

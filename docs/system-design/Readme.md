@@ -123,11 +123,11 @@ This folder contains the comprehensive system design documentation for Requisio.
 ## Related Documentation
 
 - [Architecture Overview](../architecture/README.md)
-- [Backend Architecture](../architecture/backend-architecture/)
-- [Frontend Architecture](../architecture/frontend-architecture/)
-- [UI/UX Guidelines](../architecture/ui/)
+- [Backend Architecture](../architecture/backend/)
+- [Frontend Architecture](../architecture/frontend/architecture/)
+- [UI/UX Guidelines](../architecture/frontend/ui/)
 - [Platform Standards](../architecture/platform-standards/)
   - [Tech Stack Versions](../architecture/platform-standards/01-tech-stack-versions.md)
   - [Development Standards](../architecture/platform-standards/02-development-standards.md)
-  - [Monitoring & Observability](../architecture/platform-standards/03-monitoring-observability.md)
+  - [Monitoring & Observability](../architecture/backend/11-monitoring-observability.md)
 - [Project Root README](../../README.md)

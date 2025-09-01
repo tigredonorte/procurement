@@ -416,12 +416,26 @@ Response:
         {
           "id": "prod_001",
           "title": "Premium Ergonomic Chair",
-          "price": 599.99,
+          "description": "Chair with lumbar support and armrests",
+          "priceUnit": 599.99,
           "currency": "USD",
           "availability": "in_stock",
-          "supplier": "ErgoFurniture Inc",
-          "imageUrl": "https://...",
-          "description": "..."
+          "supplier": {
+            "name": "ErgoFurniture Inc",
+            "id": "supplier_123",
+            "rating": 4.5
+          },
+          "images": [
+            "https://cdn.example.com/chair1.jpg",
+            "https://cdn.example.com/chair2.jpg"
+          ],
+          "specifications": {
+            "material": "Mesh fabric",
+            "color": "Black",
+            "weight": "35lbs"
+          },
+          "url": "https://original-source.com/product",
+          "lastUpdated": "2025-09-01T10:05:00Z"
         }
       ]
     }

@@ -12,18 +12,8 @@ This directory contains the comprehensive frontend architecture documentation fo
 
 ### Data & Validation
 - **[Validation Schemas](./05-validation-schemas.md)** - Zod schemas for form validation and data integrity
-- **[Error Handling](./06-error-handling.md)** - Frontend error handling patterns and strategies
-
 ### Service Workers & PWA
 - **[Service Workers & Mocking](./11-service-workers.md)** - Service worker implementation and MSW for development
-
-### Design System
-- **[Responsive Design](./07-responsive-design.md)** - Grid system and responsive design implementation
-- **[UI Components](./08-ui-components.md)** - Material-UI component customization and theming
-
-### Security & Performance
-- **[Authentication](./09-authentication.md)** - Keycloak integration and protected routes
-- **[API Integration](./10-api-integration.md)** - External API client patterns and data fetching
 
 ## 🏗️ Technology Stack
 
@@ -75,10 +65,9 @@ For developers new to the frontend architecture:
 4. Refer to [Validation Schemas](./05-validation-schemas.md) for form handling
 
 ## 🔗 Related Documentation
-- [System Architecture Overview](../05-system-architecture.md)
-- [API Design](../04-api-design.md)
-- [UI/UX Guidelines](../../ui/Readme.md)
-- [Development Standards](../07-appendix.md#n-development-standards)
+- [System Architecture Overview](../../../system-design/05-system-architecture.md)
+- [API Design](../../../system-design/04-api-design.md)
+- [UI/UX Guidelines](../ui/Readme.md)
 
 ## 📄 Document Version
 

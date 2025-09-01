@@ -134,6 +134,47 @@ const DEFAULT_TIMEOUT_MS = 30000;
   - Focus on happy paths and critical error scenarios
   - Use realistic data and scenarios
 
+#### Test Example
+
+```typescript
+// Backend Test Example
+describe('ResearchController', () => {
+  describe('POST /api/v1/research', () => {
+    it('should create research request when valid data provided', async () => {
+      // Given
+      const user = await createTestUser({ role: 'researcher' });
+      const token = generateToken(user);
+      const payload = {
+        query: 'office chairs',
+        parameters: { maxResults: 50 }
+      };
+      
+      // When
+      const response = await request(app)
+        .post('/api/v1/research')
+        .set('Authorization', `Bearer ${token}`)
+        .send(payload);
+      
+      // Then
+      expect(response.status).toBe(201);
+      expect(response.body).toMatchObject({
+        id: expect.any(String),
+        status: 'queued',
+        query: payload.query
+      });
+    });
+    
+    it('should return 403 when user lacks permission', async () => {
+      // Test implementation
+    });
+    
+    it('should return 422 when invalid data provided', async () => {
+      // Test implementation
+    });
+  });
+});
+```
+
 ### 3.3 Test Utilities
 
 - Create reusable test utilities for common operations
@@ -388,4 +429,4 @@ Brief description of changes
 
 ---
 
-[← Back to System Design](./README.md) | [Next: Monitoring & Observability →](./10-monitoring-observability.md)
+[← Back to Platform Standards](./README.md) | [Next: Monitoring & Observability →](../backend/11-monitoring-observability.md)
