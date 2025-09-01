@@ -174,7 +174,7 @@ Establish a production-ready monorepo development environment with comprehensive
 
 ---
 
-### (in progress) A4. Secrets Management with Doppler Integration — updated: 2025-09-01 21:10 (America/Sao_Paulo)
+### (completed) A4. Secrets Management with Doppler Integration — updated: 2025-09-01 21:20 (America/Sao_Paulo) — PR: feature/a1-monorepo-tooling
 **Priority**: High | **Effort**: M | **Dependencies**: A3
 
 **Scope:**
