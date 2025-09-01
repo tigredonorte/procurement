@@ -30,7 +30,7 @@ Establish a production-ready monorepo development environment with comprehensive
 
 ## Tasks
 
-### A1. Monorepo Structure & Development Tooling
+### (in progress) A1. Monorepo Structure & Development Tooling — updated: 2025-09-01 00:00 (America/Sao_Paulo)
 **Priority**: Critical | **Effort**: M | **Dependencies**: None
 
 **Scope:**
@@ -66,7 +66,7 @@ Establish a production-ready monorepo development environment with comprehensive
 
 ---
 
-### A2. Containerized Development Environment
+### (in progress) A2. Containerized Development Environment — updated: 2025-09-01 00:00 (America/Sao_Paulo)
 **Priority**: Critical | **Effort**: L | **Dependencies**: A1
 
 **Scope:**
