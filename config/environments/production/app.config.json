@@ -1,0 +1,48 @@
+{
+  "api": {
+    "baseUrl": "https://api.requisio.com",
+    "timeout": 15000,
+    "retryAttempts": 5,
+    "retryDelay": 3000,
+    "rateLimit": {
+      "maxRequests": 1000,
+      "windowMs": 60000
+    }
+  },
+  "cors": {
+    "allowedOrigins": ["https://requisio.com", "https://www.requisio.com"],
+    "credentials": true,
+    "maxAge": 86400
+  },
+  "features": {
+    "enableWebhooks": true,
+    "enableExport": true,
+    "enableBulkOperations": true,
+    "enableAdvancedSearch": true,
+    "maxConcurrentRequests": 20,
+    "enableDebugMode": false
+  },
+  "logging": {
+    "level": "warn",
+    "format": "json",
+    "prettyPrint": false,
+    "timestampFormat": "ISO",
+    "enableRequestLogging": false,
+    "enablePerformanceLogging": true
+  },
+  "pagination": {
+    "defaultLimit": 25,
+    "maxLimit": 100
+  },
+  "cache": {
+    "enabled": true,
+    "defaultTTL": 900,
+    "searchResultsTTL": 3600,
+    "userSessionTTL": 14400
+  },
+  "uploads": {
+    "maxFileSize": 104857600,
+    "allowedMimeTypes": ["application/pdf", "text/csv", "application/json", "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"],
+    "tempDirectory": "/tmp/uploads"
+  }
+}

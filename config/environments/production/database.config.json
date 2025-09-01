@@ -1,0 +1,32 @@
+{
+  "mongodb": {
+    "poolSize": 50,
+    "minPoolSize": 10,
+    "maxIdleTimeMs": 60000,
+    "serverSelectionTimeoutMs": 15000,
+    "socketTimeoutMs": 90000,
+    "connectTimeoutMs": 20000,
+    "retryWrites": true,
+    "retryReads": true,
+    "readPreference": "secondaryPreferred",
+    "writeConcern": {
+      "w": "majority",
+      "j": true,
+      "wtimeout": 15000
+    }
+  },
+  "migrations": {
+    "autoRun": false,
+    "validateBeforeRun": true,
+    "backupBeforeMigration": true
+  },
+  "indexing": {
+    "autoCreateIndexes": false,
+    "backgroundIndexing": true
+  },
+  "queryOptions": {
+    "maxTimeMS": 15000,
+    "allowDiskUse": true,
+    "lean": true
+  }
+}

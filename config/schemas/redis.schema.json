@@ -1,0 +1,216 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Redis Configuration",
+  "type": "object",
+  "required": ["connection", "queues", "cache", "pubsub"],
+  "properties": {
+    "connection": {
+      "type": "object",
+      "required": ["host", "port", "db", "maxRetriesPerRequest", "enableReadyCheck", "connectTimeout", "keepAlive", "reconnectOnError", "retryStrategy"],
+      "properties": {
+        "host": {
+          "type": "string"
+        },
+        "port": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "db": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 15
+        },
+        "maxRetriesPerRequest": {
+          "type": "number",
+          "minimum": 0
+        },
+        "enableReadyCheck": {
+          "type": "boolean"
+        },
+        "connectTimeout": {
+          "type": "number",
+          "minimum": 1000
+        },
+        "keepAlive": {
+          "type": "number",
+          "minimum": 0
+        },
+        "reconnectOnError": {
+          "type": "boolean"
+        },
+        "retryStrategy": {
+          "type": "object",
+          "required": ["maxAttempts", "initialDelay", "maxDelay", "factor"],
+          "properties": {
+            "maxAttempts": {
+              "type": "number",
+              "minimum": 1
+            },
+            "initialDelay": {
+              "type": "number",
+              "minimum": 0
+            },
+            "maxDelay": {
+              "type": "number",
+              "minimum": 0
+            },
+            "factor": {
+              "type": "number",
+              "minimum": 1
+            }
+          }
+        }
+      }
+    },
+    "queues": {
+      "type": "object",
+      "required": ["defaultJobOptions", "research", "webhook", "export"],
+      "properties": {
+        "defaultJobOptions": {
+          "type": "object",
+          "required": ["removeOnComplete", "removeOnFail", "attempts", "backoff"],
+          "properties": {
+            "removeOnComplete": {
+              "type": "number",
+              "minimum": 0
+            },
+            "removeOnFail": {
+              "type": "number",
+              "minimum": 0
+            },
+            "attempts": {
+              "type": "number",
+              "minimum": 1
+            },
+            "backoff": {
+              "type": "object",
+              "required": ["type", "delay"],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": ["fixed", "exponential"]
+                },
+                "delay": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              }
+            }
+          }
+        },
+        "research": {
+          "$ref": "#/definitions/queueConfig"
+        },
+        "webhook": {
+          "$ref": "#/definitions/queueConfig"
+        },
+        "export": {
+          "type": "object",
+          "required": ["concurrency", "stalledInterval", "maxStalledCount"],
+          "properties": {
+            "concurrency": {
+              "type": "number",
+              "minimum": 1
+            },
+            "stalledInterval": {
+              "type": "number",
+              "minimum": 1000
+            },
+            "maxStalledCount": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "cache": {
+      "type": "object",
+      "required": ["ttl", "maxKeys", "checkPeriod"],
+      "properties": {
+        "ttl": {
+          "type": "object",
+          "required": ["default", "session", "apiResponse", "searchResults"],
+          "properties": {
+            "default": {
+              "type": "number",
+              "minimum": 0
+            },
+            "session": {
+              "type": "number",
+              "minimum": 0
+            },
+            "apiResponse": {
+              "type": "number",
+              "minimum": 0
+            },
+            "searchResults": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "maxKeys": {
+          "type": "number",
+          "minimum": 1
+        },
+        "checkPeriod": {
+          "type": "number",
+          "minimum": 60
+        }
+      }
+    },
+    "pubsub": {
+      "type": "object",
+      "required": ["enableBuffering", "bufferLimit", "flushInterval"],
+      "properties": {
+        "enableBuffering": {
+          "type": "boolean"
+        },
+        "bufferLimit": {
+          "type": "number",
+          "minimum": 1
+        },
+        "flushInterval": {
+          "type": "number",
+          "minimum": 10
+        }
+      }
+    }
+  },
+  "definitions": {
+    "queueConfig": {
+      "type": "object",
+      "required": ["concurrency", "rateLimit", "stalledInterval", "maxStalledCount"],
+      "properties": {
+        "concurrency": {
+          "type": "number",
+          "minimum": 1
+        },
+        "rateLimit": {
+          "type": "object",
+          "required": ["max", "duration"],
+          "properties": {
+            "max": {
+              "type": "number",
+              "minimum": 1
+            },
+            "duration": {
+              "type": "number",
+              "minimum": 1000
+            }
+          }
+        },
+        "stalledInterval": {
+          "type": "number",
+          "minimum": 1000
+        },
+        "maxStalledCount": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

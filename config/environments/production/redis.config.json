@@ -1,0 +1,67 @@
+{
+  "connection": {
+    "host": "redis-prod",
+    "port": 6379,
+    "db": 0,
+    "maxRetriesPerRequest": 10,
+    "enableReadyCheck": true,
+    "connectTimeout": 20000,
+    "keepAlive": 60000,
+    "reconnectOnError": true,
+    "retryStrategy": {
+      "maxAttempts": 50,
+      "initialDelay": 1000,
+      "maxDelay": 10000,
+      "factor": 2
+    }
+  },
+  "queues": {
+    "defaultJobOptions": {
+      "removeOnComplete": 1000,
+      "removeOnFail": 5000,
+      "attempts": 5,
+      "backoff": {
+        "type": "exponential",
+        "delay": 5000
+      }
+    },
+    "research": {
+      "concurrency": 20,
+      "rateLimit": {
+        "max": 50,
+        "duration": 60000
+      },
+      "stalledInterval": 120000,
+      "maxStalledCount": 3
+    },
+    "webhook": {
+      "concurrency": 50,
+      "rateLimit": {
+        "max": 200,
+        "duration": 60000
+      },
+      "stalledInterval": 180000,
+      "maxStalledCount": 5
+    },
+    "export": {
+      "concurrency": 10,
+      "stalledInterval": 300000,
+      "maxStalledCount": 2
+    }
+  },
+  "cache": {
+    "ttl": {
+      "default": 900,
+      "session": 14400,
+      "apiResponse": 300,
+      "searchResults": 3600
+    },
+    "maxKeys": 100000,
+    "checkPeriod": 900
+  },
+  "pubsub": {
+    "enableBuffering": true,
+    "bufferLimit": 1000,
+    "flushInterval": 500
+  }
+}
