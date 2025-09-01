@@ -1,6 +1,6 @@
-# 📋 PRA – Execution Plan (Epics, Tasks & Order)
+# 📋 Requisio.com – Execution Plan (Epics, Tasks & Order)
 
-This document consolidates **system-design**, **UI/UX design system**, and **MVP plan** into a single execution roadmap. It lists epics and tasks in delivery order, with explicit dependencies and "done" criteria. Target repo paths for source docs: `/docs/system-design.md`, `/docs/ui-ux.md`, `/docs/mvp.md`.
+This document consolidates **system-design**, **UI/UX design system**, and **MVP plan** into a single execution roadmap. It lists epics and tasks in delivery order, with explicit dependencies and "done" criteria. Target repo paths for source docs: `/docs/system-design.md`, `/docs/ui/Readme.md`, `/docs/mvp.md`.
 
 ---
 
@@ -8,7 +8,7 @@ This document consolidates **system-design**, **UI/UX design system**, and **MVP
 
 * MVP persona: **Researcher**.
 * Tech stack: React frontend; Node/Express API; BullMQ worker; MongoDB; Redis; Keycloak; Doppler; Docker; GitHub Actions.
-* UX baseline: PRA Design System (tokens, theming, A11y), initial app shell, core forms/tables.
+* UX baseline: Requisio.com Design System (tokens, theming, A11y), initial app shell, core forms/tables.
 
 ---
 
@@ -100,7 +100,7 @@ When finishing A1:
 
 ## 🎯 Summary
 
-This execution plan represents a comprehensive roadmap for building the PRA (Procurement Research Assistant) MVP. The epics are designed to be executed in sequence, with each building upon the foundation of the previous ones. 
+This execution plan represents a comprehensive roadmap for building the Requisio.com MVP. The epics are designed to be executed in sequence, with each building upon the foundation of the previous ones. 
 
 Key highlights:
 - **9 Epics** covering all aspects from infrastructure to release
@@ -115,7 +115,7 @@ The goal is to deliver a fully functional research management system that enable
 ## 🗂️ Cross-References in Repo
 
 * **System Design:** `/docs/system-design.md` – architecture, models, endpoints, infra.
-* **UI/UX Design System:** `/docs/ui-ux.md` – tokens, components, motion, accessibility.
+* **UI/UX Design System:** `/docs/ui/Readme.md` – tokens, components, motion, accessibility.
 * **MVP Plan:** `/docs/mvp.md` – epics/stories/tasks baseline.
 
 ## 📋 Post-MVP Backlog

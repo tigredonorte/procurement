@@ -11,7 +11,7 @@
 I1. **Docs Refresh**
 
 * Update `/docs/system-design.md` with any deltas (endpoints, models, flows).
-* Update `/docs/ui-ux.md` with token decisions and component coverage.
+* Update `/docs/ui/Readme.md` with token decisions and component coverage.
 * Update `/docs/mvp.md` with scope/status and post-MVP backlog.
 
 I2. **Runbooks**

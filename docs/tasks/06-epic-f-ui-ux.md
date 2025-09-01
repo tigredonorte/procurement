@@ -4,7 +4,7 @@
 
 ---
 
-**Goal:** Ship a cohesive, accessible UI aligned with PRA DS.
+**Goal:** Ship a cohesive, accessible UI aligned with Requisio.com DS.
 
 ## Tasks
 
@@ -15,7 +15,7 @@ F1. **Theme & Tokens**
 F2. **Core Components (wrapped MUI)**
 
 * `Button`, `Input`, `Select`, `Table`, `Card`, `Dialog/Modal`, `Alert/Toast`.
-* Start **PRAStackedModal** pattern for nested flows (GTM-style).
+* Start **StackedModal** pattern for nested flows (GTM-style).
 
 F3. **App Shell**
 

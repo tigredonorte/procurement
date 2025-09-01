@@ -2,7 +2,7 @@
 
 ## Modern UI/UX Guidelines & Component Library Architecture
 
-### Version 1.0.0 | December 2024
+### Version 1.0.0 | September 2025
 
 ---
 
@@ -66,6 +66,12 @@ This design system documentation is organized into focused, manageable sections.
    - Stacked Modal (GTM-style) implementation
    - Wizard Modal pattern
 
+9b. **[Additional Components](./09b-additional-components.md)**
+   - Extended component library
+   - StackedModal, AnimatedIcon, LottieAnimation
+   - AddressAutocomplete, PhoneInput, CodeEditor
+   - Glow and Pulse effects documentation
+
 ### Responsive & Themes
 10. **[Responsive Design](./10-responsive-design.md)**
     - Breakpoint system
@@ -105,23 +111,23 @@ This design system documentation is organized into focused, manageable sections.
 ### Installation
 
 ```bash
-npm install @pra/ui-library
+npm install @requisio/ui-library
 # or
-pnpm add @pra/ui-library
+pnpm add @requisio/ui-library
 ```
 
 ### Basic Usage
 
 ```typescript
-import { PRAUIProvider, PRAButton } from '@pra/ui-library';
+import { UIProvider, Button } from '@requisio/ui-library';
 
 function App() {
   return (
-    <PRAUIProvider theme="light">
-      <PRAButton variant="gradient" size="lg">
+    <UIProvider theme="light">
+      <Button variant="gradient" size="lg">
         Start Research
-      </PRAButton>
-    </PRAUIProvider>
+      </Button>
+    </UIProvider>
   );
 }
 ```
@@ -164,16 +170,16 @@ const customTheme = {
   }
 };
 
-<PRAUIProvider theme="dark" customization={customTheme}>
+<UIProvider theme="dark" customization={customTheme}>
   <App />
-</PRAUIProvider>
+</UIProvider>
 ```
 
 ## 📋 Version Control
 
 | Version | Date | Changes |
 |---------|------|---------|
-| 1.0.0 | 2024-12-26 | Initial design system documentation |
+| 1.0.0 | 2025-09-01 | Initial design system documentation |
 
 ## 👥 Team
 

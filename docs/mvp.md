@@ -1,4 +1,4 @@
-# Product Research Aggregator (PRA): Strategic Overview & Detailed MVP Plan
+# Requisio.com: Strategic Overview & Detailed MVP Plan
 
 ---
 
@@ -20,6 +20,8 @@
 
 ## 2. MVP Goal
 
+> **Tech Stack**: See [Tech Stack Versions](/docs/tech-stack-versions.md) for detailed version specifications.
+
 To deliver a stable, secure, and user-friendly core platform enabling the **"Researcher"** persona within the target organizations to:
 
 * Register and log in securely.
@@ -34,9 +36,9 @@ The MVP will establish the foundational architecture designed for future scalabi
 
 ## 3. MVP Epics, Stories, and Detailed Sub-tasks
 
-### Epic 1: PRA: Core Platform Setup & Deployment (MVP)
+### Epic 1: Requisio.com: Core Platform Setup & Deployment (MVP)
 
-**Summary:** PRA: Core Platform Setup & Deployment (MVP) Epic
+**Summary:** Requisio.com: Core Platform Setup & Deployment (MVP) Epic
 **Description:** Establish the foundational project structure, development environment, CI/CD pipeline for MVP, and necessary configurations for all services (frontend, backend, worker, databases) using Docker, Doppler, and basic CI. This setup will ensure readiness for current MVP needs and future expansion.
 
 #### Story 1.1: Setup Monorepo Structure & Base Tooling
@@ -121,9 +123,9 @@ The MVP will establish the foundational architecture designed for future scalabi
     * **Sub-task 1.4.3:** Create CI Pipeline Script: Unit Testing Stage
     * **Sub-task 1.4.4:** Create CI Pipeline Script: Docker Image Building Stage
 
-### Epic 2: PRA: User Authentication & Authorization (MVP)
+### Epic 2: Requisio.com: User Authentication & Authorization (MVP)
 
-**Summary:** PRA: User Authentication & Authorization (MVP) Epic
+**Summary:** Requisio.com: User Authentication & Authorization (MVP) Epic
 **Description:** Implement user registration and login via Keycloak. Establish basic role-based access control (RBAC) using CASL.js for MVP functionalities.
 
 #### Story 2.1: Integrate Keycloak for User Authentication (Backend)
@@ -166,9 +168,9 @@ The MVP will establish the foundational architecture designed for future scalabi
 * **Labels:** frontend, auth, security
 * **Components:** React.js, CASL.js
 
-### Epic 3: PRA: Research Management Core (MVP)
+### Epic 3: Requisio.com: Research Management Core (MVP)
 
-**Summary:** PRA: Research Management Core (MVP) Epic
+**Summary:** Requisio.com: Research Management Core (MVP) Epic
 **Description:** Enable users (Researchers) to submit research requests, view their status, and see normalized results.
 
 #### Story 3.1: Implement Backend API for Research Task Submission
@@ -201,9 +203,9 @@ The MVP will establish the foundational architecture designed for future scalabi
 * **Labels:** frontend, feature, ui-ux
 * **Components:** React.js, Redux Toolkit, Material UI
 
-### Epic 4: PRA: Worker & External API Integration (MVP)
+### Epic 4: Requisio.com: Worker & External API Integration (MVP)
 
-**Summary:** PRA: Worker & External API Integration (MVP) Epic
+**Summary:** Requisio.com: Worker & External API Integration (MVP) Epic
 **Description:** Develop the BullMQ worker to process research jobs by fetching data from one external API, performing basic normalization, and updating the status.
 
 #### Story 4.1: Develop BullMQ Worker for Research Processing
@@ -236,9 +238,9 @@ The MVP will establish the foundational architecture designed for future scalabi
 * **Labels:** worker, backend, feature
 * **Components:** Node.js, BullMQ, MongoDB
 
-### Epic 5: PRA: Webhook Notification System (MVP)
+### Epic 5: Requisio.com: Webhook Notification System (MVP)
 
-**Summary:** PRA: Webhook Notification System (MVP) Epic
+**Summary:** Requisio.com: Webhook Notification System (MVP) Epic
 **Description:** Allow users to configure a webhook URL and send a notification with normalized data upon research completion.
 
 #### Story 5.1: Implement User Ability to Configure Webhook URL
@@ -267,24 +269,24 @@ The MVP will establish the foundational architecture designed for future scalabi
 
 This MVP focuses on the **"Researcher"** persona and core functionality. Future iterations will expand to support the full **"Requestor -> Researcher -> Approver -> Payer"** workflow and leverage insights from market analysis and CEO metrics.
 
-* **PRA: Multi-Role Workflow & Permissions:** Implement distinct user roles (Requestor, Approver, Payer) and features for task handoffs between them.
-* **PRA: Advanced Data Normalization & LLM Integration:** Allow custom normalization rules and explore LLMs for semantic extraction and advanced attribute inference.
-* **PRA: Multi-API Integration & Management:** Expand support for more external product data APIs and create a UI to manage integrations.
-* **PRA: Financials & Subscription Management:** Integrate a billing and subscription management system to track key financial metrics.
-* **PRA: Enhanced Admin & System Monitoring Dashboards:** Develop comprehensive dashboards for user management, system health, and job queue inspection.
-* **PRA: Platform-on-Platform Capabilities (API-first):** Expose a robust, well-documented public API for the PRA platform itself.
-* **PRA: User Feedback & Support Systems:** Implement in-app feedback mechanisms and support channels to track NPS and CES.
-* **PRA: Advanced Analytics & Reporting for Users:** Allow users to perform analytics on their data and export it in various formats.
+* **Requisio.com: Multi-Role Workflow & Permissions:** Implement distinct user roles (Requestor, Approver, Payer) and features for task handoffs between them.
+* **Requisio.com: Advanced Data Normalization & LLM Integration:** Allow custom normalization rules and explore LLMs for semantic extraction and advanced attribute inference.
+* **Requisio.com: Multi-API Integration & Management:** Expand support for more external product data APIs and create a UI to manage integrations.
+* **Requisio.com: Financials & Subscription Management:** Integrate a billing and subscription management system to track key financial metrics.
+* **Requisio.com: Enhanced Admin & System Monitoring Dashboards:** Develop comprehensive dashboards for user management, system health, and job queue inspection.
+* **Requisio.com: Platform-on-Platform Capabilities (API-first):** Expose a robust, well-documented public API for the Requisio.com platform itself.
+* **Requisio.com: User Feedback & Support Systems:** Implement in-app feedback mechanisms and support channels to track NPS and CES.
+* **Requisio.com: Advanced Analytics & Reporting for Users:** Allow users to perform analytics on their data and export it in various formats.
 
 ---
 
 ## 5. Monetization Strategy & Additional Revenue Streams
 
-Beyond the foundational SaaS subscription model implied by tracking metrics like ARR, the PRA platform can be monetized through several additional, value-added revenue streams:
+Beyond the foundational SaaS subscription model implied by tracking metrics like ARR, the Requisio.com platform can be monetized through several additional, value-added revenue streams:
 
 1.  **Premium API Access & Higher Tiers**
     * **Concept:** Offer more advanced API access beyond what might be included in standard subscriptions. This could include higher rate limits, access to more granular data points, real-time data streams, or developer sandboxes for custom integrations.
-    * **Value:** Caters to larger enterprises or tech companies looking to deeply embed PRA data and functionality into their own internal systems or client-facing applications.
+    * **Value:** Caters to larger enterprises or tech companies looking to deeply embed Requisio.com data and functionality into their own internal systems or client-facing applications.
 
 2.  **Advanced Analytics & Business Intelligence (BI) Suite**
     * **Concept:** A separately priced premium module offering sophisticated analytics tools beyond basic reporting. This could include customizable BI dashboards, predictive analytics on product availability or pricing, competitive landscape analysis based on aggregated research, and "what-if" scenario modeling for procurement decisions.
@@ -295,15 +297,15 @@ Beyond the foundational SaaS subscription model implied by tracking metrics like
     * **Value:** Offers valuable market intelligence to a broader audience, including those who may not be direct platform users but are interested in market trends (e.g., investors, market research firms).
 
 4.  **Consulting & Managed Research Services**
-    * **Concept:** Offer expert services where your team uses the PRA platform to conduct bespoke research projects for clients, or provide consulting on how to optimize their procurement research workflows and integrate PRA effectively.
+    * **Concept:** Offer expert services where your team uses the Requisio.com platform to conduct bespoke research projects for clients, or provide consulting on how to optimize their procurement research workflows and integrate Requisio.com effectively.
     * **Value:** Caters to companies that lack the internal resources or expertise for complex research tasks or want a turnkey solution.
 
 5.  **White-Label/OEM Licensing**
-    * **Concept:** Allow other businesses (e.g., procurement consultancies, industry-specific software providers, large buying groups) to license the PRA platform and offer it under their own brand.
+    * **Concept:** Allow other businesses (e.g., procurement consultancies, industry-specific software providers, large buying groups) to license the Requisio.com platform and offer it under their own brand.
     * **Value:** Opens new distribution channels and allows partners to offer a proven research solution to their existing client base without developing it themselves.
 
 6.  **Curated Supplier/Vendor Marketplace & Premium Listings**
-    * **Concept:** Develop a marketplace within PRA where vetted suppliers or vendors can list their products and services. Revenue could be generated from premium listing fees, lead generation fees for suppliers, or transaction-based commissions (if ethically managed to maintain research objectivity).
+    * **Concept:** Develop a marketplace within Requisio.com where vetted suppliers or vendors can list their products and services. Revenue could be generated from premium listing fees, lead generation fees for suppliers, or transaction-based commissions (if ethically managed to maintain research objectivity).
     * **Value:** Provides a direct channel for suppliers to reach active product researchers and for researchers to potentially discover and connect with reliable vendors. This requires careful management to ensure research integrity.
 
 7.  **Premium Data Source Integrations & Connectors**
@@ -311,8 +313,8 @@ Beyond the foundational SaaS subscription model implied by tracking metrics like
     * **Value:** Extends the research capabilities of the platform significantly by tapping into highly specific or valuable datasets tailored to different industries or research needs.
 
 8.  **Professional Training & Certification Programs**
-    * **Concept:** Develop and sell training courses, workshops, and certification programs focused on mastering the PRA platform, advanced product research methodologies, and data interpretation for procurement intelligence.
-    * **Value:** Enhances user proficiency, increases platform adoption and stickiness, and establishes PRA as a thought leader in product research.
+    * **Concept:** Develop and sell training courses, workshops, and certification programs focused on mastering the Requisio.com platform, advanced product research methodologies, and data interpretation for procurement intelligence.
+    * **Value:** Enhances user proficiency, increases platform adoption and stickiness, and establishes Requisio.com as a thought leader in product research.
 
 9.  **Enterprise Feature Sponsorship & Custom Development**
     * **Concept:** For large enterprise clients with unique needs, offer the option to sponsor or co-fund the development of specific advanced features, custom modules, or integrations that are not on the standard roadmap. They might get early access or some exclusivity for a period.
@@ -320,4 +322,4 @@ Beyond the foundational SaaS subscription model implied by tracking metrics like
 
 10. **Usage-Based Credits for Resource-Intensive Tasks**
     * **Concept:** For operations that go significantly beyond typical subscription usage and consume substantial computing resources (e.g., very large-scale batch research runs, complex data normalization using advanced AI/LLM models, extensive historical data analysis), implement a pay-per-use credit system.
-    * **Value:** Provides flexibility for users with occasional high-demand needs without forcing them into a much higher, fixed subscription tier, while ensuring PRA covers the costs of these intensive operations.
+    * **Value:** Provides flexibility for users with occasional high-demand needs without forcing them into a much higher, fixed subscription tier, while ensuring Requisio.com covers the costs of these intensive operations.
