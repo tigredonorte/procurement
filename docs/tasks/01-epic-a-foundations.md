@@ -110,7 +110,7 @@ Establish a production-ready monorepo development environment with comprehensive
 
 ---
 
-### A3. Environment Configuration System
+### (in progress) A3. Environment Configuration System — updated: 2025-09-01 00:00 (America/Sao_Paulo)
 **Priority**: Critical | **Effort**: M | **Dependencies**: A2
 
 **Scope:**
@@ -174,7 +174,7 @@ Establish a production-ready monorepo development environment with comprehensive
 
 ---
 
-### A4. Secrets Management with Doppler Integration
+### (in progress) A4. Secrets Management with Doppler Integration — updated: 2025-09-01 21:10 (America/Sao_Paulo)
 **Priority**: High | **Effort**: M | **Dependencies**: A3
 
 **Scope:**
