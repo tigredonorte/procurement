@@ -6,13 +6,13 @@ A B2B procurement automation platform that transforms manual product research in
 
 ### Architecture Documentation
 - **[Architecture Overview](./docs/architecture/README.md)** - Complete system architecture
-  - **[Backend Architecture](./docs/architecture/backend-architecture/)** - Server-side components and APIs
-  - **[Frontend Architecture](./docs/architecture/frontend-architecture/)** - Client-side application structure
-  - **[UI/UX Design System](./docs/architecture/ui/)** - Design system and components
+  - **[Backend Architecture](./docs/architecture/backend/)** - Server-side components and APIs
+  - **[Frontend Architecture](./docs/architecture/frontend/architecture/)** - Client-side application structure
+  - **[UI/UX Design System](./docs/architecture/frontend/ui/)** - Design system and components
   - **[Platform Standards](./docs/architecture/platform-standards/)** - Cross-cutting standards and guidelines
 
 ### System Design
-- **[System Design](./docs/system-design/README.md)** - Complete architectural documentation
+- **[System Design](./docs/system-design/Readme.md)** - Complete architectural documentation
   - [Requirements & Business Context](./docs/system-design/01-requirements.md)
   - [Capacity Planning](./docs/system-design/02-capacity-estimation.md)
   - [Data Modeling](./docs/system-design/03-data-modeling.md)

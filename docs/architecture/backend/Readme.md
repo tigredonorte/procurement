@@ -15,9 +15,9 @@ This directory contains the comprehensive backend architecture documentation for
 - **[Monitoring & Health Checks](./06-monitoring-health-checks.md)** - Health check implementation and monitoring
 - **[Security Architecture](./07-security-architecture.md)** - Authentication, authorization, and security controls
 - **[Infrastructure & Deployment](./08-infrastructure-deployment.md)** - Docker, CI/CD, and deployment configuration
+- **[Monitoring & Observability](./11-monitoring-observability.md)** - Comprehensive monitoring, logging, metrics, and observability strategy
 
 ### Development & Standards
-- **[Development Standards](./09-development-standards.md)** - Code organization, naming conventions, and testing
 - **[Data Validation](./10-data-validation.md)** - Backend validation schemas and patterns
 
 ## 🏗️ Technology Stack
@@ -68,14 +68,11 @@ For developers new to the backend architecture:
 1. Start with [API Service Design](./01-api-service-design.md) to understand the structure
 2. Review [Error Handling](./03-error-handling.md) for error management patterns
 3. Check [Worker Service](./02-worker-service.md) for async processing
-4. Refer to [Development Standards](./09-development-standards.md) for coding guidelines
+4. Refer to [Development Standards](../platform-standards/02-development-standards.md) for coding guidelines
 
 ## 🔗 Related Documentation
 
-- [System Architecture Overview](../05-system-architecture.md)
-- [API Design](../04-api-design.md)
-- [Data Modeling](../03-data-modeling.md)
-- [Frontend Architecture](../frontend-architecture/Readme.md)
+- [Frontend Architecture](../frontend/architecture/Readme.md)
 
 ## 📄 Document Version
 

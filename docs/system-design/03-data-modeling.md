@@ -136,32 +136,20 @@ db.users.createIndex({ "metadata.createdAt": -1 })
     },
     products: [
       {
-        id: "prod-001",
+        id: "prod-001", // unique identifier
         title: "Premium Ergonomic Chair",
-        description: "Chair with lumbar support and armrests",
-        price: {
-          value: 599.99,
-          currency: "USD",
-          originalValue: 799.99,
-          discount: 25
-        },
-        availability: {
-          status: "in_stock",
-          quantity: 15,
-          deliveryTime: "3-5 business days"
-        },
+        description: "Chair with lumbar support and armrests", // optional
+        priceUnit: 599.99,
+        currency: "USD", // ISO 4217
+        availability: "in_stock", // in_stock | out_of_stock | limited
         supplier: {
           name: "ErgoFurniture Inc",
-          rating: 4.5,
-          reviewCount: 234,
-          location: "New York, NY"
+          id: "supplier-123",
+          rating: 4.5 // optional
         },
         images: [
-          {
-            url: "https://cdn.example.com/chair1.jpg",
-            thumbnail: "https://cdn.example.com/chair1_thumb.jpg",
-            alt: "Front view"
-          }
+          "https://cdn.example.com/chair1.jpg",
+          "https://cdn.example.com/chair2.jpg"
         ],
         specifications: {
           material: "Mesh fabric",
@@ -170,12 +158,8 @@ db.users.createIndex({ "metadata.createdAt": -1 })
           dimensions: "27x27x47 inches",
           warranty: "5 years"
         },
-        metadata: {
-          source: "serpapi",
-          sourceUrl: "https://original-source.com/product",
-          extractedAt: ISODate("2025-09-01T10:05:00Z"),
-          confidence: 0.95
-        }
+        url: "https://original-source.com/product",
+        lastUpdated: ISODate("2025-09-01T10:05:00Z") // ISO 8601
       }
       // ... more products
     ]

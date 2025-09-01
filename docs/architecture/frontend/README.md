@@ -8,14 +8,14 @@ This directory contains all frontend-related architecture documentation for the 
 
 ## 📁 Directory Structure
 
-### [Frontend Architecture](../frontend-architecture/)
+### [Frontend Architecture](./architecture/)
 Core frontend architecture and patterns:
-- **[PWA Configuration](../frontend-architecture/01-pwa-configuration.md)** - Progressive Web App setup
-- **[State Management](../frontend-architecture/02-state-management.md)** - Redux Toolkit and RTK Query
-- **[Component Architecture](../frontend-architecture/03-component-architecture.md)** - Component patterns
-- **[Component Examples](../frontend-architecture/04-component-examples.md)** - Implementation examples
-- **[Validation Schemas](../frontend-architecture/05-validation-schemas.md)** - Zod validation patterns
-- **[Service Workers & Mocking](../frontend-architecture/11-service-workers.md)** - PWA and MSW setup
+- **[PWA Configuration](./architecture/01-pwa-configuration.md)** - Progressive Web App setup
+- **[State Management](./architecture/02-state-management.md)** - Redux Toolkit and RTK Query
+- **[Component Architecture](./architecture/03-component-architecture.md)** - Component patterns
+- **[Component Examples](./architecture/04-component-examples.md)** - Implementation examples
+- **[Validation Schemas](./architecture/05-validation-schemas.md)** - Zod validation patterns
+- **[Service Workers & Mocking](./architecture/11-service-workers.md)** - PWA and MSW setup
 
 ### [Screen Specifications](./screens/)
 Detailed screen implementations:
@@ -37,22 +37,23 @@ Detailed screen implementations:
 - **[16-user-profile.md](./screens/16-user-profile.md)** - Profile management
 - **[17-queue-management.md](./screens/17-queue-management.md)** - Research queue system
 
-## 🎨 Related Design System Documentation
-
-### [UI/UX Design System](../ui/)
-- **[Design Philosophy](../ui/01-design-philosophy.md)** - Core design principles
-- **[Visual Identity](../ui/02-visual-identity.md)** - Brand guidelines
-- **[Color System](../ui/03-color-system.md)** - Color palettes and usage
-- **[Typography](../ui/04-typography.md)** - Font system and scales
-- **[Spacing & Grid](../ui/05-spacing-grid.md)** - Layout system
-- **[Motion & Animation](../ui/06-motion-animation.md)** - Animation guidelines
-- **[Component Architecture](../ui/07-component-architecture.md)** - Component structure
-- **[Core Components](../ui/08-core-components.md)** - Basic UI components
-- **[Complex Components](../ui/09-complex-components.md)** - Advanced patterns
-- **[Additional Components](../ui/09b-additional-components.md)** - Extended library
-- **[Responsive Design](../ui/10-responsive-design.md)** - Mobile-first approach
-- **[Dark Mode](../ui/11-dark-mode.md)** - Theme implementation
-- **[Accessibility](../ui/12-accessibility.md)** - WCAG compliance
+### [UI/UX Design System](./ui/)
+Visual design and component specifications:
+- **[Design Philosophy](./ui/01-design-philosophy.md)** - Core design principles
+- **[Visual Identity](./ui/02-visual-identity.md)** - Brand guidelines
+- **[Color System](./ui/03-color-system.md)** - Color palettes and usage
+- **[Typography](./ui/04-typography.md)** - Font system and scales
+- **[Spacing & Grid](./ui/05-spacing-grid.md)** - Layout system
+- **[Motion & Animation](./ui/06-motion-animation.md)** - Animation guidelines
+- **[Component Architecture](./ui/07-component-architecture.md)** - Component structure
+- **[Core Components](./ui/08-core-components.md)** - Basic UI components
+- **[Complex Components](./ui/09-complex-components.md)** - Advanced patterns
+- **[Additional Components](./ui/09b-additional-components.md)** - Extended library
+- **[Responsive Design](./ui/10-responsive-design.md)** - Mobile-first approach
+- **[Dark Mode](./ui/11-dark-mode.md)** - Theme implementation
+- **[Accessibility](./ui/12-accessibility.md)** - WCAG compliance
+- **[Implementation Guidelines](./ui/13-implementation-guidelines.md)** - Development guidelines
+- **[Appendices](./ui/14-appendices.md)** - Additional resources
 
 ## 🛠 Technology Stack
 
@@ -120,20 +121,20 @@ Detailed screen implementations:
 ## 🔗 Quick Links
 
 ### For Developers
-- [State Management](../frontend-architecture/02-state-management.md)
-- [Component Examples](../frontend-architecture/04-component-examples.md)
+- [State Management](./architecture/02-state-management.md)
+- [Component Examples](./architecture/04-component-examples.md)
 - [Screen Specifications](./screens/)
-- [Validation Schemas](../frontend-architecture/05-validation-schemas.md)
+- [Validation Schemas](./architecture/05-validation-schemas.md)
 
 ### For Designers
-- [Design Philosophy](../ui/01-design-philosophy.md)
-- [Color System](../ui/03-color-system.md)
-- [Typography](../ui/04-typography.md)
-- [Component Library](../ui/08-core-components.md)
+- [Design Philosophy](./ui/01-design-philosophy.md)
+- [Color System](./ui/03-color-system.md)
+- [Typography](./ui/04-typography.md)
+- [Component Library](./ui/08-core-components.md)
 
 ### For DevOps
-- [PWA Configuration](../frontend-architecture/01-pwa-configuration.md)
-- [Service Workers](../frontend-architecture/11-service-workers.md)
+- [PWA Configuration](./architecture/01-pwa-configuration.md)
+- [Service Workers](./architecture/11-service-workers.md)
 - [Development Standards](../platform-standards/02-development-standards.md)
 
 ## 📚 Development Guidelines

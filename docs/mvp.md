@@ -20,7 +20,7 @@
 
 ## 2. MVP Goal
 
-> **Tech Stack**: See [Tech Stack Versions](/docs/tech-stack-versions.md) for detailed version specifications.
+> **Tech Stack**: See [Tech Stack Versions](./architecture/platform-standards/01-tech-stack-versions.md) for detailed version specifications.
 
 To deliver a stable, secure, and user-friendly core platform enabling the **"Researcher"** persona within the target organizations to:
 

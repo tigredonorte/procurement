@@ -163,7 +163,7 @@ The application must support:
 
 - [State Management](./02-state-management.md)
 - [Component Architecture](./03-component-architecture.md)
-- [API Integration](./10-api-integration.md)
+- 
 
 ---
 
