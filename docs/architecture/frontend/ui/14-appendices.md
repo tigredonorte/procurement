@@ -43,87 +43,70 @@ $z-index: (
 ## D. Export Structure
 
 ```typescript
-// Main export from @pra/ui-library
+// Main export from @requisio/ui-library
 export {
   // Provider
-  PRAUIProvider,
-  usePRATheme,
+  UIProvider,
+  useTheme,
   
   // Core Components
-  PRAButton,
-  PRAInput,
-  PRASelect,
-  PRACheckbox,
-  PRARadio,
-  PRASwitch,
+  Button,
+  Input,
+  Select,
+  Checkbox,
+  Radio,
+  Switch,
   
   // Layout Components
-  PRAContainer,
-  PRAGrid,
-  PRAStack,
-  PRASpacer,
+  Container,
+  Grid,
+  Stack,
+  Spacer,
   
   // Data Display
-  PRACard,
-  PRATable,
-  PRAList,
-  PRAAvatar,
-  PRABadge,
-  PRAChip,
+  Card,
+  Table,
+  List,
+  Avatar,
+  Badge,
+  Chip,
   
   // Feedback
-  PRAAlert,
-  PRAToast,
-  PRAProgress,
-  PRASkeleton,
-  PRASpinner,
+  Alert,
+  Toast,
+  Progress,
+  Skeleton,
+  Spinner,
   
   // Navigation
-  PRANavbar,
-  PRASidebar,
-  PRABreadcrumb,
-  PRATabs,
-  PRAPagination,
+  Navbar,
+  Sidebar,
+  Breadcrumb,
+  Tabs,
+  Pagination,
   
   // Overlay
-  PRAModal,
-  PRADrawer,
-  PRAPopover,
-  PRATooltip,
+  Modal,
+  Drawer,
+  Popover,
+  Tooltip,
   
   // Forms
-  PRAForm,
-  PRAFormField,
-  PRAFormSection,
+  Form,
+  FormField,
+  FormSection,
   
   // Charts
-  PRAChart,
-  PRASparkline,
+  Chart,
+  Sparkline,
   
   // Utilities
-  PRAThemeCustomizer,
-  PRAColorPicker,
+  ThemeCustomizer,
+  ColorPicker,
   
   // Types
-  type PRATheme,
-  type PRAComponent,
-  type PRAThemeCustomization
+  type Theme,
+  type Component,
+  type ThemeCustomization
 };
 ```
-
----
-
-## Document Version Control
-
-| Version | Date | Author | Changes |
-|---------|------|--------|---------|
-| 1.0.0 | 2024-12-26 | Design System Team | Initial design system documentation |
-
-## Review and Approval
-
-| Role | Name | Date | Signature |
-|------|------|------|-----------|
-| Head of Design | | | |
-| Lead Frontend Engineer | | | |
-| Product Manager | | | |
-| Accessibility Lead | | | |
