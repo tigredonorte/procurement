@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button as MuiButton, CircularProgress, alpha, keyframes } from '@mui/material';
 import { styled } from '@mui/material/styles';
+
 import { ButtonProps } from './Button.types';
 
 // Define pulse animation globally
@@ -19,7 +20,7 @@ const pulseAnimation = keyframes`
   }
 `;
 
-const getColorFromTheme = (theme: any, color: string) => {
+const getColorFromTheme = (theme: { palette: { grey?: Record<number, string>; primary: any; secondary: any; success: any; warning: any; error: any } }, color: string) => {
   if (color === 'neutral') {
     return {
       main: theme.palette.grey?.[700] || '#616161',
@@ -29,7 +30,7 @@ const getColorFromTheme = (theme: any, color: string) => {
     };
   }
   
-  const colorMap: Record<string, any> = {
+  const colorMap: Record<string, { main: string; dark: string; light: string; contrastText: string }> = {
     primary: theme.palette.primary,
     secondary: theme.palette.secondary,
     success: theme.palette.success,
@@ -208,7 +209,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ...props
   }, ref) => {
     const muiVariant = variant === 'outline' ? 'outlined' : 'contained';
-    const muiColor = color === 'danger' ? 'error' : color === 'neutral' ? 'inherit' : color as any;
+    const muiColor = color === 'danger' ? 'error' : color === 'neutral' ? 'inherit' : color as 'primary' | 'secondary' | 'success' | 'warning' | 'info';
 
     return (
       <StyledButton

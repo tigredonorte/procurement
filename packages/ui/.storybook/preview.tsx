@@ -35,6 +35,13 @@ const preview: Preview = {
         date: /Date$/,
       },
     },
+    options: {
+      storySort: {
+        method: 'alphabetical',
+        order: ['Navigation', '*'],
+        locales: 'en-US',
+      },
+    },
   },
   decorators: [
     (Story, context) => {
