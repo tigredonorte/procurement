@@ -14,17 +14,17 @@ Each component should be organized in its own folder with the following structur
 components/
 ├── Button/
 │   ├── Button.tsx           # Component implementation
-│   ├── Button.scss          # Component styles
+│   ├── Button.scss          # Component styles (optional if using styled-components)
 │   ├── Button.types.ts      # TypeScript interfaces
 │   ├── Button.test.tsx      # Component tests
-│   ├── Button.stories.tsx   # Storybook stories
+│   ├── Button.stories.tsx   # Storybook stories (REQUIRED)
 │   └── index.ts            # Export barrel
 ├── Card/
 │   ├── Card.tsx
 │   ├── Card.scss
 │   ├── Card.types.ts
 │   ├── Card.test.tsx
-│   ├── Card.stories.tsx
+│   ├── Card.stories.tsx    # REQUIRED
 │   └── index.ts
 └── ...
 ```
@@ -175,6 +175,70 @@ Apply for cross-cutting concerns:
 - Test responsive layouts
 - Verify dark mode rendering
 
+## Storybook Requirements
+
+### Mandatory Story Coverage
+Every component in the UI library **MUST** include comprehensive Storybook stories:
+
+#### Required Stories
+- **Default Story**: Basic component with default props
+- **All Variants**: Showcase every variant prop option
+- **All Sizes**: Display all size variations
+- **All States**: Show loading, disabled, error, success states
+- **Interactive States**: Hover, focus, active states
+- **With Icons/Media**: If applicable, show with icons or images
+- **Edge Cases**: Long text, empty content, boundary conditions
+- **Responsive**: Different breakpoint behaviors
+
+#### Story Structure
+```typescript
+// Component.stories.tsx
+import type { Meta, StoryObj } from '@storybook/react';
+import { Component } from './Component';
+
+const meta = {
+  title: 'Category/Component',
+  component: Component,
+  parameters: {
+    layout: 'centered', // or 'fullscreen', 'padded'
+  },
+  tags: ['autodocs'], // Enables automatic documentation
+  argTypes: {
+    // Define control types for props
+    variant: {
+      control: { type: 'select' },
+      options: ['primary', 'secondary'],
+    },
+  },
+} satisfies Meta<typeof Component>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+// Individual stories
+export const Default: Story = {
+  args: {
+    children: 'Default',
+  },
+};
+
+export const AllVariants: Story = {
+  render: () => (
+    <Stack>
+      {/* Show all variants */}
+    </Stack>
+  ),
+};
+```
+
+#### Story Best Practices
+- Use meaningful story names that describe the use case
+- Group related props in single stories for comparison
+- Include controls for interactive prop testing
+- Add play functions for interaction testing
+- Document prop combinations that work well together
+- Show both light and dark mode compatibility
+
 ## Documentation Standards
 
 ### Component Documentation
@@ -182,6 +246,7 @@ Apply for cross-cutting concerns:
 - Provide usage examples in Storybook
 - Document component variants
 - Include accessibility notes
+- **Every component MUST have stories demonstrating all features**
 
 ### API Documentation
 - Document all public methods
@@ -197,7 +262,9 @@ Apply for cross-cutting concerns:
 - Styles use design tokens
 - Accessibility requirements met
 - Tests provide adequate coverage
+- **Storybook stories exist and cover all variants/states**
 - Documentation is complete
+- Stories are properly categorized and tagged
 
 ### Pre-commit Checks
 - ESLint passes without errors
