@@ -1,0 +1,48 @@
+{
+  "api": {
+    "baseUrl": "http://localhost:8080",
+    "timeout": 30000,
+    "retryAttempts": 3,
+    "retryDelay": 1000,
+    "rateLimit": {
+      "maxRequests": 100,
+      "windowMs": 60000
+    }
+  },
+  "cors": {
+    "allowedOrigins": ["http://localhost:3000", "http://localhost:3001"],
+    "credentials": true,
+    "maxAge": 86400
+  },
+  "features": {
+    "enableWebhooks": true,
+    "enableExport": true,
+    "enableBulkOperations": false,
+    "enableAdvancedSearch": true,
+    "maxConcurrentRequests": 5,
+    "enableDebugMode": true
+  },
+  "logging": {
+    "level": "debug",
+    "format": "json",
+    "prettyPrint": true,
+    "timestampFormat": "ISO",
+    "enableRequestLogging": true,
+    "enablePerformanceLogging": true
+  },
+  "pagination": {
+    "defaultLimit": 20,
+    "maxLimit": 100
+  },
+  "cache": {
+    "enabled": true,
+    "defaultTTL": 300,
+    "searchResultsTTL": 600,
+    "userSessionTTL": 3600
+  },
+  "uploads": {
+    "maxFileSize": 10485760,
+    "allowedMimeTypes": ["application/pdf", "text/csv", "application/json"],
+    "tempDirectory": "/tmp/uploads"
+  }
+}
