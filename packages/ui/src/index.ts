@@ -1,5 +1,11 @@
 // Components
 export * from './components/Button';
 
-export const uiReady = true;
+// Typography Components
+export * from './components/Text';
+export * from './components/Heading';
+export * from './components/Paragraph';
+export * from './components/Code';
+export * from './components/Blockquote';
 
+export const uiReady = true;
