@@ -1,6 +1,6 @@
 # Component Library Architecture
 
-[← Back to Main Documentation](./Readme.md)
+[← Back to Main Documentation](./readme.md)
 
 ---
 
@@ -143,4 +143,4 @@ export class ThemeProvider extends PureComponent<{ theme: ThemeConfig; children:
 
 ---
 
-[Next: Core Components →](./11-dark-mode.md)
+[Next: Responsive Design →](./10-responsive-design.md)

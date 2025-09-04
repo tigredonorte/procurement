@@ -1,6 +1,6 @@
 # Epic G — Comprehensive Observability & Operations
 
-[← Back to Tasks Overview](./Readme.md)
+[← Back to Tasks Overview](./readme.md)
 
 ---
 

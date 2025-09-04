@@ -1,6 +1,6 @@
 # Epic C — Research Management Core System
 
-[← Back to Tasks Overview](./Readme.md)
+[← Back to Tasks Overview](./readme.md)
 
 ---
 
