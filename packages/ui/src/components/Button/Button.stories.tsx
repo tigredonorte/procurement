@@ -5,7 +5,7 @@ import { Stack } from '@mui/material';
 import { Button } from './Button';
 
 const meta = {
-  title: 'Components/Button',
+  title: 'Form/Button',
   component: Button,
   parameters: {
     layout: 'centered',
