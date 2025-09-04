@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Button } from './Button';
 import { Save, Delete, Add, ArrowForward } from '@mui/icons-material';
 import { Stack } from '@mui/material';
+
+import { Button } from './Button';
 
 const meta = {
   title: 'Components/Button',
