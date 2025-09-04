@@ -51,10 +51,10 @@ Comprehensive design system and user interface guidelines.
 - [Spacing & Grid](./frontend/ui/05-spacing-grid.md) - Layout system
 - [Motion & Animation](./frontend/ui/06-motion-animation.md) - Animation guidelines
 - [Component Architecture](./frontend/ui/07-component-architecture.md) - UI component structure
-- [Core Components](./frontend/ui/08-core-components.md) - Basic UI components
-- [Complex Components](./frontend/ui/09-complex-components.md) - Advanced UI patterns
-- [Additional Components](./frontend/ui/09b-additional-components.md) - Extended component library
-- [Responsive Design](./frontend/ui/10-responsive-design.md) - Mobile-first approach
+- [Core Components](./frontend/components/08-core-components.md) - Basic UI components
+- [Complex Components](./frontend/components/09-complex-components.md) - Advanced UI patterns
+- [Additional Components](./frontend/components/09b-additional-components.md) - Extended component library
+- [Responsive Design](./frontend/components/10-responsive-design.md) - Mobile-first approach
 - [Dark Mode](./frontend/ui/11-dark-mode.md) - Dark theme implementation
 - [Accessibility](./frontend/ui/12-accessibility.md) - A11y guidelines
 - [Implementation Guidelines](./frontend/ui/13-implementation-guidelines.md) - Development best practices

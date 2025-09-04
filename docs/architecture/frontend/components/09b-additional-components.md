@@ -396,4 +396,4 @@ interface PulseProps {
 
 ---
 
-[Next: Responsive Design →](./10-responsive-design.md)
+[Previous: Complex Components ←](./09-complex-components.md) | [Next: Responsive Design →](./10-responsive-design.md)

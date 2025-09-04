@@ -143,4 +143,4 @@ export class ThemeProvider extends PureComponent<{ theme: ThemeConfig; children:
 
 ---
 
-[Next: Core Components →](./08-core-components.md)
+[Next: Core Components →](./11-dark-mode.md)

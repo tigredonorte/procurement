@@ -438,4 +438,4 @@ components/
 
 ---
 
-[Next: Dark Mode →](./11-dark-mode.md)
+[Previous: Additional Components ←](./09b-additional-components.md)

@@ -17,6 +17,26 @@ Core frontend architecture and patterns:
 - **[Validation Schemas](./architecture/05-validation-schemas.md)** - Zod validation patterns
 - **[Service Workers & Mocking](./architecture/11-service-workers.md)** - PWA and MSW setup
 
+### [UI/UX Design System](./ui/)
+Visual design:
+- **[Design Philosophy](./ui/01-design-philosophy.md)** - Core design principles
+- **[Visual Identity](./ui/02-visual-identity.md)** - Brand guidelines
+- **[Color System](./ui/03-color-system.md)** - Color palettes and usage
+- **[Typography](./ui/04-typography.md)** - Font system and scales
+- **[Spacing & Grid](./ui/05-spacing-grid.md)** - Layout system
+- **[Motion & Animation](./ui/06-motion-animation.md)** - Animation guidelines
+- **[Component Architecture](./ui/07-component-architecture.md)** - Component structure
+- **[Dark Mode](./ui/11-dark-mode.md)** - Theme implementation
+- **[Accessibility](./ui/12-accessibility.md)** - WCAG compliance
+- **[Implementation Guidelines](./ui/13-implementation-guidelines.md)** - Development guidelines
+- **[Appendices](./ui/14-appendices.md)** - Additional resources
+
+### [Components](./components/)
+Components specifications
+- **[Core Components](./components/08-core-components.md)** - Basic UI components
+- **[Complex Components](./components/09-complex-components.md)** - Advanced patterns
+- **[Additional Components](./components/09b-additional-components.md)** - Extended library
+- **[Responsive Design](./components/10-responsive-design.md)** - Mobile-first approach
 ### [Screen Specifications](./screens/)
 Detailed screen implementations:
 - **[01-authentication.md](./screens/01-authentication.md)** - Login and registration
@@ -36,24 +56,6 @@ Detailed screen implementations:
 - **[15-onboarding.md](./screens/15-onboarding.md)** - User onboarding flow
 - **[16-user-profile.md](./screens/16-user-profile.md)** - Profile management
 - **[17-queue-management.md](./screens/17-queue-management.md)** - Research queue system
-
-### [UI/UX Design System](./ui/)
-Visual design and component specifications:
-- **[Design Philosophy](./ui/01-design-philosophy.md)** - Core design principles
-- **[Visual Identity](./ui/02-visual-identity.md)** - Brand guidelines
-- **[Color System](./ui/03-color-system.md)** - Color palettes and usage
-- **[Typography](./ui/04-typography.md)** - Font system and scales
-- **[Spacing & Grid](./ui/05-spacing-grid.md)** - Layout system
-- **[Motion & Animation](./ui/06-motion-animation.md)** - Animation guidelines
-- **[Component Architecture](./ui/07-component-architecture.md)** - Component structure
-- **[Core Components](./ui/08-core-components.md)** - Basic UI components
-- **[Complex Components](./ui/09-complex-components.md)** - Advanced patterns
-- **[Additional Components](./ui/09b-additional-components.md)** - Extended library
-- **[Responsive Design](./ui/10-responsive-design.md)** - Mobile-first approach
-- **[Dark Mode](./ui/11-dark-mode.md)** - Theme implementation
-- **[Accessibility](./ui/12-accessibility.md)** - WCAG compliance
-- **[Implementation Guidelines](./ui/13-implementation-guidelines.md)** - Development guidelines
-- **[Appendices](./ui/14-appendices.md)** - Additional resources
 
 ## 🛠 Technology Stack
 
@@ -130,7 +132,7 @@ Visual design and component specifications:
 - [Design Philosophy](./ui/01-design-philosophy.md)
 - [Color System](./ui/03-color-system.md)
 - [Typography](./ui/04-typography.md)
-- [Component Library](./ui/08-core-components.md)
+- [Component Library](./components/08-core-components.md)
 
 ### For DevOps
 - [PWA Configuration](./architecture/01-pwa-configuration.md)

@@ -166,4 +166,4 @@ Alternative to deep nesting, providing a step-by-step flow within a single modal
 
 ---
 
-[Next: Responsive Design →](./10-responsive-design.md)
+[Next: Additional Components →](./09b-additional-components.md)
