@@ -10,8 +10,8 @@ For complete design system documentation, see:
 
 ### Component Library
 - **Package**: `@requisio/ui` - Material UI-based component library
-- **See**: [Core Components](./architecture/frontend/ui/08-core-components.md) for complete component list
-- **See**: [Complex Components](./architecture/frontend/ui/09-complex-components.md) for advanced patterns
+- **See**: [Core Components](./architecture/frontend/components/08-core-components.md) for complete component list
+- **See**: [Complex Components](./architecture/frontend/components/09-complex-components.md) for advanced patterns
 
 ## 1. Authentication Screens
 
@@ -1209,7 +1209,7 @@ See **[Service Workers & Mocking](./architecture/frontend/architecture/11-servic
 
 ## Responsive Design & Accessibility
 
-See **[Responsive Design](./architecture/frontend/ui/10-responsive-design.md)** for:
+See **[Responsive Design](./architecture/frontend/components/10-responsive-design.md)** for:
 - Breakpoint system
 - Mobile-first approach
 - Responsive patterns
