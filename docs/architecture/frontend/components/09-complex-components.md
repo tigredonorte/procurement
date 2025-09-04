@@ -1,6 +1,6 @@
 # Complex Components
 
-[← Back to Main Documentation](./Readme.md)
+[← Back to Main Documentation](./readme.md)
 
 ---
 
@@ -166,4 +166,4 @@ Alternative to deep nesting, providing a step-by-step flow within a single modal
 
 ---
 
-[Next: Additional Components →](./09b-additional-components.md)
+[Previous: Core Components ←](./08-core-components.md) | [Next: Additional Components →](./09b-additional-components.md)

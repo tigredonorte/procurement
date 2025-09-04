@@ -1,6 +1,6 @@
 # Frontend Architecture Documentation
 
-[← Back to Architecture](../README.md)
+[← Back to Architecture](../readme.md)
 
 ---
 
@@ -12,8 +12,8 @@ This directory contains all frontend-related architecture documentation for the 
 Core frontend architecture and patterns:
 - **[PWA Configuration](./architecture/01-pwa-configuration.md)** - Progressive Web App setup
 - **[State Management](./architecture/02-state-management.md)** - Redux Toolkit and RTK Query
-- **[Component Architecture](./architecture/03-component-architecture.md)** - Component patterns
-- **[Component Examples](./architecture/04-component-examples.md)** - Implementation examples
+- **[Component Architecture](./components/03-component-architecture.md)** - Component patterns
+- **[Component Examples](./components/04-component-examples.md)** - Implementation examples
 - **[Validation Schemas](./architecture/05-validation-schemas.md)** - Zod validation patterns
 - **[Service Workers & Mocking](./architecture/11-service-workers.md)** - PWA and MSW setup
 
@@ -26,6 +26,7 @@ Visual design:
 - **[Spacing & Grid](./ui/05-spacing-grid.md)** - Layout system
 - **[Motion & Animation](./ui/06-motion-animation.md)** - Animation guidelines
 - **[Component Architecture](./ui/07-component-architecture.md)** - Component structure
+- **[Responsive Design](./ui/10-responsive-design.md)** - Mobile-first approach
 - **[Dark Mode](./ui/11-dark-mode.md)** - Theme implementation
 - **[Accessibility](./ui/12-accessibility.md)** - WCAG compliance
 - **[Implementation Guidelines](./ui/13-implementation-guidelines.md)** - Development guidelines
@@ -36,26 +37,6 @@ Components specifications
 - **[Core Components](./components/08-core-components.md)** - Basic UI components
 - **[Complex Components](./components/09-complex-components.md)** - Advanced patterns
 - **[Additional Components](./components/09b-additional-components.md)** - Extended library
-- **[Responsive Design](./components/10-responsive-design.md)** - Mobile-first approach
-### [Screen Specifications](./screens/)
-Detailed screen implementations:
-- **[01-authentication.md](./screens/01-authentication.md)** - Login and registration
-- **[02-app-shell.md](./screens/02-app-shell.md)** - Main application layout
-- **[03-dashboard.md](./screens/03-dashboard.md)** - Dashboard overview
-- **[04-research-management.md](./screens/04-research-management.md)** - Research CRUD operations
-- **[05-research-details.md](./screens/05-research-details.md)** - Detailed research view
-- **[06-webhooks.md](./screens/06-webhooks.md)** - Webhook configuration
-- **[07-settings.md](./screens/07-settings.md)** - Application settings
-- **[08-error-states.md](./screens/08-error-states.md)** - Error and empty states
-- **[09-password-reset.md](./screens/09-password-reset.md)** - Password recovery flow
-- **[10-notifications.md](./screens/10-notifications.md)** - Notification system
-- **[11-api-keys.md](./screens/11-api-keys.md)** - API key management
-- **[12-research-progress.md](./screens/12-research-progress.md)** - Real-time progress tracking
-- **[13-export-download.md](./screens/13-export-download.md)** - Data export features
-- **[14-webhook-testing.md](./screens/14-webhook-testing.md)** - Webhook testing tools
-- **[15-onboarding.md](./screens/15-onboarding.md)** - User onboarding flow
-- **[16-user-profile.md](./screens/16-user-profile.md)** - Profile management
-- **[17-queue-management.md](./screens/17-queue-management.md)** - Research queue system
 
 ## 🛠 Technology Stack
 
@@ -124,8 +105,7 @@ Detailed screen implementations:
 
 ### For Developers
 - [State Management](./architecture/02-state-management.md)
-- [Component Examples](./architecture/04-component-examples.md)
-- [Screen Specifications](./screens/)
+- [Component Examples](./components/04-component-examples.md)
 - [Validation Schemas](./architecture/05-validation-schemas.md)
 
 ### For Designers

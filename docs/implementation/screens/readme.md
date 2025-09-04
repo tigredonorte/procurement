@@ -25,6 +25,6 @@ This directory contains detailed screen specifications for the Requisio.com MVP,
 ## References
 
 For design system and component documentation, see:
-- **[UI/UX Design System](../ui/Readme.md)**
-- **[Frontend Architecture](../README.md)**
-- **[Component Library](../components/08-core-components.md)**
+- **[UI/UX Design System](../../architecture/frontend/ui/readme.md)**
+- **[Frontend Architecture](../readme.md)**
+- **[Component Library](../../architecture/frontend/components/08-core-components.md)**

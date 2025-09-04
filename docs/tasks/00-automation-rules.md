@@ -1,6 +1,6 @@
 # 🤖 Automation: AI Task Status Updates (Self‑Editing Rules)
 
-[← Back to Tasks Overview](./Readme.md)
+[← Back to Tasks Overview](./readme.md)
 
 ---
 

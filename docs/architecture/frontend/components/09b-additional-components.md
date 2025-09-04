@@ -1,6 +1,6 @@
 # Additional Complex Components
 
-[← Back to Main Documentation](./Readme.md)
+[← Back to Main Documentation](./readme.md)
 
 ---
 
@@ -396,4 +396,4 @@ interface PulseProps {
 
 ---
 
-[Previous: Complex Components ←](./09-complex-components.md) | [Next: Responsive Design →](./10-responsive-design.md)
+[Previous: Complex Components ←](./09-complex-components.md)

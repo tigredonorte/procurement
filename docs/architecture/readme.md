@@ -6,7 +6,7 @@ This directory contains the comprehensive architecture documentation for the Pro
 Technical architecture and implementation details for the server-side components.
 
 ### Key Documents:
-- [Overview](./backend/Readme.md) - Backend architecture overview
+- [Overview](./backend/readme.md) - Backend architecture overview
 - [API Service Design](./backend/01-api-service-design.md) - RESTful API design patterns
 - [Worker Service](./backend/02-worker-service.md) - Background job processing
 - [Error Handling](./backend/03-error-handling.md) - Error management strategies
@@ -22,11 +22,11 @@ Technical architecture and implementation details for the server-side components
 Client-side application architecture and component structure.
 
 ### Key Documents:
-- [Overview](./frontend/architecture/Readme.md) - Frontend architecture overview
+- [Overview](./frontend/architecture/readme.md) - Frontend architecture overview
 - [PWA Configuration](./frontend/architecture/01-pwa-configuration.md) - Progressive Web App setup
 - [State Management](./frontend/architecture/02-state-management.md) - Application state patterns
-- [Component Architecture](./frontend/architecture/03-component-architecture.md) - Component structure
-- [Component Examples](./frontend/architecture/04-component-examples.md) - Implementation examples
+- [Component Architecture](./frontend/components/03-component-architecture.md) - Component structure
+- [Component Examples](./frontend/components/04-component-examples.md) - Implementation examples
 - [Validation Schemas](./frontend/architecture/05-validation-schemas.md) - Form validation patterns
 - [Service Workers & Mocking](./frontend/architecture/11-service-workers.md) - PWA and development mocking
 
@@ -34,8 +34,8 @@ Client-side application architecture and component structure.
 Complete frontend implementation documentation including all screen specifications.
 
 ### Key Sections:
-- [Frontend Index](./frontend/README.md) - Complete frontend documentation index
-- [Screen Specifications](./frontend/screens/) - Detailed screen implementations
+- [Frontend Index](./frontend/readme.md) - Complete frontend documentation index
+
 - Links to all UI/UX design system components
 - Technology stack and development guidelines
 
@@ -43,7 +43,7 @@ Complete frontend implementation documentation including all screen specificatio
 Comprehensive design system and user interface guidelines.
 
 ### Key Documents:
-- [Overview](./frontend/ui/Readme.md) - Design system overview
+- [Overview](./frontend/ui/readme.md) - Design system overview
 - [Design Philosophy](./frontend/ui/01-design-philosophy.md) - Core design principles
 - [Visual Identity](./frontend/ui/02-visual-identity.md) - Brand and visual guidelines
 - [Color System](./frontend/ui/03-color-system.md) - Color palette and usage
@@ -54,7 +54,7 @@ Comprehensive design system and user interface guidelines.
 - [Core Components](./frontend/components/08-core-components.md) - Basic UI components
 - [Complex Components](./frontend/components/09-complex-components.md) - Advanced UI patterns
 - [Additional Components](./frontend/components/09b-additional-components.md) - Extended component library
-- [Responsive Design](./frontend/components/10-responsive-design.md) - Mobile-first approach
+- [Responsive Design](./frontend/ui/10-responsive-design.md) - Mobile-first approach
 - [Dark Mode](./frontend/ui/11-dark-mode.md) - Dark theme implementation
 - [Accessibility](./frontend/ui/12-accessibility.md) - A11y guidelines
 - [Implementation Guidelines](./frontend/ui/13-implementation-guidelines.md) - Development best practices
@@ -64,7 +64,7 @@ Comprehensive design system and user interface guidelines.
 Cross-cutting standards and guidelines for the entire platform.
 
 ### Key Documents:
-- [Overview](./platform-standards/README.md) - Platform standards overview
+- [Overview](./platform-standards/readme.md) - Platform standards overview
 - [Tech Stack Versions](./platform-standards/01-tech-stack-versions.md) - Official technology versions
 - [Development Standards](./platform-standards/02-development-standards.md) - Development best practices
 - [Monitoring & Observability](./backend/11-monitoring-observability.md) - System monitoring strategy
@@ -74,8 +74,8 @@ Cross-cutting standards and guidelines for the entire platform.
 ### For Developers
 - [API Service Design](./backend/01-api-service-design.md)
 - [State Management](./frontend/architecture/02-state-management.md)
-- [Component Examples](./frontend/architecture/04-component-examples.md)
-- [Frontend Implementation](./frontend/README.md)
+- [Component Examples](./frontend/components/04-component-examples.md)
+- [Frontend Implementation](./frontend/readme.md)
 - [Screen Specifications](./frontend/screens/)
 - [Development Standards](./platform-standards/02-development-standards.md)
 - [Tech Stack Versions](./platform-standards/01-tech-stack-versions.md)
@@ -114,8 +114,8 @@ Cross-cutting standards and guidelines for the entire platform.
 
 ## Getting Started
 
-1. **New Developers**: Start with the [Backend Overview](./backend/Readme.md) and [Frontend Overview](./frontend/architecture/Readme.md)
-2. **UI Implementation**: Review the [Design System Overview](./frontend/ui/Readme.md) and [Implementation Guidelines](./frontend/ui/13-implementation-guidelines.md)
+1. **New Developers**: Start with the [Backend Overview](./backend/readme.md) and [Frontend Overview](./frontend/architecture/readme.md)
+2. **UI Implementation**: Review the [Design System Overview](./frontend/ui/readme.md) and [Implementation Guidelines](./frontend/ui/13-implementation-guidelines.md)
 3. **API Integration**: Check [API Service Design](./backend/01-api-service-design.md) and [External API Integration](./backend/04-external-api-integration.md)
 
 ## Contributing

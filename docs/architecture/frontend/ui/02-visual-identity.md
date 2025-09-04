@@ -1,6 +1,6 @@
 # Visual Identity
 
-[← Back to Main Documentation](./Readme.md)
+[← Back to Main Documentation](./readme.md)
 
 ## Visual Style
 
