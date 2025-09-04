@@ -5,34 +5,39 @@ This directory contains the core component documentation for the Requisio fronte
 ## 📋 Component Documentation
 
 ### Core Components
+- **[03-component-architecture.md](./03-component-architecture.md)** - Component patterns and architectural guidelines
+- **[04-component-examples.md](./04-component-examples.md)** - Implementation examples and best practices
 - **[08-core-components.md](./08-core-components.md)** - Basic UI components and their implementation
 - **[09-complex-components.md](./09-complex-components.md)** - Advanced UI patterns and complex components
 - **[09b-additional-components.md](./09b-additional-components.md)** - Extended component library with specialized components
-- **[10-responsive-design.md](./10-responsive-design.md)** - Mobile-first responsive design patterns
 
 ## 🗂 File Structure
 
 ```
 components/
-├── 08-core-components.md          # Basic UI components
-├── 09-complex-components.md       # Advanced UI patterns
-├── 09b-additional-components.md   # Extended component library
-├── 10-responsive-design.md        # Responsive design guidelines
-└── README.md                      # This file
+├── 03-component-architecture.md    # Component patterns & architecture
+├── 04-component-examples.md        # Implementation examples
+├── 08-core-components.md           # Basic UI components
+├── 09-complex-components.md        # Advanced UI patterns
+├── 09b-additional-components.md    # Extended component library
+└── readme.md                       # This file
 ```
 
 ## 📖 Reading Order
 
 For the best understanding of the component system, read the files in this order:
 
-1. **Core Components** - Start here to understand the basic building blocks
-2. **Complex Components** - Learn about advanced patterns and interactions
-3. **Additional Components** - Discover specialized components for specific use cases
-4. **Responsive Design** - Apply responsive principles across all components
+1. **Component Architecture** - Start here to understand the overall architectural patterns
+2. **Component Examples** - Learn from real implementation examples
+3. **Core Components** - Understand the basic building blocks
+4. **Complex Components** - Learn about advanced patterns and interactions
+5. **Additional Components** - Discover specialized components for specific use cases
+
+For responsive design principles, see the [UI Documentation](../ui/10-responsive-design.md).
 
 ## 🔗 Related Documentation
 
-- [UI/UX Design System](../ui/README.md) - Overall design system overview
+- [UI/UX Design System](../ui/readme.md) - Overall design system overview
 - [Component Architecture](../ui/07-component-architecture.md) - Technical architecture
 - [Implementation Guidelines](../ui/13-implementation-guidelines.md) - Development best practices
 

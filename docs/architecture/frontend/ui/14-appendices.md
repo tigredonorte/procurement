@@ -1,6 +1,6 @@
 # Appendices
 
-[← Back to Main Documentation](./Readme.md)
+[← Back to Main Documentation](./readme.md)
 
 ---
 
@@ -110,3 +110,5 @@ export {
   type ThemeCustomization
 };
 ```
+
+[← Back to Main Documentation](./readme.md)

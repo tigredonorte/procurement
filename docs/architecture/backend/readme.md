@@ -72,7 +72,7 @@ For developers new to the backend architecture:
 
 ## 🔗 Related Documentation
 
-- [Frontend Architecture](../frontend/architecture/Readme.md)
+- [Frontend Architecture](../frontend/architecture/readme.md)
 
 ## 📄 Document Version
 

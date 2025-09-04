@@ -1,0 +1,1 @@
+- [Screen Specifications](./frontend/screens/) - Detailed screen implementations

@@ -48,7 +48,7 @@ packages/[package-name]/
 │   └── fixtures/          # Test data
 ├── package.json
 ├── tsconfig.json
-└── README.md
+└── readme.md
 ```
 
 ---
@@ -429,4 +429,4 @@ Brief description of changes
 
 ---
 
-[← Back to Platform Standards](./README.md) | [Next: Monitoring & Observability →](../backend/11-monitoring-observability.md)
+[← Back to Platform Standards](./readme.md) | [Next: Monitoring & Observability →](../backend/11-monitoring-observability.md)

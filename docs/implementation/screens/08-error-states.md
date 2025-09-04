@@ -119,5 +119,5 @@ Skeleton {
 }
 ```
 
-These specifications provide a complete blueprint for implementing all MVP screens using the Requisio.com Design System components. Each screen maintains consistency with the design tokens, follows accessibility standards, and implements responsive behavior as defined in the ui/Readme.md document.
+These specifications provide a complete blueprint for implementing all MVP screens using the Requisio.com Design System components. Each screen maintains consistency with the design tokens, follows accessibility standards, and implements responsive behavior as defined in the ui/readme.md document.
 

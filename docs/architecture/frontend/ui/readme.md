@@ -45,12 +45,17 @@ This design system documentation is organized into focused, manageable sections.
    - Duration and easing scales
    - Animation presets and patterns
 
-### Component System
 7. **[Component Library Architecture](./07-component-architecture.md)**
    - Library structure
    - Component API patterns
    - Theme provider implementation
    - Styling system
+
+10. **[Responsive Design](./10-responsive-design.md)**
+    - Mobile-first responsive design patterns
+    - Breakpoint system
+    - 16-column grid system
+    - Component responsive behavior
 
 11. **[Dark Mode Strategy](./11-dark-mode.md)**
     - Color mode implementation

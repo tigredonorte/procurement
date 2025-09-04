@@ -1,6 +1,6 @@
 # Core Components Library
 
-[← Back to Main Documentation](./Readme.md)
+[← Back to Main Documentation](./readme.md)
 
 ---
 
@@ -197,4 +197,4 @@ Components are designed to work together in compound patterns:
 
 ---
 
-[Next: Complex Components →](./09-complex-components.md)
+[Previous: Component Examples ←](./04-component-examples.md) | [Next: Complex Components →](./09-complex-components.md)

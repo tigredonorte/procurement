@@ -1,6 +1,6 @@
 # Responsive Design
 
-[← Back to Main Documentation](./Readme.md)
+[← Back to Main Documentation](./readme.md)
 
 ---
 
@@ -438,4 +438,4 @@ components/
 
 ---
 
-[Previous: Additional Components ←](./09b-additional-components.md)
+[Next: Dark mode ←](./11-dark-mode.md)
