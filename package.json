@@ -2,6 +2,7 @@
   "name": "procurement",
   "private": true,
   "version": "0.0.0",
+  "type": "module",
   "packageManager": "pnpm@9.0.0",
   "scripts": {
     "prepare": "husky install",
@@ -11,15 +12,17 @@
     "lint-staged": "lint-staged"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^7.0.0",
-    "@typescript-eslint/parser": "^7.0.0",
-    "eslint": "^9.0.0",
+    "@eslint/js": "^9.34.0",
+    "@typescript-eslint/eslint-plugin": "^8.42.0",
+    "@typescript-eslint/parser": "^8.42.0",
+    "eslint": "^9.34.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "husky": "^9.0.0",
     "lint-staged": "^15.0.0",
     "prettier": "^3.2.0",
     "typescript": "^5.4.0"
   }
 }
-
