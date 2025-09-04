@@ -23,6 +23,12 @@ Before any frontend work, **ALWAYS** read these essential files:
 - **[Accessibility Standards](./architecture/frontend/ui/12-accessibility.md)** - WCAG compliance
 - **[Implementation Guidelines](./architecture/frontend/ui/13-implementation-guidelines.md)** - Development standards
 
+**🎨 STORYBOOK REQUIREMENT:**
+- **EVERY component in the UI library MUST have a corresponding `.stories.tsx` file**
+- Stories should showcase all variants, states, and props
+- Include documentation with examples for each component story
+- Test components in isolation using Storybook before integration
+
 ### 🏗️ Creating Application Components (outside UI library)
 **MANDATORY READS:**
 - **[docs/architecture/frontend/architecture/**](./architecture/frontend/architecture/)** - **ALL FILES** in this directory
