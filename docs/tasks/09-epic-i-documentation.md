@@ -1,6 +1,6 @@
 # Epic I — Comprehensive Documentation & Production Release
 
-[← Back to Tasks Overview](./Readme.md)
+[← Back to Tasks Overview](./readme.md)
 
 ---
 
@@ -1034,4 +1034,4 @@ Thanks to everyone who contributed to making this MVP release possible!
 
 ---
 
-**Navigation:** [← Epic H - Security](./08-epic-h-security.md) | [Back to Tasks Overview](./Readme.md)
+**Navigation:** [← Epic H - Security](./08-epic-h-security.md) | [Back to Tasks Overview](./readme.md)

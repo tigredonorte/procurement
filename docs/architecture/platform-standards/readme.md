@@ -63,10 +63,10 @@ These standards ensure:
 
 ## Related Documentation
 
-- [Backend Architecture](../backend/Readme.md)
-- [Frontend Architecture](../frontend/architecture/Readme.md)
+- [Backend Architecture](../backend/readme.md)
+- [Frontend Architecture](../frontend/architecture/readme.md)
 - [UI/UX Design System](../frontend/ui/)
-- [System Design](../../system-design/Readme.md)
+- [System Design](../../system-design/readme.md)
 
 ## Quick Reference
 

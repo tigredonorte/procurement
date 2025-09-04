@@ -1,5 +1,7 @@
 # Component Patterns - Requisio.com
 
+[← Back to Main Documentation](./readme.md)
+
 ## Overview
 
 This document defines the component patterns and architectural guidelines for the Requisio.com frontend, demonstrating best practices for TypeScript, Material-UI integration, and component composition.
@@ -244,10 +246,11 @@ interface ErrorBoundaryState {
 
 ## Related Documentation
 
-- [State Management](./02-state-management.md)
-- [Validation Schemas](./05-validation-schemas.md)
-- 
+- [State Management](../architecture/02-state-management.md)
+- [Validation Schemas](../architecture/05-validation-schemas.md)
 
 ---
+
+[Previous: Component Architecture ←](./03-component-architecture.md) | [Next: Core Components →](./08-core-components.md)
 
 **Document Version**: 1.0.0 | **Last Updated**: 2025-09-01

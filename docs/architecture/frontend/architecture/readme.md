@@ -67,7 +67,7 @@ For developers new to the frontend architecture:
 ## 🔗 Related Documentation
 - [System Architecture Overview](../../../system-design/05-system-architecture.md)
 - [API Design](../../../system-design/04-api-design.md)
-- [UI/UX Guidelines](../ui/Readme.md)
+- [UI/UX Guidelines](../ui/readme.md)
 
 ## 📄 Document Version
 

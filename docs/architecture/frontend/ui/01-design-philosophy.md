@@ -1,6 +1,6 @@
 # Design Philosophy & Principles
 
-[← Back to Main Documentation](./Readme.md)
+[← Back to Main Documentation](./readme.md)
 
 ## Core Philosophy
 
