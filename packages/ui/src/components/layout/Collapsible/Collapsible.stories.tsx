@@ -4,10 +4,9 @@ import {
   Typography, 
   Button, 
   Card, 
-  CardContent, 
+  CardContent,
   Stack, 
-  Box, 
-  IconButton,
+  Box,
   List,
   ListItem,
   ListItemText,
@@ -106,7 +105,7 @@ const [openStates, setOpenStates] = useState({
           <Collapsible open={openStates.default} variant="default">
             <CollapsibleContent>
               <Typography variant="body2" color="text.secondary">
-                The default variant uses Material-UI's built-in Collapse component
+                The default variant uses Material-UI&apos;s built-in Collapse component
                 with standard easing and timing. It provides reliable, accessible
                 animation behavior.
               </Typography>
@@ -480,4 +479,67 @@ const [expanded, setExpanded] = useState<Record<string, boolean>>({
 
 export const FileExplorer: Story = {
   render: () => <FileExplorerComponent />,
+};
+
+const CallbackExampleComponent = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [logs, setLogs] = useState<string[]>([]);
+
+  const handleToggle = (open: boolean) => {
+    const timestamp = new Date().toLocaleTimeString();
+    setLogs(prev => [`${timestamp}: Collapsible ${open ? 'opened' : 'closed'}`, ...prev.slice(0, 4)]);
+  };
+
+  return (
+    <Stack spacing={3}>
+      <Typography variant="h6">OnToggle Callback Example</Typography>
+      
+      <Card>
+        <CollapsibleTrigger
+          onClick={() => setIsOpen(!isOpen)}
+          expanded={isOpen}
+        >
+          <Typography variant="h6">Toggle Me</Typography>
+          {isOpen ? <ExpandLess /> : <ExpandMore />}
+        </CollapsibleTrigger>
+        <Collapsible 
+          open={isOpen} 
+          variant="smooth" 
+          onToggle={handleToggle}
+        >
+          <CollapsibleContent>
+            <Typography variant="body1" gutterBottom>
+              This collapsible demonstrates the onToggle callback functionality.
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Every time the state changes, the callback is triggered and logged below.
+            </Typography>
+          </CollapsibleContent>
+        </Collapsible>
+      </Card>
+
+      <Card>
+        <CardContent sx={{ bgcolor: 'background.default' }}>
+          <Typography variant="h6" gutterBottom>Event Log</Typography>
+          {logs.length === 0 ? (
+            <Typography variant="body2" color="text.secondary">
+              No events yet. Try toggling the collapsible above.
+            </Typography>
+          ) : (
+            <Stack spacing={1}>
+              {logs.map((log, index) => (
+                <Typography key={index} variant="body2" sx={{ fontFamily: 'monospace' }}>
+                  {log}
+                </Typography>
+              ))}
+            </Stack>
+          )}
+        </CardContent>
+      </Card>
+    </Stack>
+  );
+};
+
+export const CallbackExample: Story = {
+  render: () => <CallbackExampleComponent />,
 };

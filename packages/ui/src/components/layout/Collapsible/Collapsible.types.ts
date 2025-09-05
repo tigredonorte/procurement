@@ -1,4 +1,5 @@
-import { ReactNode, CSSProperties } from 'react';
+import { ReactNode } from 'react';
+import { SxProps, Theme } from '@mui/material/styles';
 
 export type CollapsibleVariant = 'default' | 'smooth' | 'spring';
 
@@ -11,7 +12,7 @@ export interface CollapsibleProps {
   onToggle?: (open: boolean) => void;
   disabled?: boolean;
   keepMounted?: boolean;
-  sx?: CSSProperties;
+  sx?: SxProps<Theme>;
   className?: string;
 }
 

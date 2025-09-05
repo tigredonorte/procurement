@@ -1,9 +1,11 @@
 import React from 'react';
-import { Skeleton as MuiSkeleton, Box, Stack } from '@mui/material';
+import { Skeleton as MuiSkeleton, Box, Stack, useTheme, alpha } from '@mui/material';
 
 import { SkeletonProps } from './Skeleton.types';
 
-export const Skeleton: React.FC<SkeletonProps> = ({
+/* eslint-disable react/prop-types */
+
+export const Skeleton: React.FC<SkeletonProps> = React.memo(({
   variant = 'text',
   animation = 'pulse',
   width,
@@ -12,7 +14,15 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   spacing = 1,
   borderRadius,
   className,
+  intensity = 'medium',
+  glassmorphism = false,
+  shimmer = false,
+  'data-testid': dataTestId,
+  style,
+  ...props
 }) => {
+  const theme = useTheme();
+
   const getSkeletonVariant = () => {
     switch (variant) {
       case 'circular': return 'circular';
@@ -39,9 +49,79 @@ export const Skeleton: React.FC<SkeletonProps> = ({
     }
   };
 
+  const getIntensityOpacity = () => {
+    switch (intensity) {
+      case 'low': return 0.11;
+      case 'medium': return 0.13;
+      case 'high': return 0.15;
+      default: return 0.13;
+    }
+  };
+
+  const getGlassmorphismStyles = () => {
+    if (!glassmorphism) return {};
+    
+    return {
+      background: `linear-gradient(135deg, 
+        ${alpha(theme.palette.background.paper, 0.8)} 0%, 
+        ${alpha(theme.palette.background.paper, 0.4)} 100%)`,
+      backdropFilter: 'blur(20px)',
+      border: `1px solid ${alpha(theme.palette.divider, 0.2)}`,
+      boxShadow: `0 8px 32px 0 ${alpha(theme.palette.common.black, 0.1)}`,
+    };
+  };
+
+  const getShimmerStyles = () => {
+    if (!shimmer) return {};
+    
+    return {
+      '&::after': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+        background: `linear-gradient(
+          90deg,
+          transparent,
+          ${alpha(theme.palette.common.white, 0.3)},
+          transparent
+        )`,
+        transform: 'translateX(-100%)',
+        animation: 'shimmer 2s infinite',
+      },
+      '@keyframes shimmer': {
+        '100%': {
+          transform: 'translateX(100%)',
+        },
+      },
+    };
+  };
+
   const defaults = getDefaultDimensions();
   const finalWidth = width ?? defaults.width;
   const finalHeight = height ?? defaults.height;
+
+  // Handle edge case: count of 0 should render nothing
+  if (count === 0) {
+    return null;
+  }
+
+  const skeletonStyles = {
+    borderRadius,
+    backgroundColor: alpha(
+      theme.palette.mode === 'dark' 
+        ? theme.palette.common.white 
+        : theme.palette.text.primary, 
+      getIntensityOpacity()
+    ),
+    position: shimmer ? 'relative' : undefined,
+    overflow: shimmer ? 'hidden' : undefined,
+    ...getGlassmorphismStyles(),
+    ...getShimmerStyles(),
+    ...style,
+  };
 
   const singleSkeleton = (
     <MuiSkeleton
@@ -49,10 +129,10 @@ export const Skeleton: React.FC<SkeletonProps> = ({
       animation={getSkeletonAnimation()}
       width={finalWidth}
       height={finalHeight}
-      sx={{
-        borderRadius: borderRadius,
-      }}
+      sx={skeletonStyles}
       className={className}
+      data-testid={dataTestId}
+      {...props}
     />
   );
 
@@ -63,10 +143,14 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   return (
     <Stack spacing={spacing}>
       {Array.from({ length: count }).map((_, index) => (
-        <Box key={index}>
-          {React.cloneElement(singleSkeleton)}
+        <Box key={`skeleton-${index}`}>
+          {React.cloneElement(singleSkeleton, {
+            'data-testid': dataTestId ? `${dataTestId}-${index}` : undefined,
+          })}
         </Box>
       ))}
     </Stack>
   );
-};
+});
+
+Skeleton.displayName = 'Skeleton';

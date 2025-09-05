@@ -47,7 +47,7 @@ export const Resizable: React.FC<ResizableProps> = ({
     startPos.current = { x: e.clientX, y: e.clientY };
     startSize.current = { width: size.width, height: size.height };
 
-    const handleMouseMove = (e: MouseEvent) => {
+    const handleMouseMove = (e: globalThis.MouseEvent) => {
       const deltaX = e.clientX - startPos.current.x;
       const deltaY = e.clientY - startPos.current.y;
       
