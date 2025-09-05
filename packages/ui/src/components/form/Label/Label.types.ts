@@ -1,6 +1,6 @@
 import { ReactNode, CSSProperties, HTMLAttributes } from 'react';
 
-export interface LabelProps extends HTMLAttributes<HTMLLabelElement> {
+export interface LabelProps extends HTMLAttributes<globalThis.HTMLLabelElement> {
   children?: ReactNode;
   htmlFor?: string;
   required?: boolean;
@@ -22,9 +22,9 @@ export interface LabelProps extends HTMLAttributes<HTMLLabelElement> {
   asteriskPlacement?: 'start' | 'end';
   icon?: ReactNode;
   iconPosition?: 'start' | 'end';
-  onClick?: (event: React.MouseEvent<HTMLLabelElement>) => void;
-  onFocus?: (event: React.FocusEvent<HTMLLabelElement>) => void;
-  onBlur?: (event: React.FocusEvent<HTMLLabelElement>) => void;
+  onClick?: (event: React.MouseEvent<globalThis.HTMLLabelElement>) => void;
+  onFocus?: (event: React.FocusEvent<globalThis.HTMLLabelElement>) => void;
+  onBlur?: (event: React.FocusEvent<globalThis.HTMLLabelElement>) => void;
   srOnly?: boolean;
   weight?: 'light' | 'regular' | 'medium' | 'semibold' | 'bold';
   transform?: 'none' | 'uppercase' | 'lowercase' | 'capitalize';

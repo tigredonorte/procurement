@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Button, Box } from '@mui/material';
+import { Button, Box, Typography } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PersonIcon from '@mui/icons-material/Person';
@@ -13,7 +13,7 @@ import FileOpenIcon from '@mui/icons-material/FileOpen';
 import FolderIcon from '@mui/icons-material/Folder';
 
 import { CommandProps, CommandItem } from './Command.types';
-import { Command, CommandInput, CommandList, CommandGroup, CommandEmpty, CommandLoading, CommandSeparator } from './Command';
+import { Command } from './Command';
 
 const meta: Meta<typeof Command> = {
   title: 'Form/Command',
@@ -43,7 +43,23 @@ type Story = StoryObj<typeof Command>;
 
 const sampleItems: CommandItem[] = [
   // Navigation
-  { id: '1', label: 'Home', icon: <HomeIcon />, shortcut: '⌘H', category: 'Navigation', action: () => console.log('Home clicked') },
+  { id: '1', label: 'Home', icon: <HomeIcon />, shortcut: '⌘H', category: 'Navigation', action: () => {/* Home action */}, description: 'Navigate to home page' },
+  { id: '2', label: 'Settings', icon: <SettingsIcon />, shortcut: '⌘,', category: 'Navigation', action: () => {/* Settings action */}, description: 'Open application settings' },
+  { id: '3', label: 'Profile', icon: <PersonIcon />, shortcut: '⌘P', category: 'Navigation', action: () => {/* Profile action */}, description: 'View user profile' },
+  
+  // Actions  
+  { id: '4', label: 'Search', icon: <SearchIcon />, shortcut: '⌘K', category: 'Actions', action: () => {/* Search action */}, description: 'Open search dialog' },
+  { id: '5', label: 'Add New Item', icon: <AddIcon />, shortcut: '⌘N', category: 'Actions', action: () => {/* Add action */}, description: 'Create a new item' },
+  { id: '6', label: 'Edit', icon: <EditIcon />, shortcut: '⌘E', category: 'Actions', action: () => {/* Edit action */}, description: 'Edit current selection' },
+  { id: '7', label: 'Delete', icon: <DeleteIcon />, shortcut: '⌘⌫', category: 'Actions', action: () => {/* Delete action */}, description: 'Delete current selection', keywords: ['remove', 'trash'] },
+  
+  // File Operations
+  { id: '8', label: 'Save', icon: <SaveIcon />, shortcut: '⌘S', category: 'File', action: () => {/* Save action */}, description: 'Save current document' },
+  { id: '9', label: 'Open File', icon: <FileOpenIcon />, shortcut: '⌘O', category: 'File', action: () => {/* Open action */}, description: 'Open existing file' },
+  { id: '10', label: 'New Folder', icon: <FolderIcon />, shortcut: '⇧⌘N', category: 'File', action: () => {/* Folder action */}, description: 'Create new folder' },
+  
+  // Disabled item for testing
+  { id: '11', label: 'Disabled Action', icon: <EditIcon />, shortcut: '⌘D', category: 'Actions', disabled: true, description: 'This action is currently disabled' },
 ];
 
 const CommandWrapper: React.FC<CommandProps> = (props) => {
@@ -262,4 +278,126 @@ const [open, setOpen] = useState(false);
 
 export const Interactive: Story = {
   render: () => <InteractiveComponent />,
+};
+
+// Edge Cases
+export const LongText: Story = {
+  render: (args) => {
+    const longTextItems: CommandItem[] = [
+      {
+        id: '1',
+        label: 'This is a very long command label that might overflow in narrow containers',
+        description: 'This is an extremely long description that tests how the component handles text overflow and wrapping in the description area. It should be truncated or wrapped appropriately.',
+        shortcut: '⌘⇧⌥⌃L',
+        category: 'Long Text Examples',
+        icon: <EditIcon />,
+      },
+      {
+        id: '2', 
+        label: 'Another super long command name that tests the component limits',
+        description: 'Short desc',
+        shortcut: '⌘L',
+        category: 'Very Long Category Name That Tests Overflow',
+        icon: <SaveIcon />,
+      }
+    ];
+    
+    return <CommandWrapper {...args} items={longTextItems} />;
+  },
+  args: {
+    size: 'sm',
+    placeholder: 'Test long text handling...',
+  },
+};
+
+export const ManyItems: Story = {
+  render: (args) => {
+    const manyItems: CommandItem[] = Array.from({ length: 50 }, (_, i) => ({
+      id: `item-${i}`,
+      label: `Command ${i + 1}`,
+      description: `Description for command ${i + 1}`,
+      shortcut: `⌘${i + 1}`,
+      category: `Category ${Math.floor(i / 10) + 1}`,
+      icon: <SearchIcon />,
+      action: () => {/* Command action */},
+    }));
+    
+    return <CommandWrapper {...args} items={manyItems} />;
+  },
+  args: {
+    placeholder: 'Search through many items...',
+    maxHeight: 300,
+  },
+};
+
+export const NoCategories: Story = {
+  render: (args) => <CommandWrapper {...args} items={sampleItems} />,
+  args: {
+    showCategories: false,
+    placeholder: 'Flat list of commands...',
+  },
+};
+
+export const NoShortcuts: Story = {
+  render: (args) => <CommandWrapper {...args} items={sampleItems} />,
+  args: {
+    showShortcuts: false,
+    placeholder: 'Commands without shortcuts...',
+  },
+};
+
+export const NoDescriptions: Story = {
+  render: (args) => <CommandWrapper {...args} items={sampleItems} />,
+  args: {
+    showDescriptions: false,
+    placeholder: 'Minimal command view...',
+  },
+};
+
+export const DisabledItems: Story = {
+  render: (args) => {
+    const disabledItems = sampleItems.map((item, index) => ({
+      ...item,
+      disabled: index % 2 === 0, // Disable every other item
+    }));
+    
+    return <CommandWrapper {...args} items={disabledItems} />;
+  },
+  args: {
+    placeholder: 'Mix of enabled and disabled items...',
+  },
+};
+
+// Accessibility focused stories
+export const AccessibilityTest: Story = {
+  render: (args) => <CommandWrapper {...args} items={sampleItems} />,
+  args: {
+    placeholder: 'Test keyboard navigation...',
+    autoFocus: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Test keyboard navigation: Use Tab, Arrow keys, Enter, and Escape. Component should be fully keyboard accessible.',
+      },
+    },
+  },
+};
+
+export const HighContrast: Story = {
+  render: (args) => <CommandWrapper {...args} items={sampleItems} />,
+  args: {
+    variant: 'elevated',
+    color: 'primary',
+  },
+  parameters: {
+    backgrounds: {
+      default: 'dark',
+    },
+    docs: {
+      description: {
+        story: 'Test component visibility in high contrast and dark themes.',
+      },
+    },
+  },
 };

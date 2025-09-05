@@ -120,7 +120,7 @@ export const InputOTP = forwardRef<HTMLDivElement, InputOTPProps>(
     ...props
   }, ref) => {
     const [digits, setDigits] = useState<string[]>(Array(length).fill(''));
-    const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+    const inputRefs = useRef<(globalThis.HTMLInputElement | null)[]>([]);
 
     useEffect(() => {
       const newDigits = value.split('').slice(0, length);

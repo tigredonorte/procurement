@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Button as MuiButton, CircularProgress, alpha, keyframes } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -20,7 +20,14 @@ const pulseAnimation = keyframes`
   }
 `;
 
-const getColorFromTheme = (theme: { palette: { primary: { main: string; dark?: string; light?: string; contrastText?: string }; secondary: { main: string; dark?: string; light?: string; contrastText?: string }; success: { main: string; dark?: string; light?: string; contrastText?: string }; warning: { main: string; dark?: string; light?: string; contrastText?: string }; error: { main: string; dark?: string; light?: string; contrastText?: string }; grey?: { [key: number]: string } } }, color: string) => {
+interface ColorPalette {
+  main: string;
+  dark: string;
+  light: string;
+  contrastText: string;
+}
+
+const getColorFromTheme = (theme: any, color: string): ColorPalette => {
   if (color === 'neutral') {
     return {
       main: theme.palette.grey?.[700] || '#616161',
@@ -30,12 +37,12 @@ const getColorFromTheme = (theme: { palette: { primary: { main: string; dark?: s
     };
   }
   
-  const colorMap: Record<string, { main: string; dark: string; light: string; contrastText: string }> = {
-    primary: theme.palette.primary,
-    secondary: theme.palette.secondary,
-    success: theme.palette.success,
-    warning: theme.palette.warning,
-    danger: theme.palette.error,
+  const colorMap: Record<string, ColorPalette> = {
+    primary: theme.palette.primary as ColorPalette,
+    secondary: theme.palette.secondary as ColorPalette,
+    success: theme.palette.success as ColorPalette,
+    warning: theme.palette.warning as ColorPalette,
+    danger: theme.palette.error as ColorPalette,
   };
   
   const palette = colorMap[color] || theme.palette.primary;
@@ -51,7 +58,7 @@ const getColorFromTheme = (theme: { palette: { primary: { main: string; dark?: s
 
 const StyledButton = styled(MuiButton, {
   shouldForwardProp: (prop) => 
-    !['glow', 'pulse', 'loading', 'customVariant', 'customColor', 'ripple'].includes(prop as string),
+    ['glow', 'pulse', 'loading', 'customVariant', 'customColor', 'ripple'].indexOf(prop as string) === -1,
 })<{ customVariant?: string; customColor?: string; glow?: boolean; pulse?: boolean; ripple?: boolean }>(
   ({ theme, customVariant, customColor = 'primary', glow, pulse }) => {
     const colorPalette = getColorFromTheme(theme, customColor);

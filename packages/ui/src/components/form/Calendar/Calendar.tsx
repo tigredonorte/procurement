@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { forwardRef, useState, useCallback, useMemo, useRef } from 'react';
 import { 
   Paper,
   Box,
@@ -8,7 +8,6 @@ import {
   Grid,
   Chip,
   Fade,
-  Grow,
   Zoom,
   ButtonBase,
   useTheme
@@ -266,7 +265,7 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
     minDate,
     maxDate,
     ...props
-  }, ref) => {
+  }) => {
     const theme = useTheme();
     const config = sizeConfigs[size];
     
@@ -372,7 +371,7 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
           onChange(date);
           break;
 
-        case 'multi':
+        case 'multi': {
           const currentMulti = Array.isArray(value) ? value : [];
           const existingIndex = currentMulti.findIndex(d => isSameDay(d, date));
           
@@ -385,8 +384,9 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
             onChange([...currentMulti, date]);
           }
           break;
+        }
 
-        case 'range':
+        case 'range': {
           const currentRange = Array.isArray(value) ? value : [];
           
           if (currentRange.length === 0 || currentRange.length === 2) {
@@ -401,6 +401,7 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
             }
           }
           break;
+        }
 
         case 'year':
           onChange(date);
@@ -748,7 +749,7 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
                 key={index}
                 label={date.toLocaleDateString()}
                 size="small"
-                color={color as any}
+                color={color as 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info' | 'default'}
                 variant={variant === 'range' && selectedDates.length === 2 ? 
                   (index === 0 ? 'filled' : 'outlined') : 'filled'
                 }
