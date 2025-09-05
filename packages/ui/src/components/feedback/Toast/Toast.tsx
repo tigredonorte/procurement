@@ -19,6 +19,7 @@ import {
   Warning as WarningIcon,
   Info as InfoIcon,
 } from '@mui/icons-material';
+
 import {
   ToastProps,
   ToastContainerProps,
@@ -48,7 +49,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     
     if (!toast.persistent && toast.duration !== 0) {
       const duration = toast.duration ?? 5000;
-      setTimeout(() => {
+      window.setTimeout(() => {
         removeToast(id);
       }, duration);
     }

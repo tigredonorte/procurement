@@ -16,6 +16,7 @@ export interface DialogProps extends Omit<MuiDialogProps, 'variant'> {
   glass?: boolean;
   gradient?: boolean;
   glow?: boolean;
+  pulse?: boolean;
   borderRadius?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
   onClose?: () => void;
 }

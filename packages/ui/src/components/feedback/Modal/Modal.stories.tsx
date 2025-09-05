@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Button, Typography, Box, Card, CardContent, IconButton } from '@mui/material';
 import { Close as CloseIcon } from '@mui/icons-material';
+
 import { Modal, ModalContent } from './Modal';
 
 const meta: Meta<typeof Modal> = {
@@ -67,7 +68,7 @@ export const Center: Story = {
           <Typography variant="h6">
             Center Modal
           </Typography>
-          <IconButton onClick={() => {}}>
+          <IconButton onClick={() => { /** do nothing */}}>
             <CloseIcon />
           </IconButton>
         </Box>
@@ -235,9 +236,8 @@ export const GradientGlow: Story = {
   },
 };
 
-export const ResponsiveSizes: Story = {
-  render: () => {
-    const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+const ResponsiveSizesComponent = () => {
+const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
     const [openStates, setOpenStates] = useState<Record<string, boolean>>({});
 
     return (
@@ -280,5 +280,8 @@ export const ResponsiveSizes: Story = {
         ))}
       </Box>
     );
-  },
+};
+
+export const ResponsiveSizes: Story = {
+  render: () => <ResponsiveSizesComponent />,
 };

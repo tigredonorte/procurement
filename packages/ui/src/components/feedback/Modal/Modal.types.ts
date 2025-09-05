@@ -13,6 +13,7 @@ export interface ModalProps extends Omit<MuiModalProps, 'children'> {
   glass?: boolean;
   gradient?: boolean;
   glow?: boolean;
+  pulse?: boolean;
   borderRadius?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
   onClose?: () => void;
 }
