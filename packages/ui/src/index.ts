@@ -52,7 +52,18 @@ export * from './components/data-display/Progress';
 export * from './components/data-display/Table';
 export * from './components/data-display/Tooltip';
 
-// Enhanced Components
-export * from './components/enhanced/StackedModal';
+// Feedback Components
+export * from './components/feedback/Dialog';
+export * from './components/feedback/Modal';
+export * from './components/feedback/StackedModal';
+export * from './components/feedback/Toast';
+export * from './components/feedback/Sonner';
+
+// Utility Components
+export * from './components/utility/AspectRatio';
+export * from './components/utility/Portal';
+export * from './components/utility/Transition';
+export * from './components/utility/VirtualList';
+export * from './components/utility/InfiniteScroll';
 
 export const uiReady = true;
