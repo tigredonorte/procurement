@@ -10,19 +10,23 @@ export interface AccordionProps extends Omit<MuiAccordionProps, 'variant'> {
   defaultExpanded?: boolean;
   expanded?: boolean;
   onChange?: (event: React.SyntheticEvent, expanded: boolean) => void;
+  'data-testid'?: string;
 }
 
 export interface AccordionSummaryProps {
   children: ReactNode;
   expandIcon?: ReactNode;
   disabled?: boolean;
+  'data-testid'?: string;
 }
 
 export interface AccordionDetailsProps {
   children: ReactNode;
+  'data-testid'?: string;
 }
 
 export interface AccordionActionsProps {
   children: ReactNode;
   disableSpacing?: boolean;
+  'data-testid'?: string;
 }

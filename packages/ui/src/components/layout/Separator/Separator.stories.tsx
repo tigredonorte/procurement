@@ -206,7 +206,7 @@ export const FormExample: Story = {
       </Typography>
       
       <Typography variant="body1" paragraph>
-        Please fill out the form below and we'll get back to you.
+        Please fill out the form below and we&apos;ll get back to you.
       </Typography>
       
       <Separator>Personal Information</Separator>
@@ -233,5 +233,80 @@ export const FormExample: Story = {
         </Typography>
       </Box>
     </Box>
+  ),
+};
+
+export const CustomColors: Story = {
+  render: () => (
+    <Stack spacing={4}>
+      <Box>
+        <Typography variant="h6" gutterBottom>Custom Colors</Typography>
+        <Typography>Primary color</Typography>
+        <Separator color="#1976d2" />
+        <Typography>Secondary color</Typography>
+        <Separator color="#dc004e" />
+        <Typography>Success color</Typography>
+        <Separator color="#2e7d32" variant="dashed" />
+        <Typography>Warning color</Typography>
+        <Separator color="#ed6c02" variant="dotted" />
+      </Box>
+    </Stack>
+  ),
+};
+
+export const CustomLengthAndMargin: Story = {
+  render: () => (
+    <Stack spacing={4}>
+      <Box>
+        <Typography variant="h6" gutterBottom>Custom Length</Typography>
+        <Typography>50% width separator</Typography>
+        <Separator length="50%" />
+        <Typography>200px width separator</Typography>
+        <Separator length="200px" />
+        <Typography>Full width (default)</Typography>
+        <Separator />
+      </Box>
+      
+      <Box>
+        <Typography variant="h6" gutterBottom>Custom Margin</Typography>
+        <Typography>No margin</Typography>
+        <Separator margin={0} />
+        <Typography>Large margin (32px)</Typography>
+        <Separator margin="32px" />
+        <Typography>Small margin (4px)</Typography>
+        <Separator margin="4px" />
+      </Box>
+    </Stack>
+  ),
+};
+
+export const EdgeCases: Story = {
+  render: () => (
+    <Stack spacing={4}>
+      <Box>
+        <Typography variant="h6" gutterBottom>Long Text Content</Typography>
+        <Typography>Before separator</Typography>
+        <Separator>This is a very long text that should be handled gracefully by the separator component</Separator>
+        <Typography>After separator</Typography>
+      </Box>
+      
+      <Box>
+        <Typography variant="h6" gutterBottom>Empty Text Content</Typography>
+        <Typography>Before separator</Typography>
+        <Separator>{''}</Separator>
+        <Typography>After separator</Typography>
+      </Box>
+      
+      <Box>
+        <Typography variant="h6" gutterBottom>Nested Content</Typography>
+        <Typography>Complex content</Typography>
+        <Separator>
+          <Box component="span" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
+            Formatted Text
+          </Box>
+        </Separator>
+        <Typography>More content</Typography>
+      </Box>
+    </Stack>
   ),
 };

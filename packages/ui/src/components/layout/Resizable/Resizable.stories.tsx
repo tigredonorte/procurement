@@ -20,27 +20,48 @@ const meta: Meta<typeof Resizable> = {
     variant: {
       control: { type: 'select' },
       options: ['horizontal', 'vertical', 'both'],
+      description: 'Resize direction constraint',
+      table: {
+        type: { summary: 'horizontal | vertical | both' },
+        defaultValue: { summary: 'both' },
+      },
     },
     width: {
-      control: { type: 'number' },
+      control: { type: 'number', min: 50, max: 1000, step: 10 },
+      description: 'Initial width of the resizable container',
     },
     height: {
-      control: { type: 'number' },
+      control: { type: 'number', min: 50, max: 1000, step: 10 },
+      description: 'Initial height of the resizable container',
     },
     minWidth: {
-      control: { type: 'number' },
+      control: { type: 'number', min: 10, max: 500, step: 10 },
+      description: 'Minimum width constraint',
     },
     maxWidth: {
-      control: { type: 'number' },
+      control: { type: 'number', min: 100, max: 2000, step: 10 },
+      description: 'Maximum width constraint',
     },
     minHeight: {
-      control: { type: 'number' },
+      control: { type: 'number', min: 10, max: 500, step: 10 },
+      description: 'Minimum height constraint',
     },
     maxHeight: {
-      control: { type: 'number' },
+      control: { type: 'number', min: 100, max: 2000, step: 10 },
+      description: 'Maximum height constraint',
     },
     disabled: {
       control: { type: 'boolean' },
+      description: 'Whether resizing is disabled',
+    },
+    handles: {
+      control: { type: 'check' },
+      options: ['top', 'right', 'bottom', 'left', 'topRight', 'bottomRight', 'bottomLeft', 'topLeft'],
+      description: 'Custom resize handles to display',
+    },
+    onResize: {
+      action: 'resized',
+      description: 'Callback fired when component is resized',
     },
   },
 };
@@ -48,11 +69,19 @@ const meta: Meta<typeof Resizable> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const ContentBox = () => (
-  <Box sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
-    <Typography variant="h6" gutterBottom>Resizable Content</Typography>
+interface ContentBoxProps {
+  title?: string;
+  description?: string;
+}
+
+const ContentBox: React.FC<ContentBoxProps> = ({ title = 'Resizable Content', description = 'Drag the handles to resize this container. The content will adapt to the new dimensions.' }) => (
+  <Box 
+    sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column' }}
+    data-testid="resizable-content"
+  >
+    <Typography variant="h6" gutterBottom>{title}</Typography>
     <Typography variant="body2" color="text.secondary" paragraph>
-      Drag the handles to resize this container. The content will adapt to the new dimensions.
+      {description}
     </Typography>
     <Box sx={{ flex: 1, bgcolor: 'grey.100', borderRadius: 1, p: 1 }}>
       <Typography variant="caption">Content Area</Typography>
@@ -66,6 +95,13 @@ export const Default: Story = {
     height: 200,
     children: <ContentBox />,
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Basic resizable container with both horizontal and vertical resizing enabled. Drag the handles on the right edge, bottom edge, or corner to resize.',
+      },
+    },
+  },
 };
 
 export const HorizontalOnly: Story = {
@@ -74,13 +110,20 @@ export const HorizontalOnly: Story = {
     width: 250,
     height: 150,
     children: (
-      <Box sx={{ p: 2, bgcolor: 'primary.50', height: '100%' }}>
+      <Box sx={{ p: 2, bgcolor: 'primary.50', height: '100%' }} data-testid="horizontal-content">
         <Typography variant="body1">Horizontal Resize Only</Typography>
         <Typography variant="caption" color="text.secondary">
           Drag the right edge to resize width
         </Typography>
       </Box>
     ),
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Resizable container constrained to horizontal resizing only. Only the right edge handle is available for resizing.',
+      },
+    },
   },
 };
 
@@ -90,13 +133,20 @@ export const VerticalOnly: Story = {
     width: 300,
     height: 120,
     children: (
-      <Box sx={{ p: 2, bgcolor: 'secondary.50', height: '100%' }}>
+      <Box sx={{ p: 2, bgcolor: 'secondary.50', height: '100%' }} data-testid="vertical-content">
         <Typography variant="body1">Vertical Resize Only</Typography>
         <Typography variant="caption" color="text.secondary">
           Drag the bottom edge to resize height
         </Typography>
       </Box>
     ),
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Resizable container constrained to vertical resizing only. Only the bottom edge handle is available for resizing.',
+      },
+    },
   },
 };
 
@@ -106,13 +156,20 @@ export const BothDirections: Story = {
     width: 280,
     height: 180,
     children: (
-      <Box sx={{ p: 2, bgcolor: 'info.50', height: '100%' }}>
+      <Box sx={{ p: 2, bgcolor: 'info.50', height: '100%' }} data-testid="both-directions-content">
         <Typography variant="body1">Both Directions</Typography>
         <Typography variant="caption" color="text.secondary">
           Drag edges or corner to resize
         </Typography>
       </Box>
     ),
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Resizable container with both horizontal and vertical resizing enabled. Provides handles on right edge, bottom edge, and bottom-right corner.',
+      },
+    },
   },
 };
 
@@ -126,7 +183,7 @@ export const WithConstraints: Story = {
     minHeight: 100,
     maxHeight: 300,
     children: (
-      <Box sx={{ p: 2, bgcolor: 'warning.50', height: '100%' }}>
+      <Box sx={{ p: 2, bgcolor: 'warning.50', height: '100%' }} data-testid="constrained-content">
         <Typography variant="body2" gutterBottom>Constrained Resizing</Typography>
         <Typography variant="caption">
           Min: 150x100<br/>
@@ -135,10 +192,17 @@ export const WithConstraints: Story = {
       </Box>
     ),
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Demonstrates size constraints in action. The container cannot be resized below 150x100 or above 400x300 pixels.',
+      },
+    },
+  },
 };
 
-const WithCallbackComponent = () => {
-const [dimensions, setDimensions] = useState({ width: 250, height: 150 });
+const WithCallbackComponent: React.FC = () => {
+  const [dimensions, setDimensions] = useState({ width: 250, height: 150 });
     
     return (
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, alignItems: 'center' }}>
@@ -153,6 +217,7 @@ const [dimensions, setDimensions] = useState({ width: 250, height: 150 });
           width={250}
           height={150}
           onResize={(width, height) => setDimensions({ width, height })}
+          data-testid="callback-resizable"
         >
           <Box sx={{ p: 2, bgcolor: 'success.50', height: '100%' }}>
             <Typography variant="body1">Resize Tracking</Typography>
@@ -165,6 +230,239 @@ const [dimensions, setDimensions] = useState({ width: 250, height: 150 });
 
 export const WithCallback: Story = {
   render: () => <WithCallbackComponent />,
+  parameters: {
+    docs: {
+      description: {
+        story: 'Demonstrates the onResize callback functionality. The current dimensions are displayed above the resizable container and update in real-time.',
+      },
+    },
+  },
+};
+
+// Additional comprehensive stories
+
+export const CustomHandles: Story = {
+  args: {
+    variant: 'both',
+    width: 200,
+    height: 150,
+    handles: ['top', 'right', 'bottom', 'left'],
+    children: (
+      <Box sx={{ p: 2, bgcolor: 'success.50', height: '100%' }} data-testid="custom-handles-content">
+        <Typography variant="body1">Custom Handles</Typography>
+        <Typography variant="caption" color="text.secondary">
+          All edge handles enabled (no corners)
+        </Typography>
+      </Box>
+    ),
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Custom handle configuration showing only edge handles (top, right, bottom, left) without corner handles.',
+      },
+    },
+  },
+};
+
+export const AllHandles: Story = {
+  args: {
+    variant: 'both',
+    width: 250,
+    height: 180,
+    handles: ['top', 'right', 'bottom', 'left', 'topRight', 'bottomRight', 'bottomLeft', 'topLeft'],
+    children: (
+      <Box sx={{ p: 2, bgcolor: 'error.50', height: '100%' }} data-testid="all-handles-content">
+        <Typography variant="body1">All Resize Handles</Typography>
+        <Typography variant="caption" color="text.secondary">
+          8 handles: 4 edges + 4 corners
+        </Typography>
+      </Box>
+    ),
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Maximum handle configuration with all 8 possible handles enabled (4 edges + 4 corners).',
+      },
+    },
+  },
+};
+
+export const MinimalSize: Story = {
+  args: {
+    variant: 'both',
+    width: 100,
+    height: 80,
+    minWidth: 80,
+    minHeight: 60,
+    maxWidth: 200,
+    maxHeight: 150,
+    children: (
+      <Box sx={{ p: 1, bgcolor: 'info.50', height: '100%', fontSize: '0.75rem' }} data-testid="minimal-size-content">
+        <Typography variant="caption">Small</Typography>
+      </Box>
+    ),
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Resizable container starting at a small size with tight constraints to test minimal size handling.',
+      },
+    },
+  },
+};
+
+export const LargeSize: Story = {
+  args: {
+    variant: 'both',
+    width: 600,
+    height: 400,
+    minWidth: 400,
+    minHeight: 300,
+    maxWidth: 800,
+    maxHeight: 600,
+    children: (
+      <Box sx={{ p: 3, bgcolor: 'warning.50', height: '100%', display: 'flex', flexDirection: 'column' }} data-testid="large-size-content">
+        <Typography variant="h4" gutterBottom>Large Container</Typography>
+        <Typography variant="body1" paragraph>
+          This is a larger resizable container to test performance and behavior with bigger dimensions.
+        </Typography>
+        <Box sx={{ flex: 1, bgcolor: 'grey.100', borderRadius: 1, p: 2 }}>
+          <Typography variant="body2">Large content area</Typography>
+        </Box>
+      </Box>
+    ),
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Large resizable container to test performance and handling of bigger dimensions.',
+      },
+    },
+  },
+};
+
+const ResponsiveContentComponent: React.FC = () => {
+  const [size, setSize] = useState({ width: 300, height: 200 });
+  
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, alignItems: 'center' }}>
+      <Typography variant="body2" color="text.secondary">
+        Container: {size.width}px × {size.height}px
+      </Typography>
+      
+      <Resizable
+        variant="both"
+        width={300}
+        height={200}
+        onResize={(width, height) => setSize({ width, height })}
+        data-testid="responsive-resizable"
+      >
+        <Box sx={{ p: 2, bgcolor: 'primary.50', height: '100%', display: 'flex', flexDirection: 'column' }}>
+          <Typography variant="h6" gutterBottom>
+            Responsive Content
+          </Typography>
+          <Typography variant="body2" paragraph>
+            Content adapts to container size:
+          </Typography>
+          <Box sx={{ 
+            display: 'grid', 
+            gridTemplateColumns: size.width > 250 ? 'repeat(3, 1fr)' : size.width > 150 ? 'repeat(2, 1fr)' : '1fr',
+            gap: 1,
+            flex: 1
+          }}>
+            <Paper sx={{ p: 1, textAlign: 'center' }}>
+              <Typography variant="caption">Item 1</Typography>
+            </Paper>
+            <Paper sx={{ p: 1, textAlign: 'center' }}>
+              <Typography variant="caption">Item 2</Typography>
+            </Paper>
+            <Paper sx={{ p: 1, textAlign: 'center' }}>
+              <Typography variant="caption">Item 3</Typography>
+            </Paper>
+          </Box>
+        </Box>
+      </Resizable>
+    </Box>
+  );
+};
+
+export const ResponsiveContent: Story = {
+  render: () => <ResponsiveContentComponent />,
+  parameters: {
+    docs: {
+      description: {
+        story: 'Demonstrates how content can adapt responsively to container size changes. The grid layout changes based on available width.',
+      },
+    },
+  },
+};
+
+export const NestedResizable: Story = {
+  render: () => (
+    <Box sx={{ p: 2, border: 1, borderColor: 'divider' }} data-testid="nested-layout">
+      <Typography variant="h6" gutterBottom>Nested Resizable Containers</Typography>
+      
+      <Resizable variant="both" width={400} height={300} data-testid="outer-resizable">
+        <Box sx={{ p: 2, bgcolor: 'primary.50', height: '100%', display: 'flex', flexDirection: 'column' }}>
+          <Typography variant="subtitle1" gutterBottom>Outer Container</Typography>
+          
+          <Resizable 
+            variant="both" 
+            width={200} 
+            height={120} 
+            minWidth={100}
+            minHeight={80}
+            data-testid="inner-resizable"
+          >
+            <Box sx={{ p: 2, bgcolor: 'secondary.50', height: '100%' }}>
+              <Typography variant="body2">Inner Container</Typography>
+              <Typography variant="caption">Nested resizable</Typography>
+            </Box>
+          </Resizable>
+        </Box>
+      </Resizable>
+    </Box>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Nested resizable containers to test complex scenarios where one resizable is inside another.',
+      },
+    },
+  },
+};
+
+export const AccessibilityEnhanced: Story = {
+  args: {
+    variant: 'both',
+    width: 300,
+    height: 200,
+    children: (
+      <Box 
+        sx={{ p: 2, bgcolor: 'info.50', height: '100%' }}
+        role="region"
+        aria-label="Resizable content area"
+        data-testid="accessible-content"
+      >
+        <Typography variant="h6" gutterBottom>Accessible Resizable</Typography>
+        <Typography variant="body2" paragraph>
+          This container includes proper ARIA attributes and semantic HTML for better accessibility.
+        </Typography>
+        <Typography variant="caption" color="text.secondary">
+          Use mouse or touch to resize by dragging the handles.
+        </Typography>
+      </Box>
+    ),
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Enhanced accessibility example with proper ARIA attributes and semantic HTML structure.',
+      },
+    },
+  },
 };
 
 export const DisabledState: Story = {
@@ -174,7 +472,7 @@ export const DisabledState: Story = {
     height: 150,
     disabled: true,
     children: (
-      <Box sx={{ p: 2, bgcolor: 'grey.200', height: '100%' }}>
+      <Box sx={{ p: 2, bgcolor: 'grey.200', height: '100%' }} data-testid="disabled-content">
         <Typography variant="body1" color="text.disabled">Disabled Resizing</Typography>
         <Typography variant="caption" color="text.disabled">
           Resizing is disabled for this container
@@ -182,12 +480,28 @@ export const DisabledState: Story = {
       </Box>
     ),
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'When disabled is true, resize handles are hidden and resizing functionality is completely disabled.',
+      },
+    },
+  },
 };
 
 export const SidePanel: Story = {
   render: () => (
-    <Box sx={{ display: 'flex', height: 400, border: 1, borderColor: 'divider' }}>
-      <Resizable variant="horizontal" width={200} minWidth={150} maxWidth={350}>
+    <Box 
+      sx={{ display: 'flex', height: 400, border: 1, borderColor: 'divider' }}
+      data-testid="side-panel-layout"
+    >
+      <Resizable 
+        variant="horizontal" 
+        width={200} 
+        minWidth={150} 
+        maxWidth={350}
+        data-testid="resizable-sidebar"
+      >
         <Box sx={{ bgcolor: 'primary.50', height: '100%', p: 2 }}>
           <Typography variant="h6" gutterBottom>Sidebar</Typography>
           <List dense>
@@ -198,7 +512,7 @@ export const SidePanel: Story = {
         </Box>
       </Resizable>
       
-      <Box sx={{ flex: 1, p: 3 }}>
+      <Box sx={{ flex: 1, p: 3 }} data-testid="main-content">
         <Typography variant="h5" gutterBottom>Main Content</Typography>
         <Typography variant="body1" color="text.secondary">
           The sidebar on the left is resizable. Drag its right edge to adjust the width.
@@ -206,26 +520,42 @@ export const SidePanel: Story = {
       </Box>
     </Box>
   ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Common use case: Resizable sidebar panel in a layout. The sidebar can be resized horizontally while the main content area adapts.',
+      },
+    },
+  },
 };
 
 export const TextEditor: Story = {
   render: () => (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: 500, border: 1, borderColor: 'divider' }}>
+    <Box 
+      sx={{ display: 'flex', flexDirection: 'column', height: 500, border: 1, borderColor: 'divider' }}
+      data-testid="text-editor-layout"
+    >
       <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider', bgcolor: 'grey.50' }}>
         <Typography variant="h6">Code Editor</Typography>
       </Box>
       
       <Box sx={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
-        <Box sx={{ flex: 1, p: 2, bgcolor: 'grey.900', color: 'common.white' }}>
+        <Box sx={{ flex: 1, p: 2, bgcolor: 'grey.900', color: 'common.white' }} data-testid="code-area">
           <Typography variant="body2" fontFamily="monospace">
-            // Main editor content<br/>
-            function example() {"{"}<br/>
-            {"  "}return "Hello World";<br/>
-            {"}"}
+            {/* Main editor content */}<br/>
+            function example() {'{'}<br/>
+            {"  "}return &quot;Hello World&quot;;<br/>
+            {'}'}
           </Typography>
         </Box>
         
-        <Resizable variant="vertical" width={300} height={200} minHeight={100}>
+        <Resizable 
+          variant="vertical" 
+          width={300} 
+          height={200} 
+          minHeight={100}
+          data-testid="resizable-console"
+        >
           <Box sx={{ bgcolor: 'grey.100', height: '100%', p: 2 }}>
             <Typography variant="subtitle2" gutterBottom>Console Output</Typography>
             <Typography variant="body2" fontFamily="monospace" color="success.main">
@@ -236,33 +566,43 @@ export const TextEditor: Story = {
       </Box>
     </Box>
   ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Code editor layout with resizable console panel. The console can be resized vertically to show more or less output.',
+      },
+    },
+  },
 };
 
 export const GridLayout: Story = {
   render: () => (
-    <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2, p: 2, bgcolor: 'grey.50' }}>
-      <Resizable variant="both" width={250} height={150}>
+    <Box 
+      sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2, p: 2, bgcolor: 'grey.50' }}
+      data-testid="grid-layout"
+    >
+      <Resizable variant="both" width={250} height={150} data-testid="widget-1">
         <Paper sx={{ p: 2, height: '100%' }}>
           <Typography variant="h6">Widget 1</Typography>
           <Typography variant="caption">Resizable widget</Typography>
         </Paper>
       </Resizable>
       
-      <Resizable variant="both" width={250} height={150}>
+      <Resizable variant="both" width={250} height={150} data-testid="widget-2">
         <Paper sx={{ p: 2, height: '100%', bgcolor: 'primary.50' }}>
           <Typography variant="h6">Widget 2</Typography>
           <Typography variant="caption">Another resizable widget</Typography>
         </Paper>
       </Resizable>
       
-      <Resizable variant="both" width={250} height={150}>
+      <Resizable variant="both" width={250} height={150} data-testid="widget-3">
         <Paper sx={{ p: 2, height: '100%', bgcolor: 'secondary.50' }}>
           <Typography variant="h6">Widget 3</Typography>
           <Typography variant="caption">Dashboard component</Typography>
         </Paper>
       </Resizable>
       
-      <Resizable variant="both" width={250} height={150}>
+      <Resizable variant="both" width={250} height={150} data-testid="widget-4">
         <Paper sx={{ p: 2, height: '100%', bgcolor: 'info.50' }}>
           <Typography variant="h6">Widget 4</Typography>
           <Typography variant="caption">Flexible layout</Typography>
@@ -270,4 +610,11 @@ export const GridLayout: Story = {
       </Resizable>
     </Box>
   ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Dashboard-style grid layout with multiple resizable widgets. Each widget can be independently resized in both dimensions.',
+      },
+    },
+  },
 };

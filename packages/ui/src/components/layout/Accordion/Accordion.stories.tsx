@@ -61,7 +61,7 @@ export const AllVariants: Story = {
           </AccordionSummary>
           <AccordionDetails>
             <Typography>
-              The default variant follows Material-UI's standard accordion styling.
+              The default variant follows Material-UI&apos;s standard accordion styling.
             </Typography>
           </AccordionDetails>
         </Accordion>
@@ -262,7 +262,7 @@ export const ComplexContent: Story = {
             <Box>
               <Typography variant="subtitle2" gutterBottom>Team Members</Typography>
               <Stack direction="row" spacing={1}>
-                {['A', 'B', 'C', 'D'].map((letter, index) => (
+                {['A', 'B', 'C', 'D'].map((letter) => (
                   <Box
                     key={letter}
                     sx={{
