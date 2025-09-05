@@ -1,11 +1,8 @@
 // Dialog Components
 export * from './Dialog';
 
-// Modal Components  
+// Modal Components
 export * from './Modal';
-
-// StackedModal Components
-export * from './StackedModal';
 
 // Toast Components
 export * from './Toast';
