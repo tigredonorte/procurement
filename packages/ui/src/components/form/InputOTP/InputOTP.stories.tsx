@@ -59,7 +59,10 @@ const [values, setValues] = useState({
             length={6}
             value={values.numeric}
             onChange={(value) => setValues(prev => ({ ...prev, numeric: value }))}
-            onComplete={(value) => console.log('OTP Complete:', value)}
+            onComplete={(value) => {
+              // OTP Complete: value
+              void value;
+            }}
           />
         </Box>
       </Box>

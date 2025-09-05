@@ -1,5 +1,5 @@
 import { ButtonProps as MuiButtonProps } from '@mui/material';
-import React from 'react';
+import * as React from 'react';
 
 export interface ButtonProps extends Omit<MuiButtonProps, 'variant' | 'color' | 'size'> {
   /**

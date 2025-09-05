@@ -4,7 +4,6 @@ import {
   DialogContent,
   TextField,
   List,
-  ListItem,
   ListItemIcon,
   ListItemText,
   ListItemButton,
@@ -22,7 +21,6 @@ import {
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
-import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 
 import {
   CommandProps,
@@ -49,10 +47,7 @@ export const Command: React.FC<CommandProps> = ({
   color = 'primary',
   glow = false,
   pulse = false,
-  glass = false,
-  gradient = false,
   loading = false,
-  ripple = true,
   disabled = false,
   className,
   style,
@@ -72,7 +67,7 @@ export const Command: React.FC<CommandProps> = ({
   const theme = useTheme();
   const [internalValue, setInternalValue] = useState(value);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     setInternalValue(value);
@@ -108,17 +103,6 @@ export const Command: React.FC<CommandProps> = ({
     });
   }, [items, internalValue, customFilter]);
 
-  const groupedItems = useMemo(() => {
-    if (!showCategories) return { '': filteredItems };
-    
-    const groups: Record<string, CommandItem[]> = {};
-    filteredItems.forEach(item => {
-      const category = item.category || '';
-      if (!groups[category]) groups[category] = [];
-      groups[category].push(item);
-    });
-    return groups;
-  }, [filteredItems, showCategories]);
 
   const handleSelect = useCallback((item: CommandItem) => {
     if (item.disabled) return;
@@ -260,6 +244,7 @@ export const Command: React.FC<CommandProps> = ({
           onBlur={onBlur}
           disabled={disabled}
           autoFocus={autoFocus}
+          onKeyDown={handleKeyDown}
         />
         
         <Divider />
@@ -294,6 +279,7 @@ export const CommandInput: React.FC<CommandInputProps> = ({
   onBlur,
   disabled,
   autoFocus,
+  onKeyDown,
   className,
   style,
 }) => {
@@ -304,6 +290,7 @@ export const CommandInput: React.FC<CommandInputProps> = ({
       onChange={(e) => onChange?.(e.target.value)}
       onFocus={onFocus}
       onBlur={onBlur}
+      onKeyDown={onKeyDown}
       placeholder={placeholder}
       disabled={disabled}
       autoFocus={autoFocus}

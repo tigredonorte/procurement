@@ -103,7 +103,7 @@ export const Colors: Story = {
             {color}
           </Typography>
           <Calendar
-            color={color as any}
+            color={color as 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'neutral'}
             size="sm"
           />
         </Box>
@@ -121,7 +121,7 @@ export const Sizes: Story = {
             Size: {size.toUpperCase()}
           </Typography>
           <Calendar
-            size={size as any}
+            size={size as 'xs' | 'sm' | 'md' | 'lg' | 'xl'}
             color="primary"
           />
         </Box>

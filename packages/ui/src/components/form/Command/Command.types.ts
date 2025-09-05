@@ -25,10 +25,7 @@ export interface CommandProps {
   color?: 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info';
   glow?: boolean;
   pulse?: boolean;
-  glass?: boolean;
-  gradient?: boolean;
   loading?: boolean;
-  ripple?: boolean;
   disabled?: boolean;
   className?: string;
   style?: CSSProperties;
@@ -53,6 +50,7 @@ export interface CommandInputProps {
   onChange?: (value: string) => void;
   onFocus?: () => void;
   onBlur?: () => void;
+  onKeyDown?: (e: React.KeyboardEvent) => void;
   disabled?: boolean;
   autoFocus?: boolean;
   className?: string;
