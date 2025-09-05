@@ -20,7 +20,7 @@ const pulseAnimation = keyframes`
   }
 `;
 
-const getColorFromTheme = (theme: any, color: string) => {
+const getColorFromTheme = (theme: { palette: { primary: { main: string; dark?: string; light?: string; contrastText?: string }; secondary: { main: string; dark?: string; light?: string; contrastText?: string }; success: { main: string; dark?: string; light?: string; contrastText?: string }; warning: { main: string; dark?: string; light?: string; contrastText?: string }; error: { main: string; dark?: string; light?: string; contrastText?: string }; grey?: { [key: number]: string } } }, color: string) => {
   if (color === 'neutral') {
     return {
       main: theme.palette.grey?.[700] || '#616161',
@@ -51,8 +51,8 @@ const getColorFromTheme = (theme: any, color: string) => {
 
 const StyledButton = styled(MuiButton, {
   shouldForwardProp: (prop) => 
-    !['glow', 'pulse', 'loading', 'customVariant', 'customColor'].includes(prop as string),
-})<{ customVariant?: string; customColor?: string; glow?: boolean; pulse?: boolean }>(
+    !['glow', 'pulse', 'loading', 'customVariant', 'customColor', 'ripple'].includes(prop as string),
+})<{ customVariant?: string; customColor?: string; glow?: boolean; pulse?: boolean; ripple?: boolean }>(
   ({ theme, customVariant, customColor = 'primary', glow, pulse }) => {
     const colorPalette = getColorFromTheme(theme, customColor);
     
@@ -204,8 +204,12 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     icon,
     glow = false,
     pulse = false,
+    ripple = true,
     children,
     disabled,
+    onClick,
+    onFocus,
+    onBlur,
     ...props
   }, ref) => {
     const muiVariant = variant === 'outline' ? 'outlined' : 'contained';
@@ -220,8 +224,13 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         customColor={color}
         glow={glow}
         pulse={pulse}
+        ripple={ripple}
         disabled={disabled || loading}
+        disableRipple={!ripple}
         startIcon={!loading && icon}
+        onClick={onClick}
+        onFocus={onFocus}
+        onBlur={onBlur}
         sx={sizeMap[size]}
         {...props}
       >

@@ -1,11 +1,12 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Label } from './Label';
 import { Box, TextField, Stack } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import StarIcon from '@mui/icons-material/Star';
 import EmailIcon from '@mui/icons-material/Email';
 import PersonIcon from '@mui/icons-material/Person';
+
+import { Label } from './Label';
 
 const meta: Meta<typeof Label> = {
   title: 'Form/Label',
@@ -143,8 +144,8 @@ export const Effects: Story = {
       <Label pulse color="secondary">Label with Pulse</Label>
       <Label glow pulse variant="glass">Glass with Glow and Pulse</Label>
       <Label variant="gradient" glow>Gradient with Glow</Label>
-      <Label onClick={() => console.log('Clicked')} ripple variant="filled">
-        Clickable with Ripple
+      <Label onClick={() => console.log('Interactive Label clicked')}>
+        Interactive Label with Click Handler
       </Label>
     </Stack>
   ),
@@ -353,11 +354,9 @@ export const AllCombinations: Story = {
       <Label
         variant="filled"
         color="success"
-        onClick={() => console.log('Clicked')}
-        ripple
-        loading
+        onClick={() => console.log('Label clicked')}
       >
-        Processing...
+        Clickable Label
       </Label>
     </Stack>
   ),

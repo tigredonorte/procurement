@@ -36,4 +36,24 @@ export interface ButtonProps extends Omit<MuiButtonProps, 'variant' | 'color' | 
    * Whether the button should have a pulse animation
    */
   pulse?: boolean;
+  
+  /**
+   * Whether to show ripple effect on click
+   */
+  ripple?: boolean;
+  
+  /**
+   * Click handler
+   */
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  
+  /**
+   * Focus handler
+   */
+  onFocus?: React.FocusEventHandler<HTMLButtonElement>;
+  
+  /**
+   * Blur handler
+   */
+  onBlur?: React.FocusEventHandler<HTMLButtonElement>;
 }

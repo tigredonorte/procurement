@@ -63,7 +63,7 @@ const rippleAnimation = keyframes`
   }
 `;
 
-const getColorFromTheme = (theme: any, color: string) => {
+const getColorFromTheme = (theme: { palette: { primary: { main: string; dark?: string; light?: string; contrastText?: string }; secondary: { main: string; dark?: string; light?: string; contrastText?: string }; success: { main: string; dark?: string; light?: string; contrastText?: string }; warning: { main: string; dark?: string; light?: string; contrastText?: string }; error: { main: string; dark?: string; light?: string; contrastText?: string }; grey?: { [key: number]: string } } }, color: string) => {
   if (color === 'neutral') {
     return {
       main: theme.palette.grey?.[700] || '#616161',
@@ -446,7 +446,7 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
             glow={glow}
             customSize={size}
             animated
-            onClick={() => !option.disabled && onChange?.({ target: { value: option.value } } as any)}
+            onClick={() => !option.disabled && onChange?.({ target: { value: option.value } } as any, option.value)}
           >
             <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
               <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
@@ -493,7 +493,7 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
             customSize={size}
             animated
             disabled={option.disabled}
-            onClick={() => !option.disabled && onChange?.({ target: { value: option.value } } as any)}
+            onClick={() => !option.disabled && onChange?.({ target: { value: option.value } } as any, option.value)}
           >
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               {option.icon}
@@ -514,7 +514,7 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
             customSize={size}
             animated
             disabled={option.disabled}
-            onClick={() => !option.disabled && onChange?.({ target: { value: option.value } } as any)}
+            onClick={() => !option.disabled && onChange?.({ target: { value: option.value } } as any, option.value)}
           >
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               {option.icon}

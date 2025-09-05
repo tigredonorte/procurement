@@ -1,12 +1,63 @@
 import React, { useState } from 'react';
-import { TextField, alpha, styled, InputAdornment } from '@mui/material';
+import { TextField, alpha, styled, InputAdornment, keyframes, CircularProgress } from '@mui/material';
 
 import { InputProps } from './Input.types';
+
+// Define pulse animation
+const pulseAnimation = keyframes`
+  0% {
+    box-shadow: 0 0 0 0 currentColor;
+    opacity: 1;
+  }
+  70% {
+    box-shadow: 0 0 0 10px currentColor;
+    opacity: 0;
+  }
+  100% {
+    box-shadow: 0 0 0 0 currentColor;
+    opacity: 0;
+  }
+`;
 
 const StyledTextField = styled(TextField)<{ 
   customVariant?: InputProps['variant'];
   floating?: boolean;
-}>(({ theme, customVariant, floating }) => ({
+  glow?: boolean;
+  pulse?: boolean;
+  loading?: boolean;
+}>(({ theme, customVariant, floating, glow, pulse, loading }) => ({
+  position: 'relative',
+  opacity: loading ? 0.7 : 1,
+  
+  // Glow effect
+  ...(glow && {
+    '& .MuiInputBase-root': {
+      boxShadow: `0 0 15px ${alpha(theme.palette.primary.main, 0.3)}`,
+      '&.Mui-focused': {
+        boxShadow: `0 0 20px ${alpha(theme.palette.primary.main, 0.5)}`,
+      },
+    },
+  }),
+  
+  // Pulse animation
+  ...(pulse && {
+    '&::after': {
+      content: '""',
+      position: 'absolute',
+      top: '50%',
+      left: '0',
+      right: '0',
+      height: '56px',
+      transform: 'translateY(-50%)',
+      borderRadius: theme.spacing(0.5),
+      backgroundColor: theme.palette.primary.main,
+      opacity: 0.3,
+      animation: `${pulseAnimation} 2s infinite`,
+      pointerEvents: 'none',
+      zIndex: -1,
+    },
+  }),
+  
   '& .MuiInputBase-root': {
     transition: 'all 0.3s ease',
     
@@ -34,6 +85,37 @@ const StyledTextField = styled(TextField)<{
       },
       '&:after': {
         borderBottomColor: theme.palette.primary.main,
+      },
+    }),
+    
+    ...(customVariant === 'gradient' && {
+      background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.1)}, ${alpha(theme.palette.secondary.main, 0.1)})`,
+      border: `2px solid transparent`,
+      backgroundOrigin: 'border-box',
+      backgroundClip: 'padding-box, border-box',
+      position: 'relative',
+      '&::before': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        borderRadius: 'inherit',
+        background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+        mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+        maskComposite: 'exclude',
+        padding: '2px',
+        zIndex: -1,
+      },
+      '&:hover': {
+        background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.15)}, ${alpha(theme.palette.secondary.main, 0.15)})`,
+      },
+      '&.Mui-focused': {
+        background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.2)}, ${alpha(theme.palette.secondary.main, 0.2)})`,
+        '&::before': {
+          background: `linear-gradient(135deg, ${theme.palette.primary.dark}, ${theme.palette.secondary.dark})`,
+        },
       },
     }),
   },
@@ -93,6 +175,10 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     endAdornment,
     fullWidth = true,
     floating = false,
+    glow = false,
+    pulse = false,
+    loading = false,
+    onClick,
     onFocus,
     onBlur,
     color, // Extract color to prevent passing to MUI
@@ -112,6 +198,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     
     const muiVariant = variant === 'glass' ? 'outlined' : 
                        variant === 'underline' ? 'standard' : 
+                       variant === 'gradient' ? 'outlined' :
                        variant;
     
     const sizeProps = sizeMap[size];
@@ -122,18 +209,32 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         variant={muiVariant as any}
         customVariant={variant}
         floating={floating}
+        glow={glow}
+        pulse={pulse}
+        loading={loading}
         label={label}
         error={error}
         helperText={helperText}
         fullWidth={fullWidth}
+        disabled={loading || props.disabled}
+        onClick={!loading ? onClick : undefined}
         onFocus={handleFocus}
         onBlur={handleBlur}
         InputProps={{
           startAdornment: startAdornment && (
             <InputAdornment position="start">{startAdornment}</InputAdornment>
           ),
-          endAdornment: endAdornment && (
-            <InputAdornment position="end">{endAdornment}</InputAdornment>
+          endAdornment: (
+            <>
+              {loading && (
+                <InputAdornment position="end">
+                  <CircularProgress size={20} />
+                </InputAdornment>
+              )}
+              {!loading && endAdornment && (
+                <InputAdornment position="end">{endAdornment}</InputAdornment>
+              )}
+            </>
           ),
         }}
         {...sizeProps}

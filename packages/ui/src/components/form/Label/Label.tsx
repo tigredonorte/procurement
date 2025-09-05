@@ -8,6 +8,7 @@ import {
   alpha,
   Typography,
 } from '@mui/material';
+
 import { LabelProps } from './Label.types';
 
 export const Label = forwardRef<HTMLLabelElement, LabelProps>(({

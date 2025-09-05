@@ -68,4 +68,39 @@ export interface SliderProps extends Omit<MuiSliderProps, 'color' | 'size'> {
    * Format function for the value display
    */
   formatValue?: (value: number) => string;
+  
+  /**
+   * Whether the slider is in loading state
+   */
+  loading?: boolean;
+  
+  /**
+   * Whether to show ripple effect
+   */
+  ripple?: boolean;
+  
+  /**
+   * Whether the slider should have pulse animation
+   */
+  pulse?: boolean;
+  
+  /**
+   * Click handler
+   */
+  onClick?: React.MouseEventHandler<HTMLSpanElement>;
+  
+  /**
+   * Focus handler
+   */
+  onFocus?: React.FocusEventHandler<HTMLSpanElement>;
+  
+  /**
+   * Blur handler
+   */
+  onBlur?: React.FocusEventHandler<HTMLSpanElement>;
+  
+  /**
+   * Change handler
+   */
+  onChange?: (event: Event, value: number | number[], activeThumb: number) => void;
 }

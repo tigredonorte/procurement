@@ -51,7 +51,7 @@ const shimmerAnimation = keyframes`
   }
 `;
 
-const getColorFromTheme = (theme: any, color: string) => {
+const getColorFromTheme = (theme: { palette: { primary: { main: string; dark?: string; light?: string }; secondary: { main: string; dark?: string; light?: string }; success: { main: string; dark?: string; light?: string }; warning: { main: string; dark?: string; light?: string }; error: { main: string; dark?: string; light?: string }; grey?: { [key: number]: string } } }, color: string) => {
   if (color === 'neutral') {
     return {
       main: theme.palette.grey?.[700] || '#616161',

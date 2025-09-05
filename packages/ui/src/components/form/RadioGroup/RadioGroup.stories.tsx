@@ -63,9 +63,8 @@ export const Default: Story = {
   },
 };
 
-export const Variants: Story = {
-  render: () => {
-    const [values, setValues] = useState<Record<string, string>>({
+const VariantsComponent = () => {
+const [values, setValues] = useState<Record<string, string>>({
       default: '',
       cards: '',
       buttons: '',
@@ -116,12 +115,14 @@ export const Variants: Story = {
         </Box>
       </Box>
     );
-  },
 };
 
-export const Colors: Story = {
-  render: () => {
-    const [values, setValues] = useState({
+export const Variants: Story = {
+  render: () => <VariantsComponent />,
+};
+
+const ColorsComponent = () => {
+const [values, setValues] = useState({
       primary: '',
       secondary: '',
       success: '',
@@ -151,12 +152,14 @@ export const Colors: Story = {
         ))}
       </Box>
     );
-  },
 };
 
-export const Sizes: Story = {
-  render: () => {
-    const [values, setValues] = useState({
+export const Colors: Story = {
+  render: () => <ColorsComponent />,
+};
+
+const SizesComponent = () => {
+const [values, setValues] = useState({
       xs: '',
       sm: '',
       md: '',
@@ -185,12 +188,14 @@ export const Sizes: Story = {
         ))}
       </Box>
     );
-  },
 };
 
-export const CardVariant: Story = {
-  render: () => {
-    const [value, setValue] = useState('');
+export const Sizes: Story = {
+  render: () => <SizesComponent />,
+};
+
+const CardVariantComponent = () => {
+const [value, setValue] = useState('');
 
     return (
       <RadioGroup
@@ -202,12 +207,14 @@ export const CardVariant: Story = {
         showDescriptions
       />
     );
-  },
 };
 
-export const SpecialEffects: Story = {
-  render: () => {
-    const [values, setValues] = useState({
+export const CardVariant: Story = {
+  render: () => <CardVariantComponent />,
+};
+
+const SpecialEffectsComponent = () => {
+const [values, setValues] = useState({
       glass: '',
       gradient: '',
       glow: '',
@@ -265,12 +272,14 @@ export const SpecialEffects: Story = {
         </Box>
       </Box>
     );
-  },
 };
 
-export const WithDirections: Story = {
-  render: () => {
-    const [values, setValues] = useState({
+export const SpecialEffects: Story = {
+  render: () => <SpecialEffectsComponent />,
+};
+
+const WithDirectionsComponent = () => {
+const [values, setValues] = useState({
       column: '',
       row: '',
     });
@@ -300,12 +309,14 @@ export const WithDirections: Story = {
         </Box>
       </Box>
     );
-  },
 };
 
-export const ErrorState: Story = {
-  render: () => {
-    const [value, setValue] = useState('');
+export const WithDirections: Story = {
+  render: () => <WithDirectionsComponent />,
+};
+
+const ErrorStateComponent = () => {
+const [value, setValue] = useState('');
 
     return (
       <RadioGroup
@@ -319,7 +330,10 @@ export const ErrorState: Story = {
         showDescriptions
       />
     );
-  },
+};
+
+export const ErrorState: Story = {
+  render: () => <ErrorStateComponent />,
 };
 
 export const Playground: Story = {
