@@ -8,7 +8,12 @@ export interface CardProps extends Omit<MuiCardProps, 'variant'> {
   variant?: CardVariant;
   interactive?: boolean;
   glow?: boolean;
+  pulse?: boolean;
   borderRadius?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
+  loading?: boolean;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
+  onFocus?: React.FocusEventHandler<HTMLDivElement>;
+  onBlur?: React.FocusEventHandler<HTMLDivElement>;
 }
 
 export interface CardHeaderProps {

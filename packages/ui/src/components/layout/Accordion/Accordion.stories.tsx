@@ -167,9 +167,8 @@ export const MultipleAccordions: Story = {
   ),
 };
 
-export const ControlledAccordion: Story = {
-  render: () => {
-    const [expanded, setExpanded] = useState<string | false>(false);
+const ControlledAccordionComponent = () => {
+const [expanded, setExpanded] = useState<string | false>(false);
 
     const handleChange = (panel: string) => (
       event: React.SyntheticEvent,
@@ -226,7 +225,10 @@ export const ControlledAccordion: Story = {
         </Accordion>
       </Stack>
     );
-  },
+};
+
+export const ControlledAccordion: Story = {
+  render: () => <ControlledAccordionComponent />,
 };
 
 export const ComplexContent: Story = {
