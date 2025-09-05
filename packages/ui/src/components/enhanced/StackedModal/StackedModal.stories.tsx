@@ -92,9 +92,8 @@ export default meta;
 type Story = StoryObj<typeof StackedModal>;
 
 // Basic usage story
-export const Default: Story = {
-  render: () => {
-    const BasicModal = () => {
+const DefaultComponent = () => {
+const BasicModal = () => {
       const [open, setOpen] = useState(false);
 
       return (
@@ -128,13 +127,15 @@ export const Default: Story = {
     };
 
     return <BasicModal />;
-  },
+};
+
+export const Default: Story = {
+  render: () => <DefaultComponent />,
 };
 
 // Glass morphism effect
-export const GlassMorphism: Story = {
-  render: () => {
-    const GlassModal = () => {
+const GlassMorphismComponent = () => {
+const GlassModal = () => {
       const [open, setOpen] = useState(false);
 
       return (
@@ -194,13 +195,15 @@ export const GlassMorphism: Story = {
     };
 
     return <GlassModal />;
-  },
+};
+
+export const GlassMorphism: Story = {
+  render: () => <GlassMorphismComponent />,
 };
 
 // Multi-level stacking demonstration
-export const MultiLevelStacking: Story = {
-  render: () => {
-    const StackingDemo = () => {
+const MultiLevelStackingComponent = () => {
+const StackingDemo = () => {
       const [firstOpen, setFirstOpen] = useState(false);
       const [secondOpen, setSecondOpen] = useState(false);
       const [thirdOpen, setThirdOpen] = useState(false);
@@ -427,7 +430,10 @@ export const MultiLevelStacking: Story = {
     };
 
     return <StackingDemo />;
-  },
+};
+
+export const MultiLevelStacking: Story = {
+  render: () => <MultiLevelStackingComponent />,
 };
 
 // Mobile responsive bottom sheet
@@ -499,9 +505,8 @@ export const MobileResponsive: Story = {
 };
 
 // Async content with loading states
-export const AsyncContentLoading: Story = {
-  render: () => {
-    const AsyncModal = () => {
+const AsyncContentLoadingComponent = () => {
+const AsyncModal = () => {
       const [open, setOpen] = useState(false);
       const [addUserOpen, setAddUserOpen] = useState(false);
       const [loading, setLoading] = useState(false);
@@ -515,7 +520,7 @@ export const AsyncContentLoading: Story = {
         setData(null);
 
         // Simulate API call
-        window.setTimeout(() => {
+        window.window.setTimeout(() => {
           setData({
             users: [
               { id: 1, name: 'John Doe', role: 'Admin', status: 'Active' },
@@ -681,22 +686,24 @@ export const AsyncContentLoading: Story = {
     };
 
     return <AsyncModal />;
-  },
+};
+
+export const AsyncContentLoading: Story = {
+  render: () => <AsyncContentLoadingComponent />,
 };
 
 // Custom actions and buttons
-export const CustomActions: Story = {
-  render: () => {
-    const CustomActionsModal = () => {
+const CustomActionsComponent = () => {
+const CustomActionsModal = () => {
       const [open, setOpen] = useState(false);
       const [progress, setProgress] = useState(0);
 
       useEffect(() => {
         if (open && progress < 100) {
-          const timer = window.setTimeout(() => {
+          const timer = window.window.setTimeout(() => {
             setProgress((prev) => Math.min(prev + 10, 100));
           }, 500);
-          return () => window.clearTimeout(timer);
+          return () => window.window.clearTimeout(timer);
         }
       }, [open, progress]);
 
@@ -786,13 +793,15 @@ export const CustomActions: Story = {
     };
 
     return <CustomActionsModal />;
-  },
+};
+
+export const CustomActions: Story = {
+  render: () => <CustomActionsComponent />,
 };
 
 // Complex workflow example (multi-step form)
-export const ComplexWorkflow: Story = {
-  render: () => {
-    const WorkflowModal = () => {
+const ComplexWorkflowComponent = () => {
+const WorkflowModal = () => {
       const [open, setOpen] = useState(false);
       const [activeStep, setActiveStep] = useState(0);
       const [nestedOpen, setNestedOpen] = useState(false);
@@ -1010,13 +1019,15 @@ export const ComplexWorkflow: Story = {
     };
 
     return <WorkflowModal />;
-  },
+};
+
+export const ComplexWorkflow: Story = {
+  render: () => <ComplexWorkflowComponent />,
 };
 
 // Performance demo with many modals
-export const PerformanceDemo: Story = {
-  render: () => {
-    const PerformanceTest = () => {
+const PerformanceDemoComponent = () => {
+const PerformanceTest = () => {
       const [modals, setModals] = useState<boolean[]>(Array(10).fill(false));
       const { stack } = useModalStack();
 
@@ -1129,13 +1140,15 @@ export const PerformanceDemo: Story = {
     };
 
     return <PerformanceTest />;
-  },
+};
+
+export const PerformanceDemo: Story = {
+  render: () => <PerformanceDemoComponent />,
 };
 
 // RTL Support
-export const RTLSupport: Story = {
-  render: () => {
-    const RTLModal = () => {
+const RTLSupportComponent = () => {
+const RTLModal = () => {
       const [open, setOpen] = useState(false);
       const [rtl, setRtl] = useState(false);
 
@@ -1202,13 +1215,15 @@ export const RTLSupport: Story = {
     };
 
     return <RTLModal />;
-  },
+};
+
+export const RTLSupport: Story = {
+  render: () => <RTLSupportComponent />,
 };
 
 // Accessibility Features
-export const AccessibilityShowcase: Story = {
-  render: () => {
-    const AccessibleModal = () => {
+const AccessibilityShowcaseComponent = () => {
+const AccessibleModal = () => {
       const [open, setOpen] = useState(false);
       const [announcement, setAnnouncement] = useState('');
 
@@ -1334,5 +1349,8 @@ export const AccessibilityShowcase: Story = {
     };
 
     return <AccessibleModal />;
-  },
+};
+
+export const AccessibilityShowcase: Story = {
+  render: () => <AccessibilityShowcaseComponent />,
 };

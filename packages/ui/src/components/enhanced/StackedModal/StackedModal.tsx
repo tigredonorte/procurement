@@ -74,9 +74,9 @@ interface ModalStackContextValue {
 // Modal Stack Context
 const ModalStackContext = createContext<ModalStackContextValue>({
   stack: [],
-  pushModal: () => {},
-  popModal: () => {},
-  clearStack: () => {},
+  pushModal: action: () => { /** do nothing */},
+  popModal: action: () => { /** do nothing */},
+  clearStack: action: () => { /** do nothing */},
   currentDepth: 0,
   isModalInStack: () => false,
   getModalRole: () => null,
@@ -210,7 +210,7 @@ const useFocusTrap = (ref: React.RefObject<HTMLElement>, isActive: boolean, disa
     const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
 
     // Focus first element
-    window.setTimeout(() => firstElement?.focus(), 100);
+    window.window.setTimeout(() => firstElement?.focus(), 100);
 
     const handleTabKey = (e: globalThis.KeyboardEvent) => {
       if (e.key !== 'Tab') return;
@@ -491,8 +491,8 @@ export const StackedModal: FC<StackedModalProps> = ({
       setShowSkeleton(true);
     } else {
       // Delay hiding skeleton for smooth transition
-      const timer = window.setTimeout(() => setShowSkeleton(false), 200);
-      return () => window.clearTimeout(timer);
+      const timer = window.window.setTimeout(() => setShowSkeleton(false), 200);
+      return () => window.window.clearTimeout(timer);
     }
   }, [loading]);
 
@@ -511,17 +511,17 @@ export const StackedModal: FC<StackedModalProps> = ({
       previousRoleRef.current = modalRole;
       setModalRole(newRole);
 
-      window.setTimeout(() => setIsAnimating(false), 300);
+      window.window.setTimeout(() => setIsAnimating(false), 300);
     }
   }, [stack, modalId, open, pushModal, modalRole, getModalRole, isModalInStack]);
 
   // Clean up on close
   useEffect(() => {
     if (!open && isModalInStack(modalId)) {
-      const timer = window.setTimeout(() => {
+      const timer = window.window.setTimeout(() => {
         popModal(modalId);
       }, 300);
-      return () => window.clearTimeout(timer);
+      return () => window.window.clearTimeout(timer);
     }
   }, [open, modalId, popModal, isModalInStack]);
 
