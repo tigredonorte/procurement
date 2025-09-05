@@ -4,9 +4,8 @@ export {
   ModalStackProvider as StackedModalProvider,
   useModalStack,
   useModalStack as useStackedModal,
-  ModalActions,
-  ModalFooter,
   ModalContent,
+  ModalActions,
 } from './StackedModal';
 
 export type { StackedModalProps } from './StackedModal';

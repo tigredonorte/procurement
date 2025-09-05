@@ -8,7 +8,6 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Fade,
   IconButton,
   Paper,
   Skeleton,
@@ -264,9 +263,18 @@ const StyledDialog = styled(Dialog, {
             : 'rgba(0, 0, 0, 0.5)',
       backdropFilter: modalRole === 'primary' ? 'blur(4px)' : 'none',
     },
+    '& .MuiDialog-container': {
+      alignItems: 'flex-start',
+      justifyContent: 'flex-end',
+    },
     '& .MuiDialog-paper': {
       margin: 0,
-      maxHeight: '90vh',
+      position: 'fixed',
+      right: 0,
+      top: 0,
+      height: '100vh',
+      maxHeight: '100vh',
+      borderRadius: 0,
       willChange: 'transform, width, border-radius',
       transition: theme.transitions.create(
         ['width', 'max-width', 'border-radius', 'transform', 'opacity'],
@@ -280,9 +288,6 @@ const StyledDialog = styled(Dialog, {
         [theme.breakpoints.down('sm')]: {
           width: '100%',
           maxWidth: '100%',
-          height: '100vh',
-          maxHeight: '100vh',
-          borderRadius: 0,
         },
         // Tablet: 90%
         [theme.breakpoints.between('sm', 'md')]: {
@@ -303,6 +308,8 @@ const StyledDialog = styled(Dialog, {
       ...(modalRole === 'secondary' && {
         width: '100vw !important',
         maxWidth: '100vw !important',
+        right: '0 !important',
+        top: '0 !important',
         height: '100vh',
         maxHeight: '100vh',
         borderRadius: '0 !important',
@@ -330,22 +337,22 @@ const StyledDialog = styled(Dialog, {
     },
     '@keyframes expandModal': {
       from: {
-        width: '80vw',
-        borderRadius: theme.shape.borderRadius * 2,
+        width: '70vw',
+        transform: 'translateX(0)',
       },
       to: {
         width: '100vw',
-        borderRadius: 0,
+        transform: 'translateX(0)',
       },
     },
     '@keyframes contractModal': {
       from: {
         width: '100vw',
-        borderRadius: 0,
+        transform: 'translateX(0)',
       },
       to: {
-        width: '80vw',
-        borderRadius: theme.shape.borderRadius * 2,
+        width: '70vw',
+        transform: 'translateX(0)',
       },
     },
   }),
@@ -392,32 +399,19 @@ export const ModalContent: typeof DialogContent = styled(DialogContent)(({ theme
   padding: theme.spacing(3),
 })) as typeof DialogContent;
 
-export const ModalActions: typeof DialogActions = styled(DialogActions)(({ theme }) => ({
-  padding: theme.spacing(2),
-  borderTop: `1px solid ${theme.palette.divider}`,
-})) as typeof DialogActions;
+// ModalActions component that will be rendered differently based on device
+export const ModalActions: FC<{ children: ReactNode }> = ({ children }) => {
+  // This component is just a wrapper, actual placement is handled in StackedModal
+  return <>{children}</>;
+};
 
-export const ModalFooter: FC<{ children: ReactNode }> = ({ children }) => (
-  <ModalActions>{children}</ModalActions>
-);
-
-// Custom transition for mobile bottom sheet
-const MobileTransition = forwardRef<HTMLDivElement, TransitionProps>(
-  function MobileTransition(props, ref) {
+// Custom transition for slide from right
+const SlideTransition = forwardRef<HTMLDivElement, TransitionProps>(
+  function SlideTransition(props, ref) {
     return (
-      <Slide direction="up" ref={ref} {...props}>
+      <Slide direction="left" ref={ref} {...props}>
         {props.children as React.ReactElement}
       </Slide>
-    );
-  },
-);
-
-const DesktopTransition = forwardRef<HTMLDivElement, TransitionProps>(
-  function DesktopTransition(props, ref) {
-    return (
-      <Fade ref={ref} {...props}>
-        {props.children as React.ReactElement}
-      </Fade>
     );
   },
 );
@@ -445,6 +439,20 @@ export const StackedModal: FC<StackedModalProps> = ({
   'aria-describedby': ariaDescribedBy,
   ...otherProps
 }) => {
+  // Extract ModalActions from children
+  let modalContent = children;
+  let modalActions = null;
+
+  React.Children.forEach(children, (child) => {
+    if (React.isValidElement(child) && child.type === ModalActions) {
+      modalActions = child.props.children;
+    }
+  });
+
+  // Filter out ModalActions from children for content
+  modalContent = React.Children.toArray(children).filter(
+    (child) => !(React.isValidElement(child) && child.type === ModalActions),
+  );
   const [modalRole, setModalRole] = useState<'primary' | 'secondary' | 'background'>('primary');
   const [isAnimating, setIsAnimating] = useState(false);
   const [showSkeleton, setShowSkeleton] = useState(loading);
@@ -535,8 +543,8 @@ export const StackedModal: FC<StackedModalProps> = ({
     onClose();
   };
 
-  // Choose transition based on device
-  const Transition = isMobile ? MobileTransition : DesktopTransition;
+  // Use slide transition for all devices
+  const Transition = SlideTransition;
 
   // Generate unique IDs for accessibility
   const titleId = ariaLabelledBy || `modal-title-${modalId}`;
@@ -578,7 +586,7 @@ export const StackedModal: FC<StackedModalProps> = ({
 
       <StyledDialogTitle id={titleId} rtl={rtl}>
         <DialogTitleLeft>
-          {stack.length > 1 && modalRole === 'primary' && (
+          {stack.length > 1 ? (
             <IconButton
               edge="start"
               color="inherit"
@@ -589,18 +597,26 @@ export const StackedModal: FC<StackedModalProps> = ({
             >
               <ChevronLeftIcon />
             </IconButton>
+          ) : (
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={onClose}
+              aria-label="close"
+              size="small"
+            >
+              <CloseIcon />
+            </IconButton>
           )}
           {navigationTitle && (
-            <Typography variant="h6" component="h2" noWrap>
+            <Typography variant="h6" component="h2" noWrap sx={{ ml: 1 }}>
               {navigationTitle}
             </Typography>
           )}
         </DialogTitleLeft>
         <DialogTitleRight>
-          {actions}
-          <IconButton edge="end" color="inherit" onClick={onClose} aria-label="close" size="small">
-            <CloseIcon />
-          </IconButton>
+          {/* On desktop, show modalActions or actions prop in header */}
+          {!isMobile && (modalActions || actions)}
         </DialogTitleRight>
       </StyledDialogTitle>
 
@@ -613,9 +629,21 @@ export const StackedModal: FC<StackedModalProps> = ({
             <Skeleton variant="rectangular" height={200} sx={{ mt: 2 }} />
           </Box>
         ) : (
-          children
+          modalContent
         )}
       </Box>
+
+      {/* On mobile, show modalActions at the bottom */}
+      {isMobile && (modalActions || actions) && (
+        <DialogActions
+          sx={{
+            borderTop: (theme) => `1px solid ${theme.palette.divider}`,
+            padding: 2,
+          }}
+        >
+          {modalActions || actions}
+        </DialogActions>
+      )}
     </StyledDialog>
   );
 };

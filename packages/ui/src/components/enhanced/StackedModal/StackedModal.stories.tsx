@@ -61,7 +61,7 @@ import {
   ModalStackProvider,
   useModalStack,
   ModalContent,
-  ModalFooter,
+  ModalActions,
 } from './StackedModal';
 
 const meta: Meta<typeof StackedModal> = {
@@ -180,10 +180,14 @@ export const GlassMorphism: Story = {
                 readability while maintaining visual appeal.
               </Alert>
             </ModalContent>
-            <ModalFooter>
-              <Button onClick={() => setOpen(false)}>Close</Button>
-              <Button variant="contained">Confirm</Button>
-            </ModalFooter>
+            <ModalActions>
+              <Button variant="outlined" size="small" onClick={() => setOpen(false)}>
+                Cancel
+              </Button>
+              <Button variant="contained" size="small">
+                Confirm
+              </Button>
+            </ModalActions>
           </StackedModal>
         </>
       );
@@ -459,6 +463,11 @@ export const MobileResponsive: Story = {
             open={open}
             onClose={() => setOpen(false)}
             navigationTitle="Mobile Optimized"
+            actions={
+              <Button variant="contained" size="small" onClick={() => setOpen(false)}>
+                Close
+              </Button>
+            }
           >
             <ModalContent>
               <Typography variant="h5" gutterBottom>
@@ -480,11 +489,6 @@ export const MobileResponsive: Story = {
                 </Button>
               </Stack>
             </ModalContent>
-            <ModalFooter>
-              <Button fullWidth onClick={() => setOpen(false)}>
-                Close
-              </Button>
-            </ModalFooter>
           </StackedModal>
         </>
       );
@@ -499,6 +503,7 @@ export const AsyncContentLoading: Story = {
   render: () => {
     const AsyncModal = () => {
       const [open, setOpen] = useState(false);
+      const [addUserOpen, setAddUserOpen] = useState(false);
       const [loading, setLoading] = useState(false);
       const [data, setData] = useState<{
         users: Array<{ id: number; name: string; role: string; status: string }>;
@@ -549,7 +554,12 @@ export const AsyncContentLoading: Story = {
             loadingText="Fetching user data..."
             actions={
               !loading && (
-                <Button variant="contained" size="small" startIcon={<AddIcon />}>
+                <Button
+                  variant="contained"
+                  size="small"
+                  startIcon={<AddIcon />}
+                  onClick={() => setAddUserOpen(true)}
+                >
                   Add User
                 </Button>
               )
@@ -605,6 +615,66 @@ export const AsyncContentLoading: Story = {
                 </TableContainer>
               </Box>
             )}
+          </StackedModal>
+
+          {/* Add User Modal */}
+          <StackedModal
+            open={addUserOpen}
+            onClose={() => setAddUserOpen(false)}
+            navigationTitle="Add New User"
+            modalId="add-user-modal"
+          >
+            <ModalContent>
+              <Typography variant="h5" gutterBottom>
+                Create New User
+              </Typography>
+              <Stack spacing={3} sx={{ mt: 3 }}>
+                <TextField
+                  fullWidth
+                  label="Full Name"
+                  required
+                  helperText="Enter the user's full name"
+                />
+                <TextField
+                  fullWidth
+                  label="Email Address"
+                  type="email"
+                  required
+                  helperText="This will be used for login"
+                />
+                <FormControl fullWidth>
+                  <InputLabel>Role</InputLabel>
+                  <Select label="Role" defaultValue="">
+                    <MenuItem value="admin">Admin</MenuItem>
+                    <MenuItem value="user">User</MenuItem>
+                    <MenuItem value="moderator">Moderator</MenuItem>
+                  </Select>
+                </FormControl>
+                <FormControlLabel
+                  control={<Switch defaultChecked />}
+                  label="Send invitation email"
+                />
+                <Alert severity="info">
+                  The user will receive an email invitation to set their password and complete
+                  registration.
+                </Alert>
+              </Stack>
+            </ModalContent>
+            <ModalActions>
+              <Button variant="outlined" onClick={() => setAddUserOpen(false)}>
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                startIcon={<AddIcon />}
+                onClick={() => {
+                  window.alert('User added successfully!');
+                  setAddUserOpen(false);
+                }}
+              >
+                Create User
+              </Button>
+            </ModalActions>
           </StackedModal>
         </>
       );
@@ -1097,6 +1167,16 @@ export const RTLSupport: Story = {
             navigationTitle={rtl ? 'نموذج مع دعم RTL' : 'Modal with RTL Support'}
             rtl={rtl}
             glass={true}
+            actions={
+              <Stack direction="row" spacing={1}>
+                <Button variant="outlined" size="small" onClick={() => setOpen(false)}>
+                  {rtl ? 'إلغاء' : 'Cancel'}
+                </Button>
+                <Button variant="contained" size="small">
+                  {rtl ? 'حفظ' : 'Save'}
+                </Button>
+              </Stack>
+            }
           >
             <ModalContent>
               <Typography variant="h5" gutterBottom>
@@ -1116,10 +1196,6 @@ export const RTLSupport: Story = {
                 />
               </Stack>
             </ModalContent>
-            <ModalFooter>
-              <Button onClick={() => setOpen(false)}>{rtl ? 'إلغاء' : 'Cancel'}</Button>
-              <Button variant="contained">{rtl ? 'حفظ' : 'Save'}</Button>
-            </ModalFooter>
           </StackedModal>
         </>
       );
@@ -1187,6 +1263,30 @@ export const AccessibilityShowcase: Story = {
             closeOnClickOutside={true}
             aria-labelledby="accessible-modal-title"
             aria-describedby="accessible-modal-description"
+            actions={
+              <Stack direction="row" spacing={1}>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  onClick={() => {
+                    setOpen(false);
+                    setAnnouncement('Modal closed without saving.');
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="contained"
+                  size="small"
+                  onClick={() => {
+                    setOpen(false);
+                    setAnnouncement('Form submitted successfully.');
+                  }}
+                >
+                  Submit
+                </Button>
+              </Stack>
+            }
           >
             <ModalContent>
               <Typography id="accessible-modal-title" variant="h5" gutterBottom>
@@ -1228,25 +1328,6 @@ export const AccessibilityShowcase: Story = {
                 />
               </Stack>
             </ModalContent>
-            <ModalFooter>
-              <Button
-                onClick={() => {
-                  setOpen(false);
-                  setAnnouncement('Modal closed without saving.');
-                }}
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="contained"
-                onClick={() => {
-                  setOpen(false);
-                  setAnnouncement('Form submitted successfully.');
-                }}
-              >
-                Submit
-              </Button>
-            </ModalFooter>
           </StackedModal>
         </>
       );
