@@ -1,8 +1,41 @@
-import React from 'react';
-import { Table as MuiTable, alpha, keyframes } from '@mui/material';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import {
+  Table as MuiTable,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  TableContainer,
+  Checkbox,
+  TableSortLabel,
+  CircularProgress,
+  Box,
+  IconButton,
+  Menu,
+  MenuItem,
+  FormControlLabel,
+  Switch,
+  alpha,
+  keyframes,
+  useTheme,
+  useMediaQuery,
+  Skeleton
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { 
+  MoreVert as MoreVertIcon,
+  KeyboardArrowUp as ArrowUpIcon,
+  KeyboardArrowDown as ArrowDownIcon
+} from '@mui/icons-material';
 
-import { TableProps } from './Table.types';
+import { 
+  TableProps, 
+  ColumnConfig, 
+  TableDensity, 
+  SortConfig,
+  TableHeaderProps,
+  TableBodyProps
+} from './Table.types';
 
 // Define pulse animation
 const pulseAnimation = keyframes`
@@ -20,112 +53,727 @@ const pulseAnimation = keyframes`
   }
 `;
 
+// Density configurations
+const getDensityConfig = (density: TableDensity = 'normal') => {
+  const configs = {
+    compact: {
+      rowHeight: 36,
+      cellPadding: '6px 12px',
+      fontSize: '0.8125rem',
+      headerPadding: '8px 12px',
+    },
+    normal: {
+      rowHeight: 52,
+      cellPadding: '12px 16px',
+      fontSize: '0.875rem',
+      headerPadding: '16px 16px',
+    },
+    comfortable: {
+      rowHeight: 68,
+      cellPadding: '18px 24px',
+      fontSize: '0.875rem',
+      headerPadding: '20px 24px',
+    },
+  };
+  return configs[density];
+};
+
+const StyledTableContainer = styled(TableContainer, {
+  shouldForwardProp: (prop) => !['virtualScrolling', 'containerHeight'].includes(prop as string),
+})<{ 
+  virtualScrolling?: boolean; 
+  containerHeight?: number | string;
+}>(({ virtualScrolling, containerHeight }) => ({
+  ...(virtualScrolling && {
+    height: containerHeight || 400,
+    overflow: 'auto',
+  }),
+}));
+
 const StyledTable = styled(MuiTable, {
   shouldForwardProp: (prop) => 
-    !['customVariant', 'glow', 'pulse', 'hoverable'].includes(prop as string),
+    !['customVariant', 'glow', 'pulse', 'hoverable', 'density', 'stickyHeader'].includes(prop as string),
 })<{ 
   customVariant?: string;
   glow?: boolean; 
   pulse?: boolean;
   hoverable?: boolean;
-}>(({ theme, customVariant, glow, pulse, hoverable }) => ({
-  borderRadius: theme.spacing(1),
-  overflow: 'hidden',
-  transition: 'all 0.3s ease',
-  position: 'relative',
+  density?: TableDensity;
+  stickyHeader?: boolean;
+}>(({ theme, customVariant, glow, pulse, hoverable, density, stickyHeader }) => {
+  const densityConfig = getDensityConfig(density);
+  
+  return {
+    borderRadius: theme.spacing(1),
+    overflow: 'hidden',
+    transition: 'all 0.3s ease',
+    position: 'relative',
 
-  // Variant styles
-  ...(customVariant === 'default' && {
-    backgroundColor: theme.palette.background.paper,
-    '& .MuiTableHead-root': {
-      backgroundColor: alpha(theme.palette.primary.main, 0.1),
-    },
-  }),
-
-  ...(customVariant === 'striped' && {
-    backgroundColor: theme.palette.background.paper,
-    '& .MuiTableRow-root:nth-of-type(even)': {
-      backgroundColor: alpha(theme.palette.action.hover, 0.5),
-    },
-  }),
-
-  ...(customVariant === 'glass' && {
-    backgroundColor: alpha(theme.palette.background.paper, 0.1),
-    backdropFilter: 'blur(20px)',
-    border: `1px solid ${alpha(theme.palette.divider, 0.2)}`,
-  }),
-
-  ...(customVariant === 'minimal' && {
-    backgroundColor: 'transparent',
+    // Density styles
     '& .MuiTableCell-root': {
-      borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+      padding: densityConfig.cellPadding,
+      fontSize: densityConfig.fontSize,
+      height: densityConfig.rowHeight,
     },
-  }),
 
-  // Hoverable rows
-  ...(hoverable && {
-    '& .MuiTableBody-root .MuiTableRow-root:hover': {
-      backgroundColor: alpha(theme.palette.action.hover, 0.8),
-      cursor: 'pointer',
+    // Sticky header
+    ...(stickyHeader && {
+      '& .MuiTableHead-root': {
+        position: 'sticky',
+        top: 0,
+        zIndex: 100,
+        backgroundColor: theme.palette.background.paper,
+        '& .MuiTableCell-root': {
+          borderBottom: `2px solid ${theme.palette.divider}`,
+          fontWeight: 600,
+          padding: densityConfig.headerPadding,
+        },
+      },
+    }),
+
+    // Variant styles
+    ...(customVariant === 'default' && {
+      backgroundColor: theme.palette.background.paper,
+      '& .MuiTableHead-root': {
+        backgroundColor: alpha(theme.palette.primary.main, 0.1),
+      },
+    }),
+
+    ...(customVariant === 'striped' && {
+      backgroundColor: theme.palette.background.paper,
+      '& .MuiTableRow-root:nth-of-type(even)': {
+        backgroundColor: alpha(theme.palette.action.hover, 0.5),
+      },
+    }),
+
+    ...(customVariant === 'glass' && {
+      backgroundColor: alpha(theme.palette.background.paper, 0.1),
+      backdropFilter: 'blur(20px)',
+      border: `1px solid ${alpha(theme.palette.divider, 0.2)}`,
+    }),
+
+    ...(customVariant === 'minimal' && {
+      backgroundColor: 'transparent',
+      '& .MuiTableCell-root': {
+        borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+      },
+    }),
+
+    ...(customVariant === 'gradient' && {
+      background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.05)}, ${alpha(theme.palette.secondary.main, 0.05)})`,
+      border: `1px solid ${alpha(theme.palette.divider, 0.2)}`,
+      '& .MuiTableHead-root': {
+        background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.15)}, ${alpha(theme.palette.secondary.main, 0.15)})`,
+      },
+      '& .MuiTableCell-root': {
+        borderBottom: `1px solid ${alpha(theme.palette.divider, 0.15)}`,
+      },
+    }),
+
+    // Hoverable rows
+    ...(hoverable && {
+      '& .MuiTableBody-root .MuiTableRow-root:hover': {
+        backgroundColor: alpha(theme.palette.action.hover, 0.8),
+        cursor: 'pointer',
+      },
+    }),
+
+    // Selection styles
+    '& .MuiTableRow-root.selected': {
+      backgroundColor: alpha(theme.palette.primary.main, 0.12),
+      '&:hover': {
+        backgroundColor: alpha(theme.palette.primary.main, 0.16),
+      },
     },
-  }),
 
-  // Glow effect
-  ...(glow && !pulse && {
-    boxShadow: `0 0 20px 5px ${alpha(theme.palette.primary.main, 0.3)} !important`,
-    filter: 'brightness(1.05)',
-  }),
+    // Glow effect
+    ...(glow && !pulse && {
+      boxShadow: `0 0 20px 5px ${alpha(theme.palette.primary.main, 0.3)} !important`,
+      filter: 'brightness(1.05)',
+    }),
 
-  // Pulse animation
-  ...(pulse && !glow && {
-    position: 'relative',
-    '&::after': {
-      content: '""',
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      borderRadius: 'inherit',
-      backgroundColor: theme.palette.primary.main,
-      opacity: 0.1,
-      animation: `${pulseAnimation} 2s infinite`,
-      pointerEvents: 'none',
-      zIndex: -1,
-    },
-  }),
+    // Pulse animation
+    ...(pulse && !glow && {
+      position: 'relative',
+      '&::after': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        borderRadius: 'inherit',
+        backgroundColor: theme.palette.primary.main,
+        opacity: 0.1,
+        animation: `${pulseAnimation} 2s infinite`,
+        pointerEvents: 'none',
+        zIndex: -1,
+      },
+    }),
 
-  // Both glow and pulse
-  ...(glow && pulse && {
-    position: 'relative',
-    boxShadow: `0 0 20px 5px ${alpha(theme.palette.primary.main, 0.3)} !important`,
-    filter: 'brightness(1.05)',
-    '&::after': {
-      content: '""',
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      borderRadius: 'inherit',
-      backgroundColor: theme.palette.primary.main,
-      opacity: 0.1,
-      animation: `${pulseAnimation} 2s infinite`,
-      pointerEvents: 'none',
-      zIndex: -1,
-    },
-  }),
-}));
+    // Both glow and pulse
+    ...(glow && pulse && {
+      position: 'relative',
+      boxShadow: `0 0 20px 5px ${alpha(theme.palette.primary.main, 0.3)} !important`,
+      filter: 'brightness(1.05)',
+      '&::after': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        borderRadius: 'inherit',
+        backgroundColor: theme.palette.primary.main,
+        opacity: 0.1,
+        animation: `${pulseAnimation} 2s infinite`,
+        pointerEvents: 'none',
+        zIndex: -1,
+      },
+    }),
+  };
+});
 
+// Virtual Scrolling Hook
+const useVirtualScrolling = (
+  data: any[],
+  rowHeight: number,
+  containerHeight: number,
+  overscan: number = 5
+) => {
+  const [scrollTop, setScrollTop] = useState(0);
+  
+  const visibleItems = useMemo(() => {
+    const visibleHeight = containerHeight;
+    const startIndex = Math.floor(scrollTop / rowHeight);
+    const endIndex = Math.min(
+      data.length,
+      Math.ceil((scrollTop + visibleHeight) / rowHeight)
+    );
+    
+    const start = Math.max(0, startIndex - overscan);
+    const end = Math.min(data.length, endIndex + overscan);
+    
+    return {
+      startIndex: start,
+      endIndex: end,
+      items: data.slice(start, end),
+      totalHeight: data.length * rowHeight,
+      offsetY: start * rowHeight,
+    };
+  }, [data, rowHeight, containerHeight, scrollTop, overscan]);
+
+  const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
+    setScrollTop(e.currentTarget.scrollTop);
+  }, []);
+
+  return { visibleItems, handleScroll };
+};
+
+// Responsive Hook
+const useResponsive = (
+  columns: ColumnConfig[],
+  columnPriorities?: number[],
+  responsiveBreakpoints?: any
+) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
+  
+  const [hiddenColumns, setHiddenColumns] = useState<number[]>([]);
+  const [columnMenuAnchor, setColumnMenuAnchor] = useState<null | HTMLElement>(null);
+
+  useEffect(() => {
+    if (!columnPriorities) return;
+    
+    let columnsToHide: number[] = [];
+    
+    if (isMobile) {
+      // Hide lowest priority columns on mobile
+      columnsToHide = columnPriorities
+        .map((priority, index) => ({ priority, index }))
+        .sort((a, b) => b.priority - a.priority)
+        .slice(0, Math.floor(columns.length / 2))
+        .map(item => item.index);
+    } else if (isTablet) {
+      // Hide some columns on tablet
+      columnsToHide = columnPriorities
+        .map((priority, index) => ({ priority, index }))
+        .sort((a, b) => b.priority - a.priority)
+        .slice(0, Math.floor(columns.length / 3))
+        .map(item => item.index);
+    }
+    
+    setHiddenColumns(columnsToHide);
+  }, [isMobile, isTablet, columnPriorities, columns.length]);
+
+  const visibleColumns = columns.filter((_, index) => !hiddenColumns.includes(index));
+
+  return {
+    visibleColumns,
+    hiddenColumns,
+    isMobile,
+    columnMenuAnchor,
+    setColumnMenuAnchor,
+    setHiddenColumns,
+  };
+};
+
+// Enhanced Table Header Component
+const EnhancedTableHeader: React.FC<TableHeaderProps> = ({
+  columns,
+  sortable,
+  sortConfig,
+  onSortChange,
+  selectable,
+  selectedRows = [],
+  onSelectAll,
+  density,
+  stickyHeader,
+}) => {
+  const handleSort = (columnKey: string) => {
+    if (!sortable || !onSortChange) return;
+    
+    const direction = 
+      sortConfig?.key === columnKey && sortConfig.direction === 'asc' ? 'desc' : 'asc';
+    onSortChange(columnKey, direction);
+  };
+
+  const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!onSelectAll) return;
+    onSelectAll(event.target.checked);
+  };
+
+  return (
+    <TableHead>
+      <TableRow>
+        {selectable && (
+          <TableCell padding="checkbox">
+            <Checkbox
+              indeterminate={selectedRows.length > 0 && selectedRows.length < columns.length}
+              checked={selectedRows.length > 0}
+              onChange={handleSelectAll}
+              inputProps={{ 'aria-label': 'select all' }}
+            />
+          </TableCell>
+        )}
+        {columns.map((column) => (
+          <TableCell
+            key={column.key}
+            align={column.align || 'left'}
+            style={{ 
+              minWidth: column.minWidth,
+              width: column.width,
+            }}
+          >
+            {sortable && column.sortable !== false ? (
+              <TableSortLabel
+                active={sortConfig?.key === column.key}
+                direction={sortConfig?.key === column.key ? sortConfig.direction : 'asc'}
+                onClick={() => handleSort(column.key)}
+                data-testid="sort-indicator"
+              >
+                {column.label}
+              </TableSortLabel>
+            ) : (
+              column.label
+            )}
+          </TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
+  );
+};
+
+// Enhanced Table Body Component
+const EnhancedTableBody: React.FC<TableBodyProps> = ({
+  data,
+  columns,
+  selectedRows = [],
+  onRowClick,
+  onRowFocus,
+  onRowBlur,
+  onSelectionChange,
+  rowKeyExtractor,
+  density,
+  selectable,
+  hoverable,
+  renderRow,
+  renderCell,
+  virtualScrolling,
+  containerHeight,
+  rowHeight,
+  overscan = 5,
+}) => {
+  const getRowKey = (rowData: any, index: number) => {
+    return rowKeyExtractor ? rowKeyExtractor(rowData, index) : rowData.id || index;
+  };
+
+  const isRowSelected = (rowKey: string | number) => {
+    return selectedRows.includes(rowKey);
+  };
+
+  const handleRowSelection = (rowKey: string | number) => {
+    if (!onSelectionChange) return;
+    onSelectionChange(rowKey, !isRowSelected(rowKey));
+  };
+
+  const renderTableRow = (rowData: any, index: number, offsetY: number = 0) => {
+    const rowKey = getRowKey(rowData, index);
+    const selected = isRowSelected(rowKey);
+
+    if (renderRow) {
+      return renderRow(rowData, index, selected);
+    }
+
+    return (
+      <TableRow
+        key={rowKey}
+        selected={selected}
+        className={selected ? 'selected' : ''}
+        onClick={(event) => onRowClick?.(event, rowData)}
+        onFocus={(event) => onRowFocus?.(event, rowData)}
+        onBlur={(event) => onRowBlur?.(event, rowData)}
+        style={virtualScrolling ? { 
+          transform: `translateY(${offsetY}px)`,
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: rowHeight,
+        } : undefined}
+      >
+        {selectable && (
+          <TableCell padding="checkbox">
+            <Checkbox
+              checked={selected}
+              onChange={() => handleRowSelection(rowKey)}
+              inputProps={{ 'aria-label': `select row ${index}` }}
+            />
+          </TableCell>
+        )}
+        {columns.map((column) => {
+          const value = rowData[column.key];
+          return (
+            <TableCell key={column.key} align={column.align || 'left'}>
+              {renderCell 
+                ? renderCell(value, column, rowData, index)
+                : column.render 
+                ? column.render(value, rowData) 
+                : value
+              }
+            </TableCell>
+          );
+        })}
+      </TableRow>
+    );
+  };
+
+  if (virtualScrolling && containerHeight && rowHeight) {
+    const { visibleItems, handleScroll } = useVirtualScrolling(
+      data, 
+      rowHeight, 
+      typeof containerHeight === 'number' ? containerHeight : 400, 
+      overscan
+    );
+
+    return (
+      <Box
+        onScroll={handleScroll}
+        style={{
+          height: containerHeight,
+          overflow: 'auto',
+          position: 'relative',
+        }}
+      >
+        <TableBody
+          style={{
+            height: visibleItems.totalHeight,
+            position: 'relative',
+          }}
+        >
+          {visibleItems.items.map((rowData, index) => 
+            renderTableRow(rowData, visibleItems.startIndex + index, visibleItems.offsetY + index * rowHeight)
+          )}
+        </TableBody>
+      </Box>
+    );
+  }
+
+  return (
+    <TableBody>
+      {data.map((rowData, index) => renderTableRow(rowData, index))}
+    </TableBody>
+  );
+};
+
+// Main Table Component
 export const Table = React.forwardRef<HTMLTableElement, TableProps>(
   ({
+    // Basic props
     variant = 'default',
     glow = false,
     pulse = false,
     hoverable = false,
+    loading = false,
     children,
+    
+    // Advanced feature props
+    density = 'normal',
+    stickyHeader = false,
+    selectable = false,
+    selectedRows = [],
+    onSelectionChange,
+    rowKeyExtractor,
+    sortable = false,
+    sortConfig,
+    onSortChange,
+    columns,
+    data,
+    virtualScrolling = false,
+    rowHeight = 52,
+    overscan = 5,
+    responsive = false,
+    columnPriorities,
+    responsiveBreakpoints,
+    showColumnToggle = true,
+    containerHeight,
+    loadingComponent,
+    emptyStateComponent,
+    keyboardNavigation = false,
+    renderRow,
+    renderCell,
+    rowStyleConfig,
+    onRowClick,
+    onRowFocus,
+    onRowBlur,
+    
     ...props
   }, ref) => {
+    const theme = useTheme();
+    
+    // Use responsive hook if responsive mode is enabled
+    const {
+      visibleColumns,
+      hiddenColumns,
+      isMobile,
+      columnMenuAnchor,
+      setColumnMenuAnchor,
+      setHiddenColumns,
+    } = useResponsive(
+      columns || [],
+      responsive ? columnPriorities : undefined,
+      responsiveBreakpoints
+    );
+
+    // Handle selection changes
+    const handleSelectionChange = useCallback((rowKey: string | number, selected: boolean) => {
+      if (!onSelectionChange) return;
+      
+      let newSelection: (string | number)[];
+      if (selected) {
+        newSelection = [...selectedRows, rowKey];
+      } else {
+        newSelection = selectedRows.filter(key => key !== rowKey);
+      }
+      onSelectionChange(newSelection);
+    }, [selectedRows, onSelectionChange]);
+
+    const handleSelectAll = useCallback((selected: boolean) => {
+      if (!onSelectionChange || !data) return;
+      
+      if (selected) {
+        const allKeys = data.map((rowData, index) => 
+          rowKeyExtractor ? rowKeyExtractor(rowData, index) : rowData.id || index
+        );
+        onSelectionChange(allKeys);
+      } else {
+        onSelectionChange([]);
+      }
+    }, [data, onSelectionChange, rowKeyExtractor]);
+
+    // Loading state
+    if (loading) {
+      const loadingRows = Array.from({ length: 5 }, (_, index) => (
+        <TableRow key={index}>
+          {columns?.map((column) => (
+            <TableCell key={column.key}>
+              <Skeleton height={20} />
+            </TableCell>
+          ))}
+        </TableRow>
+      ));
+
+      return (
+        <StyledTableContainer>
+          <StyledTable
+            ref={ref}
+            customVariant={variant}
+            glow={glow}
+            pulse={pulse}
+            hoverable={hoverable}
+            density={density}
+            stickyHeader={stickyHeader}
+            {...props}
+          >
+            {columns && (
+              <EnhancedTableHeader
+                columns={responsive ? visibleColumns : columns}
+                sortable={sortable}
+                sortConfig={sortConfig}
+                onSortChange={onSortChange}
+                selectable={selectable}
+                selectedRows={selectedRows}
+                onSelectAll={handleSelectAll}
+                density={density}
+                stickyHeader={stickyHeader}
+              />
+            )}
+            <TableBody data-testid="table-loading">
+              {loadingComponent || loadingRows}
+            </TableBody>
+          </StyledTable>
+        </StyledTableContainer>
+      );
+    }
+
+    // Empty state
+    if (data && data.length === 0) {
+      return (
+        <StyledTableContainer>
+          <StyledTable
+            ref={ref}
+            customVariant={variant}
+            glow={glow}
+            pulse={pulse}
+            hoverable={hoverable}
+            density={density}
+            stickyHeader={stickyHeader}
+            {...props}
+          >
+            {columns && (
+              <EnhancedTableHeader
+                columns={responsive ? visibleColumns : columns}
+                sortable={sortable}
+                sortConfig={sortConfig}
+                onSortChange={onSortChange}
+                selectable={selectable}
+                selectedRows={selectedRows}
+                onSelectAll={handleSelectAll}
+                density={density}
+                stickyHeader={stickyHeader}
+              />
+            )}
+            <TableBody>
+              <TableRow>
+                <TableCell colSpan={(responsive ? visibleColumns : columns)?.length || 1} align="center">
+                  {emptyStateComponent || (
+                    <Box py={4} color="text.secondary">
+                      No data available
+                    </Box>
+                  )}
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </StyledTable>
+        </StyledTableContainer>
+      );
+    }
+
+    // Advanced table with columns and data
+    if (columns && data) {
+      const finalColumns = responsive ? visibleColumns : columns;
+      
+      return (
+        <Box position="relative">
+          <StyledTableContainer
+            virtualScrolling={virtualScrolling}
+            containerHeight={containerHeight}
+          >
+            <StyledTable
+              ref={ref}
+              customVariant={variant}
+              glow={glow}
+              pulse={pulse}
+              hoverable={hoverable}
+              density={density}
+              stickyHeader={stickyHeader}
+              {...props}
+            >
+              <EnhancedTableHeader
+                columns={finalColumns}
+                sortable={sortable}
+                sortConfig={sortConfig}
+                onSortChange={onSortChange}
+                selectable={selectable}
+                selectedRows={selectedRows}
+                onSelectAll={handleSelectAll}
+                density={density}
+                stickyHeader={stickyHeader}
+              />
+              <EnhancedTableBody
+                data={data}
+                columns={finalColumns}
+                selectedRows={selectedRows}
+                onRowClick={onRowClick}
+                onRowFocus={onRowFocus}
+                onRowBlur={onRowBlur}
+                onSelectionChange={handleSelectionChange}
+                rowKeyExtractor={rowKeyExtractor}
+                density={density}
+                selectable={selectable}
+                hoverable={hoverable}
+                renderRow={renderRow}
+                renderCell={renderCell}
+                virtualScrolling={virtualScrolling}
+                containerHeight={typeof containerHeight === 'number' ? containerHeight : undefined}
+                rowHeight={rowHeight}
+                overscan={overscan}
+              />
+            </StyledTable>
+          </StyledTableContainer>
+
+          {/* Column Toggle Menu for Responsive */}
+          {responsive && isMobile && showColumnToggle && hiddenColumns.length > 0 && (
+            <Box position="absolute" top={8} right={8}>
+              <IconButton
+                onClick={(event) => setColumnMenuAnchor(event.currentTarget)}
+                size="small"
+              >
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                anchorEl={columnMenuAnchor}
+                open={Boolean(columnMenuAnchor)}
+                onClose={() => setColumnMenuAnchor(null)}
+              >
+                {columns.map((column, index) => (
+                  <MenuItem key={column.key}>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={!hiddenColumns.includes(index)}
+                          onChange={(e) => {
+                            const newHidden = e.target.checked 
+                              ? hiddenColumns.filter(i => i !== index)
+                              : [...hiddenColumns, index];
+                            setHiddenColumns(newHidden);
+                          }}
+                          size="small"
+                        />
+                      }
+                      label={column.label}
+                    />
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          )}
+        </Box>
+      );
+    }
+
+    // Basic table (backward compatibility)
     return (
       <StyledTable
         ref={ref}
@@ -133,6 +781,8 @@ export const Table = React.forwardRef<HTMLTableElement, TableProps>(
         glow={glow}
         pulse={pulse}
         hoverable={hoverable}
+        density={density}
+        stickyHeader={stickyHeader}
         {...props}
       >
         {children}

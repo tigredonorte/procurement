@@ -198,20 +198,19 @@ export const WithGlowAndPulse: Story = {
 };
 
 // Real-world examples
-export const FileUpload: Story = {
-  render: () => {
-    const [progress, setProgress] = React.useState(0);
+const FileUploadComponent = () => {
+const [progress, setProgress] = React.useState(0);
     const [isUploading, setIsUploading] = React.useState(false);
 
     const startUpload = () => {
       setIsUploading(true);
       setProgress(0);
       
-      const interval = setInterval(() => {
+      const interval = window.setInterval(() => {
         setProgress((prev) => {
           if (prev >= 100) {
-            clearInterval(interval);
-            setTimeout(() => setIsUploading(false), 500);
+            window.clearInterval(interval);
+            window.setTimeout(() => setIsUploading(false), 500);
             return 100;
           }
           return prev + Math.random() * 15;
@@ -244,7 +243,10 @@ export const FileUpload: Story = {
         </Box>
       </Box>
     );
-  },
+};
+
+export const FileUpload: Story = {
+  render: () => <FileUploadComponent />,
 };
 
 export const SkillLevels: Story = {

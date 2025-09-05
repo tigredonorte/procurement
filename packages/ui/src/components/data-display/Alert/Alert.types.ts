@@ -5,7 +5,7 @@ export interface AlertProps extends Omit<MuiAlertProps, 'variant' | 'color'> {
   /**
    * The variant of the alert
    */
-  variant?: 'info' | 'success' | 'warning' | 'danger' | 'glass';
+  variant?: 'info' | 'success' | 'warning' | 'danger' | 'glass' | 'gradient';
   
   /**
    * The color of the alert (when not using variant-specific colors)

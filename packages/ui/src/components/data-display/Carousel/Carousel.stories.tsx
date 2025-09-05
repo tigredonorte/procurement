@@ -1,8 +1,9 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import { Box, Typography, Button, Card, CardContent } from '@mui/material';
+
 import { Carousel, CarouselIndicators, CarouselArrows, CarouselThumbnails } from './Carousel';
 import { CarouselItem } from './Carousel.types';
-import { Box, Typography, Button, Card, CardContent } from '@mui/material';
 
 const meta: Meta<typeof Carousel> = {
   title: 'Data Display/Carousel',
@@ -355,9 +356,8 @@ export const WithEffects: Story = {
   },
 };
 
-export const Interactive: Story = {
-  render: () => {
-    const [clickedItem, setClickedItem] = React.useState<string>('');
+const InteractiveComponent = () => {
+const [clickedItem, setClickedItem] = React.useState<string>('');
     
     return (
       <Box>
@@ -375,7 +375,10 @@ export const Interactive: Story = {
         )}
       </Box>
     );
-  },
+};
+
+export const Interactive: Story = {
+  render: () => <InteractiveComponent />,
 };
 
 export const Loading: Story = {

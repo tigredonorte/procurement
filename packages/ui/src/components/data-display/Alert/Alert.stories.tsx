@@ -179,7 +179,7 @@ export const Interactive: Story = {
         title="Interactive Demo"
         glow
         closable
-        onClose={() => console.log('Alert closed')}
+        onClose={() => { /** do nothing */}}
       >
         Click the close button to dismiss this alert.
       </Alert>

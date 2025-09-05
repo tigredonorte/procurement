@@ -141,10 +141,10 @@ export const HoverCard = React.forwardRef<HTMLDivElement, HoverCardProps>(
 
     const handleMouseEnter = (event: React.MouseEvent<HTMLElement>) => {
       if (exitTimeoutRef.current) {
-        clearTimeout(exitTimeoutRef.current);
+        window.clearTimeout(exitTimeoutRef.current);
       }
       
-      enterTimeoutRef.current = setTimeout(() => {
+      enterTimeoutRef.current = window.setTimeout(() => {
         setAnchorEl(event.currentTarget);
         setIsOpen(true);
       }, enterDelay);
@@ -152,10 +152,10 @@ export const HoverCard = React.forwardRef<HTMLDivElement, HoverCardProps>(
 
     const handleMouseLeave = () => {
       if (enterTimeoutRef.current) {
-        clearTimeout(enterTimeoutRef.current);
+        window.clearTimeout(enterTimeoutRef.current);
       }
       
-      exitTimeoutRef.current = setTimeout(() => {
+      exitTimeoutRef.current = window.setTimeout(() => {
         setIsOpen(false);
         setAnchorEl(null);
       }, exitDelay);
@@ -163,12 +163,12 @@ export const HoverCard = React.forwardRef<HTMLDivElement, HoverCardProps>(
 
     const handlePopoverMouseEnter = () => {
       if (exitTimeoutRef.current) {
-        clearTimeout(exitTimeoutRef.current);
+        window.clearTimeout(exitTimeoutRef.current);
       }
     };
 
     const handlePopoverMouseLeave = () => {
-      exitTimeoutRef.current = setTimeout(() => {
+      exitTimeoutRef.current = window.setTimeout(() => {
         setIsOpen(false);
         setAnchorEl(null);
       }, exitDelay);
@@ -177,10 +177,10 @@ export const HoverCard = React.forwardRef<HTMLDivElement, HoverCardProps>(
     React.useEffect(() => {
       return () => {
         if (enterTimeoutRef.current) {
-          clearTimeout(enterTimeoutRef.current);
+          window.clearTimeout(enterTimeoutRef.current);
         }
         if (exitTimeoutRef.current) {
-          clearTimeout(exitTimeoutRef.current);
+          window.clearTimeout(exitTimeoutRef.current);
         }
       };
     }, []);

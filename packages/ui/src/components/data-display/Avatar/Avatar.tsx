@@ -1,8 +1,7 @@
 import React from 'react';
 import { Avatar as MuiAvatar, Badge, alpha, keyframes } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import { Person } from '@mui/icons-material';
-
+import { styled } from '@mui/material/styles';
 import { AvatarProps, AvatarSize, AvatarStatus } from './Avatar.types';
 
 // Define pulse animation
@@ -21,8 +20,8 @@ const pulseAnimation = keyframes`
   }
 `;
 
-const getColorFromTheme = (theme: any, color: string) => {
-  const colorMap: Record<string, any> = {
+const getColorFromTheme = (theme: { palette: { primary: { main: string; light?: string; dark?: string }; secondary: { main: string; light?: string; dark?: string }; success: { main: string; light?: string; dark?: string }; warning: { main: string; light?: string; dark?: string }; error: { main: string; light?: string; dark?: string }; grey: { [key: number]: string } } }, color: string) => {
+  const colorMap: Record<string, { main: string; light?: string; dark?: string }> = {
     primary: theme.palette.primary,
     secondary: theme.palette.secondary,
     success: theme.palette.success,
@@ -47,7 +46,7 @@ const getSizeStyles = (size: AvatarSize) => {
   return sizeMap[size] || sizeMap.md;
 };
 
-const getStatusColor = (status: AvatarStatus, theme: any) => {
+const getStatusColor = (status: AvatarStatus, theme: { palette: { success: { main: string }; warning: { main: string }; grey: { [key: number]: string } } }) => {
   const statusColorMap: Record<AvatarStatus, string> = {
     online: theme.palette.success.main,
     offline: theme.palette.grey[500],

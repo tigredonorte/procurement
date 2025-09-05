@@ -32,6 +32,7 @@ import {
   useTheme,
   alpha,
 } from '@mui/material';
+
 import { ChartProps, ChartSeries } from './Chart.types';
 
 export const Chart: React.FC<ChartProps> = ({
