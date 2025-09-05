@@ -16,19 +16,20 @@ These components extend the core Material UI library with specialized functional
 interface StackedModalProps {
   open: boolean;
   onClose: () => void;
-  variant?: 'slide' | 'fade' | 'zoom';
+  glass: boolean;
   navigationTitle?: string;
-  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
   children: React.ReactNode;
 }
 ```
 
 **Features**:
+
 - Nested modal support with back navigation
 - Smooth transitions between modal states
 - Focus management and trap
 - Keyboard navigation support
 - Mobile-responsive sliding panels
+- on small screens the active modal always ocuppies 100% of size. On tablets it occupies 90%, 80% on desktop, 70% on very large screens. When you open a modal inside of current modal, apply a class secondary-modal on it. The highest level modal has a class primary-modal. The rule of 100, 90,80,70 applies only on primary-modal. Secondary modal must ocuppy 100%. Secondary modal cannot have glass effect. Primary modal can have glass effect to see secondary modal or current page. If a third level modal opens, the primary becomes secondary, the new one is the primary and the secondary is removed from ui for performance. It applies for any new level. When modal becomes secondary is expected an expand effect that transforms it from current size to the new size. When a primary is closed, if there is a secondary, secondary becomes primary and you render the next level again (if there is next level), you render it as secondary. When transitioning from secondary to primary, or from primary to secondary there is a expand/contract effect. Actions on this modal is located on header alignet to right. This modal have a close button aligned to left. The title will be close to this close modal, also aligned to left
 
 ### AnimatedIcon Component
 
@@ -44,6 +45,7 @@ interface AnimatedIconProps {
 ```
 
 **Animation Variants**:
+
 - `processing`: Rotating gear/spinner
 - `success`: Check mark appearance
 - `error`: X mark with shake
@@ -65,6 +67,7 @@ interface LottieAnimationProps {
 ```
 
 **Use Cases**:
+
 - Onboarding animations
 - Empty state illustrations
 - Success/error feedback
@@ -95,6 +98,7 @@ interface TutorialOverlayProps {
 ```
 
 **Features**:
+
 - Spotlight effect on target elements
 - Step navigation with progress
 - Skip and restart options
@@ -134,6 +138,7 @@ interface AddressDetails {
 ```
 
 **Features**:
+
 - Real-time address suggestions
 - Address component parsing
 - Coordinate extraction
@@ -159,6 +164,7 @@ interface PhoneInputProps {
 ```
 
 **Features**:
+
 - Country code selector
 - Phone number formatting
 - International validation
@@ -183,6 +189,7 @@ interface CodeEditorProps {
 ```
 
 **Features**:
+
 - Syntax highlighting
 - Auto-completion
 - Error highlighting
@@ -205,6 +212,7 @@ interface MapPreviewProps {
 ```
 
 **Features**:
+
 - Google Maps integration
 - Marker placement
 - Draggable markers
@@ -231,6 +239,7 @@ interface TimingDiagramProps {
 ```
 
 **Features**:
+
 - Waterfall visualization
 - Timing breakdowns
 - Interactive tooltips
@@ -255,6 +264,7 @@ interface PasswordStrengthProps {
 ```
 
 **Features**:
+
 - Strength meter
 - Requirement checklist
 - Real-time validation
@@ -286,6 +296,7 @@ interface TimelineProps {
 ```
 
 **Features**:
+
 - Chronological display
 - Interactive items
 - Expandable details
@@ -316,6 +327,7 @@ interface Command {
 ```
 
 **Features**:
+
 - Fuzzy search
 - Keyboard shortcuts
 - Category grouping
@@ -330,27 +342,35 @@ interface Command {
 
 ```typescript
 interface GlowProps {
-  glow?: boolean | {
-    color?: ColorValue;
-    intensity?: 'subtle' | 'medium' | 'strong';
-    animate?: boolean;
-  };
+  glow?:
+    | boolean
+    | {
+        color?: ColorValue;
+        intensity?: 'subtle' | 'medium' | 'strong';
+        animate?: boolean;
+      };
 }
 ```
 
 **Implementation**:
+
 ```scss
 .glow {
   box-shadow: 0 0 20px rgba(primary-color, 0.4);
-  
+
   &.animate {
     animation: pulse-glow 2s infinite;
   }
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(primary-color, 0.4); }
-  50% { box-shadow: 0 0 30px rgba(primary-color, 0.6); }
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(primary-color, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(primary-color, 0.6);
+  }
 }
 ```
 
@@ -360,19 +380,22 @@ interface GlowProps {
 
 ```typescript
 interface PulseProps {
-  pulse?: boolean | {
-    color?: ColorValue;
-    duration?: number;
-    scale?: number;
-  };
+  pulse?:
+    | boolean
+    | {
+        color?: ColorValue;
+        duration?: number;
+        scale?: number;
+      };
 }
 ```
 
 **Implementation**:
+
 ```scss
 .pulse {
   position: relative;
-  
+
   &::before {
     content: '';
     position: absolute;

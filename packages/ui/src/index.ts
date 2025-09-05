@@ -41,5 +41,7 @@ export * from './components/Paragraph';
 export * from './components/Code';
 export * from './components/Blockquote';
 
-export const uiReady = true;
+// Enhanced Components
+export * from './components/enhanced/StackedModal';
 
+export const uiReady = true;

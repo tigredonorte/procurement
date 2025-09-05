@@ -1,0 +1,1257 @@
+import type { Meta, StoryObj } from '@storybook/react';
+import React, { useState, useEffect } from 'react';
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  Stack,
+  Paper,
+  Stepper,
+  Step,
+  StepLabel,
+  List,
+  ListItem,
+  ListItemText,
+  Switch,
+  FormControlLabel,
+  Alert,
+  Chip,
+  Avatar,
+  Card,
+  CardContent,
+  CardActions,
+  Grid,
+  Divider,
+  IconButton,
+  LinearProgress,
+  Tab,
+  Tabs,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  useTheme,
+  useMediaQuery,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+} from '@mui/material';
+import {
+  Add as AddIcon,
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+  Save as SaveIcon,
+  Settings as SettingsIcon,
+  Info as InfoIcon,
+  CheckCircle as CheckCircleIcon,
+  CloudUpload as CloudUploadIcon,
+  Download as DownloadIcon,
+  Search as SearchIcon,
+  FilterList as FilterListIcon,
+  Share as ShareIcon,
+  MoreVert as MoreVertIcon,
+} from '@mui/icons-material';
+
+import {
+  StackedModal,
+  ModalStackProvider,
+  useModalStack,
+  ModalContent,
+  ModalFooter,
+} from './StackedModal';
+
+const meta: Meta<typeof StackedModal> = {
+  title: 'Enhanced/StackedModal',
+  component: StackedModal,
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      description: {
+        component:
+          "A sophisticated nested modal system inspired by Google Tag Manager's UI with glass morphism, smart transitions, and responsive design.",
+      },
+    },
+  },
+  decorators: [
+    (Story) => (
+      <ModalStackProvider>
+        <Box sx={{ p: 3, minHeight: '100vh', bgcolor: 'grey.50' }}>
+          <Story />
+        </Box>
+      </ModalStackProvider>
+    ),
+  ],
+  tags: ['autodocs'],
+};
+
+export default meta;
+type Story = StoryObj<typeof StackedModal>;
+
+// Basic usage story
+export const Default: Story = {
+  render: () => {
+    const BasicModal = () => {
+      const [open, setOpen] = useState(false);
+
+      return (
+        <>
+          <Button variant="contained" onClick={() => setOpen(true)}>
+            Open Basic Modal
+          </Button>
+          <StackedModal
+            open={open}
+            onClose={() => setOpen(false)}
+            navigationTitle="Basic Modal"
+            actions={
+              <Button variant="contained" size="small">
+                Save Changes
+              </Button>
+            }
+          >
+            <ModalContent>
+              <Typography variant="h5" gutterBottom>
+                Welcome to StackedModal
+              </Typography>
+              <Typography paragraph>
+                This is a basic implementation of the StackedModal component. It provides a clean
+                and modern interface for displaying content.
+              </Typography>
+              <TextField fullWidth label="Enter your name" variant="outlined" margin="normal" />
+            </ModalContent>
+          </StackedModal>
+        </>
+      );
+    };
+
+    return <BasicModal />;
+  },
+};
+
+// Glass morphism effect
+export const GlassMorphism: Story = {
+  render: () => {
+    const GlassModal = () => {
+      const [open, setOpen] = useState(false);
+
+      return (
+        <>
+          <Box
+            sx={{
+              p: 4,
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              borderRadius: 2,
+            }}
+          >
+            <Typography variant="h4" color="white" gutterBottom>
+              Beautiful Background
+            </Typography>
+            <Typography color="white" paragraph>
+              This colorful background will be visible through the glass effect
+            </Typography>
+            <Button
+              variant="contained"
+              onClick={() => setOpen(true)}
+              sx={{ bgcolor: 'white', color: 'primary.main' }}
+            >
+              Open Glass Modal
+            </Button>
+          </Box>
+
+          <StackedModal
+            open={open}
+            onClose={() => setOpen(false)}
+            glass={true}
+            navigationTitle="Glass Morphism Modal"
+          >
+            <ModalContent>
+              <Typography variant="h5" gutterBottom>
+                Glass Effect Active
+              </Typography>
+              <Typography paragraph>
+                Notice the beautiful blur effect that reveals the content behind the modal. This
+                creates a modern, sophisticated UI that maintains context while focusing attention.
+              </Typography>
+              <Alert severity="info">
+                The glass effect automatically adjusts based on the theme and provides excellent
+                readability while maintaining visual appeal.
+              </Alert>
+            </ModalContent>
+            <ModalFooter>
+              <Button onClick={() => setOpen(false)}>Close</Button>
+              <Button variant="contained">Confirm</Button>
+            </ModalFooter>
+          </StackedModal>
+        </>
+      );
+    };
+
+    return <GlassModal />;
+  },
+};
+
+// Multi-level stacking demonstration
+export const MultiLevelStacking: Story = {
+  render: () => {
+    const StackingDemo = () => {
+      const [firstOpen, setFirstOpen] = useState(false);
+      const [secondOpen, setSecondOpen] = useState(false);
+      const [thirdOpen, setThirdOpen] = useState(false);
+      const [fourthOpen, setFourthOpen] = useState(false);
+
+      return (
+        <>
+          <Card>
+            <CardContent>
+              <Typography variant="h5" gutterBottom>
+                Multi-Level Modal Stacking
+              </Typography>
+              <Typography paragraph color="text.secondary">
+                This demonstrates how modals stack and transition smoothly between states. Each
+                modal becomes secondary when a new one opens.
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button
+                variant="contained"
+                onClick={() => setFirstOpen(true)}
+                startIcon={<AddIcon />}
+              >
+                Start Workflow
+              </Button>
+            </CardActions>
+          </Card>
+
+          {/* Level 1 Modal */}
+          <StackedModal
+            open={firstOpen}
+            onClose={() => setFirstOpen(false)}
+            glass={true}
+            navigationTitle="Step 1: Choose Project"
+            modalId="modal-level-1"
+          >
+            <ModalContent>
+              <Typography variant="h5" gutterBottom>
+                Select Project Type
+              </Typography>
+              <Grid container spacing={2} sx={{ mt: 2 }}>
+                <Grid item xs={12} md={6}>
+                  <Card
+                    sx={{ cursor: 'pointer', '&:hover': { boxShadow: 4 } }}
+                    onClick={() => setSecondOpen(true)}
+                  >
+                    <CardContent>
+                      <Typography variant="h6">Web Application</Typography>
+                      <Typography color="text.secondary">
+                        Create a responsive web application
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Card
+                    sx={{ cursor: 'pointer', '&:hover': { boxShadow: 4 } }}
+                    onClick={() => setSecondOpen(true)}
+                  >
+                    <CardContent>
+                      <Typography variant="h6">Mobile App</Typography>
+                      <Typography color="text.secondary">
+                        Build a native mobile application
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              </Grid>
+            </ModalContent>
+          </StackedModal>
+
+          {/* Level 2 Modal */}
+          <StackedModal
+            open={secondOpen}
+            onClose={() => setSecondOpen(false)}
+            navigationTitle="Step 2: Configuration"
+            modalId="modal-level-2"
+            actions={
+              <Button variant="contained" size="small" onClick={() => setThirdOpen(true)}>
+                Next Step
+              </Button>
+            }
+          >
+            <ModalContent>
+              <Typography variant="h5" gutterBottom>
+                Configure Your Project
+              </Typography>
+              <Stack spacing={3} sx={{ mt: 3 }}>
+                <TextField fullWidth label="Project Name" defaultValue="My Awesome Project" />
+                <FormControl fullWidth>
+                  <InputLabel>Framework</InputLabel>
+                  <Select label="Framework" defaultValue="react">
+                    <MenuItem value="react">React</MenuItem>
+                    <MenuItem value="vue">Vue.js</MenuItem>
+                    <MenuItem value="angular">Angular</MenuItem>
+                  </Select>
+                </FormControl>
+                <FormControlLabel control={<Switch defaultChecked />} label="Enable TypeScript" />
+                <FormControlLabel
+                  control={<Switch defaultChecked />}
+                  label="Include Testing Framework"
+                />
+              </Stack>
+            </ModalContent>
+          </StackedModal>
+
+          {/* Level 3 Modal */}
+          <StackedModal
+            open={thirdOpen}
+            onClose={() => setThirdOpen(false)}
+            navigationTitle="Step 3: Features"
+            modalId="modal-level-3"
+            actions={
+              <Button variant="contained" size="small" onClick={() => setFourthOpen(true)}>
+                Add Dependencies
+              </Button>
+            }
+          >
+            <ModalContent>
+              <Typography variant="h5" gutterBottom>
+                Select Features
+              </Typography>
+              <List>
+                <ListItem>
+                  <ListItemText primary="Authentication" secondary="User login and registration" />
+                  <Switch defaultChecked />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary="Database" secondary="PostgreSQL integration" />
+                  <Switch defaultChecked />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary="API" secondary="RESTful API endpoints" />
+                  <Switch />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary="Real-time" secondary="WebSocket support" />
+                  <Switch />
+                </ListItem>
+              </List>
+            </ModalContent>
+          </StackedModal>
+
+          {/* Level 4 Modal */}
+          <StackedModal
+            open={fourthOpen}
+            onClose={() => setFourthOpen(false)}
+            navigationTitle="Step 4: Review"
+            modalId="modal-level-4"
+            actions={
+              <Stack direction="row" spacing={1}>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  onClick={() => {
+                    setFourthOpen(false);
+                    setThirdOpen(false);
+                    setSecondOpen(false);
+                    setFirstOpen(false);
+                  }}
+                >
+                  Cancel All
+                </Button>
+                <Button
+                  variant="contained"
+                  color="success"
+                  size="small"
+                  startIcon={<CheckCircleIcon />}
+                  onClick={() => {
+                    window.alert('Project created successfully!');
+                    setFourthOpen(false);
+                    setThirdOpen(false);
+                    setSecondOpen(false);
+                    setFirstOpen(false);
+                  }}
+                >
+                  Create Project
+                </Button>
+              </Stack>
+            }
+          >
+            <ModalContent>
+              <Alert severity="success" sx={{ mb: 3 }}>
+                Your project is ready to be created!
+              </Alert>
+              <Typography variant="h5" gutterBottom>
+                Project Summary
+              </Typography>
+              <Paper sx={{ p: 2, bgcolor: 'grey.50' }}>
+                <Stack spacing={2}>
+                  <Box>
+                    <Typography variant="caption" color="text.secondary">
+                      Project Type
+                    </Typography>
+                    <Typography>Web Application</Typography>
+                  </Box>
+                  <Divider />
+                  <Box>
+                    <Typography variant="caption" color="text.secondary">
+                      Framework
+                    </Typography>
+                    <Typography>React with TypeScript</Typography>
+                  </Box>
+                  <Divider />
+                  <Box>
+                    <Typography variant="caption" color="text.secondary">
+                      Features
+                    </Typography>
+                    <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
+                      <Chip label="Authentication" size="small" />
+                      <Chip label="Database" size="small" />
+                      <Chip label="Testing" size="small" />
+                    </Stack>
+                  </Box>
+                </Stack>
+              </Paper>
+              <Typography variant="caption" color="text.secondary" sx={{ mt: 2, display: 'block' }}>
+                Note: Only the current and previous modals are rendered for optimal performance.
+              </Typography>
+            </ModalContent>
+          </StackedModal>
+        </>
+      );
+    };
+
+    return <StackingDemo />;
+  },
+};
+
+// Mobile responsive bottom sheet
+export const MobileResponsive: Story = {
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
+  render: () => {
+    const MobileDemo = () => {
+      const [open, setOpen] = useState(false);
+      const theme = useTheme();
+      const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+      return (
+        <>
+          <Alert severity="info" sx={{ mb: 2 }}>
+            {isMobile
+              ? 'Mobile view active - Modal will slide from bottom'
+              : 'Desktop view - Switch to mobile viewport to see bottom sheet behavior'}
+          </Alert>
+          <Button
+            variant="contained"
+            fullWidth={isMobile}
+            onClick={() => setOpen(true)}
+            startIcon={<AddIcon />}
+          >
+            Open Mobile Modal
+          </Button>
+
+          <StackedModal
+            open={open}
+            onClose={() => setOpen(false)}
+            navigationTitle="Mobile Optimized"
+          >
+            <ModalContent>
+              <Typography variant="h5" gutterBottom>
+                Mobile-First Design
+              </Typography>
+              <Typography paragraph>
+                On mobile devices, the modal slides up from the bottom like a native mobile sheet.
+                On desktop, it fades in with responsive sizing.
+              </Typography>
+              <Stack spacing={2}>
+                <Button variant="outlined" fullWidth startIcon={<CloudUploadIcon />}>
+                  Upload File
+                </Button>
+                <Button variant="outlined" fullWidth startIcon={<DownloadIcon />}>
+                  Download Report
+                </Button>
+                <Button variant="outlined" fullWidth startIcon={<ShareIcon />}>
+                  Share Document
+                </Button>
+              </Stack>
+            </ModalContent>
+            <ModalFooter>
+              <Button fullWidth onClick={() => setOpen(false)}>
+                Close
+              </Button>
+            </ModalFooter>
+          </StackedModal>
+        </>
+      );
+    };
+
+    return <MobileDemo />;
+  },
+};
+
+// Async content with loading states
+export const AsyncContentLoading: Story = {
+  render: () => {
+    const AsyncModal = () => {
+      const [open, setOpen] = useState(false);
+      const [loading, setLoading] = useState(false);
+      const [data, setData] = useState<{
+        users: Array<{ id: number; name: string; role: string; status: string }>;
+      } | null>(null);
+
+      const loadData = () => {
+        setOpen(true);
+        setLoading(true);
+        setData(null);
+
+        // Simulate API call
+        window.setTimeout(() => {
+          setData({
+            users: [
+              { id: 1, name: 'John Doe', role: 'Admin', status: 'Active' },
+              { id: 2, name: 'Jane Smith', role: 'User', status: 'Active' },
+              { id: 3, name: 'Bob Johnson', role: 'User', status: 'Inactive' },
+              { id: 4, name: 'Alice Brown', role: 'Moderator', status: 'Active' },
+            ],
+          });
+          setLoading(false);
+        }, 2000);
+      };
+
+      return (
+        <>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                Async Data Loading
+              </Typography>
+              <Typography color="text.secondary">
+                Modal with skeleton loading state while fetching data
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button variant="contained" onClick={loadData}>
+                Load User Data
+              </Button>
+            </CardActions>
+          </Card>
+
+          <StackedModal
+            open={open}
+            onClose={() => setOpen(false)}
+            navigationTitle="User Management"
+            loading={loading}
+            loadingText="Fetching user data..."
+            actions={
+              !loading && (
+                <Button variant="contained" size="small" startIcon={<AddIcon />}>
+                  Add User
+                </Button>
+              )
+            }
+          >
+            {!loading && data && (
+              <Box>
+                <TableContainer>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Name</TableCell>
+                        <TableCell>Role</TableCell>
+                        <TableCell>Status</TableCell>
+                        <TableCell>Actions</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {data.users.map((user) => (
+                        <TableRow key={user.id}>
+                          <TableCell>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                              <Avatar sx={{ width: 32, height: 32 }}>{user.name.charAt(0)}</Avatar>
+                              {user.name}
+                            </Box>
+                          </TableCell>
+                          <TableCell>
+                            <Chip
+                              label={user.role}
+                              size="small"
+                              color={user.role === 'Admin' ? 'primary' : 'default'}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Chip
+                              label={user.status}
+                              size="small"
+                              color={user.status === 'Active' ? 'success' : 'default'}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <IconButton size="small">
+                              <EditIcon fontSize="small" />
+                            </IconButton>
+                            <IconButton size="small">
+                              <DeleteIcon fontSize="small" />
+                            </IconButton>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Box>
+            )}
+          </StackedModal>
+        </>
+      );
+    };
+
+    return <AsyncModal />;
+  },
+};
+
+// Custom actions and buttons
+export const CustomActions: Story = {
+  render: () => {
+    const CustomActionsModal = () => {
+      const [open, setOpen] = useState(false);
+      const [progress, setProgress] = useState(0);
+
+      useEffect(() => {
+        if (open && progress < 100) {
+          const timer = window.setTimeout(() => {
+            setProgress((prev) => Math.min(prev + 10, 100));
+          }, 500);
+          return () => window.clearTimeout(timer);
+        }
+      }, [open, progress]);
+
+      return (
+        <>
+          <Button
+            variant="contained"
+            onClick={() => {
+              setOpen(true);
+              setProgress(0);
+            }}
+            startIcon={<SettingsIcon />}
+          >
+            Open Settings Modal
+          </Button>
+
+          <StackedModal
+            open={open}
+            onClose={() => setOpen(false)}
+            navigationTitle="Advanced Settings"
+            actions={
+              <Stack direction="row" spacing={1}>
+                <IconButton size="small">
+                  <SearchIcon />
+                </IconButton>
+                <IconButton size="small">
+                  <FilterListIcon />
+                </IconButton>
+                <IconButton size="small">
+                  <MoreVertIcon />
+                </IconButton>
+                <Divider orientation="vertical" flexItem />
+                <Button variant="outlined" size="small" startIcon={<InfoIcon />}>
+                  Help
+                </Button>
+                <Button
+                  variant="contained"
+                  size="small"
+                  color="success"
+                  startIcon={<SaveIcon />}
+                  disabled={progress < 100}
+                >
+                  Save
+                </Button>
+              </Stack>
+            }
+          >
+            <ModalContent>
+              <Tabs value={0}>
+                <Tab label="General" />
+                <Tab label="Privacy" />
+                <Tab label="Notifications" />
+                <Tab label="Advanced" />
+              </Tabs>
+
+              <Box sx={{ mt: 3 }}>
+                <Typography variant="h6" gutterBottom>
+                  General Settings
+                </Typography>
+
+                <Stack spacing={3}>
+                  <TextField fullWidth label="Display Name" defaultValue="John Doe" />
+                  <TextField
+                    fullWidth
+                    label="Email"
+                    type="email"
+                    defaultValue="john.doe@example.com"
+                  />
+                  <FormControlLabel control={<Switch defaultChecked />} label="Enable dark mode" />
+                  <FormControlLabel
+                    control={<Switch defaultChecked />}
+                    label="Show notifications"
+                  />
+
+                  <Box>
+                    <Typography variant="body2" color="text.secondary" gutterBottom>
+                      Profile completion: {progress}%
+                    </Typography>
+                    <LinearProgress variant="determinate" value={progress} />
+                  </Box>
+                </Stack>
+              </Box>
+            </ModalContent>
+          </StackedModal>
+        </>
+      );
+    };
+
+    return <CustomActionsModal />;
+  },
+};
+
+// Complex workflow example (multi-step form)
+export const ComplexWorkflow: Story = {
+  render: () => {
+    const WorkflowModal = () => {
+      const [open, setOpen] = useState(false);
+      const [activeStep, setActiveStep] = useState(0);
+      const [nestedOpen, setNestedOpen] = useState(false);
+
+      const steps = ['Basic Info', 'Address', 'Payment', 'Review'];
+
+      const handleNext = () => {
+        setActiveStep((prev) => prev + 1);
+      };
+
+      const handleBack = () => {
+        setActiveStep((prev) => prev - 1);
+      };
+
+      const handleReset = () => {
+        setActiveStep(0);
+      };
+
+      return (
+        <>
+          <Card>
+            <CardContent>
+              <Typography variant="h5" gutterBottom>
+                Multi-Step Registration
+              </Typography>
+              <Typography color="text.secondary" paragraph>
+                Complex workflow with nested modals and step-by-step process
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button
+                variant="contained"
+                size="large"
+                onClick={() => setOpen(true)}
+                startIcon={<AddIcon />}
+              >
+                Start Registration
+              </Button>
+            </CardActions>
+          </Card>
+
+          <StackedModal
+            open={open}
+            onClose={() => {
+              setOpen(false);
+              handleReset();
+            }}
+            navigationTitle="User Registration"
+            modalId="workflow-main"
+            actions={
+              activeStep === steps.length ? (
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={() => {
+                    setOpen(false);
+                    handleReset();
+                  }}
+                >
+                  Complete
+                </Button>
+              ) : (
+                <Typography variant="body2" color="text.secondary">
+                  Step {activeStep + 1} of {steps.length}
+                </Typography>
+              )
+            }
+          >
+            <ModalContent>
+              <Stepper activeStep={activeStep} sx={{ mb: 4 }}>
+                {steps.map((label) => (
+                  <Step key={label}>
+                    <StepLabel>{label}</StepLabel>
+                  </Step>
+                ))}
+              </Stepper>
+
+              {activeStep === steps.length ? (
+                <Box sx={{ textAlign: 'center', py: 4 }}>
+                  <CheckCircleIcon sx={{ fontSize: 64, color: 'success.main', mb: 2 }} />
+                  <Typography variant="h5" gutterBottom>
+                    Registration Complete!
+                  </Typography>
+                  <Typography color="text.secondary">
+                    Your account has been successfully created.
+                  </Typography>
+                </Box>
+              ) : (
+                <>
+                  <Box sx={{ mb: 4 }}>
+                    {activeStep === 0 && (
+                      <Stack spacing={2}>
+                        <Typography variant="h6">Basic Information</Typography>
+                        <TextField fullWidth label="First Name" />
+                        <TextField fullWidth label="Last Name" />
+                        <TextField fullWidth label="Email" type="email" />
+                        <TextField fullWidth label="Phone" />
+                        <Button variant="outlined" onClick={() => setNestedOpen(true)}>
+                          Add Additional Contact
+                        </Button>
+                      </Stack>
+                    )}
+
+                    {activeStep === 1 && (
+                      <Stack spacing={2}>
+                        <Typography variant="h6">Address Information</Typography>
+                        <TextField fullWidth label="Street Address" />
+                        <TextField fullWidth label="City" />
+                        <Grid container spacing={2}>
+                          <Grid item xs={6}>
+                            <TextField fullWidth label="State" />
+                          </Grid>
+                          <Grid item xs={6}>
+                            <TextField fullWidth label="ZIP Code" />
+                          </Grid>
+                        </Grid>
+                        <TextField fullWidth label="Country" />
+                      </Stack>
+                    )}
+
+                    {activeStep === 2 && (
+                      <Stack spacing={2}>
+                        <Typography variant="h6">Payment Information</Typography>
+                        <TextField fullWidth label="Card Number" />
+                        <TextField fullWidth label="Cardholder Name" />
+                        <Grid container spacing={2}>
+                          <Grid item xs={6}>
+                            <TextField fullWidth label="Expiry Date" placeholder="MM/YY" />
+                          </Grid>
+                          <Grid item xs={6}>
+                            <TextField fullWidth label="CVV" />
+                          </Grid>
+                        </Grid>
+                        <FormControlLabel
+                          control={<Switch />}
+                          label="Save payment method for future use"
+                        />
+                      </Stack>
+                    )}
+
+                    {activeStep === 3 && (
+                      <Stack spacing={2}>
+                        <Typography variant="h6">Review Your Information</Typography>
+                        <Paper sx={{ p: 2, bgcolor: 'grey.50' }}>
+                          <Typography variant="subtitle2" gutterBottom>
+                            Personal Details
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            John Doe - john.doe@example.com
+                          </Typography>
+                        </Paper>
+                        <Paper sx={{ p: 2, bgcolor: 'grey.50' }}>
+                          <Typography variant="subtitle2" gutterBottom>
+                            Address
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            123 Main St, New York, NY 10001
+                          </Typography>
+                        </Paper>
+                        <Paper sx={{ p: 2, bgcolor: 'grey.50' }}>
+                          <Typography variant="subtitle2" gutterBottom>
+                            Payment Method
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            Card ending in 1234
+                          </Typography>
+                        </Paper>
+                        <FormControlLabel
+                          control={<Switch defaultChecked />}
+                          label="I agree to the terms and conditions"
+                        />
+                      </Stack>
+                    )}
+                  </Box>
+
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Button disabled={activeStep === 0} onClick={handleBack}>
+                      Back
+                    </Button>
+                    <Button variant="contained" onClick={handleNext}>
+                      {activeStep === steps.length - 1 ? 'Finish' : 'Continue'}
+                    </Button>
+                  </Box>
+                </>
+              )}
+
+              {/* Nested Modal for Additional Contact */}
+              <StackedModal
+                open={nestedOpen}
+                onClose={() => setNestedOpen(false)}
+                navigationTitle="Additional Contact"
+                modalId="workflow-nested"
+                actions={
+                  <Button variant="contained" size="small" onClick={() => setNestedOpen(false)}>
+                    Add Contact
+                  </Button>
+                }
+              >
+                <ModalContent>
+                  <Typography variant="h6" gutterBottom>
+                    Emergency Contact Information
+                  </Typography>
+                  <Stack spacing={2}>
+                    <TextField fullWidth label="Contact Name" />
+                    <TextField fullWidth label="Relationship" />
+                    <TextField fullWidth label="Phone Number" />
+                    <TextField fullWidth label="Email" type="email" />
+                  </Stack>
+                </ModalContent>
+              </StackedModal>
+            </ModalContent>
+          </StackedModal>
+        </>
+      );
+    };
+
+    return <WorkflowModal />;
+  },
+};
+
+// Performance demo with many modals
+export const PerformanceDemo: Story = {
+  render: () => {
+    const PerformanceTest = () => {
+      const [modals, setModals] = useState<boolean[]>(Array(10).fill(false));
+      const { stack } = useModalStack();
+
+      const openModal = (index: number) => {
+        setModals((prev) => {
+          const newModals = [...prev];
+          newModals[index] = true;
+          return newModals;
+        });
+      };
+
+      const closeModal = (index: number) => {
+        setModals((prev) => {
+          const newModals = [...prev];
+          newModals[index] = false;
+          return newModals;
+        });
+      };
+
+      return (
+        <>
+          <Card>
+            <CardContent>
+              <Typography variant="h5" gutterBottom>
+                Performance Test
+              </Typography>
+              <Typography color="text.secondary" paragraph>
+                Test the modal system with multiple nested modals. Only 2 modals are rendered at
+                once for optimal performance.
+              </Typography>
+              <Alert severity="info" sx={{ mt: 2 }}>
+                Current stack depth: {stack.length} modal(s)
+              </Alert>
+            </CardContent>
+            <CardActions>
+              <Button variant="contained" onClick={() => openModal(0)} startIcon={<AddIcon />}>
+                Open First Modal
+              </Button>
+            </CardActions>
+          </Card>
+
+          {modals.map((isOpen, index) => (
+            <StackedModal
+              key={index}
+              open={isOpen}
+              onClose={() => closeModal(index)}
+              navigationTitle={`Modal Level ${index + 1}`}
+              modalId={`perf-modal-${index}`}
+              glass={index === 0}
+              actions={
+                index === modals.length - 1 ? (
+                  <Button
+                    variant="contained"
+                    color="error"
+                    size="small"
+                    onClick={() => {
+                      setModals(Array(10).fill(false));
+                    }}
+                  >
+                    Close All
+                  </Button>
+                ) : (
+                  <Button
+                    variant="contained"
+                    size="small"
+                    onClick={() => openModal(index + 1)}
+                    disabled={index >= 9}
+                  >
+                    Open Next
+                  </Button>
+                )
+              }
+            >
+              <ModalContent>
+                <Typography variant="h5" gutterBottom>
+                  Level {index + 1} Content
+                </Typography>
+                <Typography paragraph>
+                  This is modal number {index + 1} in the stack.
+                  {index > 1 && ' Only this modal and its parent are rendered.'}
+                </Typography>
+
+                <Grid container spacing={2}>
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <Grid item xs={12} md={6} key={i}>
+                      <Card>
+                        <CardContent>
+                          <Typography variant="h6">Card {i + 1}</Typography>
+                          <Typography color="text.secondary">
+                            Sample content to test rendering performance
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  ))}
+                </Grid>
+
+                {index < 9 && (
+                  <Box sx={{ mt: 3 }}>
+                    <Button variant="outlined" fullWidth onClick={() => openModal(index + 1)}>
+                      Open Modal {index + 2}
+                    </Button>
+                  </Box>
+                )}
+              </ModalContent>
+            </StackedModal>
+          ))}
+        </>
+      );
+    };
+
+    return <PerformanceTest />;
+  },
+};
+
+// RTL Support
+export const RTLSupport: Story = {
+  render: () => {
+    const RTLModal = () => {
+      const [open, setOpen] = useState(false);
+      const [rtl, setRtl] = useState(false);
+
+      return (
+        <>
+          <Card>
+            <CardContent>
+              <Typography variant="h5" gutterBottom>
+                RTL Language Support
+              </Typography>
+              <Typography color="text.secondary" paragraph>
+                Toggle RTL mode to see how the modal adapts to right-to-left languages
+              </Typography>
+              <FormControlLabel
+                control={<Switch checked={rtl} onChange={(e) => setRtl(e.target.checked)} />}
+                label="Enable RTL Mode"
+              />
+            </CardContent>
+            <CardActions>
+              <Button variant="contained" onClick={() => setOpen(true)}>
+                {rtl ? 'فتح مشروط' : 'Open Modal'}
+              </Button>
+            </CardActions>
+          </Card>
+
+          <StackedModal
+            open={open}
+            onClose={() => setOpen(false)}
+            navigationTitle={rtl ? 'نموذج مع دعم RTL' : 'Modal with RTL Support'}
+            rtl={rtl}
+            glass={true}
+          >
+            <ModalContent>
+              <Typography variant="h5" gutterBottom>
+                {rtl ? 'مرحبا بالعالم' : 'Hello World'}
+              </Typography>
+              <Typography paragraph>
+                {rtl
+                  ? 'هذا مثال على النص العربي في واجهة المستخدم. يتكيف التخطيط تلقائيًا مع اتجاه RTL.'
+                  : 'This is an example of English text in the UI. The layout automatically adapts to LTR direction.'}
+              </Typography>
+              <Stack spacing={2}>
+                <TextField fullWidth label={rtl ? 'الاسم' : 'Name'} dir={rtl ? 'rtl' : 'ltr'} />
+                <TextField
+                  fullWidth
+                  label={rtl ? 'البريد الإلكتروني' : 'Email'}
+                  dir={rtl ? 'rtl' : 'ltr'}
+                />
+              </Stack>
+            </ModalContent>
+            <ModalFooter>
+              <Button onClick={() => setOpen(false)}>{rtl ? 'إلغاء' : 'Cancel'}</Button>
+              <Button variant="contained">{rtl ? 'حفظ' : 'Save'}</Button>
+            </ModalFooter>
+          </StackedModal>
+        </>
+      );
+    };
+
+    return <RTLModal />;
+  },
+};
+
+// Accessibility Features
+export const AccessibilityShowcase: Story = {
+  render: () => {
+    const AccessibleModal = () => {
+      const [open, setOpen] = useState(false);
+      const [announcement, setAnnouncement] = useState('');
+
+      return (
+        <>
+          <Card>
+            <CardContent>
+              <Typography variant="h5" gutterBottom>
+                Accessibility Features
+              </Typography>
+              <Typography color="text.secondary" paragraph>
+                Full ARIA support, keyboard navigation, and focus management
+              </Typography>
+              <Alert severity="success" sx={{ mt: 2 }}>
+                <Typography variant="body2">
+                  • Press ESC to close modal
+                  <br />
+                  • Use Tab/Shift+Tab to navigate
+                  <br />
+                  • Focus is trapped within modal
+                  <br />• Screen reader announcements
+                </Typography>
+              </Alert>
+            </CardContent>
+            <CardActions>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  setOpen(true);
+                  setAnnouncement('Modal opened. Use Tab to navigate.');
+                }}
+              >
+                Open Accessible Modal
+              </Button>
+            </CardActions>
+          </Card>
+
+          {announcement && (
+            <Alert severity="info" onClose={() => setAnnouncement('')} sx={{ mt: 2 }}>
+              {announcement}
+            </Alert>
+          )}
+
+          <StackedModal
+            open={open}
+            onClose={() => {
+              setOpen(false);
+              setAnnouncement('Modal closed.');
+            }}
+            navigationTitle="Accessible Form"
+            closeOnEsc={true}
+            closeOnClickOutside={true}
+            aria-labelledby="accessible-modal-title"
+            aria-describedby="accessible-modal-description"
+          >
+            <ModalContent>
+              <Typography id="accessible-modal-title" variant="h5" gutterBottom>
+                Fully Accessible Modal
+              </Typography>
+              <Typography id="accessible-modal-description" paragraph>
+                This modal demonstrates all accessibility features including proper ARIA labels,
+                keyboard navigation, and focus management.
+              </Typography>
+
+              <Stack spacing={3}>
+                <TextField
+                  fullWidth
+                  label="First Name"
+                  helperText="Press Tab to move to next field"
+                  inputProps={{
+                    'aria-label': 'First name input field',
+                    'aria-required': 'true',
+                  }}
+                />
+                <TextField
+                  fullWidth
+                  label="Last Name"
+                  helperText="Press Shift+Tab to move to previous field"
+                  inputProps={{
+                    'aria-label': 'Last name input field',
+                    'aria-required': 'true',
+                  }}
+                />
+                <FormControlLabel
+                  control={
+                    <Switch
+                      inputProps={{
+                        'aria-label': 'Subscribe to newsletter',
+                      }}
+                    />
+                  }
+                  label="Subscribe to newsletter"
+                />
+              </Stack>
+            </ModalContent>
+            <ModalFooter>
+              <Button
+                onClick={() => {
+                  setOpen(false);
+                  setAnnouncement('Modal closed without saving.');
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  setOpen(false);
+                  setAnnouncement('Form submitted successfully.');
+                }}
+              >
+                Submit
+              </Button>
+            </ModalFooter>
+          </StackedModal>
+        </>
+      );
+    };
+
+    return <AccessibleModal />;
+  },
+};
