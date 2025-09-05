@@ -1,0 +1,201 @@
+import React from 'react';
+import {
+  Modal as MuiModal,
+  Box,
+  Fade,
+  Slide,
+  useTheme,
+  alpha,
+  Backdrop,
+} from '@mui/material';
+import { ModalProps, ModalContentProps } from './Modal.types';
+
+export const Modal: React.FC<ModalProps> = ({
+  children,
+  variant = 'center',
+  size = 'md',
+  backdrop = true,
+  persistent = false,
+  glass = false,
+  gradient = false,
+  glow = false,
+  borderRadius = 'lg',
+  onClose,
+  open,
+  ...props
+}) => {
+  const theme = useTheme();
+
+  const getBorderRadius = () => {
+    switch (borderRadius) {
+      case 'none': return 0;
+      case 'sm': return theme.spacing(0.5);
+      case 'md': return theme.spacing(1);
+      case 'lg': return theme.spacing(2);
+      case 'xl': return theme.spacing(3);
+      default: return theme.spacing(2);
+    }
+  };
+
+  const getSize = () => {
+    switch (size) {
+      case 'xs': return { width: 320, maxWidth: '90vw' };
+      case 'sm': return { width: 480, maxWidth: '90vw' };
+      case 'md': return { width: 640, maxWidth: '90vw' };
+      case 'lg': return { width: 800, maxWidth: '90vw' };
+      case 'xl': return { width: 960, maxWidth: '90vw' };
+      default: return { width: 640, maxWidth: '90vw' };
+    }
+  };
+
+  const getPositionStyles = () => {
+    const sizeStyles = getSize();
+    
+    const baseStyles = {
+      position: 'absolute' as const,
+      ...sizeStyles,
+      borderRadius: getBorderRadius(),
+      outline: 0,
+      transition: theme.transitions.create([
+        'box-shadow',
+        'background-color',
+        'backdrop-filter',
+        'transform',
+      ], {
+        duration: theme.transitions.duration.standard,
+      }),
+    };
+
+    switch (variant) {
+      case 'top':
+        return {
+          ...baseStyles,
+          top: '10%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          maxHeight: '80vh',
+          overflowY: 'auto',
+        };
+
+      case 'bottom':
+        return {
+          ...baseStyles,
+          bottom: '10%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          maxHeight: '80vh',
+          overflowY: 'auto',
+        };
+
+      case 'glass':
+      case 'center':
+      default:
+        return {
+          ...baseStyles,
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          maxHeight: '90vh',
+          overflowY: 'auto',
+        };
+    }
+  };
+
+  const getVariantStyles = () => {
+    const positionStyles = getPositionStyles();
+    
+    const glowStyles = glow ? {
+      boxShadow: `0 0 40px ${alpha(theme.palette.primary.main, 0.3)}`,
+    } : {};
+
+    const gradientStyles = gradient ? {
+      background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.1)}, ${alpha(theme.palette.secondary.main, 0.1)})`,
+      backdropFilter: 'blur(10px)',
+    } : {};
+
+    switch (variant) {
+      case 'glass':
+        return {
+          ...positionStyles,
+          ...glowStyles,
+          backgroundColor: alpha(theme.palette.background.paper, 0.1),
+          backdropFilter: 'blur(20px)',
+          border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
+          boxShadow: `0 8px 32px ${alpha(theme.palette.common.black, 0.1)}`,
+        };
+
+      default:
+        return {
+          ...positionStyles,
+          ...glowStyles,
+          ...gradientStyles,
+          backgroundColor: glass 
+            ? alpha(theme.palette.background.paper, 0.1)
+            : theme.palette.background.paper,
+          backdropFilter: glass ? 'blur(20px)' : 'none',
+          border: glass 
+            ? `1px solid ${alpha(theme.palette.primary.main, 0.2)}`
+            : 'none',
+          boxShadow: glass 
+            ? `0 8px 32px ${alpha(theme.palette.common.black, 0.1)}`
+            : theme.shadows[8],
+        };
+    }
+  };
+
+  const handleClose = (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => {
+    if (persistent && (reason === 'backdropClick' || reason === 'escapeKeyDown')) {
+      return;
+    }
+    onClose?.();
+  };
+
+  const getTransitionComponent = () => {
+    switch (variant) {
+      case 'top':
+        return (props: any) => <Slide direction="down" {...props} />;
+      case 'bottom':
+        return (props: any) => <Slide direction="up" {...props} />;
+      default:
+        return Fade;
+    }
+  };
+
+  const TransitionComponent = getTransitionComponent();
+
+  return (
+    <MuiModal
+      open={open}
+      onClose={handleClose}
+      closeAfterTransition
+      BackdropComponent={backdrop ? Backdrop : undefined}
+      BackdropProps={{
+        timeout: 500,
+        sx: {
+          backgroundColor: glass || variant === 'glass'
+            ? alpha(theme.palette.common.black, 0.2)
+            : alpha(theme.palette.common.black, 0.5),
+          backdropFilter: glass || variant === 'glass' ? 'blur(8px)' : 'none',
+        },
+      }}
+      {...props}
+    >
+      <TransitionComponent in={open} timeout={500}>
+        <Box sx={getVariantStyles()}>
+          {children}
+        </Box>
+      </TransitionComponent>
+    </MuiModal>
+  );
+};
+
+export const ModalContent: React.FC<ModalContentProps> = ({
+  children,
+  padding = 3,
+}) => {
+  return (
+    <Box sx={{ p: padding }}>
+      {children}
+    </Box>
+  );
+};

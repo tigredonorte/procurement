@@ -12,6 +12,7 @@
     "noFallthroughCasesInSwitch": true,
     "useUnknownInCatchVariables": true,
     "noUncheckedIndexedAccess": true,
+    "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
       "@packages/*": ["packages/*/src"],
