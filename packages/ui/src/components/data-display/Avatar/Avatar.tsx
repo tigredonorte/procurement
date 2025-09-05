@@ -2,6 +2,7 @@ import React from 'react';
 import { Avatar as MuiAvatar, Badge, alpha, keyframes } from '@mui/material';
 import { Person } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
+
 import { AvatarProps, AvatarSize, AvatarStatus } from './Avatar.types';
 
 // Define pulse animation
@@ -20,7 +21,19 @@ const pulseAnimation = keyframes`
   }
 `;
 
-const getColorFromTheme = (theme: { palette: { primary: { main: string; light?: string; dark?: string }; secondary: { main: string; light?: string; dark?: string }; success: { main: string; light?: string; dark?: string }; warning: { main: string; light?: string; dark?: string }; error: { main: string; light?: string; dark?: string }; grey: { [key: number]: string } } }, color: string) => {
+const getColorFromTheme = (
+  theme: {
+    palette: {
+      primary: { main: string; light?: string; dark?: string };
+      secondary: { main: string; light?: string; dark?: string };
+      success: { main: string; light?: string; dark?: string };
+      warning: { main: string; light?: string; dark?: string };
+      error: { main: string; light?: string; dark?: string };
+      grey: { [key: number]: string };
+    };
+  },
+  color: string,
+) => {
   const colorMap: Record<string, { main: string; light?: string; dark?: string }> = {
     primary: theme.palette.primary,
     secondary: theme.palette.secondary,
@@ -29,7 +42,7 @@ const getColorFromTheme = (theme: { palette: { primary: { main: string; light?: 
     error: theme.palette.error,
     neutral: theme.palette.grey,
   };
-  
+
   return colorMap[color] || theme.palette.primary;
 };
 
@@ -42,41 +55,60 @@ const getSizeStyles = (size: AvatarSize) => {
     xl: { width: 64, height: 64, fontSize: '1.5rem' },
     xxl: { width: 80, height: 80, fontSize: '2rem' },
   };
-  
+
   return sizeMap[size] || sizeMap.md;
 };
 
-const getStatusColor = (status: AvatarStatus, theme: { palette: { success: { main: string }; warning: { main: string }; grey: { [key: number]: string } } }) => {
+const getStatusColor = (
+  status: AvatarStatus,
+  theme: {
+    palette: {
+      success: { main: string };
+      warning: { main: string };
+      grey: { [key: number]: string };
+    };
+  },
+) => {
   const statusColorMap: Record<AvatarStatus, string> = {
     online: theme.palette.success.main,
     offline: theme.palette.grey[500],
     away: theme.palette.warning.main,
     busy: theme.palette.error.main,
   };
-  
+
   return statusColorMap[status] || statusColorMap.offline;
 };
 
 const StyledAvatar = styled(MuiAvatar, {
-  shouldForwardProp: (prop) => 
-    !['customVariant', 'customSize', 'customColor', 'glow', 'pulse', 'bordered'].includes(prop as string),
-})<{ 
+  shouldForwardProp: (prop) =>
+    !['customVariant', 'customSize', 'customColor', 'glow', 'pulse', 'bordered'].includes(
+      prop as string,
+    ),
+})<{
   customVariant?: string;
   customSize?: AvatarSize;
   customColor?: string;
-  glow?: boolean; 
+  glow?: boolean;
   pulse?: boolean;
   bordered?: boolean;
-}>(({ theme, customVariant, customSize = 'md', customColor = 'primary', glow, pulse, bordered }) => {
+}>(({
+  theme,
+  customVariant,
+  customSize = 'md',
+  customColor = 'primary',
+  glow,
+  pulse,
+  bordered,
+}) => {
   const colorPalette = getColorFromTheme(theme, customColor);
   const sizeStyles = getSizeStyles(customSize);
-  
+
   return {
     ...sizeStyles,
     transition: 'all 0.3s ease',
     position: 'relative',
     overflow: 'visible',
-    
+
     // Base background color when no image
     backgroundColor: colorPalette.main,
     color: colorPalette.contrastText || '#fff',
@@ -105,65 +137,67 @@ const StyledAvatar = styled(MuiAvatar, {
     }),
 
     // Glow effect
-    ...(glow && !pulse && {
-      boxShadow: `0 0 20px 5px ${alpha(colorPalette.main, 0.4)} !important`,
-      filter: 'brightness(1.05)',
-    }),
+    ...(glow &&
+      !pulse && {
+        boxShadow: `0 0 20px 5px ${alpha(colorPalette.main, 0.4)} !important`,
+        filter: 'brightness(1.05)',
+      }),
 
     // Pulse animation
-    ...(pulse && !glow && {
-      position: 'relative',
-      '&::after': {
-        content: '""',
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        width: '100%',
-        height: '100%',
-        borderRadius: 'inherit',
-        transform: 'translate(-50%, -50%)',
-        backgroundColor: colorPalette.main,
-        opacity: 0.3,
-        animation: `${pulseAnimation} 2s infinite`,
-        pointerEvents: 'none',
-        zIndex: -1,
-      },
-    }),
+    ...(pulse &&
+      !glow && {
+        position: 'relative',
+        '&::after': {
+          content: '""',
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '100%',
+          height: '100%',
+          borderRadius: 'inherit',
+          transform: 'translate(-50%, -50%)',
+          backgroundColor: colorPalette.main,
+          opacity: 0.3,
+          animation: `${pulseAnimation} 2s infinite`,
+          pointerEvents: 'none',
+          zIndex: -1,
+        },
+      }),
 
     // Both glow and pulse
-    ...(glow && pulse && {
-      position: 'relative',
-      boxShadow: `0 0 20px 5px ${alpha(colorPalette.main, 0.4)} !important`,
-      filter: 'brightness(1.05)',
-      '&::after': {
-        content: '""',
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        width: '100%',
-        height: '100%',
-        borderRadius: 'inherit',
-        transform: 'translate(-50%, -50%)',
-        backgroundColor: colorPalette.main,
-        opacity: 0.3,
-        animation: `${pulseAnimation} 2s infinite`,
-        pointerEvents: 'none',
-        zIndex: -1,
-      },
-    }),
+    ...(glow &&
+      pulse && {
+        position: 'relative',
+        boxShadow: `0 0 20px 5px ${alpha(colorPalette.main, 0.4)} !important`,
+        filter: 'brightness(1.05)',
+        '&::after': {
+          content: '""',
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '100%',
+          height: '100%',
+          borderRadius: 'inherit',
+          transform: 'translate(-50%, -50%)',
+          backgroundColor: colorPalette.main,
+          opacity: 0.3,
+          animation: `${pulseAnimation} 2s infinite`,
+          pointerEvents: 'none',
+          zIndex: -1,
+        },
+      }),
   };
 });
 
 const StatusBadge = styled(Badge, {
-  shouldForwardProp: (prop) => 
-    !['statusColor', 'avatarSize'].includes(prop as string),
-})<{ 
+  shouldForwardProp: (prop) => !['statusColor', 'avatarSize'].includes(prop as string),
+})<{
   statusColor?: string;
   avatarSize?: AvatarSize;
 }>(({ theme, statusColor, avatarSize = 'md' }) => {
   const sizeStyles = getSizeStyles(avatarSize);
   const badgeSize = Math.max(8, sizeStyles.width * 0.2);
-  
+
   return {
     '& .MuiBadge-badge': {
       backgroundColor: statusColor || theme.palette.success.main,
@@ -187,24 +221,26 @@ const StatusBadge = styled(Badge, {
 });
 
 export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
-  ({
-    variant = 'circle',
-    size = 'md',
-    glow = false,
-    pulse = false,
-    status,
-    fallback,
-    icon,
-    bordered = false,
-    color = 'primary',
-    src,
-    alt,
-    children,
-    ...props
-  }, ref) => {
-    
+  (
+    {
+      variant = 'circle',
+      size = 'md',
+      glow = false,
+      pulse = false,
+      status,
+      fallback,
+      icon,
+      bordered = false,
+      color = 'primary',
+      src,
+      alt,
+      children,
+      ...props
+    },
+    ref,
+  ) => {
     const avatarContent = children || fallback || icon || <Person />;
-    
+
     const avatarElement = (
       <StyledAvatar
         ref={ref}
@@ -229,12 +265,14 @@ export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
           overlap="circular"
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           variant="dot"
-          statusColor={getStatusColor(status, { palette: { 
-            success: { main: '#4caf50' }, 
-            grey: { 500: '#9e9e9e' }, 
-            warning: { main: '#ff9800' }, 
-            error: { main: '#f44336' } 
-          }})}
+          statusColor={getStatusColor(status, {
+            palette: {
+              success: { main: '#4caf50' },
+              grey: { 500: '#9e9e9e' },
+              warning: { main: '#ff9800' },
+              error: { main: '#f44336' },
+            },
+          })}
           avatarSize={size}
         >
           {avatarElement}
@@ -243,7 +281,7 @@ export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
     }
 
     return avatarElement;
-  }
+  },
 );
 
 Avatar.displayName = 'Avatar';

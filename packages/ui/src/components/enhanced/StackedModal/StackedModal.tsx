@@ -74,9 +74,15 @@ interface ModalStackContextValue {
 // Modal Stack Context
 const ModalStackContext = createContext<ModalStackContextValue>({
   stack: [],
-  pushModal: action: () => { /** do nothing */},
-  popModal: action: () => { /** do nothing */},
-  clearStack: action: () => { /** do nothing */},
+  pushModal: () => {
+    /** do nothing */
+  },
+  popModal: () => {
+    /** do nothing */
+  },
+  clearStack: () => {
+    /** do nothing */
+  },
   currentDepth: 0,
   isModalInStack: () => false,
   getModalRole: () => null,

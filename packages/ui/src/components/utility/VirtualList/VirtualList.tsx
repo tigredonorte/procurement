@@ -1,5 +1,6 @@
 import React, { useState, useRef, useMemo, useCallback } from 'react';
 import { Box } from '@mui/material';
+
 import { VirtualListProps, VirtualGridProps } from './VirtualList.types';
 
 export const VirtualList: React.FC<VirtualListProps> = ({
@@ -19,33 +20,36 @@ export const VirtualList: React.FC<VirtualListProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const itemHeights = useRef<Map<number, number>>(new Map());
 
-  const getItemHeight = useCallback((index: number): number => {
-    if (variant === 'fixed') {
+  const getItemHeight = useCallback(
+    (index: number): number => {
+      if (variant === 'fixed') {
+        return itemHeight;
+      }
+
+      if (variant === 'variable') {
+        const item = items[index];
+        if (item?.height) {
+          return item.height;
+        }
+
+        const measuredHeight = itemHeights.current.get(index);
+        if (measuredHeight) {
+          return measuredHeight;
+        }
+
+        return estimatedItemHeight;
+      }
+
       return itemHeight;
-    }
-    
-    if (variant === 'variable') {
-      const item = items[index];
-      if (item?.height) {
-        return item.height;
-      }
-      
-      const measuredHeight = itemHeights.current.get(index);
-      if (measuredHeight) {
-        return measuredHeight;
-      }
-      
-      return estimatedItemHeight;
-    }
-    
-    return itemHeight;
-  }, [variant, itemHeight, estimatedItemHeight, items]);
+    },
+    [variant, itemHeight, estimatedItemHeight, items],
+  );
 
   const getTotalHeight = useMemo(() => {
     if (variant === 'fixed') {
       return items.length * itemHeight;
     }
-    
+
     let totalHeight = 0;
     for (let i = 0; i < items.length; i++) {
       totalHeight += getItemHeight(i);
@@ -58,16 +62,16 @@ export const VirtualList: React.FC<VirtualListProps> = ({
       const startIndex = Math.max(0, Math.floor(scrollTop / itemHeight) - overscan);
       const endIndex = Math.min(
         items.length - 1,
-        Math.ceil((scrollTop + height) / itemHeight) + overscan
+        Math.ceil((scrollTop + height) / itemHeight) + overscan,
       );
       return { startIndex, endIndex };
     }
-    
+
     // For variable height items
     let accumulatedHeight = 0;
     let startIndex = 0;
     let endIndex = items.length - 1;
-    
+
     // Find start index
     for (let i = 0; i < items.length; i++) {
       if (accumulatedHeight + getItemHeight(i) > scrollTop) {
@@ -76,13 +80,13 @@ export const VirtualList: React.FC<VirtualListProps> = ({
       }
       accumulatedHeight += getItemHeight(i);
     }
-    
+
     // Find end index
     accumulatedHeight = 0;
     for (let i = 0; i <= startIndex; i++) {
       accumulatedHeight += getItemHeight(i);
     }
-    
+
     for (let i = startIndex; i < items.length; i++) {
       if (accumulatedHeight > scrollTop + height) {
         endIndex = Math.min(items.length - 1, i + overscan);
@@ -90,36 +94,42 @@ export const VirtualList: React.FC<VirtualListProps> = ({
       }
       accumulatedHeight += getItemHeight(i);
     }
-    
+
     return { startIndex, endIndex };
   }, [scrollTop, height, variant, itemHeight, overscan, items.length, getItemHeight]);
 
-  const getItemOffset = useCallback((index: number): number => {
-    if (variant === 'fixed') {
-      return index * itemHeight;
-    }
-    
-    let offset = 0;
-    for (let i = 0; i < index; i++) {
-      offset += getItemHeight(i);
-    }
-    return offset;
-  }, [variant, itemHeight, getItemHeight]);
+  const getItemOffset = useCallback(
+    (index: number): number => {
+      if (variant === 'fixed') {
+        return index * itemHeight;
+      }
 
-  const handleScroll = useCallback((event: React.UIEvent<HTMLDivElement>) => {
-    const newScrollTop = event.currentTarget.scrollTop;
-    setScrollTop(newScrollTop);
-    onScroll?.(newScrollTop);
-  }, [onScroll]);
+      let offset = 0;
+      for (let i = 0; i < index; i++) {
+        offset += getItemHeight(i);
+      }
+      return offset;
+    },
+    [variant, itemHeight, getItemHeight],
+  );
+
+  const handleScroll = useCallback(
+    (event: React.UIEvent<HTMLDivElement>) => {
+      const newScrollTop = event.currentTarget.scrollTop;
+      setScrollTop(newScrollTop);
+      onScroll?.(newScrollTop);
+    },
+    [onScroll],
+  );
 
   const visibleItems = useMemo(() => {
     const { startIndex, endIndex } = getVisibleRange;
     const result = [];
-    
+
     for (let i = startIndex; i <= endIndex; i++) {
       const item = items[i];
       if (!item) continue;
-      
+
       const offset = getItemOffset(i);
       const itemStyle = {
         position: 'absolute' as const,
@@ -128,14 +138,14 @@ export const VirtualList: React.FC<VirtualListProps> = ({
         width: '100%',
         height: getItemHeight(i),
       };
-      
+
       result.push({
         item,
         index: i,
         style: itemStyle,
       });
     }
-    
+
     return result;
   }, [getVisibleRange, items, getItemOffset, getItemHeight]);
 
@@ -158,9 +168,7 @@ export const VirtualList: React.FC<VirtualListProps> = ({
           position: 'relative',
         }}
       >
-        {visibleItems.map(({ item, index, style }) =>
-          renderItem({ item, index, style })
-        )}
+        {visibleItems.map(({ item, index, style }) => renderItem({ item, index, style }))}
       </Box>
     </Box>
   );
@@ -185,10 +193,10 @@ export const VirtualGrid: React.FC<VirtualGridProps> = ({
 
   const rowCount = Math.ceil(items.length / columnCount);
   const totalHeight = rowCount * (rowHeight + gap) - gap;
-  
+
   const computedColumnWidth = useMemo(() => {
     if (columnWidth) return columnWidth;
-    
+
     const containerWidth = typeof width === 'number' ? width : 300; // fallback
     return (containerWidth - (columnCount - 1) * gap) / columnCount;
   }, [columnWidth, width, columnCount, gap]);
@@ -197,32 +205,33 @@ export const VirtualGrid: React.FC<VirtualGridProps> = ({
     const startRow = Math.max(0, Math.floor(scrollTop / (rowHeight + gap)) - overscan);
     const endRow = Math.min(
       rowCount - 1,
-      Math.ceil((scrollTop + height) / (rowHeight + gap)) + overscan
+      Math.ceil((scrollTop + height) / (rowHeight + gap)) + overscan,
     );
-    
+
     return { startRow, endRow };
   }, [scrollTop, height, rowHeight, gap, overscan, rowCount]);
 
-  const handleScroll = useCallback((event: React.UIEvent<HTMLDivElement>) => {
-    const newScrollTop = event.currentTarget.scrollTop;
-    const newScrollLeft = event.currentTarget.scrollLeft;
-    
-    setScrollTop(newScrollTop);
-    setScrollLeft(newScrollLeft);
-    onScroll?.(newScrollTop, newScrollLeft);
-  }, [onScroll]);
+  const handleScroll = useCallback(
+    (event: React.UIEvent<HTMLDivElement>) => {
+      const newScrollTop = event.currentTarget.scrollTop;
+
+      setScrollTop(newScrollTop);
+      onScroll?.(newScrollTop);
+    },
+    [onScroll],
+  );
 
   const visibleItems = useMemo(() => {
     const { startRow, endRow } = getVisibleRange;
     const result = [];
-    
+
     for (let rowIndex = startRow; rowIndex <= endRow; rowIndex++) {
       for (let columnIndex = 0; columnIndex < columnCount; columnIndex++) {
         const index = rowIndex * columnCount + columnIndex;
         const item = items[index];
-        
+
         if (!item) continue;
-        
+
         const itemStyle = {
           position: 'absolute' as const,
           top: rowIndex * (rowHeight + gap),
@@ -230,7 +239,7 @@ export const VirtualGrid: React.FC<VirtualGridProps> = ({
           width: computedColumnWidth,
           height: rowHeight,
         };
-        
+
         result.push({
           item,
           index,
@@ -240,7 +249,7 @@ export const VirtualGrid: React.FC<VirtualGridProps> = ({
         });
       }
     }
-    
+
     return result;
   }, [getVisibleRange, items, columnCount, rowHeight, gap, computedColumnWidth]);
 
@@ -264,7 +273,7 @@ export const VirtualGrid: React.FC<VirtualGridProps> = ({
         }}
       >
         {visibleItems.map(({ item, index, columnIndex, rowIndex, style }) =>
-          renderItem({ item, index, columnIndex, rowIndex, style })
+          renderItem({ item, index, columnIndex, rowIndex, style }),
         )}
       </Box>
     </Box>
