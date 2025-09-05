@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Sidebar, SidebarHeader, SidebarContent, SidebarFooter } from './Sidebar';
 import { Box, Typography, List, ListItem, ListItemIcon, ListItemText, IconButton, Avatar } from '@mui/material';
 import { 
   Home as HomeIcon, 
@@ -14,6 +13,8 @@ import {
   Send as SendIcon
 } from '@mui/icons-material';
 import React, { useState } from 'react';
+
+import { Sidebar, SidebarHeader, SidebarContent, SidebarFooter } from './Sidebar';
 
 const meta: Meta<typeof Sidebar> = {
   title: 'Layout/Sidebar',

@@ -5,6 +5,7 @@ import {
   alpha
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+
 import { InputOTPProps } from './InputOTP.types';
 
 const getColorFromTheme = (theme: any, color: string) => {

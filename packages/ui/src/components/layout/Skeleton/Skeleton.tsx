@@ -1,5 +1,6 @@
 import React from 'react';
 import { Skeleton as MuiSkeleton, Box, Stack } from '@mui/material';
+
 import { SkeletonProps } from './Skeleton.types';
 
 export const Skeleton: React.FC<SkeletonProps> = ({

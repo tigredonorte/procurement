@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Input } from './Input';
 import { Search, Email, Lock, Visibility, VisibilityOff } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 import { useState } from 'react';
+
+import { Input } from './Input';
 
 const meta = {
   title: 'Form/Input',

@@ -7,6 +7,7 @@ import {
   keyframes
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+
 import { SliderProps } from './Slider.types';
 
 const glowAnimation = keyframes`

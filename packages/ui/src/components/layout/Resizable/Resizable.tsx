@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { Box, useTheme } from '@mui/material';
+
 import { ResizableProps, ResizeHandle } from './Resizable.types';
 
 export const Resizable: React.FC<ResizableProps> = ({

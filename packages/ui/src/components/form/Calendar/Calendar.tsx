@@ -21,6 +21,7 @@ import {
   KeyboardArrowDown,
   KeyboardArrowUp
 } from '@mui/icons-material';
+
 import { CalendarProps } from './Calendar.types';
 
 // Calendar size configurations

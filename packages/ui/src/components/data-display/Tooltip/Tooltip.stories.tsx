@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Tooltip } from './Tooltip';
 import { Button, Stack, Box, IconButton, Avatar, Typography } from '@mui/material';
 import { Help, Info, Settings, Delete } from '@mui/icons-material';
+
+import { Tooltip } from './Tooltip';
 
 const meta = {
   title: 'Data Display/Tooltip',

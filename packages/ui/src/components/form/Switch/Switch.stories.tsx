@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Switch } from './Switch';
 import { Box, Typography } from '@mui/material';
 import { Moon, Sun, Volume2, VolumeX, Wifi, WifiOff, Bell, BellOff } from 'lucide-react';
 import { useState } from 'react';
+
+import { Switch } from './Switch';
 
 const meta: Meta<typeof Switch> = {
   title: 'Form/Switch',

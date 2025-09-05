@@ -9,6 +9,7 @@ import {
   keyframes
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+
 import { SwitchProps } from './Switch.types';
 
 const glowAnimation = keyframes`

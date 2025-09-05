@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Table } from './Table';
 import { TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Chip, Avatar, Stack } from '@mui/material';
+
+import { Table } from './Table';
 
 const meta = {
   title: 'Data Display/Table',

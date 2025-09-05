@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import { Collapsible, CollapsibleTrigger, CollapsibleContent } from './Collapsible';
 import { 
   Typography, 
   Button, 
@@ -28,6 +27,8 @@ import {
   Image,
   VideoLibrary
 } from '@mui/icons-material';
+
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from './Collapsible';
 
 const meta = {
   title: 'Layout/Collapsible',

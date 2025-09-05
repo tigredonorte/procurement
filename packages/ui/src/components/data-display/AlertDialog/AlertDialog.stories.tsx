@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { AlertDialog } from './AlertDialog';
 import { Button, Stack } from '@mui/material';
 import { Delete, Warning, Logout } from '@mui/icons-material';
 import React from 'react';
+
+import { AlertDialog } from './AlertDialog';
 
 const meta = {
   title: 'Data Display/AlertDialog',

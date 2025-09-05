@@ -6,6 +6,7 @@ import {
   styled,
   alpha
 } from '@mui/material';
+
 import { CheckboxProps } from './Checkbox.types';
 
 const StyledCheckbox = styled(MuiCheckbox)<{ customVariant?: CheckboxProps['variant'] }>(

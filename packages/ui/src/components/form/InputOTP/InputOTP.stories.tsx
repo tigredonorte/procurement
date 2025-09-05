@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { InputOTP } from './InputOTP';
 import { Box, Typography } from '@mui/material';
 import { useState } from 'react';
+
+import { InputOTP } from './InputOTP';
 
 const meta: Meta<typeof InputOTP> = {
   title: 'Form/InputOTP',

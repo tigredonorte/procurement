@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Alert } from './Alert';
 import { Star, Warning as MuiWarning } from '@mui/icons-material';
 import { Stack } from '@mui/material';
+
+import { Alert } from './Alert';
 
 const meta = {
   title: 'Data Display/Alert',

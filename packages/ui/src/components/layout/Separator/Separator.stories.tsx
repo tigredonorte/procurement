@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Separator } from './Separator';
 import { Typography, Stack, Box, Card, CardContent } from '@mui/material';
+
+import { Separator } from './Separator';
 
 const meta = {
   title: 'Layout/Separator',

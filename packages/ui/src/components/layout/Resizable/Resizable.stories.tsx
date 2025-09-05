@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Resizable } from './Resizable';
 import { Box, Typography, Paper, List, ListItem, ListItemText } from '@mui/material';
 import React, { useState } from 'react';
+
+import { Resizable } from './Resizable';
 
 const meta: Meta<typeof Resizable> = {
   title: 'Layout/Resizable',

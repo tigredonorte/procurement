@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Skeleton } from './Skeleton';
 import { 
   Card, 
   CardContent, 
@@ -14,6 +13,8 @@ import {
   ListItemText,
   Grid
 } from '@mui/material';
+
+import { Skeleton } from './Skeleton';
 
 const meta = {
   title: 'Layout/Skeleton',

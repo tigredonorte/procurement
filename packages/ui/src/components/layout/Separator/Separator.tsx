@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, useTheme, Typography } from '@mui/material';
+
 import { SeparatorProps } from './Separator.types';
 
 export const Separator: React.FC<SeparatorProps> = ({

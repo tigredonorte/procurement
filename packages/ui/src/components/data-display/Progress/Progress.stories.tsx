@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Progress } from './Progress';
 import { Stack, Box, Typography, Button } from '@mui/material';
 import React from 'react';
+
+import { Progress } from './Progress';
 
 const meta = {
   title: 'Data Display/Progress',

@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { Stack } from '@mui/material';
+
 import { Form, FormField } from './Form';
 import { Input } from '../Input';
 import { Checkbox } from '../Checkbox';
 import { Select } from '../Select';
 import { Button } from '../Button';
-import { Stack } from '@mui/material';
 
 const meta = {
   title: 'Form/Form',

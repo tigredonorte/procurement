@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ToggleGroup } from './ToggleGroup';
 import { Box, Typography } from '@mui/material';
 import { 
   Bold, 
@@ -24,6 +23,8 @@ import {
   Bookmark
 } from 'lucide-react';
 import { useState } from 'react';
+
+import { ToggleGroup } from './ToggleGroup';
 
 const meta: Meta<typeof ToggleGroup> = {
   title: 'Form/ToggleGroup',
