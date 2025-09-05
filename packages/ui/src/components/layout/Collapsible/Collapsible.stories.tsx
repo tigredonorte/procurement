@@ -79,9 +79,8 @@ export const Default: Story = {
   ),
 };
 
-export const AllVariants: Story = {
-  render: () => {
-    const [openStates, setOpenStates] = useState({
+const AllVariantsComponent = () => {
+const [openStates, setOpenStates] = useState({
       default: false,
       smooth: false,
       spring: false,
@@ -154,12 +153,14 @@ export const AllVariants: Story = {
         </Card>
       </Stack>
     );
-  },
 };
 
-export const InteractiveExample: Story = {
-  render: () => {
-    const [isOpen, setIsOpen] = useState(false);
+export const AllVariants: Story = {
+  render: () => <AllVariantsComponent />,
+};
+
+const InteractiveExampleComponent = () => {
+const [isOpen, setIsOpen] = useState(false);
     const [variant, setVariant] = useState<'default' | 'smooth' | 'spring'>('smooth');
     const [duration, setDuration] = useState(300);
 
@@ -235,12 +236,14 @@ export const InteractiveExample: Story = {
         </Card>
       </Stack>
     );
-  },
 };
 
-export const SettingsPanel: Story = {
-  render: () => {
-    const [openSections, setOpenSections] = useState({
+export const InteractiveExample: Story = {
+  render: () => <InteractiveExampleComponent />,
+};
+
+const SettingsPanelComponent = () => {
+const [openSections, setOpenSections] = useState({
       general: false,
       notifications: false,
       security: false,
@@ -370,12 +373,14 @@ export const SettingsPanel: Story = {
         </SettingsSection>
       </Box>
     );
-  },
 };
 
-export const FileExplorer: Story = {
-  render: () => {
-    const [expanded, setExpanded] = useState<Record<string, boolean>>({
+export const SettingsPanel: Story = {
+  render: () => <SettingsPanelComponent />,
+};
+
+const FileExplorerComponent = () => {
+const [expanded, setExpanded] = useState<Record<string, boolean>>({
       documents: false,
       images: false,
       videos: false,
@@ -471,5 +476,8 @@ export const FileExplorer: Story = {
         </List>
       </Box>
     );
-  },
+};
+
+export const FileExplorer: Story = {
+  render: () => <FileExplorerComponent />,
 };

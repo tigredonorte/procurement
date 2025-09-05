@@ -216,9 +216,8 @@ export const RightPositioned: Story = {
   ),
 };
 
-export const MiniDrawer: Story = {
-  render: () => {
-    const [open, setOpen] = useState(false);
+const MiniDrawerComponent = () => {
+const [open, setOpen] = useState(false);
     
     return (
       <Box sx={{ display: 'flex', height: '500px', bgcolor: 'grey.50' }}>
@@ -254,5 +253,8 @@ export const MiniDrawer: Story = {
         </Box>
       </Box>
     );
-  },
+};
+
+export const MiniDrawer: Story = {
+  render: () => <MiniDrawerComponent />,
 };

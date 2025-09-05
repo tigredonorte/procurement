@@ -10,6 +10,9 @@ import {
   Typography,
   Avatar,
   Box,
+  keyframes,
+  CircularProgress,
+  Skeleton,
 } from '@mui/material';
 
 import {
@@ -20,12 +23,33 @@ import {
   CardMediaProps,
 } from './Card.types';
 
+// Define pulse animation
+const pulseAnimation = keyframes`
+  0% {
+    box-shadow: 0 0 0 0 currentColor;
+    opacity: 1;
+  }
+  70% {
+    box-shadow: 0 0 0 15px currentColor;
+    opacity: 0;
+  }
+  100% {
+    box-shadow: 0 0 0 0 currentColor;
+    opacity: 0;
+  }
+`;
+
 export const Card: React.FC<CardProps> = ({
   children,
   variant = 'elevated',
   interactive = false,
   glow = false,
+  pulse = false,
   borderRadius = 'md',
+  loading = false,
+  onClick,
+  onFocus,
+  onBlur,
   sx,
   ...props
 }) => {
@@ -61,6 +85,9 @@ export const Card: React.FC<CardProps> = ({
       '&:hover': {
         transform: 'translateY(-2px)',
       },
+      '&:active': {
+        transform: 'translateY(0)',
+      },
     } : {};
 
     const glowStyles = glow ? {
@@ -70,12 +97,32 @@ export const Card: React.FC<CardProps> = ({
       },
     } : {};
 
+    const pulseStyles = pulse ? {
+      position: 'relative',
+      overflow: 'visible',
+      '&::after': {
+        content: '""',
+        position: 'absolute',
+        top: '0',
+        left: '0',
+        right: '0',
+        bottom: '0',
+        borderRadius: 'inherit',
+        backgroundColor: theme.palette.primary.main,
+        opacity: 0.3,
+        animation: `${pulseAnimation} 2s infinite`,
+        pointerEvents: 'none',
+        zIndex: -1,
+      },
+    } : {};
+
     switch (variant) {
       case 'elevated':
         return {
           ...baseStyles,
           ...interactiveStyles,
           ...glowStyles,
+          ...pulseStyles,
           elevation: 4,
           '&:hover': {
             ...interactiveStyles['&:hover'],
@@ -89,6 +136,7 @@ export const Card: React.FC<CardProps> = ({
           ...baseStyles,
           ...interactiveStyles,
           ...glowStyles,
+          ...pulseStyles,
           border: `1px solid ${theme.palette.divider}`,
           boxShadow: 'none',
           '&:hover': {
@@ -103,6 +151,7 @@ export const Card: React.FC<CardProps> = ({
           ...baseStyles,
           ...interactiveStyles,
           ...glowStyles,
+          ...pulseStyles,
           backgroundColor: alpha(theme.palette.background.paper, 0.1),
           backdropFilter: 'blur(20px)',
           border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
@@ -122,6 +171,7 @@ export const Card: React.FC<CardProps> = ({
           ...baseStyles,
           ...interactiveStyles,
           ...glowStyles,
+          ...pulseStyles,
           background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
           color: theme.palette.primary.contrastText,
           boxShadow: `0 4px 20px ${alpha(theme.palette.primary.main, 0.3)}`,
@@ -142,6 +192,7 @@ export const Card: React.FC<CardProps> = ({
         return {
           ...baseStyles,
           ...interactiveStyles,
+          ...pulseStyles,
           backgroundColor: neumorphicBg,
           boxShadow: theme.palette.mode === 'dark'
             ? `8px 8px 16px ${alpha(theme.palette.common.black, 0.3)}, -8px -8px 16px ${alpha(theme.palette.common.white, 0.1)}`
@@ -167,12 +218,31 @@ export const Card: React.FC<CardProps> = ({
 
   return (
     <MuiCard
+      onClick={!loading ? onClick : undefined}
+      onFocus={!loading ? onFocus : undefined}
+      onBlur={!loading ? onBlur : undefined}
       sx={{
         ...getVariantStyles(),
+        position: 'relative',
+        opacity: loading ? 0.6 : 1,
+        pointerEvents: loading ? 'none' : 'auto',
         ...sx,
       }}
       {...props}
     >
+      {loading && (
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            zIndex: 10,
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
       {children}
     </MuiCard>
   );

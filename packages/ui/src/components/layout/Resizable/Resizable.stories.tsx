@@ -137,9 +137,8 @@ export const WithConstraints: Story = {
   },
 };
 
-export const WithCallback: Story = {
-  render: () => {
-    const [dimensions, setDimensions] = useState({ width: 250, height: 150 });
+const WithCallbackComponent = () => {
+const [dimensions, setDimensions] = useState({ width: 250, height: 150 });
     
     return (
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, alignItems: 'center' }}>
@@ -162,7 +161,10 @@ export const WithCallback: Story = {
         </Resizable>
       </Box>
     );
-  },
+};
+
+export const WithCallback: Story = {
+  render: () => <WithCallbackComponent />,
 };
 
 export const DisabledState: Story = {

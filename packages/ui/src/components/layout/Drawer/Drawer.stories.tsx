@@ -101,9 +101,8 @@ export const Default: Story = {
   },
 };
 
-export const AllVariants: Story = {
-  render: () => {
-    const [openDrawers, setOpenDrawers] = useState({
+const AllVariantsComponent = () => {
+const [openDrawers, setOpenDrawers] = useState({
       left: false,
       right: false,
       top: false,
@@ -252,12 +251,14 @@ export const AllVariants: Story = {
         </Box>
       </Box>
     );
-  },
 };
 
-export const NavigationDrawer: Story = {
-  render: () => {
-    const [open, setOpen] = useState(false);
+export const AllVariants: Story = {
+  render: () => <AllVariantsComponent />,
+};
+
+const NavigationDrawerComponent = () => {
+const [open, setOpen] = useState(false);
     const [persistent, setPersistent] = useState(false);
     const [selectedItem, setSelectedItem] = useState('home');
 
@@ -352,5 +353,8 @@ export const NavigationDrawer: Story = {
         </Box>
       </Box>
     );
-  },
+};
+
+export const NavigationDrawer: Story = {
+  render: () => <NavigationDrawerComponent />,
 };
