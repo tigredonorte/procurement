@@ -10,6 +10,7 @@
     "yarn": "please-use-pnpm"
   },
   "scripts": {
-    "preinstall": "npx only-allow pnpm"
+    "preinstall": "npx only-allow pnpm",
+    "dev": "tsx watch src/index.ts"
   }
 }
