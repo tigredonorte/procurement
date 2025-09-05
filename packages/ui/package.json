@@ -27,10 +27,17 @@
   "dependencies": {
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
+    "@monaco-editor/react": "^4.7.0",
     "@mui/icons-material": "^5.15.0",
     "@mui/material": "^5.15.0",
+    "@react-google-maps/api": "^2.20.7",
     "clsx": "^2.1.1",
-    "framer-motion": "^12.23.12"
+    "framer-motion": "^12.23.12",
+    "fuse.js": "^7.1.0",
+    "libphonenumber-js": "^1.12.15",
+    "lottie-react": "^2.4.1",
+    "react-phone-input-2": "^2.15.1",
+    "recharts": "^3.1.2"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0",

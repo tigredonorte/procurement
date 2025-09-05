@@ -12,6 +12,9 @@ export * from './components/form/Toggle';
 export * from './components/form/ToggleGroup';
 export * from './components/form/Calendar';
 export * from './components/form/InputOTP';
+export * from './components/form/Command';
+export * from './components/form/Label';
+export * from './components/form/Menubar';
 
 // Navigation Components
 export * from './components/navigation/Breadcrumbs';
@@ -51,6 +54,9 @@ export * from './components/data-display/Popover';
 export * from './components/data-display/Progress';
 export * from './components/data-display/Table';
 export * from './components/data-display/Tooltip';
+export * from './components/data-display/Carousel';
+export * from './components/data-display/Chart';
+export * from './components/data-display/Sheet';
 
 // Feedback Components
 export * from './components/feedback/Dialog';
