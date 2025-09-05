@@ -21,7 +21,7 @@ import {
 import { Box, IconButton } from '@mui/material';
 
 import { DropdownMenu } from './DropdownMenu';
-import { Button } from '../../Button';
+import { Button } from '../../form/Button';
 
 const meta = {
   title: 'Navigation/DropdownMenu',

@@ -41,6 +41,17 @@ export * from './components/typography/Paragraph';
 export * from './components/typography/Code';
 export * from './components/typography/Blockquote';
 
+// Data Display Components
+export * from './components/data-display/Alert';
+export * from './components/data-display/AlertDialog';
+export * from './components/data-display/Avatar';
+export * from './components/data-display/Badge';
+export * from './components/data-display/HoverCard';
+export * from './components/data-display/Popover';
+export * from './components/data-display/Progress';
+export * from './components/data-display/Table';
+export * from './components/data-display/Tooltip';
+
 // Enhanced Components
 export * from './components/enhanced/StackedModal';
 

@@ -20,7 +20,7 @@ const pulseAnimation = keyframes`
   }
 `;
 
-const getColorFromTheme = (theme: { palette: { grey?: Record<number, string>; primary: any; secondary: any; success: any; warning: any; error: any } }, color: string) => {
+const getColorFromTheme = (theme: any, color: string) => {
   if (color === 'neutral') {
     return {
       main: theme.palette.grey?.[700] || '#616161',
