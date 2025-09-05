@@ -39,7 +39,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // Wrapper component to manage dialog state
-const DialogWrapper = ({ children, ...props }: any) => {
+const DialogWrapper = ({ children, ...props }: { children: React.ReactNode } & Record<string, unknown>) => {
   const [open, setOpen] = React.useState(false);
   
   return (
@@ -53,7 +53,6 @@ const DialogWrapper = ({ children, ...props }: any) => {
         onClose={() => setOpen(false)}
         onCancel={() => setOpen(false)}
         onConfirm={() => {
-          console.log('Confirmed');
           setOpen(false);
         }}
       >

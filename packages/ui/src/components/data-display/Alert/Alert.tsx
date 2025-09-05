@@ -34,8 +34,8 @@ const pulseAnimation = keyframes`
   }
 `;
 
-const getColorFromTheme = (theme: any, variant: string) => {
-  const colorMap: Record<string, any> = {
+const getColorFromTheme = (theme: { palette: { info: { main: string; light?: string; dark?: string }; success: { main: string; light?: string; dark?: string }; warning: { main: string; light?: string; dark?: string }; error: { main: string; light?: string; dark?: string } } }, variant: string) => {
+  const colorMap: Record<string, { main: string; light?: string; dark?: string }> = {
     info: theme.palette.info,
     success: theme.palette.success,
     warning: theme.palette.warning,
@@ -126,6 +126,18 @@ const StyledAlert = styled(MuiAlert, {
       },
     }),
 
+    ...(customVariant === 'gradient' && {
+      background: `linear-gradient(135deg, ${alpha(colorPalette.light || colorPalette.main, 0.9)}, ${alpha(colorPalette.dark || colorPalette.main, 0.9)})`,
+      color: theme.palette.getContrastText(colorPalette.main),
+      border: 'none',
+      '.MuiAlert-icon': {
+        color: theme.palette.getContrastText(colorPalette.main),
+      },
+      '&:hover': {
+        filter: 'brightness(1.05)',
+      },
+    }),
+
     // Glow effect
     ...(glow && !pulse && {
       boxShadow: `0 0 20px 5px ${alpha(colorPalette.main, 0.3)} !important`,
@@ -177,7 +189,6 @@ const StyledAlert = styled(MuiAlert, {
 export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
   ({
     variant = 'info',
-    color,
     glow = false,
     pulse = false,
     icon,
@@ -198,6 +209,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
 
     const severity = variant === 'danger' ? 'error' : 
                     variant === 'glass' ? 'info' : 
+                    variant === 'gradient' ? 'info' :
                     variant;
 
     const displayIcon = showIcon ? (icon || getVariantIcon(variant)) : false;

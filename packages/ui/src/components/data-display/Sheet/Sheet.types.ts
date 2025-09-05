@@ -7,7 +7,7 @@ export interface SheetProps {
   title?: string;
   description?: string;
   position?: 'top' | 'bottom' | 'left' | 'right';
-  variant?: 'default' | 'glass' | 'gradient' | 'elevated' | 'minimal';
+  variant?: 'default' | 'glass' | 'gradient' | 'elevated' | 'minimal' | 'draggable';
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
   color?: 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info';
   glow?: boolean;
@@ -27,11 +27,23 @@ export interface SheetProps {
   swipeable?: boolean;
   snapPoints?: number[];
   defaultSnapPoint?: number;
+  onSnapPointChange?: (snapPoint: number) => void;
+  minSnapPoint?: number;
+  maxSnapPoint?: number;
+  velocityThreshold?: number;
+  dragResistance?: number;
+  animationConfig?: {
+    tension?: number;
+    friction?: number;
+    velocity?: number;
+  };
   onClick?: () => void;
   onFocus?: () => void;
   onBlur?: () => void;
   onClose?: () => void;
   onOpen?: () => void;
+  onDragStart?: () => void;
+  onDragEnd?: (snapPoint: number) => void;
   footer?: ReactNode;
   header?: ReactNode;
   persistent?: boolean;
@@ -46,6 +58,8 @@ export interface SheetHeaderProps {
   showCloseButton?: boolean;
   onClose?: () => void;
   showHandle?: boolean;
+  isDraggable?: boolean;
+  onDragStart?: (e: React.MouseEvent | React.TouchEvent) => void;
   className?: string;
   style?: CSSProperties;
   children?: ReactNode;

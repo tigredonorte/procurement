@@ -1,7 +1,7 @@
 import { LinearProgressProps, CircularProgressProps } from '@mui/material';
 import React from 'react';
 
-export type ProgressVariant = 'linear' | 'circular' | 'segmented' | 'gradient';
+export type ProgressVariant = 'linear' | 'circular' | 'segmented' | 'gradient' | 'glass';
 export type ProgressSize = 'sm' | 'md' | 'lg';
 
 export interface ProgressProps extends Omit<LinearProgressProps, 'variant' | 'color'> {

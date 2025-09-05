@@ -77,6 +77,12 @@ const StyledLinearProgress = styled(LinearProgress, {
         background: `linear-gradient(90deg, ${colorPalette.main} 0%, ${colorPalette.dark || colorPalette.main} 100%)`,
       }),
       
+      ...(customVariant === 'glass' && {
+        backgroundColor: alpha(colorPalette.main, 0.8),
+        backdropFilter: 'blur(10px)',
+        border: `1px solid ${alpha(colorPalette.main, 0.3)}`,
+      }),
+      
       // Glow effect
       ...(glow && !pulse && {
         boxShadow: `0 0 10px 2px ${alpha(colorPalette.main, 0.4)}`,

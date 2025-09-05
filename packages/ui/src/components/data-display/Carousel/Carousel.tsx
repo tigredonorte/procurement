@@ -14,6 +14,7 @@ import {
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+
 import {
   CarouselProps,
   CarouselIndicatorsProps,
@@ -33,21 +34,16 @@ export const Carousel: React.FC<CarouselProps> = ({
   showIndicators = true,
   showArrows = true,
   showThumbnails = false,
-  fade = false,
   glow = false,
   pulse = false,
   glass = false,
   gradient = false,
-  ripple = false,
   loading = false,
   disabled = false,
   className,
   style,
   height = 400,
   width = '100%',
-  spacing = 2,
-  slidesPerView = 1,
-  centerMode = false,
   pauseOnHover = true,
   onClick,
   onChange,
@@ -60,19 +56,19 @@ export const Carousel: React.FC<CarouselProps> = ({
   const theme = useTheme();
   const [activeIndex, setActiveIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const intervalRef = useRef<ReturnType<typeof window.setInterval> | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (autoPlay && !isHovered && !disabled) {
-      intervalRef.current = setInterval(() => {
+      intervalRef.current = window.setInterval(() => {
         handleNext();
       }, autoPlayInterval);
     }
 
     return () => {
       if (intervalRef.current) {
-        clearInterval(intervalRef.current);
+        window.clearInterval(intervalRef.current);
       }
     };
   }, [activeIndex, autoPlay, autoPlayInterval, isHovered, disabled]);

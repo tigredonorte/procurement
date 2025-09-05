@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Stack, Box } from '@mui/material';
-import { Person, Settings, Star } from '@mui/icons-material';
+import { Settings } from '@mui/icons-material';
 
 import { Avatar } from './Avatar';
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import {
   Drawer,
   Box,
@@ -8,12 +8,11 @@ import {
   CircularProgress,
   useTheme,
   alpha,
-  Fade,
   Backdrop,
   SwipeableDrawer,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import DragHandleIcon from '@mui/icons-material/DragHandle';
+
 import {
   SheetProps,
   SheetHeaderProps,
@@ -21,6 +20,19 @@ import {
   SheetFooterProps,
   SheetOverlayProps,
 } from './Sheet.types';
+
+// Spring physics configuration for smooth animations
+const SPRING_CONFIG = {
+  tension: 200,
+  friction: 25,
+  velocity: 0,
+};
+
+// Velocity threshold for snap detection (pixels per millisecond)
+const DEFAULT_VELOCITY_THRESHOLD = 0.5;
+
+// Drag resistance factor at boundaries
+const DEFAULT_DRAG_RESISTANCE = 0.3;
 
 export const Sheet: React.FC<SheetProps> = ({
   open = false,
@@ -36,7 +48,6 @@ export const Sheet: React.FC<SheetProps> = ({
   pulse = false,
   glass = false,
   gradient = false,
-  ripple = false,
   loading = false,
   disabled = false,
   className,
@@ -47,13 +58,21 @@ export const Sheet: React.FC<SheetProps> = ({
   showCloseButton = true,
   showHandle = true,
   swipeable = true,
-  snapPoints,
-  defaultSnapPoint,
+  snapPoints = [0.25, 0.5, 0.75, 1],
+  defaultSnapPoint = 0.5,
+  onSnapPointChange,
+  minSnapPoint = 0,
+  maxSnapPoint = 1,
+  velocityThreshold = DEFAULT_VELOCITY_THRESHOLD,
+  dragResistance = DEFAULT_DRAG_RESISTANCE,
+  animationConfig = SPRING_CONFIG,
   onClick,
   onFocus,
   onBlur,
   onClose,
   onOpen,
+  onDragStart,
+  onDragEnd,
   footer,
   header,
   persistent = false,
@@ -63,14 +82,42 @@ export const Sheet: React.FC<SheetProps> = ({
 }) => {
   const theme = useTheme();
   const [isOpen, setIsOpen] = useState(open);
+  const [currentSnapPoint, setCurrentSnapPoint] = useState(defaultSnapPoint);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStartY, setDragStartY] = useState(0);
+  const [currentHeight, setCurrentHeight] = useState<number | null>(null);
+  const [isAnimating, setIsAnimating] = useState(false);
+  
   const sheetRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const animationFrameRef = useRef<number>();
+  const velocityRef = useRef(0);
+  const lastYRef = useRef(0);
+  const lastTimeRef = useRef(0);
+
+  const isDraggableVariant = variant === 'draggable';
+  const isBottomSheet = position === 'bottom';
+  const isTopSheet = position === 'top';
+  const isVerticalSheet = isBottomSheet || isTopSheet;
+
+  // Sort snap points for easier navigation
+  const sortedSnapPoints = useMemo(() => {
+    const points = [...snapPoints].sort((a, b) => a - b);
+    // Ensure snap points are within bounds
+    return points.filter(point => point >= minSnapPoint && point <= maxSnapPoint);
+  }, [snapPoints, minSnapPoint, maxSnapPoint]);
 
   useEffect(() => {
     setIsOpen(open);
     if (open) {
       onOpen?.();
+      if (isDraggableVariant && isVerticalSheet) {
+        // Initialize at default snap point
+        setCurrentSnapPoint(defaultSnapPoint);
+        updateSheetHeight(defaultSnapPoint);
+      }
     }
-  }, [open, onOpen]);
+  }, [open, onOpen, isDraggableVariant, isVerticalSheet, defaultSnapPoint]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -102,8 +149,195 @@ export const Sheet: React.FC<SheetProps> = ({
     }
   }, [closeOnOverlayClick, persistent, handleClose]);
 
+  const updateSheetHeight = useCallback((snapPoint: number) => {
+    if (!sheetRef.current || !isVerticalSheet) return;
+    
+    const viewportHeight = window.innerHeight;
+    const height = Math.round(viewportHeight * snapPoint);
+    
+    if (isBottomSheet) {
+      sheetRef.current.style.height = `${height}px`;
+      sheetRef.current.style.transform = 'translateY(0)';
+    } else if (isTopSheet) {
+      sheetRef.current.style.height = `${height}px`;
+    }
+    
+    setCurrentHeight(height);
+  }, [isBottomSheet, isTopSheet, isVerticalSheet]);
+
+  const animateToSnapPoint = useCallback((targetSnapPoint: number, velocity = 0) => {
+    if (!sheetRef.current || !isVerticalSheet) return;
+    
+    setIsAnimating(true);
+    const startSnapPoint = currentSnapPoint;
+    const distance = targetSnapPoint - startSnapPoint;
+    const startTime = performance.now();
+    
+    // Spring animation parameters
+    const { tension, friction } = { ...SPRING_CONFIG, ...animationConfig };
+    const springLength = 0;
+    let currentVelocity = velocity * 1000; // Convert to pixels per second
+    
+    const animate = () => {
+      const now = performance.now();
+      const elapsed = (now - startTime) / 1000; // Convert to seconds
+      
+      // Spring physics calculations
+      const springForce = -tension * (startSnapPoint - targetSnapPoint + springLength);
+      const dampingForce = -friction * currentVelocity;
+      const acceleration = springForce + dampingForce;
+      
+      currentVelocity += acceleration * 0.016; // 60fps timestep
+      const progress = Math.min(1, elapsed * 4); // Smooth easing
+      
+      const currentPosition = startSnapPoint + (distance * progress);
+      
+      updateSheetHeight(currentPosition);
+      
+      if (progress < 1) {
+        animationFrameRef.current = window.requestAnimationFrame(animate);
+      } else {
+        setIsAnimating(false);
+        setCurrentSnapPoint(targetSnapPoint);
+        onSnapPointChange?.(targetSnapPoint);
+        updateSheetHeight(targetSnapPoint);
+      }
+    };
+    
+    animate();
+  }, [currentSnapPoint, isVerticalSheet, updateSheetHeight, animationConfig, onSnapPointChange]);
+
+  const findClosestSnapPoint = useCallback((currentPosition: number, velocity: number = 0) => {
+    // If velocity is significant, snap to next/previous point
+    if (Math.abs(velocity) > velocityThreshold) {
+      const currentIndex = sortedSnapPoints.findIndex(point => 
+        Math.abs(point - currentSnapPoint) < 0.01
+      );
+      
+      if (velocity > 0 && currentIndex < sortedSnapPoints.length - 1) {
+        // Dragging up (for bottom sheet) - go to next higher snap point
+        return sortedSnapPoints[currentIndex + 1];
+      } else if (velocity < 0 && currentIndex > 0) {
+        // Dragging down (for bottom sheet) - go to next lower snap point
+        return sortedSnapPoints[currentIndex - 1];
+      }
+    }
+    
+    // Find closest snap point
+    return sortedSnapPoints.reduce((closest, point) => {
+      const currentDistance = Math.abs(currentPosition - closest);
+      const pointDistance = Math.abs(currentPosition - point);
+      return pointDistance < currentDistance ? point : closest;
+    }, sortedSnapPoints[0] || currentSnapPoint);
+  }, [sortedSnapPoints, currentSnapPoint, velocityThreshold]);
+
+  const handleDragStart = useCallback((e: React.MouseEvent | React.TouchEvent) => {
+    if (!isDraggableVariant || !isVerticalSheet || isAnimating) return;
+    
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    
+    setIsDragging(true);
+    setDragStartY(clientY);
+    lastYRef.current = clientY;
+    lastTimeRef.current = performance.now();
+    velocityRef.current = 0;
+    
+    if (animationFrameRef.current) {
+      window.cancelAnimationFrame(animationFrameRef.current);
+    }
+    
+    onDragStart?.();
+  }, [isDraggableVariant, isVerticalSheet, isAnimating, onDragStart]);
+
+  const handleDragMove = useCallback((e: MouseEvent | TouchEvent) => {
+    if (!isDragging || !sheetRef.current || !isVerticalSheet) return;
+    
+    e.preventDefault();
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    const currentTime = performance.now();
+    
+    // Calculate velocity
+    const deltaY = clientY - lastYRef.current;
+    const deltaTime = currentTime - lastTimeRef.current;
+    if (deltaTime > 0) {
+      velocityRef.current = deltaY / deltaTime;
+    }
+    
+    lastYRef.current = clientY;
+    lastTimeRef.current = currentTime;
+    
+    const viewportHeight = window.innerHeight;
+    const dragDelta = isBottomSheet ? (dragStartY - clientY) : (clientY - dragStartY);
+    const deltaSnapPoint = dragDelta / viewportHeight;
+    let newSnapPoint = currentSnapPoint + deltaSnapPoint;
+    
+    // Apply resistance at boundaries
+    if (newSnapPoint < minSnapPoint) {
+      const overshoot = minSnapPoint - newSnapPoint;
+      newSnapPoint = minSnapPoint - (overshoot * dragResistance);
+    } else if (newSnapPoint > maxSnapPoint) {
+      const overshoot = newSnapPoint - maxSnapPoint;
+      newSnapPoint = maxSnapPoint + (overshoot * dragResistance);
+    }
+    
+    updateSheetHeight(newSnapPoint);
+  }, [isDragging, isVerticalSheet, isBottomSheet, dragStartY, currentSnapPoint, minSnapPoint, maxSnapPoint, dragResistance, updateSheetHeight]);
+
+  const handleDragEnd = useCallback((e: MouseEvent | TouchEvent) => {
+    if (!isDragging || !isVerticalSheet) return;
+    
+    e.preventDefault();
+    setIsDragging(false);
+    
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    const viewportHeight = window.innerHeight;
+    const totalDragDelta = isBottomSheet ? (dragStartY - clientY) : (clientY - dragStartY);
+    const deltaSnapPoint = totalDragDelta / viewportHeight;
+    const currentPosition = currentSnapPoint + deltaSnapPoint;
+    
+    // Calculate final velocity for momentum-based snapping
+    const velocity = isBottomSheet ? -velocityRef.current : velocityRef.current;
+    
+    // Find and animate to closest snap point
+    const targetSnapPoint = findClosestSnapPoint(currentPosition, velocity);
+    if (targetSnapPoint !== undefined) {
+      animateToSnapPoint(targetSnapPoint, velocity);
+      onDragEnd?.(targetSnapPoint);
+    }
+  }, [isDragging, isVerticalSheet, isBottomSheet, dragStartY, currentSnapPoint, findClosestSnapPoint, animateToSnapPoint, onDragEnd]);
+
+  // Add drag event listeners
+  useEffect(() => {
+    if (isDragging) {
+      const handleMouseMove = (e: MouseEvent) => handleDragMove(e);
+      const handleMouseUp = (e: MouseEvent) => handleDragEnd(e);
+      const handleTouchMove = (e: TouchEvent) => handleDragMove(e);
+      const handleTouchEnd = (e: TouchEvent) => handleDragEnd(e);
+      
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener('touchmove', handleTouchMove, { passive: false });
+      document.addEventListener('touchend', handleTouchEnd);
+      
+      return () => {
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+        document.removeEventListener('touchmove', handleTouchMove);
+        document.removeEventListener('touchend', handleTouchEnd);
+      };
+    }
+  }, [isDragging, handleDragMove, handleDragEnd]);
+
   const getSizeStyles = () => {
     const isHorizontal = position === 'left' || position === 'right';
+    
+    // For draggable variant, use dynamic height based on snap point
+    if (isDraggableVariant && isVerticalSheet && currentHeight !== null) {
+      return { height: currentHeight };
+    }
     
     switch (size) {
       case 'xs':
@@ -126,11 +360,15 @@ export const Sheet: React.FC<SheetProps> = ({
   const getVariantStyles = () => {
     const baseStyles = {
       backgroundColor: theme.palette.background.paper,
-      transition: theme.transitions.create(['all'], {
-        duration: theme.transitions.duration.standard,
-      }),
+      transition: !isDragging && !isAnimating 
+        ? theme.transitions.create(['all'], {
+            duration: theme.transitions.duration.standard,
+          })
+        : 'none',
       opacity: disabled ? 0.5 : 1,
       pointerEvents: disabled ? 'none' as const : 'auto' as const,
+      cursor: isDraggableVariant && isVerticalSheet ? 'grab' : 'auto',
+      ...(isDragging && { cursor: 'grabbing' }),
     };
 
     const glowStyles = glow ? {
@@ -157,6 +395,17 @@ export const Sheet: React.FC<SheetProps> = ({
     } : {};
 
     switch (variant) {
+      case 'draggable':
+        return {
+          ...baseStyles,
+          ...glowStyles,
+          ...pulseStyles,
+          ...roundedStyles,
+          boxShadow: theme.shadows[Math.min(elevation + 4, 24)],
+          // Add subtle border for better visibility
+          border: `1px solid ${alpha(theme.palette.divider, 0.12)}`,
+        };
+
       case 'glass':
         return {
           ...baseStyles,
@@ -208,7 +457,7 @@ export const Sheet: React.FC<SheetProps> = ({
     }
   };
 
-  const DrawerComponent = swipeable ? SwipeableDrawer : Drawer;
+  const DrawerComponent = swipeable && !isDraggableVariant ? SwipeableDrawer : Drawer;
 
   return (
     <>
@@ -221,26 +470,29 @@ export const Sheet: React.FC<SheetProps> = ({
       )}
       
       <DrawerComponent
-        {...(swipeable ? { 
+        {...(swipeable && !isDraggableVariant ? { 
           onOpen: () => {
             setIsOpen(true);
             onOpenChange?.(true);
             onOpen?.();
           },
+          onClose: handleClose,
           disableSwipeToOpen: false,
           swipeAreaWidth: 20,
-        } : {})}
+        } : {
+          onClose: handleClose,
+        })}
         anchor={position}
         open={isOpen}
-        onClose={handleClose}
         className={className}
         PaperProps={{
+          ref: sheetRef,
           sx: {
             ...getSizeStyles(),
             ...getVariantStyles(),
             ...style,
             overflow: 'visible',
-            ...(fullHeight && {
+            ...(fullHeight && !isDraggableVariant && {
               height: position === 'left' || position === 'right' ? '100%' : 'auto',
               width: position === 'top' || position === 'bottom' ? '100%' : 'auto',
             }),
@@ -252,7 +504,7 @@ export const Sheet: React.FC<SheetProps> = ({
         }}
       >
         <Box
-          ref={sheetRef}
+          ref={contentRef}
           onClick={onClick}
           onFocus={onFocus}
           onBlur={onBlur}
@@ -261,6 +513,7 @@ export const Sheet: React.FC<SheetProps> = ({
             display: 'flex',
             flexDirection: 'column',
             position: 'relative',
+            userSelect: isDragging ? 'none' : 'auto',
           }}
         >
           {(showHandle || title || description || showCloseButton || header) && (
@@ -269,7 +522,9 @@ export const Sheet: React.FC<SheetProps> = ({
               description={description}
               showCloseButton={showCloseButton}
               onClose={handleClose}
-              showHandle={showHandle && (position === 'bottom' || position === 'top')}
+              showHandle={showHandle && isVerticalSheet}
+              isDraggable={isDraggableVariant && isVerticalSheet}
+              onDragStart={handleDragStart}
             >
               {header}
             </SheetHeader>
@@ -309,6 +564,8 @@ export const SheetHeader: React.FC<SheetHeaderProps> = ({
   showCloseButton,
   onClose,
   showHandle,
+  isDraggable = false,
+  onDragStart,
   className,
   style,
   children,
@@ -321,8 +578,12 @@ export const SheetHeader: React.FC<SheetHeaderProps> = ({
       sx={{
         p: 2,
         pb: showHandle ? 1 : 2,
+        cursor: isDraggable ? 'grab' : 'auto',
+        '&:active': isDraggable ? { cursor: 'grabbing' } : {},
         ...style,
       }}
+      onMouseDown={isDraggable ? onDragStart : undefined}
+      onTouchStart={isDraggable ? onDragStart : undefined}
     >
       {showHandle && (
         <Box
@@ -330,14 +591,23 @@ export const SheetHeader: React.FC<SheetHeaderProps> = ({
             display: 'flex',
             justifyContent: 'center',
             mb: 1,
+            pointerEvents: isDraggable ? 'none' : 'auto',
           }}
         >
-          <DragHandleIcon
+          <Box
             sx={{
-              color: theme.palette.text.disabled,
-              width: 32,
-              height: 4,
-              borderRadius: 2,
+              width: isDraggable ? 48 : 32,
+              height: isDraggable ? 6 : 4,
+              backgroundColor: theme.palette.text.disabled,
+              borderRadius: 3,
+              transition: 'all 0.3s ease',
+              ...(isDraggable && {
+                backgroundColor: theme.palette.action.active,
+                '&:hover': {
+                  backgroundColor: theme.palette.primary.main,
+                  transform: 'scaleX(1.1)',
+                },
+              }),
             }}
           />
         </Box>

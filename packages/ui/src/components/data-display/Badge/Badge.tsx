@@ -20,8 +20,8 @@ const pulseAnimation = keyframes`
   }
 `;
 
-const getColorFromTheme = (theme: any, color: string) => {
-  const colorMap: Record<string, any> = {
+const getColorFromTheme = (theme: { palette: { primary: { main: string; light?: string; dark?: string }; secondary: { main: string; light?: string; dark?: string }; success: { main: string; light?: string; dark?: string }; warning: { main: string; light?: string; dark?: string }; error: { main: string; light?: string; dark?: string }; grey: { [key: number]: string } } }, color: string) => {
+  const colorMap: Record<string, { main: string; light?: string; dark?: string }> = {
     primary: theme.palette.primary,
     secondary: theme.palette.secondary,
     success: theme.palette.success,
@@ -137,6 +137,18 @@ const StyledBadge = styled(MuiBadge, {
         borderRadius: sizeStyles.height / 2,
       }),
 
+      ...(customVariant === 'glass' && {
+        backgroundColor: alpha(theme.palette.background.paper, 0.1),
+        backdropFilter: 'blur(10px)',
+        border: `1px solid ${alpha(theme.palette.divider, 0.2)}`,
+        color: colorPalette.main,
+        minWidth: sizeStyles.minWidth,
+        height: sizeStyles.height,
+        fontSize: sizeStyles.fontSize,
+        padding: sizeStyles.padding,
+        borderRadius: sizeStyles.height / 2,
+      }),
+
       // Glow effect
       ...(glow && !pulse && {
         boxShadow: `0 0 10px 2px ${alpha(colorPalette.main, 0.6)} !important`,
@@ -182,7 +194,7 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
     };
 
     // For count variant, format numbers
-    const formatCount = (count: any) => {
+    const formatCount = (count: number | string) => {
       if (typeof count === 'number') {
         if (count === 0 && !showZero) return null;
         if (count > max) return `${max}+`;

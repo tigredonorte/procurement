@@ -7,7 +7,6 @@ import {
   DialogContentText,
   Button,
   IconButton,
-  Box,
   alpha,
   keyframes,
   CircularProgress,
@@ -15,7 +14,7 @@ import {
 } from '@mui/material';
 import type { ButtonProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { Close, Warning, Error, Info } from '@mui/icons-material';
+import { Close, Error, Info } from '@mui/icons-material';
 
 import { AlertDialogProps } from './AlertDialog.types';
 

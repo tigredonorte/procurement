@@ -1,7 +1,7 @@
 import { BadgeProps as MuiBadgeProps } from '@mui/material';
 import React from 'react';
 
-export type BadgeVariant = 'default' | 'dot' | 'count' | 'gradient';
+export type BadgeVariant = 'default' | 'dot' | 'count' | 'gradient' | 'glass';
 export type BadgeSize = 'sm' | 'md' | 'lg';
 
 export interface BadgeProps extends Omit<MuiBadgeProps, 'variant' | 'color' | 'content'> {

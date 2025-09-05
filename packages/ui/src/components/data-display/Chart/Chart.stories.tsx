@@ -1,8 +1,9 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import { Box, Typography } from '@mui/material';
+
 import { Chart } from './Chart';
 import { ChartDataPoint, ChartSeries } from './Chart.types';
-import { Box, Typography } from '@mui/material';
 
 const meta: Meta<typeof Chart> = {
   title: 'Data Display/Chart',
@@ -262,9 +263,8 @@ export const WithEffects: Story = {
   },
 };
 
-export const Interactive: Story = {
-  render: () => {
-    const [clickedData, setClickedData] = React.useState<string>('');
+const InteractiveComponent = () => {
+const [clickedData, setClickedData] = React.useState<string>('');
     
     return (
       <Box>
@@ -287,7 +287,10 @@ export const Interactive: Story = {
         )}
       </Box>
     );
-  },
+};
+
+export const Interactive: Story = {
+  render: () => <InteractiveComponent />,
 };
 
 export const Loading: Story = {
@@ -329,14 +332,13 @@ export const NoAnimation: Story = {
   },
 };
 
-export const RealTimeData: Story = {
-  render: () => {
-    const [data, setData] = React.useState<ChartDataPoint[]>([
+const RealTimeDataComponent = () => {
+const [data, setData] = React.useState<ChartDataPoint[]>([
       { time: '00:00', cpu: 45, memory: 60 },
     ]);
 
     React.useEffect(() => {
-      const interval = setInterval(() => {
+      const interval = window.setInterval(() => {
         setData((prev) => {
           const newData = [...prev];
           const time = new Date().toLocaleTimeString('en-US', { 
@@ -360,7 +362,7 @@ export const RealTimeData: Story = {
         });
       }, 2000);
 
-      return () => clearInterval(interval);
+      return () => window.clearInterval(interval);
     }, []);
 
     return (
@@ -376,7 +378,10 @@ export const RealTimeData: Story = {
         animationDuration={500}
       />
     );
-  },
+};
+
+export const RealTimeData: Story = {
+  render: () => <RealTimeDataComponent />,
 };
 
 export const Dashboard: Story = {
