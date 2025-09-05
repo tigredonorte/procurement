@@ -4,7 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=9.0.0",
+    "npm": "please-use-pnpm",
+    "yarn": "please-use-pnpm"
+  },
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "prepare": "husky install",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "format": "prettier -w .",
