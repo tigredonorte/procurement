@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import React, { useState, useRef, useMemo, useCallback } from 'react';
 import { Box } from '@mui/material';
-import { VirtualListProps, VirtualGridProps, VirtualListItem } from './VirtualList.types';
+import { VirtualListProps, VirtualGridProps } from './VirtualList.types';
 
 export const VirtualList: React.FC<VirtualListProps> = ({
   items,
@@ -181,7 +181,6 @@ export const VirtualGrid: React.FC<VirtualGridProps> = ({
   style,
 }) => {
   const [scrollTop, setScrollTop] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const rowCount = Math.ceil(items.length / columnCount);

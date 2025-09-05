@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Box, Typography, Card, CardMedia, CardContent } from '@mui/material';
+
 import { AspectRatio } from './AspectRatio';
 
 const meta: Meta<typeof AspectRatio> = {

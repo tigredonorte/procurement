@@ -7,7 +7,8 @@ import {
   Zoom,
   useTheme,
 } from '@mui/material';
-import { CustomTransitionProps, TransitionVariant } from './Transition.types';
+
+import { CustomTransitionProps } from './Transition.types';
 
 export const Transition: React.FC<CustomTransitionProps> = ({
   children,

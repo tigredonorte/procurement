@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Button, Box, Typography, Paper, Alert } from '@mui/material';
+
 import { Portal } from './Portal';
 
 const meta: Meta<typeof Portal> = {
@@ -19,9 +20,8 @@ const meta: Meta<typeof Portal> = {
 export default meta;
 type Story = StoryObj<typeof Portal>;
 
-export const Basic: Story = {
-  render: () => {
-    const [showPortal, setShowPortal] = useState(false);
+const BasicComponent = () => {
+const [showPortal, setShowPortal] = useState(false);
 
     return (
       <Box>
@@ -58,12 +58,14 @@ export const Basic: Story = {
         )}
       </Box>
     );
-  },
 };
 
-export const CustomContainer: Story = {
-  render: () => {
-    const [customContainer, setCustomContainer] = useState<HTMLElement | null>(null);
+export const Basic: Story = {
+  render: () => <BasicComponent />,
+};
+
+const CustomContainerComponent = () => {
+const [customContainer, setCustomContainer] = useState<HTMLElement | null>(null);
     const [showPortal, setShowPortal] = useState(false);
 
     return (
@@ -116,12 +118,14 @@ export const CustomContainer: Story = {
         </Paper>
       </Box>
     );
-  },
 };
 
-export const DisabledPortal: Story = {
-  render: () => {
-    const [disablePortal, setDisablePortal] = useState(false);
+export const CustomContainer: Story = {
+  render: () => <CustomContainerComponent />,
+};
+
+const DisabledPortalComponent = () => {
+const [disablePortal, setDisablePortal] = useState(false);
 
     return (
       <Box>
@@ -167,12 +171,14 @@ export const DisabledPortal: Story = {
         </Paper>
       </Box>
     );
-  },
 };
 
-export const MultiplePortals: Story = {
-  render: () => {
-    const [activePortals, setActivePortals] = useState<Set<number>>(new Set());
+export const DisabledPortal: Story = {
+  render: () => <DisabledPortalComponent />,
+};
+
+const MultiplePortalsComponent = () => {
+const [activePortals, setActivePortals] = useState<Set<number>>(new Set());
 
     const togglePortal = (id: number) => {
       setActivePortals(prev => {
@@ -248,5 +254,8 @@ export const MultiplePortals: Story = {
         ))}
       </Box>
     );
-  },
+};
+
+export const MultiplePortals: Story = {
+  render: () => <MultiplePortalsComponent />,
 };

@@ -5,6 +5,7 @@ import {
   Typography,
   Alert,
 } from '@mui/material';
+
 import { InfiniteScrollProps } from './InfiniteScroll.types';
 
 export const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
@@ -141,16 +142,6 @@ export const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
     return baseStyles;
   };
 
-  const getSentinelPosition = () => {
-    switch (variant) {
-      case 'reverse':
-        return 'top'; // Sentinel at top for reverse loading
-      case 'horizontal':
-        return 'right'; // Sentinel at right for horizontal loading
-      default:
-        return 'bottom'; // Sentinel at bottom for default loading
-    }
-  };
 
   const renderSentinel = () => {
     if (!hasMore) {

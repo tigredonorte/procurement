@@ -161,6 +161,16 @@ export interface TabsProps extends Omit<MuiTabsProps, 'variant' | 'children' | '
    * Custom loading component
    */
   loadingComponent?: ReactNode;
+  
+  /**
+   * Focus handler for tabs
+   */
+  onFocus?: React.FocusEventHandler<HTMLDivElement>;
+  
+  /**
+   * Blur handler for tabs
+   */
+  onBlur?: React.FocusEventHandler<HTMLDivElement>;
 }
 
 export interface TabPanelProps {
