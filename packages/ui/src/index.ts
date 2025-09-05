@@ -61,7 +61,7 @@ export * from './components/data-display/Sheet';
 // Feedback Components
 export * from './components/feedback/Dialog';
 export * from './components/feedback/Modal';
-export * from './components/feedback/StackedModal';
+export * from './components/enhanced/StackedModal';
 export * from './components/feedback/Toast';
 export * from './components/feedback/Sonner';
 

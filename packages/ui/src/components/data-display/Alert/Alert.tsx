@@ -1,20 +1,14 @@
 import React from 'react';
-import { 
-  Alert as MuiAlert, 
-  AlertTitle, 
+import {
+  Alert as MuiAlert,
+  AlertTitle,
   Collapse,
   IconButton,
   alpha,
-  keyframes
+  keyframes,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { 
-  CheckCircle, 
-  Info, 
-  Warning, 
-  Error, 
-  Close 
-} from '@mui/icons-material';
+import { styled, Theme } from '@mui/material/styles';
+import { CheckCircle, Info, Warning, Error, Close } from '@mui/icons-material';
 
 import { AlertProps } from './Alert.types';
 
@@ -34,14 +28,21 @@ const pulseAnimation = keyframes`
   }
 `;
 
-const getColorFromTheme = (theme: { palette: { info: { main: string; light?: string; dark?: string }; success: { main: string; light?: string; dark?: string }; warning: { main: string; light?: string; dark?: string }; error: { main: string; light?: string; dark?: string } } }, variant: string) => {
+const getColorFromTheme = (theme: Theme, variant: string) => {
   const colorMap: Record<string, { main: string; light?: string; dark?: string }> = {
     info: theme.palette.info,
     success: theme.palette.success,
     warning: theme.palette.warning,
     danger: theme.palette.error,
+    primary: theme.palette.primary,
+    secondary: theme.palette.secondary,
+    neutral: {
+      main: theme.palette.grey[500] || '#9E9E9E',
+      light: theme.palette.grey[300] || '#E0E0E0',
+      dark: theme.palette.grey[700] || '#616161',
+    },
   };
-  
+
   return colorMap[variant] || theme.palette.info;
 };
 
@@ -52,20 +53,21 @@ const getVariantIcon = (variant: string) => {
     warning: <Warning />,
     danger: <Error />,
   };
-  
+
   return iconMap[variant];
 };
 
 const StyledAlert = styled(MuiAlert, {
-  shouldForwardProp: (prop) => 
-    !['customVariant', 'glow', 'pulse'].includes(prop as string),
-})<{ 
-  customVariant?: string; 
-  glow?: boolean; 
-  pulse?: boolean; 
-}>(({ theme, customVariant, glow, pulse }) => {
-  const colorPalette = getColorFromTheme(theme, customVariant || 'info');
-  
+  shouldForwardProp: (prop) =>
+    !['customVariant', 'customColor', 'glow', 'pulse'].includes(prop as string),
+})<{
+  customVariant?: string;
+  customColor?: string;
+  glow?: boolean;
+  pulse?: boolean;
+}>(({ theme, customVariant, customColor, glow, pulse }) => {
+  const colorPalette = getColorFromTheme(theme, customColor || customVariant || 'info');
+
   return {
     borderRadius: theme.spacing(1),
     transition: 'all 0.3s ease',
@@ -139,67 +141,74 @@ const StyledAlert = styled(MuiAlert, {
     }),
 
     // Glow effect
-    ...(glow && !pulse && {
-      boxShadow: `0 0 20px 5px ${alpha(colorPalette.main, 0.3)} !important`,
-      filter: 'brightness(1.05)',
-    }),
+    ...(glow &&
+      !pulse && {
+        boxShadow: `0 0 20px 5px ${alpha(colorPalette.main, 0.3)} !important`,
+        filter: 'brightness(1.05)',
+      }),
 
     // Pulse animation
-    ...(pulse && !glow && {
-      position: 'relative',
-      '&::after': {
-        content: '""',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        borderRadius: 'inherit',
-        backgroundColor: colorPalette.main,
-        opacity: 0.2,
-        animation: `${pulseAnimation} 2s infinite`,
-        pointerEvents: 'none',
-        zIndex: -1,
-      },
-    }),
+    ...(pulse &&
+      !glow && {
+        position: 'relative',
+        '&::after': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          borderRadius: 'inherit',
+          backgroundColor: colorPalette.main,
+          opacity: 0.2,
+          animation: `${pulseAnimation} 2s infinite`,
+          pointerEvents: 'none',
+          zIndex: -1,
+        },
+      }),
 
     // Both glow and pulse
-    ...(glow && pulse && {
-      position: 'relative',
-      boxShadow: `0 0 20px 5px ${alpha(colorPalette.main, 0.3)} !important`,
-      filter: 'brightness(1.05)',
-      '&::after': {
-        content: '""',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        borderRadius: 'inherit',
-        backgroundColor: colorPalette.main,
-        opacity: 0.2,
-        animation: `${pulseAnimation} 2s infinite`,
-        pointerEvents: 'none',
-        zIndex: -1,
-      },
-    }),
+    ...(glow &&
+      pulse && {
+        position: 'relative',
+        boxShadow: `0 0 20px 5px ${alpha(colorPalette.main, 0.3)} !important`,
+        filter: 'brightness(1.05)',
+        '&::after': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          borderRadius: 'inherit',
+          backgroundColor: colorPalette.main,
+          opacity: 0.2,
+          animation: `${pulseAnimation} 2s infinite`,
+          pointerEvents: 'none',
+          zIndex: -1,
+        },
+      }),
   };
 });
 
 export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
-  ({
-    variant = 'info',
-    glow = false,
-    pulse = false,
-    icon,
-    showIcon = true,
-    closable = false,
-    onClose,
-    title,
-    description,
-    children,
-    ...props
-  }, ref) => {
+  (
+    {
+      variant = 'info',
+      color,
+      glow = false,
+      pulse = false,
+      icon,
+      showIcon = true,
+      closable = false,
+      onClose,
+      title,
+      description,
+      children,
+      ...props
+    },
+    ref,
+  ) => {
     const [open, setOpen] = React.useState(true);
 
     const handleClose = () => {
@@ -207,12 +216,16 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
       onClose?.();
     };
 
-    const severity = variant === 'danger' ? 'error' : 
-                    variant === 'glass' ? 'info' : 
-                    variant === 'gradient' ? 'info' :
-                    variant;
+    const severity =
+      variant === 'danger'
+        ? 'error'
+        : variant === 'glass'
+          ? 'info'
+          : variant === 'gradient'
+            ? 'info'
+            : variant;
 
-    const displayIcon = showIcon ? (icon || getVariantIcon(variant)) : false;
+    const displayIcon = showIcon ? icon || getVariantIcon(variant) : false;
 
     const content = (
       <>
@@ -228,17 +241,13 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
           ref={ref}
           severity={severity}
           customVariant={variant}
+          customColor={color}
           glow={glow}
           pulse={pulse}
           icon={displayIcon}
           action={
             closable && (
-              <IconButton
-                aria-label="close"
-                color="inherit"
-                size="small"
-                onClick={handleClose}
-              >
+              <IconButton aria-label="close" color="inherit" size="small" onClick={handleClose}>
                 <Close fontSize="inherit" />
               </IconButton>
             )
@@ -249,7 +258,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
         </StyledAlert>
       </Collapse>
     );
-  }
+  },
 );
 
 Alert.displayName = 'Alert';

@@ -1,4 +1,6 @@
+import { Box } from '@mui/material';
 import React from 'react';
+
 import { AspectRatioProps } from './AspectRatio.types';
 
 export const AspectRatio: React.FC<AspectRatioProps> = ({
@@ -14,7 +16,7 @@ export const AspectRatio: React.FC<AspectRatioProps> = ({
     if (variant === 'custom' && ratio) {
       return ratio;
     }
-    
+
     switch (variant) {
       case '16:9':
         return 16 / 9;
@@ -32,7 +34,7 @@ export const AspectRatio: React.FC<AspectRatioProps> = ({
   };
 
   const aspectRatio = getAspectRatio();
-  
+
   return (
     <Box
       sx={{
