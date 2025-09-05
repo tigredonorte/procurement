@@ -7,8 +7,26 @@ import {
   useTheme,
   alpha,
   Backdrop,
+  keyframes,
 } from '@mui/material';
+
 import { ModalProps, ModalContentProps } from './Modal.types';
+
+// Define pulse animation
+const pulseAnimation = keyframes`
+  0% {
+    box-shadow: 0 0 0 0 currentColor;
+    opacity: 1;
+  }
+  70% {
+    box-shadow: 0 0 0 20px currentColor;
+    opacity: 0;
+  }
+  100% {
+    box-shadow: 0 0 0 0 currentColor;
+    opacity: 0;
+  }
+`;
 
 export const Modal: React.FC<ModalProps> = ({
   children,
@@ -19,6 +37,7 @@ export const Modal: React.FC<ModalProps> = ({
   glass = false,
   gradient = false,
   glow = false,
+  pulse = false,
   borderRadius = 'lg',
   onClose,
   open,
@@ -108,6 +127,24 @@ export const Modal: React.FC<ModalProps> = ({
       boxShadow: `0 0 40px ${alpha(theme.palette.primary.main, 0.3)}`,
     } : {};
 
+    const pulseStyles = pulse ? {
+      position: 'relative',
+      '&::after': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        borderRadius: 'inherit',
+        backgroundColor: theme.palette.primary.main,
+        opacity: 0.3,
+        animation: `${pulseAnimation} 2s infinite`,
+        pointerEvents: 'none',
+        zIndex: -1,
+      },
+    } : {};
+
     const gradientStyles = gradient ? {
       background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.1)}, ${alpha(theme.palette.secondary.main, 0.1)})`,
       backdropFilter: 'blur(10px)',
@@ -118,6 +155,7 @@ export const Modal: React.FC<ModalProps> = ({
         return {
           ...positionStyles,
           ...glowStyles,
+          ...pulseStyles,
           backgroundColor: alpha(theme.palette.background.paper, 0.1),
           backdropFilter: 'blur(20px)',
           border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
@@ -128,6 +166,7 @@ export const Modal: React.FC<ModalProps> = ({
         return {
           ...positionStyles,
           ...glowStyles,
+          ...pulseStyles,
           ...gradientStyles,
           backgroundColor: glass 
             ? alpha(theme.palette.background.paper, 0.1)

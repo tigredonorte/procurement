@@ -11,14 +11,32 @@ import {
   useTheme,
   alpha,
   Backdrop,
+  keyframes,
 } from '@mui/material';
 import { Close as CloseIcon } from '@mui/icons-material';
+
 import {
   DialogProps,
   DialogHeaderProps,
   DialogContentProps,
   DialogActionsProps,
 } from './Dialog.types';
+
+// Define pulse animation
+const pulseAnimation = keyframes`
+  0% {
+    box-shadow: 0 0 0 0 currentColor;
+    opacity: 1;
+  }
+  70% {
+    box-shadow: 0 0 0 20px currentColor;
+    opacity: 0;
+  }
+  100% {
+    box-shadow: 0 0 0 0 currentColor;
+    opacity: 0;
+  }
+`;
 
 export const Dialog: React.FC<DialogProps> = ({
   children,
@@ -32,6 +50,7 @@ export const Dialog: React.FC<DialogProps> = ({
   glass = false,
   gradient = false,
   glow = false,
+  pulse = false,
   borderRadius = 'lg',
   onClose,
   open,
@@ -80,11 +99,30 @@ export const Dialog: React.FC<DialogProps> = ({
       boxShadow: `0 0 40px ${alpha(theme.palette.primary.main, 0.3)}`,
     } : {};
 
+    const pulseStyles = pulse ? {
+      position: 'relative',
+      '&::after': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        borderRadius: 'inherit',
+        backgroundColor: theme.palette.primary.main,
+        opacity: 0.3,
+        animation: `${pulseAnimation} 2s infinite`,
+        pointerEvents: 'none',
+        zIndex: -1,
+      },
+    } : {};
+
     switch (variant) {
       case 'glass':
         return {
           ...baseStyles,
           ...glowStyles,
+          ...pulseStyles,
           backgroundColor: alpha(theme.palette.background.paper, 0.1),
           backdropFilter: 'blur(20px)',
           border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
@@ -100,6 +138,7 @@ export const Dialog: React.FC<DialogProps> = ({
           maxWidth: 'none',
           maxHeight: 'none',
           ...glowStyles,
+          ...pulseStyles,
         };
 
       case 'drawer':
@@ -112,6 +151,7 @@ export const Dialog: React.FC<DialogProps> = ({
           position: 'absolute',
           right: 0,
           ...glowStyles,
+          ...pulseStyles,
         };
 
       default:
@@ -123,6 +163,7 @@ export const Dialog: React.FC<DialogProps> = ({
         return {
           ...baseStyles,
           ...glowStyles,
+          ...pulseStyles,
           ...gradientStyles,
           backgroundColor: glass 
             ? alpha(theme.palette.background.paper, 0.1)

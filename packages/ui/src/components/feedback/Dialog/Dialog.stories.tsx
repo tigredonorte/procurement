@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Button, Typography, Box } from '@mui/material';
+
 import { Dialog, DialogHeader, DialogContent, DialogActions } from './Dialog';
 
 const meta: Meta<typeof Dialog> = {
@@ -204,9 +205,8 @@ export const DrawerStyle: Story = {
   },
 };
 
-export const AllSizes: Story = {
-  render: () => {
-    const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+const AllSizesComponent = () => {
+const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
     const [openStates, setOpenStates] = useState<Record<string, boolean>>({});
 
     const handleOpen = (size: string) => {
@@ -248,5 +248,8 @@ export const AllSizes: Story = {
         ))}
       </Box>
     );
-  },
+};
+
+export const AllSizes: Story = {
+  render: () => <AllSizesComponent />,
 };

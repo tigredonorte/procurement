@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState, useEffect } from 'react';
 import { Button, Box, Typography, ButtonGroup } from '@mui/material';
+
 import { Toast, ToastProvider, useToast } from './Toast';
 
 const meta: Meta<typeof Toast> = {
@@ -101,7 +102,7 @@ const ToastDemo = () => {
 
   const showPromise = async () => {
     const mockPromise = new Promise((resolve, reject) => {
-      setTimeout(() => {
+      window.setTimeout(() => {
         Math.random() > 0.5 ? resolve('Success!') : reject(new Error('Failed!'));
       }, 2000);
     });
@@ -145,9 +146,8 @@ export const Interactive: Story = {
   render: () => <ToastDemo />,
 };
 
-export const BasicTypes: Story = {
-  render: () => {
-    const [showToasts, setShowToasts] = useState(false);
+const BasicTypesComponent = () => {
+const [showToasts, setShowToasts] = useState(false);
     
     useEffect(() => {
       if (!showToasts) return;
@@ -155,11 +155,11 @@ export const BasicTypes: Story = {
       const { addToast } = useToast();
       
       // Show different types with delays
-      setTimeout(() => addToast({ message: 'Default notification', variant: 'default' }), 100);
-      setTimeout(() => addToast({ message: 'Success! Task completed.', variant: 'success' }), 600);
-      setTimeout(() => addToast({ message: 'Error: Something went wrong.', variant: 'error' }), 1100);
-      setTimeout(() => addToast({ message: 'Warning: Please check this.', variant: 'warning' }), 1600);
-      setTimeout(() => addToast({ message: 'Info: Helpful information.', variant: 'info' }), 2100);
+      window.setTimeout(() => addToast({ message: 'Default notification', variant: 'default' }), 100);
+      window.setTimeout(() => addToast({ message: 'Success! Task completed.', variant: 'success' }), 600);
+      window.setTimeout(() => addToast({ message: 'Error: Something went wrong.', variant: 'error' }), 1100);
+      window.setTimeout(() => addToast({ message: 'Warning: Please check this.', variant: 'warning' }), 1600);
+      window.setTimeout(() => addToast({ message: 'Info: Helpful information.', variant: 'info' }), 2100);
       
       setShowToasts(false);
     }, [showToasts]);
@@ -169,7 +169,10 @@ export const BasicTypes: Story = {
         Show All Toast Types
       </Button>
     );
-  },
+};
+
+export const BasicTypes: Story = {
+  render: () => <BasicTypesComponent />,
 };
 
 export const GlassMorphism: Story = {
@@ -215,7 +218,7 @@ export const PromiseHandling: Story = {
 
     const handleQuickPromise = () => {
       const quickPromise = new Promise(resolve => {
-        setTimeout(() => resolve('Quick success!'), 1000);
+        window.setTimeout(() => resolve('Quick success!'), 1000);
       });
 
       promise(quickPromise, {
@@ -227,7 +230,7 @@ export const PromiseHandling: Story = {
 
     const handleSlowPromise = () => {
       const slowPromise = new Promise(resolve => {
-        setTimeout(() => resolve('Slow success!'), 3000);
+        window.setTimeout(() => resolve('Slow success!'), 3000);
       });
 
       promise(slowPromise, {
@@ -239,7 +242,7 @@ export const PromiseHandling: Story = {
 
     const handleFailingPromise = () => {
       const failingPromise = new Promise((_, reject) => {
-        setTimeout(() => reject(new Error('Simulated failure')), 1500);
+        window.setTimeout(() => reject(new Error('Simulated failure')), 1500);
       });
 
       promise(failingPromise, {

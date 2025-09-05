@@ -18,6 +18,7 @@ import {
   Info as InfoIcon,
   CircularProgress,
 } from '@mui/icons-material';
+
 import {
   SonnerProps,
   SonnerToasterProps,
@@ -50,7 +51,7 @@ export const SonnerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
     if (!toast.persistent && toast.duration !== 0) {
       const duration = toast.duration ?? 4000;
-      setTimeout(() => {
+      window.setTimeout(() => {
         dismiss(id);
       }, duration);
     }
@@ -88,13 +89,13 @@ export const SonnerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         toast.id === id ? { ...toast, visible: false } : toast
       ));
       
-      setTimeout(() => {
+      window.setTimeout(() => {
         setToasts(prev => prev.filter(toast => toast.id !== id));
       }, 300);
     } else {
       setToasts(prev => prev.map(toast => ({ ...toast, visible: false })));
       
-      setTimeout(() => {
+      window.setTimeout(() => {
         setToasts([]);
       }, 300);
     }
