@@ -38,9 +38,8 @@ export const Default: Story = {
   },
 };
 
-export const Variants: Story = {
-  render: () => {
-    const [values, setValues] = useState({
+const VariantsComponent = () => {
+const [values, setValues] = useState({
       default: null,
       range: null,
       multi: null,
@@ -89,7 +88,10 @@ export const Variants: Story = {
         </Box>
       </Box>
     );
-  },
+};
+
+export const Variants: Story = {
+  render: () => <VariantsComponent />,
 };
 
 export const Colors: Story = {
@@ -128,9 +130,8 @@ export const Sizes: Story = {
   ),
 };
 
-export const SpecialEffects: Story = {
-  render: () => {
-    const [values, setValues] = useState({
+const SpecialEffectsComponent = () => {
+const [values, setValues] = useState({
       glass: null,
       gradient: null,
       combined: null,
@@ -171,12 +172,14 @@ export const SpecialEffects: Story = {
         </Box>
       </Box>
     );
-  },
 };
 
-export const WithDateLimits: Story = {
-  render: () => {
-    const [value, setValue] = useState<Date | null>(null);
+export const SpecialEffects: Story = {
+  render: () => <SpecialEffectsComponent />,
+};
+
+const WithDateLimitsComponent = () => {
+const [value, setValue] = useState<Date | null>(null);
     const today = new Date();
     const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
     const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
@@ -195,7 +198,10 @@ export const WithDateLimits: Story = {
         />
       </Box>
     );
-  },
+};
+
+export const WithDateLimits: Story = {
+  render: () => <WithDateLimitsComponent />,
 };
 
 export const Playground: Story = {

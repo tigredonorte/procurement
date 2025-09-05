@@ -43,9 +43,8 @@ export const Default: Story = {
   },
 };
 
-export const Variants: Story = {
-  render: () => {
-    const [values, setValues] = useState({
+const VariantsComponent = () => {
+const [values, setValues] = useState({
       numeric: '',
       alphanumeric: '',
       masked: '',
@@ -60,41 +59,19 @@ export const Variants: Story = {
             length={6}
             value={values.numeric}
             onChange={(value) => setValues(prev => ({ ...prev, numeric: value }))}
-            onComplete={(value) => console.log('Numeric OTP completed:', value)}
-          />
-        </Box>
-        
-        <Box sx={{ textAlign: 'center' }}>
-          <Typography variant="h6" gutterBottom>Alphanumeric (4 characters)</Typography>
-          <InputOTP
-            variant="alphanumeric"
-            length={4}
-            color="secondary"
-            value={values.alphanumeric}
-            onChange={(value) => setValues(prev => ({ ...prev, alphanumeric: value }))}
-            onComplete={(value) => console.log('Alphanumeric OTP completed:', value)}
-          />
-        </Box>
-        
-        <Box sx={{ textAlign: 'center' }}>
-          <Typography variant="h6" gutterBottom>Masked (6 characters)</Typography>
-          <InputOTP
-            variant="masked"
-            length={6}
-            color="success"
-            value={values.masked}
-            onChange={(value) => setValues(prev => ({ ...prev, masked: value }))}
-            onComplete={(value) => console.log('Masked OTP completed:', value)}
+            onComplete={(value) => console.log('OTP Complete:', value)}
           />
         </Box>
       </Box>
     );
-  },
+  };
+
+export const Variants: Story = {
+  render: () => <VariantsComponent />,
 };
 
-export const Colors: Story = {
-  render: () => {
-    const [value, setValue] = useState('');
+const ColorsComponent = () => {
+const [value, setValue] = useState('');
 
     return (
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, alignItems: 'center' }}>
@@ -113,12 +90,14 @@ export const Colors: Story = {
         ))}
       </Box>
     );
-  },
 };
 
-export const Sizes: Story = {
-  render: () => {
-    const [value, setValue] = useState('');
+export const Colors: Story = {
+  render: () => <ColorsComponent />,
+};
+
+const SizesComponent = () => {
+const [value, setValue] = useState('');
 
     return (
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, alignItems: 'center' }}>
@@ -137,12 +116,14 @@ export const Sizes: Story = {
         ))}
       </Box>
     );
-  },
 };
 
-export const SpecialEffects: Story = {
-  render: () => {
-    const [values, setValues] = useState({
+export const Sizes: Story = {
+  render: () => <SizesComponent />,
+};
+
+const SpecialEffectsComponent = () => {
+const [values, setValues] = useState({
       glass: '',
       gradient: '',
       combined: '',
@@ -185,12 +166,14 @@ export const SpecialEffects: Story = {
         </Box>
       </Box>
     );
-  },
 };
 
-export const ErrorState: Story = {
-  render: () => {
-    const [value, setValue] = useState('');
+export const SpecialEffects: Story = {
+  render: () => <SpecialEffectsComponent />,
+};
+
+const ErrorStateComponent = () => {
+const [value, setValue] = useState('');
 
     return (
       <Box sx={{ textAlign: 'center' }}>
@@ -206,12 +189,14 @@ export const ErrorState: Story = {
         </Typography>
       </Box>
     );
-  },
 };
 
-export const DifferentLengths: Story = {
-  render: () => {
-    const [values, setValues] = useState({
+export const ErrorState: Story = {
+  render: () => <ErrorStateComponent />,
+};
+
+const DifferentLengthsComponent = () => {
+const [values, setValues] = useState({
       short: '',
       medium: '',
       long: '',
@@ -252,7 +237,10 @@ export const DifferentLengths: Story = {
         </Box>
       </Box>
     );
-  },
+};
+
+export const DifferentLengths: Story = {
+  render: () => <DifferentLengthsComponent />,
 };
 
 export const Playground: Story = {

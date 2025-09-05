@@ -50,9 +50,8 @@ export const WithLabel: Story = {
   },
 };
 
-export const Variants: Story = {
-  render: () => {
-    const [values, setValues] = useState({
+const VariantsComponent = () => {
+const [values, setValues] = useState({
       default: 30,
       range: [20, 70],
       marks: 50,
@@ -119,12 +118,14 @@ export const Variants: Story = {
         </Box>
       </Box>
     );
-  },
 };
 
-export const Colors: Story = {
-  render: () => {
-    const [value, setValue] = useState(50);
+export const Variants: Story = {
+  render: () => <VariantsComponent />,
+};
+
+const ColorsComponent = () => {
+const [value, setValue] = useState(50);
 
     return (
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, px: 2 }}>
@@ -142,12 +143,14 @@ export const Colors: Story = {
         ))}
       </Box>
     );
-  },
 };
 
-export const Sizes: Story = {
-  render: () => {
-    const [value, setValue] = useState(50);
+export const Colors: Story = {
+  render: () => <ColorsComponent />,
+};
+
+const SizesComponent = () => {
+const [value, setValue] = useState(50);
 
     return (
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, px: 2 }}>
@@ -165,12 +168,14 @@ export const Sizes: Story = {
         ))}
       </Box>
     );
-  },
 };
 
-export const SpecialEffects: Story = {
-  render: () => {
-    const [values, setValues] = useState({
+export const Sizes: Story = {
+  render: () => <SizesComponent />,
+};
+
+const SpecialEffectsComponent = () => {
+const [values, setValues] = useState({
       glass: 60,
       gradient: 75,
       glow: 40,
@@ -217,7 +222,10 @@ export const SpecialEffects: Story = {
         </Box>
       </Box>
     );
-  },
+};
+
+export const SpecialEffects: Story = {
+  render: () => <SpecialEffectsComponent />,
 };
 
 export const Playground: Story = {

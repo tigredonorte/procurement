@@ -98,9 +98,8 @@ export const Default: Story = {
   },
 };
 
-export const Variants: Story = {
-  render: () => {
-    const [singleValue, setSingleValue] = useState<string>('');
+const VariantsComponent = () => {
+const [singleValue, setSingleValue] = useState<string>('');
     const [multipleValue, setMultipleValue] = useState<string[]>([]);
     const [exclusiveValue, setExclusiveValue] = useState<string>('');
 
@@ -148,12 +147,14 @@ export const Variants: Story = {
         </Box>
       </Box>
     );
-  },
 };
 
-export const Colors: Story = {
-  render: () => {
-    const [values, setValues] = useState({
+export const Variants: Story = {
+  render: () => <VariantsComponent />,
+};
+
+const ColorsComponent = () => {
+const [values, setValues] = useState({
       primary: '',
       secondary: '',
       success: '',
@@ -181,12 +182,14 @@ export const Colors: Story = {
         ))}
       </Box>
     );
-  },
 };
 
-export const Sizes: Story = {
-  render: () => {
-    const [values, setValues] = useState({
+export const Colors: Story = {
+  render: () => <ColorsComponent />,
+};
+
+const SizesComponent = () => {
+const [values, setValues] = useState({
       xs: '',
       sm: '',
       md: '',
@@ -213,12 +216,14 @@ export const Sizes: Story = {
         ))}
       </Box>
     );
-  },
 };
 
-export const IconOnly: Story = {
-  render: () => {
-    const [mediaValue, setMediaValue] = useState('');
+export const Sizes: Story = {
+  render: () => <SizesComponent />,
+};
+
+const IconOnlyComponent = () => {
+const [mediaValue, setMediaValue] = useState('');
 
     return (
       <Box>
@@ -235,12 +240,14 @@ export const IconOnly: Story = {
         />
       </Box>
     );
-  },
 };
 
-export const WithLabels: Story = {
-  render: () => {
-    const [listValue, setListValue] = useState('');
+export const IconOnly: Story = {
+  render: () => <IconOnlyComponent />,
+};
+
+const WithLabelsComponent = () => {
+const [listValue, setListValue] = useState('');
 
     return (
       <Box>
@@ -257,12 +264,14 @@ export const WithLabels: Story = {
         />
       </Box>
     );
-  },
 };
 
-export const SpecialEffects: Story = {
-  render: () => {
-    const [values, setValues] = useState({
+export const WithLabels: Story = {
+  render: () => <WithLabelsComponent />,
+};
+
+const SpecialEffectsComponent = () => {
+const [values, setValues] = useState({
       glass: '',
       gradient: '',
       combined: '',
@@ -306,12 +315,14 @@ export const SpecialEffects: Story = {
         </Box>
       </Box>
     );
-  },
 };
 
-export const MultipleSelection: Story = {
-  render: () => {
-    const [formatValue, setFormatValue] = useState(['bold']);
+export const SpecialEffects: Story = {
+  render: () => <SpecialEffectsComponent />,
+};
+
+const MultipleSelectionComponent = () => {
+const [formatValue, setFormatValue] = useState(['bold']);
 
     return (
       <Box>
@@ -335,12 +346,14 @@ export const MultipleSelection: Story = {
         </Box>
       </Box>
     );
-  },
 };
 
-export const WithDisabledOptions: Story = {
-  render: () => {
-    const [value, setValue] = useState('');
+export const MultipleSelection: Story = {
+  render: () => <MultipleSelectionComponent />,
+};
+
+const WithDisabledOptionsComponent = () => {
+const [value, setValue] = useState('');
     
     const optionsWithDisabled = [
       { value: 'option1', label: 'Available', icon: <Star size={16} /> },
@@ -362,7 +375,10 @@ export const WithDisabledOptions: Story = {
         />
       </Box>
     );
-  },
+};
+
+export const WithDisabledOptions: Story = {
+  render: () => <WithDisabledOptionsComponent />,
 };
 
 export const Playground: Story = {

@@ -51,9 +51,8 @@ export const WithLabel: Story = {
   },
 };
 
-export const Variants: Story = {
-  render: () => {
-    const [states, setStates] = useState({
+const VariantsComponent = () => {
+const [states, setStates] = useState({
       default: false,
       ios: false,
       android: false,
@@ -105,12 +104,14 @@ export const Variants: Story = {
         </Box>
       </Box>
     );
-  },
 };
 
-export const Colors: Story = {
-  render: () => {
-    const [states, setStates] = useState({
+export const Variants: Story = {
+  render: () => <VariantsComponent />,
+};
+
+const ColorsComponent = () => {
+const [states, setStates] = useState({
       primary: true,
       secondary: true,
       success: true,
@@ -132,12 +133,14 @@ export const Colors: Story = {
         ))}
       </Box>
     );
-  },
 };
 
-export const Sizes: Story = {
-  render: () => {
-    const [states, setStates] = useState({
+export const Colors: Story = {
+  render: () => <ColorsComponent />,
+};
+
+const SizesComponent = () => {
+const [states, setStates] = useState({
       xs: true,
       sm: true,
       md: true,
@@ -158,12 +161,14 @@ export const Sizes: Story = {
         ))}
       </Box>
     );
-  },
 };
 
-export const WithIcons: Story = {
-  render: () => {
-    const [states, setStates] = useState({
+export const Sizes: Story = {
+  render: () => <SizesComponent />,
+};
+
+const WithIconsComponent = () => {
+const [states, setStates] = useState({
       theme: false,
       sound: true,
       wifi: true,
@@ -212,12 +217,14 @@ export const WithIcons: Story = {
         />
       </Box>
     );
-  },
 };
 
-export const LabelPositions: Story = {
-  render: () => {
-    const [states, setStates] = useState({
+export const WithIcons: Story = {
+  render: () => <WithIconsComponent />,
+};
+
+const LabelPositionsComponent = () => {
+const [states, setStates] = useState({
       start: true,
       end: true,
       top: true,
@@ -271,12 +278,14 @@ export const LabelPositions: Story = {
         </Box>
       </Box>
     );
-  },
 };
 
-export const SpecialEffects: Story = {
-  render: () => {
-    const [states, setStates] = useState({
+export const LabelPositions: Story = {
+  render: () => <LabelPositionsComponent />,
+};
+
+const SpecialEffectsComponent = () => {
+const [states, setStates] = useState({
       glass: true,
       gradient: true,
       glow: true,
@@ -338,12 +347,14 @@ export const SpecialEffects: Story = {
         </Box>
       </Box>
     );
-  },
 };
 
-export const ErrorStates: Story = {
-  render: () => {
-    const [state, setState] = useState(false);
+export const SpecialEffects: Story = {
+  render: () => <SpecialEffectsComponent />,
+};
+
+const ErrorStatesComponent = () => {
+const [state, setState] = useState(false);
 
     return (
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -357,12 +368,14 @@ export const ErrorStates: Story = {
         />
       </Box>
     );
-  },
 };
 
-export const CustomSizes: Story = {
-  render: () => {
-    const [states, setStates] = useState({
+export const ErrorStates: Story = {
+  render: () => <ErrorStatesComponent />,
+};
+
+const CustomSizesComponent = () => {
+const [states, setStates] = useState({
       custom1: true,
       custom2: true,
       custom3: true,
@@ -404,7 +417,10 @@ export const CustomSizes: Story = {
         </Box>
       </Box>
     );
-  },
+};
+
+export const CustomSizes: Story = {
+  render: () => <CustomSizesComponent />,
 };
 
 export const Playground: Story = {

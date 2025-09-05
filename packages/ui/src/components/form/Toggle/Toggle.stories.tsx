@@ -75,9 +75,8 @@ export const IconOnly: Story = {
   },
 };
 
-export const Variants: Story = {
-  render: () => {
-    const [states, setStates] = useState({
+const VariantsComponent = () => {
+const [states, setStates] = useState({
       default: false,
       outline: false,
       soft: false,
@@ -124,12 +123,14 @@ export const Variants: Story = {
         </Box>
       </Box>
     );
-  },
 };
 
-export const Colors: Story = {
-  render: () => {
-    const [states, setStates] = useState({
+export const Variants: Story = {
+  render: () => <VariantsComponent />,
+};
+
+const ColorsComponent = () => {
+const [states, setStates] = useState({
       primary: false,
       secondary: false,
       success: false,
@@ -162,12 +163,14 @@ export const Colors: Story = {
         ))}
       </Box>
     );
-  },
 };
 
-export const Sizes: Story = {
-  render: () => {
-    const [states, setStates] = useState({
+export const Colors: Story = {
+  render: () => <ColorsComponent />,
+};
+
+const SizesComponent = () => {
+const [states, setStates] = useState({
       xs: false,
       sm: false,
       md: false,
@@ -194,12 +197,14 @@ export const Sizes: Story = {
         ))}
       </Box>
     );
-  },
 };
 
-export const SpecialEffects: Story = {
-  render: () => {
-    const [states, setStates] = useState({
+export const Sizes: Story = {
+  render: () => <SizesComponent />,
+};
+
+const SpecialEffectsComponent = () => {
+const [states, setStates] = useState({
       glass: false,
       gradient: false,
       glow: false,
@@ -263,12 +268,14 @@ export const SpecialEffects: Story = {
         </Box>
       </Box>
     );
-  },
 };
 
-export const ActionButtons: Story = {
-  render: () => {
-    const [states, setStates] = useState({
+export const SpecialEffects: Story = {
+  render: () => <SpecialEffectsComponent />,
+};
+
+const ActionButtonsComponent = () => {
+const [states, setStates] = useState({
       like: false,
       bookmark: false,
       share: false,
@@ -318,12 +325,14 @@ export const ActionButtons: Story = {
         </Toggle>
       </Box>
     );
-  },
 };
 
-export const MediaControls: Story = {
-  render: () => {
-    const [states, setStates] = useState({
+export const ActionButtons: Story = {
+  render: () => <ActionButtonsComponent />,
+};
+
+const MediaControlsComponent = () => {
+const [states, setStates] = useState({
       play: false,
       sound: true,
     });
@@ -350,7 +359,10 @@ export const MediaControls: Story = {
         </Toggle>
       </Box>
     );
-  },
+};
+
+export const MediaControls: Story = {
+  render: () => <MediaControlsComponent />,
 };
 
 export const DisabledState: Story = {

@@ -1,7 +1,5 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Menubar, MenubarGroup, MenubarSeparator } from './Menubar';
-import { MenubarItem } from './Menubar.types';
 import { Box, Typography, IconButton, Avatar } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import SaveIcon from '@mui/icons-material/Save';
@@ -21,6 +19,9 @@ import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
+
+import { MenubarItem } from './Menubar.types';
+import { Menubar, MenubarGroup, MenubarSeparator } from './Menubar';
 
 const meta: Meta<typeof Menubar> = {
   title: 'Form/Menubar',
@@ -57,40 +58,7 @@ const sampleMenuItems: MenubarItem[] = [
     id: 'file',
     label: 'File',
     children: [
-      { id: 'new', label: 'New', shortcut: '⌘N', action: () => console.log('New') },
-      { id: 'open', label: 'Open', icon: <OpenInNewIcon fontSize="small" />, shortcut: '⌘O', action: () => console.log('Open') },
-      { id: 'save', label: 'Save', icon: <SaveIcon fontSize="small" />, shortcut: '⌘S', action: () => console.log('Save') },
-      { id: 'divider1', label: '', divider: true },
-      { id: 'exit', label: 'Exit', shortcut: '⌘Q', action: () => console.log('Exit') },
-    ],
-  },
-  {
-    id: 'edit',
-    label: 'Edit',
-    children: [
-      { id: 'undo', label: 'Undo', icon: <UndoIcon fontSize="small" />, shortcut: '⌘Z', action: () => console.log('Undo') },
-      { id: 'redo', label: 'Redo', icon: <RedoIcon fontSize="small" />, shortcut: '⌘⇧Z', action: () => console.log('Redo') },
-      { id: 'divider2', label: '', divider: true },
-      { id: 'cut', label: 'Cut', icon: <ContentCutIcon fontSize="small" />, shortcut: '⌘X', action: () => console.log('Cut') },
-      { id: 'copy', label: 'Copy', icon: <ContentCopyIcon fontSize="small" />, shortcut: '⌘C', action: () => console.log('Copy') },
-      { id: 'paste', label: 'Paste', icon: <ContentPasteIcon fontSize="small" />, shortcut: '⌘V', action: () => console.log('Paste') },
-    ],
-  },
-  {
-    id: 'format',
-    label: 'Format',
-    children: [
-      { id: 'bold', label: 'Bold', icon: <FormatBoldIcon fontSize="small" />, shortcut: '⌘B', action: () => console.log('Bold') },
-      { id: 'italic', label: 'Italic', icon: <FormatItalicIcon fontSize="small" />, shortcut: '⌘I', action: () => console.log('Italic') },
-      { id: 'underline', label: 'Underline', icon: <FormatUnderlinedIcon fontSize="small" />, shortcut: '⌘U', action: () => console.log('Underline') },
-    ],
-  },
-  {
-    id: 'help',
-    label: 'Help',
-    children: [
-      { id: 'docs', label: 'Documentation', icon: <HelpIcon fontSize="small" />, action: () => console.log('Documentation') },
-      { id: 'about', label: 'About', icon: <InfoIcon fontSize="small" />, action: () => console.log('About') },
+      { id: 'new', label: 'New', shortcut: '⌘N', action: () => console.log('New clicked') },
     ],
   },
 ];
@@ -342,18 +310,8 @@ export const CustomContent: Story = {
         id: 'dashboard',
         label: 'Dashboard',
         icon: <HomeIcon fontSize="small" />,
-        action: () => console.log('Dashboard'),
-      },
-      {
-        id: 'profile',
-        label: 'Profile',
-        icon: <PersonIcon fontSize="small" />,
-        children: [
-          { id: 'settings', label: 'Settings', icon: <SettingsIcon fontSize="small" />, action: () => console.log('Settings') },
-          { id: 'divider', label: '', divider: true },
-          { id: 'logout', label: 'Logout', icon: <LogoutIcon fontSize="small" />, action: () => console.log('Logout') },
-        ],
-      },
+        action: () => console.log('Dashboard clicked'),
+      }
     ];
 
     return (

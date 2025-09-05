@@ -1,6 +1,6 @@
 import { InputHTMLAttributes, ReactNode } from 'react';
 
-export type InputVariant = 'outlined' | 'filled' | 'glass' | 'underline';
+export type InputVariant = 'outlined' | 'filled' | 'glass' | 'underline' | 'gradient';
 export type InputSize = 'sm' | 'md' | 'lg';
 
 export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
@@ -13,4 +13,10 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
   endAdornment?: ReactNode;
   fullWidth?: boolean;
   floating?: boolean;
+  glow?: boolean;
+  pulse?: boolean;
+  loading?: boolean;
+  onClick?: React.MouseEventHandler<HTMLInputElement>;
+  onFocus?: React.FocusEventHandler<HTMLInputElement>;
+  onBlur?: React.FocusEventHandler<HTMLInputElement>;
 }

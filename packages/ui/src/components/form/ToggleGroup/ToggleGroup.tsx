@@ -9,7 +9,7 @@ import { styled } from '@mui/material/styles';
 
 import { ToggleGroupProps } from './ToggleGroup.types';
 
-const getColorFromTheme = (theme: any, color: string) => {
+const getColorFromTheme = (theme: { palette: { primary: { main: string; dark?: string; light?: string; contrastText?: string }; secondary: { main: string; dark?: string; light?: string; contrastText?: string }; success: { main: string; dark?: string; light?: string; contrastText?: string }; warning: { main: string; dark?: string; light?: string; contrastText?: string }; error: { main: string; dark?: string; light?: string; contrastText?: string }; grey?: { [key: number]: string } } }, color: string) => {
   if (color === 'neutral') {
     return {
       main: theme.palette.grey?.[700] || '#616161',
@@ -19,7 +19,7 @@ const getColorFromTheme = (theme: any, color: string) => {
     };
   }
   
-  const colorMap: Record<string, any> = {
+  const colorMap: Record<string, { main: string; dark?: string; light?: string; contrastText?: string }> = {
     primary: theme.palette.primary,
     secondary: theme.palette.secondary,
     success: theme.palette.success,

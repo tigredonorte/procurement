@@ -91,4 +91,39 @@ export interface SwitchProps extends Omit<MuiSwitchProps, 'color' | 'size'> {
    * Whether to enable animations
    */
   animated?: boolean;
+  
+  /**
+   * Whether the switch is in loading state
+   */
+  loading?: boolean;
+  
+  /**
+   * Whether to show ripple effect
+   */
+  ripple?: boolean;
+  
+  /**
+   * Whether the switch should have pulse animation
+   */
+  pulse?: boolean;
+  
+  /**
+   * Click handler
+   */
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  
+  /**
+   * Focus handler
+   */
+  onFocus?: React.FocusEventHandler<HTMLButtonElement>;
+  
+  /**
+   * Blur handler
+   */
+  onBlur?: React.FocusEventHandler<HTMLButtonElement>;
+  
+  /**
+   * Change handler
+   */
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 }

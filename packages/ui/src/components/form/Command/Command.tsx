@@ -23,6 +23,7 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
+
 import {
   CommandProps,
   CommandInputProps,
@@ -79,7 +80,7 @@ export const Command: React.FC<CommandProps> = ({
 
   useEffect(() => {
     if (open && autoFocus) {
-      setTimeout(() => inputRef.current?.focus(), 100);
+      window.setTimeout(() => inputRef.current?.focus(), 100);
     }
   }, [open, autoFocus]);
 
