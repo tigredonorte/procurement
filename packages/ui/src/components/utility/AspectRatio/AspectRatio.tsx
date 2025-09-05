@@ -1,5 +1,4 @@
 import React from 'react';
-import { Box } from '@mui/material';
 import { AspectRatioProps } from './AspectRatio.types';
 
 export const AspectRatio: React.FC<AspectRatioProps> = ({

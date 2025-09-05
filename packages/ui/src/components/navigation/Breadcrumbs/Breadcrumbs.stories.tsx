@@ -203,7 +203,7 @@ export const WithClickHandler: Story = {
       onClick: index < basicItems.length - 1
         ? (e) => {
             e.preventDefault();
-            console.log(`Clicked on: ${item.label}`);
+            
           }
         : undefined,
     })),

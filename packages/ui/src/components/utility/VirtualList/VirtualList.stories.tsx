@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Box, Typography, Avatar, ListItem, ListItemAvatar, ListItemText, Paper } from '@mui/material';
+
 import { VirtualList, VirtualGrid } from './VirtualList';
 import type { VirtualListItem } from './VirtualList.types';
 

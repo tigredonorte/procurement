@@ -60,34 +60,7 @@ const basicMenuItems = [
     label: 'Copy',
     icon: <ContentCopy />,
     shortcut: 'Ctrl+C',
-    onClick: () => console.log('Copy clicked'),
-  },
-  {
-    id: 'paste',
-    label: 'Paste',
-    icon: <ContentPaste />,
-    shortcut: 'Ctrl+V',
-    onClick: () => console.log('Paste clicked'),
-  },
-  {
-    id: 'cut',
-    label: 'Cut',
-    icon: <ContentCut />,
-    shortcut: 'Ctrl+X',
-    onClick: () => console.log('Cut clicked'),
-  },
-  {
-    id: 'divider1',
-    type: 'divider' as const,
-    label: '',
-  },
-  {
-    id: 'delete',
-    label: 'Delete',
-    icon: <Delete />,
-    shortcut: 'Del',
-    dangerous: true,
-    onClick: () => console.log('Delete clicked'),
+    action: () => { /** do nothing */}
   },
 ];
 
@@ -103,66 +76,7 @@ const advancedMenuItems = [
     icon: <Edit />,
     shortcut: 'F2',
     color: 'primary' as const,
-    onClick: () => console.log('Edit clicked'),
-  },
-  {
-    id: 'copy',
-    label: 'Copy',
-    icon: <ContentCopy />,
-    shortcut: 'Ctrl+C',
-    onClick: () => console.log('Copy clicked'),
-  },
-  {
-    id: 'paste',
-    label: 'Paste',
-    icon: <ContentPaste />,
-    shortcut: 'Ctrl+V',
-    disabled: true,
-    onClick: () => console.log('Paste clicked'),
-  },
-  {
-    id: 'divider1',
-    type: 'divider' as const,
-    label: '',
-  },
-  {
-    id: 'header2',
-    type: 'header' as const,
-    label: 'File Actions',
-  },
-  {
-    id: 'download',
-    label: 'Download',
-    icon: <Download />,
-    color: 'success' as const,
-    onClick: () => console.log('Download clicked'),
-  },
-  {
-    id: 'share',
-    label: 'Share',
-    icon: <Share />,
-    color: 'info' as const,
-    onClick: () => console.log('Share clicked'),
-  },
-  {
-    id: 'archive',
-    label: 'Archive',
-    icon: <Archive />,
-    color: 'warning' as const,
-    onClick: () => console.log('Archive clicked'),
-  },
-  {
-    id: 'divider2',
-    type: 'divider' as const,
-    label: '',
-  },
-  {
-    id: 'delete',
-    label: 'Delete',
-    icon: <Delete />,
-    shortcut: 'Del',
-    dangerous: true,
-    onClick: () => console.log('Delete clicked'),
+    action: () => { /** do nothing */}
   },
 ];
 
@@ -172,58 +86,7 @@ const fileMenuItems = [
     label: 'Open',
     icon: <Folder />,
     shortcut: 'Enter',
-    onClick: () => console.log('Open clicked'),
-  },
-  {
-    id: 'preview',
-    label: 'Preview',
-    icon: <Image />,
-    shortcut: 'Space',
-    onClick: () => console.log('Preview clicked'),
-  },
-  {
-    id: 'divider1',
-    type: 'divider' as const,
-    label: '',
-  },
-  {
-    id: 'copy',
-    label: 'Copy',
-    icon: <ContentCopy />,
-    shortcut: 'Ctrl+C',
-    onClick: () => console.log('Copy clicked'),
-  },
-  {
-    id: 'cut',
-    label: 'Cut',
-    icon: <ContentCut />,
-    shortcut: 'Ctrl+X',
-    onClick: () => console.log('Cut clicked'),
-  },
-  {
-    id: 'divider2',
-    type: 'divider' as const,
-    label: '',
-  },
-  {
-    id: 'print',
-    label: 'Print',
-    icon: <Print />,
-    shortcut: 'Ctrl+P',
-    onClick: () => console.log('Print clicked'),
-  },
-  {
-    id: 'refresh',
-    label: 'Refresh',
-    icon: <Refresh />,
-    shortcut: 'F5',
-    onClick: () => console.log('Refresh clicked'),
-  },
-  {
-    id: 'properties',
-    label: 'Properties',
-    icon: <Settings />,
-    onClick: () => console.log('Properties clicked'),
+    action: () => { /** do nothing */}
   },
 ];
 
@@ -457,74 +320,10 @@ export const WithCustomTrigger: Story = {
         label: 'Add to favorites',
         icon: <Star />,
         color: 'warning' as const,
-        onClick: () => console.log('Add to favorites'),
-      },
-      {
-        id: 'bookmark',
-        label: 'Bookmark',
-        icon: <BookmarkBorder />,
-        onClick: () => console.log('Bookmark'),
-      },
-      {
-        id: 'divider1',
-        type: 'divider' as const,
-        label: '',
-      },
-      {
-        id: 'share',
-        label: 'Share',
-        icon: <Share />,
-        color: 'info' as const,
-        onClick: () => console.log('Share'),
-      },
-      {
-        id: 'more',
-        label: 'More options',
-        icon: <MoreVert />,
-        onClick: () => console.log('More options'),
-      },
+        action: () => { /** do nothing */}
+      }
     ],
-    variant: 'glass',
-    size: 'md',
   },
-  render: (args) => (
-    <Box
-      sx={{
-        background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-        borderRadius: 3,
-        p: 4,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <ContextMenu {...args}>
-        <Card
-          elevation={8}
-          sx={{
-            width: 200,
-            height: 120,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'context-menu',
-            background: 'rgba(255, 255, 255, 0.9)',
-            '&:hover': {
-              background: 'rgba(255, 255, 255, 1)',
-            },
-          }}
-        >
-          <Typography variant="body1" color="text.primary" textAlign="center">
-            Custom styled trigger
-            <br />
-            <Typography variant="caption" color="text.secondary">
-              Right-click me
-            </Typography>
-          </Typography>
-        </Card>
-      </ContextMenu>
-    </Box>
-  ),
 };
 
 export const DisabledMenu: Story = {

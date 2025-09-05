@@ -158,9 +158,9 @@ export const Code = React.forwardRef<HTMLElement, CodeProps>(
         try {
           await navigator.clipboard.writeText(children);
           setCopied(true);
-          setTimeout(() => setCopied(false), 2000);
+          window.setTimeout(() => setCopied(false), 2000);
         } catch (error) {
-          console.error('Failed to copy text:', error);
+          
         }
       }
     };

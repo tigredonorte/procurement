@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Button, Box, Typography, Paper, Card, CardContent, ButtonGroup } from '@mui/material';
+
 import { Transition } from './Transition';
 
 const meta: Meta<typeof Transition> = {
@@ -32,9 +33,8 @@ const DemoCard = ({ title, description }: { title: string; description: string }
   </Card>
 );
 
-export const Fade: Story = {
-  render: () => {
-    const [show, setShow] = useState(true);
+const FadeComponent = () => {
+const [show, setShow] = useState(true);
 
     return (
       <Box>
@@ -54,12 +54,14 @@ export const Fade: Story = {
         </Transition>
       </Box>
     );
-  },
 };
 
-export const Slide: Story = {
-  render: () => {
-    const [show, setShow] = useState(true);
+export const Fade: Story = {
+  render: () => <FadeComponent />,
+};
+
+const SlideComponent = () => {
+const [show, setShow] = useState(true);
     const [direction, setDirection] = useState<'up' | 'down' | 'left' | 'right'>('up');
 
     const directions = [
@@ -98,12 +100,14 @@ export const Slide: Story = {
         </Transition>
       </Box>
     );
-  },
 };
 
-export const Scale: Story = {
-  render: () => {
-    const [show, setShow] = useState(true);
+export const Slide: Story = {
+  render: () => <SlideComponent />,
+};
+
+const ScaleComponent = () => {
+const [show, setShow] = useState(true);
 
     return (
       <Box>
@@ -123,12 +127,14 @@ export const Scale: Story = {
         </Transition>
       </Box>
     );
-  },
 };
 
-export const Collapse: Story = {
-  render: () => {
-    const [show, setShow] = useState(true);
+export const Scale: Story = {
+  render: () => <ScaleComponent />,
+};
+
+const CollapseComponent = () => {
+const [show, setShow] = useState(true);
 
     return (
       <Box sx={{ width: 400 }}>
@@ -162,12 +168,14 @@ export const Collapse: Story = {
         </Paper>
       </Box>
     );
-  },
 };
 
-export const CustomTiming: Story = {
-  render: () => {
-    const [show, setShow] = useState(true);
+export const Collapse: Story = {
+  render: () => <CollapseComponent />,
+};
+
+const CustomTimingComponent = () => {
+const [show, setShow] = useState(true);
     const [duration, setDuration] = useState(500);
     const [delay, setDelay] = useState(0);
 
@@ -210,12 +218,14 @@ export const CustomTiming: Story = {
         </Transition>
       </Box>
     );
-  },
 };
 
-export const AllVariants: Story = {
-  render: () => {
-    const [activeVariants, setActiveVariants] = useState<Set<string>>(new Set(['fade']));
+export const CustomTiming: Story = {
+  render: () => <CustomTimingComponent />,
+};
+
+const AllVariantsComponent = () => {
+const [activeVariants, setActiveVariants] = useState<Set<string>>(new Set(['fade']));
 
     const variants = [
       { name: 'fade', title: 'Fade', description: 'Smooth opacity transition' },
@@ -289,5 +299,8 @@ export const AllVariants: Story = {
         </Box>
       </Box>
     );
-  },
+};
+
+export const AllVariants: Story = {
+  render: () => <AllVariantsComponent />,
 };

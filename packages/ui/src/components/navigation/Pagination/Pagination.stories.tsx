@@ -177,9 +177,8 @@ export const WithPageInfo: Story = {
   render: (args) => <PaginationWrapper {...args} />,
 };
 
-export const WithItemsPerPage: Story = {
-  render: () => {
-    const [page, setPage] = useState(1);
+const WithItemsPerPageComponent = () => {
+const [page, setPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const totalItems = 250;
     const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -212,7 +211,10 @@ export const WithItemsPerPage: Story = {
         />
       </Box>
     );
-  },
+};
+
+export const WithItemsPerPage: Story = {
+  render: () => <WithItemsPerPageComponent />,
 };
 
 export const CustomIcons: Story = {
@@ -275,9 +277,8 @@ export const LongPagination: Story = {
   render: (args) => <PaginationWrapper {...args} />,
 };
 
-export const AllVariantsComparison: Story = {
-  render: () => {
-    const [pages, setPages] = useState({
+const AllVariantsComparisonComponent = () => {
+const [pages, setPages] = useState({
       default: 3,
       rounded: 2,
       dots: 4,
@@ -354,12 +355,14 @@ export const AllVariantsComparison: Story = {
         </Box>
       </Paper>
     );
-  },
 };
 
-export const SizeComparison: Story = {
-  render: () => {
-    const [pages, setPages] = useState({
+export const AllVariantsComparison: Story = {
+  render: () => <AllVariantsComparisonComponent />,
+};
+
+const SizeComparisonComponent = () => {
+const [pages, setPages] = useState({
       sm: 2,
       md: 3,
       lg: 4,
@@ -414,12 +417,14 @@ export const SizeComparison: Story = {
         </Box>
       </Box>
     );
-  },
 };
 
-export const TablePagination: Story = {
-  render: () => {
-    const [page, setPage] = useState(1);
+export const SizeComparison: Story = {
+  render: () => <SizeComparisonComponent />,
+};
+
+const TablePaginationComponent = () => {
+const [page, setPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(25);
     const totalItems = 1247;
     const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -484,5 +489,8 @@ export const TablePagination: Story = {
         </Box>
       </Paper>
     );
-  },
+};
+
+export const TablePagination: Story = {
+  render: () => <TablePaginationComponent />,
 };

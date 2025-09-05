@@ -445,7 +445,7 @@ export const ChatInterface: Story = {
           fadeEdges
           onScrollEnd={(direction) => {
             if (direction === 'top') {
-              console.log('Reached top - could load more messages');
+              
             }
           }}
         >

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState, useCallback } from 'react';
 import { Box, Typography, Card, CardContent, Avatar, ListItem, ListItemAvatar, ListItemText, CircularProgress, Paper } from '@mui/material';
+
 import { InfiniteScroll } from './InfiniteScroll';
 
 const meta: Meta<typeof InfiniteScroll> = {
@@ -35,9 +36,8 @@ const generateItems = (startIndex: number, count: number): Item[] => {
   }));
 };
 
-export const VerticalScroll: Story = {
-  render: () => {
-    const [items, setItems] = useState<Item[]>(generateItems(0, 20));
+const VerticalScrollComponent = () => {
+const [items, setItems] = useState<Item[]>(generateItems(0, 20));
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
 
@@ -45,7 +45,7 @@ export const VerticalScroll: Story = {
       setLoading(true);
       
       // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => window.setTimeout(resolve, 1000));
       
       const newItems = generateItems(items.length, 10);
       setItems(prev => [...prev, ...newItems]);
@@ -88,18 +88,20 @@ export const VerticalScroll: Story = {
         </Box>
       </Paper>
     );
-  },
 };
 
-export const CardGrid: Story = {
-  render: () => {
-    const [items, setItems] = useState<Item[]>(generateItems(0, 12));
+export const VerticalScroll: Story = {
+  render: () => <VerticalScrollComponent />,
+};
+
+const CardGridComponent = () => {
+const [items, setItems] = useState<Item[]>(generateItems(0, 12));
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
 
     const loadMore = useCallback(async () => {
       setLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise(resolve => window.setTimeout(resolve, 1500));
       
       const newItems = generateItems(items.length, 8);
       setItems(prev => [...prev, ...newItems]);
@@ -165,18 +167,20 @@ export const CardGrid: Story = {
         </InfiniteScroll>
       </Box>
     );
-  },
 };
 
-export const ReverseScroll: Story = {
-  render: () => {
-    const [messages, setMessages] = useState<Item[]>(generateItems(0, 15));
+export const CardGrid: Story = {
+  render: () => <CardGridComponent />,
+};
+
+const ReverseScrollComponent = () => {
+const [messages, setMessages] = useState<Item[]>(generateItems(0, 15));
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
 
     const loadMore = useCallback(async () => {
       setLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 800));
+      await new Promise(resolve => window.setTimeout(resolve, 800));
       
       // Add older messages at the beginning
       const olderMessages = generateItems(-messages.length - 10, 10).reverse();
@@ -243,18 +247,20 @@ export const ReverseScroll: Story = {
         </Box>
       </Paper>
     );
-  },
 };
 
-export const HorizontalScroll: Story = {
-  render: () => {
-    const [items, setItems] = useState<Item[]>(generateItems(0, 10));
+export const ReverseScroll: Story = {
+  render: () => <ReverseScrollComponent />,
+};
+
+const HorizontalScrollComponent = () => {
+const [items, setItems] = useState<Item[]>(generateItems(0, 10));
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
 
     const loadMore = useCallback(async () => {
       setLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => window.setTimeout(resolve, 1000));
       
       const newItems = generateItems(items.length, 5);
       setItems(prev => [...prev, ...newItems]);
@@ -336,5 +342,8 @@ export const HorizontalScroll: Story = {
         </InfiniteScroll>
       </Paper>
     );
-  },
+};
+
+export const HorizontalScroll: Story = {
+  render: () => <HorizontalScrollComponent />,
 };

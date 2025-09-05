@@ -5,7 +5,7 @@ export type VirtualListVariant = 'fixed' | 'variable' | 'grid';
 export interface VirtualListItem {
   id: string | number;
   height?: number; // For variable height items
-  data?: any;
+  data?: unknown;
 }
 
 export interface VirtualListProps {
