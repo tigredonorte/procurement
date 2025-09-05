@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Badge } from './Badge';
 import { Box, Stack, IconButton, Avatar } from '@mui/material';
 import { Mail, Notifications, ShoppingCart, Star, Favorite } from '@mui/icons-material';
+
+import { Badge } from './Badge';
 
 const meta = {
   title: 'Data Display/Badge',

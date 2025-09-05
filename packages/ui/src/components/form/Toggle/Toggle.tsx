@@ -5,6 +5,7 @@ import {
   keyframes
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+
 import { ToggleProps } from './Toggle.types';
 
 const glowAnimation = keyframes`

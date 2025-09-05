@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Calendar } from './Calendar';
 import { Box, Typography } from '@mui/material';
 import { useState } from 'react';
+
+import { Calendar } from './Calendar';
 
 const meta: Meta<typeof Calendar> = {
   title: 'Form/Calendar',

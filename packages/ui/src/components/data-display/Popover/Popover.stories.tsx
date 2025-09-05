@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Popover } from './Popover';
 import { Button, Typography, Stack, List, ListItem, ListItemText } from '@mui/material';
 import React from 'react';
+
+import { Popover } from './Popover';
 
 const meta = {
   title: 'Data Display/Popover',

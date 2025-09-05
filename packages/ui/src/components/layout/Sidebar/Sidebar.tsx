@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, useTheme, alpha } from '@mui/material';
+
 import { SidebarProps, SidebarHeaderProps, SidebarContentProps, SidebarFooterProps } from './Sidebar.types';
 
 export const Sidebar: React.FC<SidebarProps> = ({

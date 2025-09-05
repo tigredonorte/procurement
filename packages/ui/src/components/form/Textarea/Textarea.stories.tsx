@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Textarea } from './Textarea';
 import { Box, Typography } from '@mui/material';
 import { MessageCircle, Edit3, FileText, Star } from 'lucide-react';
+
+import { Textarea } from './Textarea';
 
 const meta: Meta<typeof Textarea> = {
   title: 'Form/Textarea',

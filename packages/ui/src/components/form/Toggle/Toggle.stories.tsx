@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Toggle } from './Toggle';
 import { Box, Typography } from '@mui/material';
 import { 
   Bold, 
@@ -21,6 +20,8 @@ import {
   VolumeX
 } from 'lucide-react';
 import { useState } from 'react';
+
+import { Toggle } from './Toggle';
 
 const meta: Meta<typeof Toggle> = {
   title: 'Form/Toggle',

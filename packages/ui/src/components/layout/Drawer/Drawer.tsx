@@ -8,6 +8,7 @@ import {
   alpha,
 } from '@mui/material';
 import { Close } from '@mui/icons-material';
+
 import { DrawerProps, DrawerHeaderProps, DrawerContentProps } from './Drawer.types';
 
 export const Drawer: React.FC<DrawerProps> = ({

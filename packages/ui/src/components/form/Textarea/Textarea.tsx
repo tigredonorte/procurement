@@ -24,6 +24,7 @@ import {
   FormatColorFill
 } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
+
 import { TextareaProps } from './Textarea.types';
 
 // Glow animation for enhanced visual effects

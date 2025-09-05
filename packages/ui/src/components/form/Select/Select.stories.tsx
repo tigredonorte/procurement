@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Select } from './Select';
 import { Stack } from '@mui/material';
+
+import { Select } from './Select';
 
 const meta: Meta<typeof Select> = {
   title: 'Form/Select',

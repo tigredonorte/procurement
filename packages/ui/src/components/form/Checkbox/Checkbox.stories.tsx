@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Checkbox } from './Checkbox';
 import { Stack, FormGroup } from '@mui/material';
+
+import { Checkbox } from './Checkbox';
 
 const meta = {
   title: 'Form/Checkbox',

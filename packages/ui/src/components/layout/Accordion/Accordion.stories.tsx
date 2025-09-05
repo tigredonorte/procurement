@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import { Accordion, AccordionSummary, AccordionDetails, AccordionActions } from './Accordion';
 import { Button, Typography, Box, Stack } from '@mui/material';
 import { ExpandMore, Settings, Info, Security, Help } from '@mui/icons-material';
+
+import { Accordion, AccordionSummary, AccordionDetails, AccordionActions } from './Accordion';
 
 const meta = {
   title: 'Layout/Accordion',

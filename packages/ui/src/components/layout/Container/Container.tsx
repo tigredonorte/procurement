@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container as MuiContainer, useTheme } from '@mui/material';
+
 import { ContainerProps } from './Container.types';
 
 export const Container: React.FC<ContainerProps> = ({

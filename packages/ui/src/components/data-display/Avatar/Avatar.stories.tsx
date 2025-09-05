@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Avatar } from './Avatar';
 import { Stack, Box } from '@mui/material';
 import { Person, Settings, Star } from '@mui/icons-material';
+
+import { Avatar } from './Avatar';
 
 const meta = {
   title: 'Data Display/Avatar',

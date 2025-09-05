@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Box, useTheme, Collapse } from '@mui/material';
+
 import { CollapsibleProps, CollapsibleTriggerProps, CollapsibleContentProps } from './Collapsible.types';
 
 export const Collapsible: React.FC<CollapsibleProps> = ({

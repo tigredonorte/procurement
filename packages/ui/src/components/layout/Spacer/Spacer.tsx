@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, useTheme } from '@mui/material';
+
 import { SpacerProps } from './Spacer.types';
 
 export const Spacer: React.FC<SpacerProps> = ({

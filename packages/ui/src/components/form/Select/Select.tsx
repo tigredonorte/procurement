@@ -8,6 +8,7 @@ import {
   styled,
   alpha,
 } from '@mui/material';
+
 import { SelectProps } from './Select.types';
 
 const StyledFormControl = styled(FormControl)(({ theme }) => ({
