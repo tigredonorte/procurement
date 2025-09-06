@@ -1,106 +1,180 @@
-# Component Verification and Enhancement Instructions for AI Agents
+# Component Verification and Enhancement Instructions for AI Agents — Final
+
+**This edition applies the clarity review and unifies checks via `pnpm check:component`.**
+
+---
+
+## Quickstart (TL;DR)
+
+1. **Claim work** in `components.tasks.md`:
+
+   ```
+   - ComponentName (working) (omega-[n]):  - YYYY-MM-DD HH:MM
+   ```
+
+2. **Create `track.md`** in the component folder with sections: Props, Lint, Type Errors, Testing Scenarios, Storybook Tests (planned/working/completed/error), and **Current** plan (timestamp in BRL).
+3. **Run checks from `packages/ui`**:
+
+   ```bash
+   cd packages/ui
+   pnpm check:component <category> <ComponentName>
+   ```
+
+   Repeat until clean.
+
+4. **Verify tests in Storybook** (do **not** start/stop it): open `http://192.168.166.133:6008`, navigate to `Category/ComponentName/Tests`, ensure each test shows **PASS**, update `tests.md`.
+5. **Commit from repo root**:
+
+   ```bash
+   git add packages/ui/src/components/<category>/<ComponentName>/ packages/ui/components-check.md components.tasks.md
+   git commit -m "feat(<ComponentName>): complete comprehensive testing and verification"
+   ```
+
+> Conventions: `{category}` is **kebab-case** (e.g., `form`, `navigation`); `ComponentName` is **PascalCase**.
+
+---
 
 ## Overview
 
-This document provides systematic instructions for AI agents to verify, enhance, and test React components in a TypeScript/React codebase with Storybook integration.
+Systematic instructions for AI agents to verify, enhance, and test React components in a TypeScript/React codebase with Storybook integration.
 
 ## Prerequisites
 
-- Component name will be provided as `[COMPONENT_NAME]`
+- Component name provided as `[COMPONENT_NAME]`
 - Component path pattern: `packages/ui/src/components/{category}/{ComponentName}/`
 - Categories: `data-display`, `feedback`, `form`, `layout`, `navigation`, `utility`
+- **Package manager:** pnpm (enforced by `"preinstall": "npx only-allow pnpm"`)
+- **Storybook is already running. Do not start/stop it. Access at:** `http://192.168.166.133:6008`
 
-## CRITICAL AGENT INSTRUCTIONS
+## Critical Agent Instructions
 
-### AGENT NAMING & TRACKING
+### Agent Naming & Tracking
 
-- **Your agent name prefix is: omega-[number]** (e.g., omega-1, omega-2, omega-3, omega-4, omega-5)
-- **ALWAYS include your name when updating components.tasks.md**
+- Your agent name prefix is: `omega-[number]` (e.g., omega-1, omega-2, ...)
+- Always include your agent name when updating `components.tasks.md`.
 - Format: `- omega-[number]: ComponentName (status) - YYYY-MM-DD HH:MM`
 
-### STORYBOOK ACCESS - DO NOT START NEW INSTANCES
+### Storybook Access — Do Not Start New Instances
 
-**🚨 CRITICAL: STORYBOOK IS ALREADY RUNNING 🚨**
+- Do **not** run `npm run storybook`, `npx storybook dev`, or any Storybook start commands.
+- Do **not** kill or restart the Storybook process.
+- Do **not** access `localhost`.
+- Always use the running instance at: `http://192.168.166.133:6008`.
+- No browser installation: do **not** run `npx playwright install` or related browser installers.
 
-- **DO NOT** run `npm run storybook`, `npx storybook dev`, or ANY storybook start commands
-- **DO NOT** kill or restart the storybook process
-- **DO NOT** try to access localhost - it WILL NOT work for you
-- **ALWAYS USE**: http://192.168.166.133:6008
-- **NO BROWSER INSTALLATION**: Do not run `npx playwright install` or `mcp__playwright__browser_install`
+### Before Starting Any Component
 
-### BEFORE STARTING ANY COMPONENT
+1. Read `components.tasks.md` to see what is taken.
+2. Choose an untaken component.
+3. Update `components.tasks.md` immediately with your agent name and `(working)` status.
+4. Create a `track.md` in your component directory with:
+   - Component title and one-paragraph description.
+   - Each prop and one-line description of its effect.
+   - Sections: **Lint**, **Type Errors**, **Testing Scenarios**, **Storybook Tests List** (planned/working/completed/error), and **Current** plan.
+   - Every change session adds a subsection with BRL date/time and the remaining TODOs. Clean up fixed items as you progress.
 
-1. **Read components.tasks.md** to see which components are already taken
-2. **Choose an untaken component** (one not listed or marked as completed)
-3. **Update components.tasks.md immediately** with your agent name and "(working)" status
-4. **Create a track.md file** in your component directory immediately when you start working on it. On this file you will add the component title, a brief explanation (a paragraph) of what this component does, a line explaining each component parameter and what it should change the behavior of component (a line). Then a second section related to if lint is passing for this component, if not, add one by line each lint error that you see another section for each type error that you see (on component folder, can be on storybook files or any other file). Another section for each testing scenario that should be covered on storybook tests. Whenever you fix something if you still working on it add (fixed). When you complete your task add (completed). A list of tests scenarios that should be covered on storybook and its status (planned, working on, completed, error -> if test is not passing). On bottom of document add a Current section. This part you will write your plan on what you will work on this section, this way, if for some reason I need stop you, you can easily restart. When you complete your current section cleanup the document: remove from there the lint errors that you fixed, the typeerrors that you fixed. Update it on your file that you fixed a lint error type error, test, etc. Each step you will add on current section stuff (remind to add the date and time of your current section - use BRL time). Whenever you start changing the document add a new subsection with the current date and time, then list again what is remaining to do. The idea of this file is to be a log file of your changes.
+> **Concurrency note:** If multiple agents edit `components.tasks.md`, use append‑only edits and commit frequently. On conflict, `git pull --rebase`, resolve, and re‑apply your line. Keep your omega tag consistent across `track.md`, `tests.md`, and `components.tasks.md`.
+
+---
 
 ## Step-by-Step Verification Process
 
 ### Phase 1: Documentation Review
 
-1. **Read frontend.md**
+1. Read main frontend docs:
 
    ```bash
-   # Read the main frontend documentation
    Read packages/ui/frontend.md
    ```
 
-2. **Read Component Documentation**
+2. Read component docs:
+
    ```bash
-   # Read component-specific documentation
    Read packages/ui/src/components/{category}/{ComponentName}/{ComponentName}.md
    ```
 
 ### Phase 2: Implementation Verification
 
-1. **Analyze Component Implementation**
-   - Read all component files:
-     ```bash
-     Read packages/ui/src/components/{category}/{ComponentName}/{ComponentName}.tsx
-     Read packages/ui/src/components/{category}/{ComponentName}/{ComponentName}.types.ts
-     Read packages/ui/src/components/{category}/{ComponentName}/index.ts
-     ```
+1. Analyze implementation files:
 
-2. **Verify Against Requirements**
-   - Check all required props are implemented
-   - Verify all variants are supported
-   - Ensure accessibility attributes are present
-   - Validate TypeScript types match documentation
-   - Check for proper MUI integration
-   - Verify responsive behavior implementation
+   ```bash
+   Read packages/ui/src/components/{category}/{ComponentName}/{ComponentName}.tsx
+   Read packages/ui/src/components/{category}/{ComponentName}/{ComponentName}.types.ts
+   Read packages/ui/src/components/{category}/{ComponentName}/index.ts
+   ```
 
-3. **Implementation Checklist**
-   - [ ] All required props from documentation are implemented
-   - [ ] Optional props have default values
-   - [ ] Component forwards refs if needed
-   - [ ] Proper TypeScript typing with exported interfaces
+2. Verify against requirements
+   - Required props implemented
+   - All variants supported
+   - Accessibility attributes present
+   - TypeScript types match documentation
+   - Proper MUI integration
+   - Responsive behavior implemented
+
+3. Implementation checklist
+   - [ ] Required props implemented
+   - [ ] Optional props have defaults
+   - [ ] Forwards refs where needed
+   - [ ] Proper TS typing with exported interfaces
    - [ ] Accessibility attributes (aria-\*, role, etc.)
    - [ ] Theme integration via MUI
    - [ ] Responsive design considerations
 
-### Phase 3: Storybook Stories Coverage
+---
 
-1. **Read Existing Stories**
+## Unified Check Runner (Replaces Separate Commands)
+
+Use the consolidated script instead of running TypeScript, ESLint, and build steps individually.
+
+### Command (run from `packages/ui`)
+
+```bash
+cd packages/ui
+pnpm check:component <category> <ComponentName>
+```
+
+**Examples**
+
+```bash
+pnpm check:component utility AspectRatio
+pnpm check:component navigation Breadcrumbs
+```
+
+### What the Script Does
+
+1. **TypeScript check** using a temporary `tsconfig.temp.json` that includes only the component folder.
+2. **ESLint fix** on the component files.
+3. **Build with tsup** (uses `index.tsx` or `index.ts` if present) via `tsup.config.ts`.
+4. **ESLint verify** (non-fixing) to ensure clean state.
+
+The script exits with a non-zero status on failure. Use its console output to populate the **Lint** and **Type Errors** sections of your `track.md`.
+
+> Do not run `tsc`, `eslint`, or `tsup` directly for component checks; always use `pnpm check:component`.
+
+---
+
+## Phase 3: Storybook Stories Coverage
+
+1. Read existing stories
 
    ```bash
    Read packages/ui/src/components/{category}/{ComponentName}/{ComponentName}.stories.tsx
    ```
 
-2. **Required Story Scenarios**
-   - **Default**: Basic component with minimal props
-   - **All Variants**: Story for each variant/type
-   - **Interactive States**: Hover, focus, active, disabled
-   - **Size Variations**: All size props if applicable
-   - **Content Variations**: Empty, minimal, maximum content
-   - **Edge Cases**: Long text, overflow scenarios
-   - **Accessibility**: Keyboard navigation, screen reader
-   - **Responsive**: Mobile, tablet, desktop views
-   - **Theme**: Light/dark mode if applicable
+2. Required scenarios
+   - Default (minimal props)
+   - All variants/types
+   - Interactive states (hover, focus, active, disabled)
+   - Size variations
+   - Content variations (empty/min/max)
+   - Edge cases (long text, overflow)
+   - Accessibility (keyboard, screen reader)
+   - Responsive (mobile/tablet/desktop)
+   - Theme (light/dark) if applicable
 
-3. **Story Template Structure**
+3. Story template structure
 
-   ```typescript
+   ```ts
    import type { Meta, StoryObj } from '@storybook/react';
    import { ComponentName } from './ComponentName';
 
@@ -109,11 +183,7 @@ This document provides systematic instructions for AI agents to verify, enhance,
      component: ComponentName,
      parameters: {
        layout: 'centered',
-       docs: {
-         description: {
-           component: 'Component description from documentation',
-         },
-       },
+       docs: { description: { component: 'Component description from documentation' } },
      },
      tags: ['autodocs'],
      argTypes: {
@@ -124,91 +194,82 @@ This document provides systematic instructions for AI agents to verify, enhance,
    export default meta;
    type Story = StoryObj<typeof meta>;
 
-   export const Default: Story = {
-     args: {
-       // Default props
-     },
-   };
+   export const Default: Story = { args: {} };
    ```
 
-### Phase 4: Lint Verification and Fixes
+---
 
-1. **Run Lint Check**
+## Phase 4: Lint Verification and Fixes
 
-   ```bash
-   cd packages/ui && npx eslint src/components/{category}/{ComponentName}/ --ext .ts,.tsx
-   ```
+- Do not run ESLint directly for the component; rely on `pnpm check:component` output.
+- If `track.md` lists remaining issues, fix code and re-run `pnpm check:component` until clean.
 
-2. **Common Lint Fixes**
-   - Import order issues
-   - Unused variables
-   - Missing dependencies in hooks
-   - Improper type assertions
-   - Missing return types
+Common issues to watch for:
 
-3. **Auto-fix When Possible**
-   ```bash
-   cd packages/ui && npx eslint src/components/{category}/{ComponentName}/ --ext .ts,.tsx --fix
-   ```
+- Import order
+- Unused variables
+- Missing deps in hooks
+- Unsafe type assertions
+- Missing return types
 
-### Phase 5: Type-Check Verification and Fixes
+---
 
-1. **Run Type Check**
+## Phase 5: Type-Check Verification
 
-   ```bash
-   cd packages/ui && npx tsc --noEmit --project tsconfig.json
-   ```
+- Do not run `tsc` directly; rely on `pnpm check:component` for component-scoped TS checks.
+- Ensure:
+  - [ ] All props properly typed
+  - [ ] No `any` without justification
+  - [ ] Correct generics/constraints
+  - [ ] Exported types available for external use
 
-2. **Common Type Issues**
-   - Missing type exports
-   - Incorrect prop types
-   - Missing generic constraints
-   - Improper type unions/intersections
+---
 
-3. **Type Safety Checklist**
-   - [ ] All props have proper types
-   - [ ] No `any` types unless absolutely necessary
-   - [ ] Proper generic types where applicable
-   - [ ] Exported types for external use
+## Phase 5.5: Component Build Verification
 
-### Phase 6: Storybook Testing
+- Do not call `tsup` directly; rely on `pnpm check:component` build step.
+- Ensure after the script:
+  - [ ] Component builds without errors
+  - [ ] No missing imports/dependencies
+  - [ ] Build output generated as configured
+  - [ ] All exports bundled
 
-**🚨 CRITICAL: DO NOT START STORYBOOK! 🚨**
+---
 
-**Storybook is already running at: http://192.168.166.133:6008/**
+## Phase 5.6: Component-Specific Lint Check
 
-1. **Access Existing Storybook Instance**
+- Already covered by `pnpm check:component` (fix pass + verify pass).
+- Ensure:
+  - [ ] Component files pass lint
+  - [ ] Naming conventions followed
+  - [ ] Proper import/export structure
 
-   ```
-   IMPORTANT: DO NOT run any storybook commands!
-   DO NOT execute: npx storybook dev, npm run storybook, or any storybook start commands!
+---
 
-   The Storybook server is already running and accessible at:
-   🔗 http://192.168.166.133:6008/
-   ```
+## Phase 6: Storybook Testing (Manual in UI)
 
-2. **Test Component in Browser**
-   - Use MCP browser tools to navigate to `http://192.168.166.133:6008/`
-   - Navigate to your component's story section
-   - Navigate to the Test stories (ComponentName/Tests section)
-3. **CRITICAL: Verify Each Test Passes**
-   - Click on EACH test story one by one
-   - Wait for the test to complete (status changes from "RUNS" to either "PASS" or "FAIL")
-   - **A test is PASSING if you see:** `<div aria-label="Status of the test run" class="css-1p8fchp">PASS</div>`
-   - **A test is RUNNING if you see:** `<div aria-label="Status of the test run">RUNS</div>` (wait for completion)
-   - **A test is FAILING if you see:** `<div aria-label="Status of the test run">FAIL</div>` (MUST BE FIXED)
-   - **DO NOT proceed until ALL tests show PASS**
-   - Update your tests.md file with the status of each test
+**Do not start Storybook.** Use the running server at `http://192.168.166.133:6008`.
 
-### Phase 7: Comprehensive Storybook Tests
+1. Navigate to the component stories in the running instance.
+2. Open the **Tests** section (ComponentName/Tests).
+3. **Stable pass criteria (no CSS classes):**
+   - **PASS**: element with `aria-label="Status of the test run"` whose **textContent contains `PASS`**.
+   - **RUNS**: textContent contains `RUNS`.
+   - **FAIL**: textContent contains `FAIL`.
 
-#### 7.0 Create Tests Tracking File (tests.md)
+4. Update `tests.md` accordingly.
 
-**CRITICAL: Create this file BEFORE starting any tests**
+> **Direct Links**: open each test story and **copy the URL from the browser** into `tests.md`. Do not guess slugs.
 
-Create `packages/ui/src/components/{category}/{ComponentName}/tests.md` with:
+---
 
-````markdown
+## Phase 7: Comprehensive Storybook Tests
+
+### 7.0 Create Tests Tracking File (`tests.md`)
+
+Create `packages/ui/src/components/{category}/{ComponentName}/tests.md` with the following skeleton and replace links by copying from the live instance:
+
+```markdown
 # {ComponentName} Test Status Tracking
 
 ## Test Files Status
@@ -218,42 +279,37 @@ Create `packages/ui/src/components/{category}/{ComponentName}/tests.md` with:
 
 ## Storybook Tests Status
 
-### Direct Links (for quick access)
+### Direct Links (quick access)
 
-- Basic Interaction: http://192.168.166.133:6008/?path=/story/category-componentname-tests--basic-interaction
-- Form Interaction: http://192.168.166.133:6008/?path=/story/category-componentname-tests--form-interaction
-- Keyboard Navigation: http://192.168.166.133:6008/?path=/story/category-componentname-tests--keyboard-navigation
-- Screen Reader: http://192.168.166.133:6008/?path=/story/category-componentname-tests--screen-reader
-- Focus Management: http://192.168.166.133:6008/?path=/story/category-componentname-tests--focus-management
-- Responsive Design: http://192.168.166.133:6008/?path=/story/category-componentname-tests--responsive-design
-- Theme Variations: http://192.168.166.133:6008/?path=/story/category-componentname-tests--theme-variations
-- Visual States: http://192.168.166.133:6008/?path=/story/category-componentname-tests--visual-states
-- Performance: http://192.168.166.133:6008/?path=/story/category-componentname-tests--performance
-- Edge Cases: http://192.168.166.133:6008/?path=/story/category-componentname-tests--edge-cases
-- Integration: http://192.168.166.133:6008/?path=/story/category-componentname-tests--integration
+- Basic Interaction: <paste URL from UI>
+- Form Interaction: <paste URL from UI>
+- Keyboard Navigation: <paste URL from UI>
+- Screen Reader: <paste URL from UI>
+- Focus Management: <paste URL from UI>
+- Responsive Design: <paste URL from UI>
+- Theme Variations: <paste URL from UI>
+- Visual States: <paste URL from UI>
+- Performance: <paste URL from UI>
+- Edge Cases: <paste URL from UI>
+- Integration: <paste URL from UI>
 
 ### Test Results
 
-| Test Name           | Status | Pass/Fail | Notes       |
-| ------------------- | ------ | --------- | ----------- |
-| Basic Interaction   | ⏳     | -         | Not started |
-| Form Interaction    | ⏳     | -         | Not started |
-| Keyboard Navigation | ⏳     | -         | Not started |
-| Screen Reader       | ⏳     | -         | Not started |
-| Focus Management    | ⏳     | -         | Not started |
-| Responsive Design   | ⏳     | -         | Not started |
-| Theme Variations    | ⏳     | -         | Not started |
-| Visual States       | ⏳     | -         | Not started |
-| Performance         | ⏳     | -         | Not started |
-| Edge Cases          | ⏳     | -         | Not started |
-| Integration         | ⏳     | -         | Not started |
+| Test Name           | Status  | Pass/Fail | Notes       |
+| ------------------- | ------- | --------- | ----------- |
+| Basic Interaction   | Pending | -         | Not started |
+| Form Interaction    | Pending | -         | Not started |
+| Keyboard Navigation | Pending | -         | Not started |
+| Screen Reader       | Pending | -         | Not started |
+| Focus Management    | Pending | -         | Not started |
+| Responsive Design   | Pending | -         | Not started |
+| Theme Variations    | Pending | -         | Not started |
+| Visual States       | Pending | -         | Not started |
+| Performance         | Pending | -         | Not started |
+| Edge Cases          | Pending | -         | Not started |
+| Integration         | Pending | -         | Not started |
 
-**Legend:**
-
-- ⏳ Not started
-- 🔄 Running
-- ✅ PASS (div with aria-label="Status of the test run" shows PASS)
-- ❌ FAIL (needs fixing)
+Legend: Pending | Running | PASS | FAIL
 
 ## Static Stories Status
 
@@ -268,30 +324,21 @@ Create `packages/ui/src/components/{category}/{ComponentName}/tests.md` with:
 
 ## Lint Status
 
-```bash
-# Run: cd packages/ui && npx eslint src/components/{category}/{ComponentName}/ --ext .ts,.tsx
-```
-````
-
-- [ ] No lint errors
+- [ ] No lint errors (from `pnpm check:component`)
 - [ ] No warnings
 
-### Lint Errors to Fix:
+### Lint Errors to Fix
 
-1. (List any errors here)
+1. ...
 
 ## TypeCheck Status
 
-```bash
-# Run: cd packages/ui && npx tsc --noEmit --project tsconfig.json
-```
-
-- [ ] No type errors
+- [ ] No type errors (from `pnpm check:component`)
 - [ ] All props properly typed
 
-### Type Errors to Fix:
+### Type Errors to Fix
 
-1. (List any errors here)
+1. ...
 
 ## Storybook Build Status
 
@@ -299,13 +346,13 @@ Create `packages/ui/src/components/{category}/{ComponentName}/tests.md` with:
 - [ ] No broken stories in sidebar
 - [ ] Component appears in correct category
 
-### Broken Stories:
+### Broken Stories
 
-1. (List any broken stories)
+1. ...
 
-### Broken Tests:
+### Broken Tests
 
-1. (List any broken tests)
+1. ...
 
 ## Overall Component Status
 
@@ -314,684 +361,105 @@ Create `packages/ui/src/components/{category}/{ComponentName}/tests.md` with:
 - [ ] TypeCheck clean
 - [ ] Stories working
 - [ ] Ready for production
-
-````
-
-**Update this file as you progress through testing!**
-
-#### 7.1 Create or Update Test Stories File
-
-1. **Check if test file exists**
-
-   ```bash
-   # Check for existing test file
-   ls packages/ui/src/components/{category}/{ComponentName}/{ComponentName}.test.stories.tsx
-
-   # If not exists, create it
-   # If exists, read and update it
-````
-
-2. **Create Complete Test File Structure**
-
-   ```typescript
-   // File: {ComponentName}.test.stories.tsx
-   import type { Meta, StoryObj } from '@storybook/react';
-   import { userEvent, within, expect, waitFor, fn } from '@storybook/test';
-   import { ComponentName } from './ComponentName';
-
-   const meta: Meta<typeof ComponentName> = {
-     title: 'Category/ComponentName/Tests',
-     component: ComponentName,
-     parameters: {
-       layout: 'centered',
-       chromatic: { disableSnapshot: false },
-     },
-     tags: ['autodocs', 'test'],
-   };
-
-   export default meta;
-   type Story = StoryObj<typeof meta>;
-   ```
-
-#### 7.2 Interaction Tests
-
-**Purpose**: Test user interactions like clicks, keyboard navigation, form inputs
-
-1. **Basic Interaction Test Template**
-
-   ```typescript
-   export const BasicInteraction: Story = {
-     name: '🧪 Basic Interaction Test',
-     args: {
-       // Component props for testing
-       onClick: fn(),
-       onChange: fn(),
-     },
-     play: async ({ canvasElement, step, args }) => {
-       const canvas = within(canvasElement);
-
-       await step('Initial render verification', async () => {
-         const element = canvas.getByTestId('component-id');
-         await expect(element).toBeInTheDocument();
-       });
-
-       await step('Click interaction', async () => {
-         const button = canvas.getByRole('button');
-         await userEvent.click(button);
-         await expect(args.onClick).toHaveBeenCalledTimes(1);
-       });
-
-       await step('Hover interaction', async () => {
-         const element = canvas.getByTestId('hoverable');
-         await userEvent.hover(element);
-         await expect(element).toHaveStyle({ opacity: '0.8' });
-       });
-     },
-   };
-   ```
-
-2. **Form Interaction Test (if applicable)**
-
-   ```typescript
-   export const FormInteraction: Story = {
-     name: '📝 Form Interaction Test',
-     args: {
-       onChange: fn(),
-       onSubmit: fn(),
-     },
-     play: async ({ canvasElement, args, step }) => {
-       const canvas = within(canvasElement);
-
-       await step('Type in input field', async () => {
-         const input = canvas.getByRole('textbox');
-         await userEvent.type(input, 'Test input');
-         await expect(input).toHaveValue('Test input');
-         await expect(args.onChange).toHaveBeenCalled();
-       });
-
-       await step('Clear input field', async () => {
-         const input = canvas.getByRole('textbox');
-         await userEvent.clear(input);
-         await expect(input).toHaveValue('');
-       });
-
-       await step('Submit form', async () => {
-         const submitButton = canvas.getByRole('button', { name: /submit/i });
-         await userEvent.click(submitButton);
-         await expect(args.onSubmit).toHaveBeenCalled();
-       });
-     },
-   };
-   ```
-
-3. **State Change Test**
-
-   ```typescript
-   export const StateChangeTest: Story = {
-     name: '🔄 State Change Test',
-     args: {
-       initialState: 'inactive',
-     },
-     play: async ({ canvasElement, step }) => {
-       const canvas = within(canvasElement);
-
-       await step('Verify initial state', async () => {
-         const element = canvas.getByTestId('stateful-component');
-         await expect(element).toHaveAttribute('data-state', 'inactive');
-       });
-
-       await step('Toggle state', async () => {
-         const toggle = canvas.getByRole('switch');
-         await userEvent.click(toggle);
-         const element = canvas.getByTestId('stateful-component');
-         await waitFor(() => {
-           expect(element).toHaveAttribute('data-state', 'active');
-         });
-       });
-     },
-   };
-   ```
-
-#### 7.3 Accessibility Tests
-
-**Purpose**: Ensure component meets WCAG standards and is keyboard/screen reader accessible
-
-1. **Keyboard Navigation Test**
-
-   ```typescript
-   export const KeyboardNavigation: Story = {
-     name: '⌨️ Keyboard Navigation Test',
-     args: {
-       // Props
-     },
-     parameters: {
-       a11y: {
-         element: '#storybook-root',
-         config: {
-           rules: [
-             { id: 'color-contrast', enabled: true },
-             { id: 'aria-required-attr', enabled: true },
-             { id: 'aria-roles', enabled: true },
-             { id: 'aria-valid-attr-value', enabled: true },
-             { id: 'button-name', enabled: true },
-             { id: 'duplicate-id', enabled: true },
-             { id: 'label', enabled: true },
-           ],
-         },
-       },
-     },
-     play: async ({ canvasElement, step }) => {
-       const canvas = within(canvasElement);
-
-       await step('Tab navigation forward', async () => {
-         const firstElement = canvas.getByTestId('first-focusable');
-         const secondElement = canvas.getByTestId('second-focusable');
-
-         // Focus first element
-         firstElement.focus();
-         await expect(firstElement).toHaveFocus();
-
-         // Tab to next element
-         await userEvent.tab();
-         await expect(secondElement).toHaveFocus();
-       });
-
-       await step('Tab navigation backward', async () => {
-         await userEvent.tab({ shift: true });
-         const firstElement = canvas.getByTestId('first-focusable');
-         await expect(firstElement).toHaveFocus();
-       });
-
-       await step('Enter key activation', async () => {
-         const button = canvas.getByRole('button');
-         button.focus();
-         await userEvent.keyboard('{Enter}');
-         // Verify action was triggered
-       });
-
-       await step('Space key activation', async () => {
-         const checkbox = canvas.getByRole('checkbox');
-         checkbox.focus();
-         await userEvent.keyboard(' ');
-         await expect(checkbox).toBeChecked();
-       });
-
-       await step('Escape key handling', async () => {
-         const modal = canvas.queryByRole('dialog');
-         if (modal) {
-           await userEvent.keyboard('{Escape}');
-           await waitFor(() => {
-             expect(modal).not.toBeInTheDocument();
-           });
-         }
-       });
-     },
-   };
-   ```
-
-2. **Screen Reader Test**
-
-   ```typescript
-   export const ScreenReaderTest: Story = {
-     name: '🔊 Screen Reader Test',
-     args: {
-       ariaLabel: 'Test component',
-       ariaDescribedBy: 'description-id',
-     },
-     play: async ({ canvasElement, step }) => {
-       const canvas = within(canvasElement);
-
-       await step('Verify ARIA labels', async () => {
-         const element = canvas.getByLabelText('Test component');
-         await expect(element).toBeInTheDocument();
-         await expect(element).toHaveAttribute('aria-label', 'Test component');
-       });
-
-       await step('Verify ARIA descriptions', async () => {
-         const element = canvas.getByTestId('component');
-         await expect(element).toHaveAttribute('aria-describedby', 'description-id');
-
-         const description = canvas.getByTestId('description-id');
-         await expect(description).toBeInTheDocument();
-       });
-
-       await step('Verify role attributes', async () => {
-         const nav = canvas.getByRole('navigation');
-         await expect(nav).toBeInTheDocument();
-
-         const button = canvas.getByRole('button');
-         await expect(button).toHaveAttribute('type', 'button');
-       });
-
-       await step('Verify live regions', async () => {
-         const liveRegion = canvas.getByRole('status');
-         await expect(liveRegion).toHaveAttribute('aria-live', 'polite');
-       });
-     },
-   };
-   ```
-
-3. **Focus Management Test**
-
-   ```typescript
-   export const FocusManagement: Story = {
-     name: '🎯 Focus Management Test',
-     args: {
-       autoFocus: true,
-     },
-     play: async ({ canvasElement, step }) => {
-       const canvas = within(canvasElement);
-
-       await step('Auto focus on mount', async () => {
-         const autoFocusElement = canvas.getByTestId('auto-focus');
-         await waitFor(() => {
-           expect(autoFocusElement).toHaveFocus();
-         });
-       });
-
-       await step('Focus trap in modal', async () => {
-         const openButton = canvas.getByRole('button', { name: /open modal/i });
-         await userEvent.click(openButton);
-
-         const modal = await canvas.findByRole('dialog');
-         const firstFocusable = within(modal).getByTestId('first-modal-element');
-         await expect(firstFocusable).toHaveFocus();
-
-         // Tab through modal elements
-         await userEvent.tab();
-         await userEvent.tab();
-         // Should cycle back to first element
-         await userEvent.tab();
-         await expect(firstFocusable).toHaveFocus();
-       });
-
-       await step('Focus restoration', async () => {
-         const triggerButton = canvas.getByTestId('trigger');
-         triggerButton.focus();
-
-         // Open and close modal
-         await userEvent.click(triggerButton);
-         const closeButton = canvas.getByRole('button', { name: /close/i });
-         await userEvent.click(closeButton);
-
-         // Focus should return to trigger
-         await expect(triggerButton).toHaveFocus();
-       });
-     },
-   };
-   ```
-
-#### 7.4 Visual Tests
-
-**Purpose**: Test component appearance across different viewports and states
-
-1. **Responsive Design Test**
-
-   ```typescript
-   export const ResponsiveDesign: Story = {
-     name: '📱 Responsive Design Test',
-     args: {
-       // Props
-     },
-     parameters: {
-       viewport: {
-         viewports: {
-           mobile: {
-             name: 'Mobile',
-             styles: { width: '375px', height: '667px' },
-             type: 'mobile',
-           },
-           tablet: {
-             name: 'Tablet',
-             styles: { width: '768px', height: '1024px' },
-             type: 'tablet',
-           },
-           desktop: {
-             name: 'Desktop',
-             styles: { width: '1920px', height: '1080px' },
-             type: 'desktop',
-           },
-         },
-         defaultViewport: 'mobile',
-       },
-       chromatic: {
-         viewports: [375, 768, 1920],
-         delay: 300,
-       },
-     },
-     play: async ({ canvasElement, step }) => {
-       const canvas = within(canvasElement);
-
-       await step('Verify mobile layout', async () => {
-         const container = canvas.getByTestId('responsive-container');
-         const computedStyle = window.getComputedStyle(container);
-
-         if (window.innerWidth <= 768) {
-           await expect(computedStyle.flexDirection).toBe('column');
-         } else {
-           await expect(computedStyle.flexDirection).toBe('row');
-         }
-       });
-     },
-   };
-   ```
-
-2. **Theme Variation Test**
-
-   ```typescript
-   export const ThemeVariations: Story = {
-     name: '🎨 Theme Variations Test',
-     args: {
-       // Props
-     },
-     parameters: {
-       backgrounds: {
-         default: 'light',
-         values: [
-           { name: 'light', value: '#ffffff' },
-           { name: 'dark', value: '#1a1a1a' },
-         ],
-       },
-     },
-     play: async ({ canvasElement, step }) => {
-       const canvas = within(canvasElement);
-
-       await step('Verify theme colors', async () => {
-         const element = canvas.getByTestId('themed-component');
-         const computedStyle = window.getComputedStyle(element);
-
-         // Check if colors match theme
-         await expect(computedStyle.backgroundColor).toMatch(/rgb/);
-       });
-     },
-   };
-   ```
-
-3. **Visual States Test**
-
-   ```typescript
-   export const VisualStates: Story = {
-     name: '👁️ Visual States Test',
-     args: {
-       // Props
-     },
-     play: async ({ canvasElement, step }) => {
-       const canvas = within(canvasElement);
-
-       await step('Default state', async () => {
-         const element = canvas.getByTestId('component');
-         await expect(element).toHaveStyle({ opacity: '1' });
-       });
-
-       await step('Hover state', async () => {
-         const element = canvas.getByTestId('component');
-         await userEvent.hover(element);
-         await waitFor(() => {
-           expect(element).toHaveStyle({ transform: 'scale(1.02)' });
-         });
-       });
-
-       await step('Active state', async () => {
-         const button = canvas.getByRole('button');
-         await userEvent.click(button);
-         await expect(button).toHaveClass('active');
-       });
-
-       await step('Disabled state', async () => {
-         const disabledButton = canvas.getByTestId('disabled-button');
-         await expect(disabledButton).toBeDisabled();
-         await expect(disabledButton).toHaveStyle({ opacity: '0.5' });
-       });
-
-       await step('Loading state', async () => {
-         const loadingElement = canvas.queryByTestId('loading');
-         if (loadingElement) {
-           await expect(loadingElement).toBeInTheDocument();
-           const spinner = within(loadingElement).getByRole('progressbar');
-           await expect(spinner).toBeInTheDocument();
-         }
-       });
-
-       await step('Error state', async () => {
-         const errorElement = canvas.queryByTestId('error');
-         if (errorElement) {
-           await expect(errorElement).toHaveStyle({ borderColor: 'rgb(244, 67, 54)' });
-         }
-       });
-     },
-   };
-   ```
-
-#### 7.5 Performance Tests
-
-**Purpose**: Ensure component performs well under various conditions
-
-```typescript
-export const PerformanceTest: Story = {
-  name: '⚡ Performance Test',
-  args: {
-    items: Array.from({ length: 1000 }, (_, i) => ({
-      id: i,
-      name: `Item ${i}`,
-    })),
-  },
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-
-    await step('Measure render time', async () => {
-      const startTime = performance.now();
-      const elements = canvas.getAllByTestId(/item-/);
-      const endTime = performance.now();
-
-      const renderTime = endTime - startTime;
-      console.log(`Render time for ${elements.length} items: ${renderTime}ms`);
-
-      // Assert reasonable render time (adjust threshold as needed)
-      await expect(renderTime).toBeLessThan(1000);
-    });
-
-    await step('Test scroll performance', async () => {
-      const scrollContainer = canvas.getByTestId('scroll-container');
-
-      // Simulate rapid scrolling
-      for (let i = 0; i < 10; i++) {
-        scrollContainer.scrollTop = i * 100;
-        await new Promise((resolve) => setTimeout(resolve, 50));
-      }
-
-      // Verify no janky behavior
-      await expect(scrollContainer).toBeInTheDocument();
-    });
-  },
-};
 ```
 
-#### 7.6 Edge Cases Tests
+### 7.1 Create or Update Test Stories File
 
-**Purpose**: Test boundary conditions and error scenarios
+Check existence and create/update as needed:
 
-```typescript
-export const EdgeCases: Story = {
-  name: '🔧 Edge Cases Test',
-  args: {
-    // Props for edge cases
-  },
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-
-    await step('Empty content handling', async () => {
-      const emptyContainer = canvas.queryByTestId('empty-state');
-      if (emptyContainer) {
-        await expect(emptyContainer).toHaveTextContent(/no data/i);
-      }
-    });
-
-    await step('Long text overflow', async () => {
-      const textElement = canvas.getByTestId('text-content');
-      const computedStyle = window.getComputedStyle(textElement);
-      await expect(computedStyle.textOverflow).toBe('ellipsis');
-    });
-
-    await step('Maximum limits', async () => {
-      const input = canvas.getByRole('textbox');
-      const longText = 'a'.repeat(1000);
-      await userEvent.type(input, longText);
-
-      // Should truncate or handle gracefully
-      await expect(input.value.length).toBeLessThanOrEqual(255);
-    });
-
-    await step('Invalid props handling', async () => {
-      // Component should handle invalid props gracefully
-      const component = canvas.getByTestId('component');
-      await expect(component).toBeInTheDocument();
-    });
-  },
-};
+```bash
+ls packages/ui/src/components/{category}/{ComponentName}/{ComponentName}.test.stories.tsx
 ```
 
-#### 7.7 Integration Tests
+Base structure:
 
-**Purpose**: Test component integration with other components
+```ts
+import type { Meta, StoryObj } from '@storybook/react';
+import { userEvent, within, expect, waitFor, fn } from '@storybook/test';
+import { ComponentName } from './ComponentName';
 
-```typescript
-export const IntegrationTest: Story = {
-  name: '🔗 Integration Test',
-  args: {
-    // Props
-  },
-  render: (args) => (
-    <div>
-      <ComponentName {...args} />
-      <RelatedComponent />
-    </div>
-  ),
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-
-    await step('Communication between components', async () => {
-      const trigger = canvas.getByTestId('trigger-component');
-      const receiver = canvas.getByTestId('receiver-component');
-
-      await userEvent.click(trigger);
-
-      await waitFor(() => {
-        expect(receiver).toHaveTextContent('Updated');
-      });
-    });
-  }
+const meta: Meta<typeof ComponentName> = {
+  title: 'Category/ComponentName/Tests',
+  component: ComponentName,
+  parameters: { layout: 'centered', chromatic: { disableSnapshot: false } },
+  tags: ['autodocs', 'test'],
 };
+export default meta;
+export type Story = StoryObj<typeof meta>;
 ```
 
-#### 7.8 Running and Verifying Tests
+### 7.2 Interaction Tests
 
-1. **Run Storybook Test Runner**
+Use the provided templates (interaction, form interaction, state change) and adapt selectors/assertions to your component.
 
-   ```bash
-   # Install test runner if not present
-   cd packages/ui && npm install --save-dev @storybook/test-runner
+### 7.3 Accessibility Tests
 
-   # Run all tests
-   npx test-storybook --url http://localhost:6006
+Use the keyboard navigation, screen reader, and focus management templates; include WCAG‑related assertions.
 
-   # Run specific component tests
-   npx test-storybook --url http://localhost:6006 --stories-filter="**/ComponentName.test.stories.tsx"
+### 7.4 Visual Tests
 
-   # Run with coverage
-   npx test-storybook --url http://localhost:6006 --coverage
-   ```
+Use responsive design, theme variation, and visual state templates; verify viewport parameters and assertions.
 
-2. **Verify Test Results**
+### 7.5 Performance Tests
 
-   ```bash
-   # Check test output
-   # All tests should pass
-   # Coverage should be > 80%
-   ```
+Use the performance template; adjust thresholds and items as needed.
 
-3. **Generate Test Report**
-   ```bash
-   # Generate HTML report
-   npx test-storybook --url http://localhost:6006 --junit --outputFile test-results.xml
-   ```
+### 7.6 Edge Cases Tests
 
-### Phase 8: Browser Testing with MCP
+Use the edge-cases template; align with validation rules and constraints.
 
-1. **Navigate to Component**
+### 7.7 Integration Tests
 
-   ```typescript
-   mcp__playwright__browser_navigate({ url: 'http://192.xxx.xxx.xxx:6007' });
-   mcp__playwright__browser_snapshot();
-   ```
+Compose with related components where applicable.
 
-2. **Test Interactions**
+### 7.8 Running and Verifying Tests (Optional Runner)
 
-   ```typescript
-   // Click on story
-   mcp__playwright__browser_click({
-     element: 'ComponentName story',
-     ref: 'story-ref',
-   });
+If the test runner exists, you may target the existing server (do **not** start a new one):
 
-   // Take screenshot
-   mcp__playwright__browser_take_screenshot({
-     filename: 'component-test.png',
-   });
-   ```
+```bash
+npx test-storybook --url http://192.168.166.133:6008
+# Or filter a single component (example):
+npx test-storybook --url http://192.168.166.133:6008 --stories-filter="**/ComponentName.test.stories.tsx"
+```
 
-3. **Verify Accessibility**
-   ```typescript
-   // Test keyboard navigation
-   mcp__playwright__browser_press_key({ key: 'Tab' });
-   mcp__playwright__browser_press_key({ key: 'Enter' });
-   ```
+Avoid installing browsers.
+
+---
 
 ## Verification Checklist Summary
 
-- [ ] Frontend.md documentation read and understood
-- [ ] Component documentation read and understood
-- [ ] Implementation matches all requirements
+- [ ] `frontend.md` read
+- [ ] Component documentation read
+- [ ] Implementation matches requirements
 - [ ] All required props implemented
-- [ ] TypeScript types properly defined and exported
-- [ ] Storybook stories cover all scenarios
-- [ ] Lint passes without errors
-- [ ] Type-check passes without errors
+- [ ] TypeScript types defined and exported
+- [ ] Stories cover all scenarios
+- [ ] `pnpm check:component` passes (type, lint, build, lint verify)
 - [ ] Storybook renders all stories correctly
 - [ ] Interaction tests implemented and passing
 - [ ] Accessibility tests implemented and passing
 - [ ] Visual tests implemented
-- [ ] Browser testing completed successfully
+- [ ] Browser testing completed
+
+---
 
 ## Common Issues and Solutions
 
-### Port Conflicts
+### Port or URL Mismatch
 
-```bash
-# Find and kill process on port
-lsof -i :6006 | grep LISTEN | awk '{print $2}' | xargs kill -9
-
-# Use alternative port
-npx storybook dev --host 0.0.0.0 --port 6007
-```
+- Ensure you target `http://192.168.166.133:6008`.
 
 ### Type Errors
 
-- Ensure all imports are correct
-- Check for circular dependencies
-- Verify MUI version compatibility
+- Prefer narrowing and discriminated unions.
+- Export prop types alongside components.
 
 ### Storybook Not Loading
 
-- Clear cache: `rm -rf node_modules/.cache`
-- Rebuild: `npm run build-storybook`
-- Check for compilation errors
+- Do not start/stop the server yourself.
+- If you see errors in the running instance, fix component code and re-run `pnpm check:component`.
 
-## Notes
-
-- **DO NOT** run `npx playwright install chrome` - it will cause the process to hang
-- Always use `--host 0.0.0.0` for external access
-- Access via IP address (192.xxx.xxx.xxx) not localhost
-- Multiple agents may be running - check ports 6006-6010
+---
 
 ## Component Categories Reference
 
@@ -1004,52 +472,174 @@ npx storybook dev --host 0.0.0.0 --port 6007
 
 ## Component Status Tracking
 
-Read `componets.tasks.md`
+Read and update `components.tasks.md`.
+
+> **components-check.md (repo root)**: global ledger of component verification runs (who, when, result). Always include it in commits when you touch a component. Use the same omega tag used in `components.tasks.md`.
+
+---
 
 ## Agent Post-Completion Instructions
 
-**CRITICAL: When you finish working on a component, you MUST commit your changes automatically.**
+When you finish a component:
 
-### Required Actions After Component Completion:
-
-1. **Add all modified files to git staging:**
+1. **Run the unified check**
 
    ```bash
-   git add src/components/{category}/{ComponentName}/
+   cd packages/ui
+   pnpm check:component {category} {ComponentName}
    ```
 
-2. **Commit with appropriate semantic message:**
+   Proceed only when it completes successfully.
+
+2. **Stage changes (from repo root)**
 
    ```bash
-   # For new features/enhancements:
+   git add packages/ui/src/components/{category}/{ComponentName}/ packages/ui/components-check.md components.tasks.md
+   ```
+
+3. **Commit with semantic message**
+
+   ```bash
+   # New features/enhancements
    git commit -m "feat({ComponentName}): complete comprehensive testing and verification"
 
-   # For bug fixes:
+   # Bug fixes
    git commit -m "fix({ComponentName}): resolve lint errors and add comprehensive test stories"
 
-   # For documentation updates:
+   # Documentation updates
    git commit -m "docs({ComponentName}): update component status and testing coverage"
+
+   # Test story additions
+   git commit -m "test({ComponentName}): add comprehensive interaction and accessibility tests"
+
+   # Type/Lint fixes
+   git commit -m "fix({ComponentName}): resolve TypeScript and lint issues"
+
+   # Status-only updates
+   git commit -m "docs: mark {ComponentName} component as completed in status tracking"
    ```
 
-3. **Always include components-check.md in the commit:**
-   ```bash
-   git add components-check.md src/components/{category}/{ComponentName}/
-   ```
+4. **Do not** push or open PRs automatically.
 
-### Commit Message Templates:
+---
 
-- **New component completion:** `feat({ComponentName}): complete comprehensive testing and verification`
-- **Bug fixes during verification:** `fix({ComponentName}): resolve lint errors and add comprehensive test stories`
-- **Test story additions:** `test({ComponentName}): add comprehensive interaction and accessibility tests`
-- **Type/lint fixes:** `fix({ComponentName}): resolve TypeScript and lint issues`
-- **Status updates only:** `docs: mark {ComponentName} component as completed in status tracking`
+## Tooling Appendix
 
-### Example Complete Workflow:
+- **Script location**: `packages/ui/scripts/check-component.js`
+- **package.json scripts (packages/ui)**
 
-```bash
-# After completing all phases for Switch component:
-git add src/components/form/Switch/ components-check.md
-git commit -m "feat(Switch): complete comprehensive testing and verification"
+  ```json
+  {
+    "scripts": {
+      "preinstall": "npx only-allow pnpm",
+      "dev": "storybook dev -p 6008",
+      "build": "tsup",
+      "build-storybook": "storybook build",
+      "lint": "eslint .",
+      "type-check": "tsc --noEmit",
+      "check:component": "node scripts/check-component.js"
+    }
+  }
+  ```
+
+- **Invocation**: `pnpm check:component <category> <ComponentName>`
+- **Behavior**: TypeScript check → ESLint fix → tsup build (auto-detects `index.tsx` or `index.ts`) → ESLint verify
+- **Notes**: Creates and removes `tsconfig.temp.json` during the run
+
+### Hardened `check:component` script (recommended)
+
+```ts
+#!/usr/bin/env node
+import { execSync } from 'child_process';
+import fs from 'fs';
+import path from 'path';
+
+const [category, component] = process.argv.slice(2);
+
+if (!category || !component) {
+  console.error('Usage: pnpm check:component <category> <ComponentName>');
+  console.error('Example: pnpm check:component utility AspectRatio');
+  process.exit(1);
+}
+
+const CWD = process.cwd(); // must be packages/ui
+const compDir = path.join(CWD, 'src', 'components', category, component);
+
+if (!fs.existsSync(compDir)) {
+  console.error(`Component directory not found: ${compDir}`);
+  process.exit(1);
+}
+
+const tsconfigTemp = path.join(CWD, 'tsconfig.temp.json');
+const tempConfig = {
+  extends: './tsconfig.json',
+  include: [`src/components/${category}/${component}/**/*`],
+};
+
+// Determine entry file for tsup
+const indexTsx = path.join(compDir, 'index.tsx');
+const indexTs = path.join(compDir, 'index.ts');
+const entry = fs.existsSync(indexTsx) ? indexTsx : fs.existsSync(indexTs) ? indexTs : null;
+if (!entry) {
+  console.error('Missing entry: expected index.tsx or index.ts in component folder.');
+  process.exit(1);
+}
+
+console.log(`\n🔍 Checking ${component} in ${category}...\n`);
+
+try {
+  // Write temp tsconfig
+  fs.writeFileSync(tsconfigTemp, JSON.stringify(tempConfig, null, 2));
+
+  // 1) TypeScript check (scoped)
+  console.log('📋 Step 1/4: TypeScript check');
+  execSync(`npx tsc --project ${path.basename(tsconfigTemp)} --noEmit`, { stdio: 'inherit' });
+
+  // 2) ESLint fix
+  console.log('\n📋 Step 2/4: ESLint fix');
+  execSync(`npx eslint "src/components/${category}/${component}/**/*.{ts,tsx}" --fix`, {
+    stdio: 'inherit',
+  });
+
+  // 3) Build with tsup (scoped entry)
+  console.log('\n📋 Step 3/4: tsup build');
+  execSync(`npx tsup "${entry}" --config tsup.config.ts`, { stdio: 'inherit' });
+
+  // 4) ESLint verify (no warnings allowed)
+  console.log('\n📋 Step 4/4: ESLint verify');
+  execSync(`npx eslint "src/components/${category}/${component}/**/*.{ts,tsx}" --max-warnings 0`, {
+    stdio: 'inherit',
+  });
+
+  console.log(`\n✅ ${component} component check complete!`);
+} catch (err) {
+  console.error(`\n❌ Check failed for ${component}`);
+  process.exit(1);
+} finally {
+  // Always clean up
+  try {
+    fs.unlinkSync(tsconfigTemp);
+  } catch {}
+}
 ```
 
-**DO NOT** push to remote or create pull requests - only commit locally.
+---
+
+## Optional: Pre-commit hook (quality gate)
+
+Run `pnpm check:component` automatically when files under a component are staged.
+
+```bash
+# .husky/pre-commit (example)
+#!/usr/bin/env sh
+. "$(dirname "$0")/_/husky.sh"
+
+changed=$(git diff --name-only --cached | grep '^packages/ui/src/components/' | cut -d'/' -f5,6 | sort -u)
+for pair in $changed; do
+  category=$(echo "$pair" | cut -d'/' -f1)
+  component=$(echo "$pair" | cut -d'/' -f2)
+  (cd packages/ui && pnpm check:component "$category" "$component") || exit 1
+done
+```
+
+> Adapt the detection logic to your repository layout if needed.
