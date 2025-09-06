@@ -1,5 +1,4 @@
-import { LinearProgressProps, CircularProgressProps } from '@mui/material';
-import React from 'react';
+import { LinearProgressProps } from '@mui/material';
 
 export type ProgressVariant = 'linear' | 'circular' | 'segmented' | 'gradient' | 'glass';
 export type ProgressSize = 'sm' | 'md' | 'lg';

@@ -10,6 +10,8 @@ import {
   alpha,
   Backdrop,
   SwipeableDrawer,
+  Fade,
+  keyframes,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -33,6 +35,37 @@ const DEFAULT_VELOCITY_THRESHOLD = 0.5;
 
 // Drag resistance factor at boundaries
 const DEFAULT_DRAG_RESISTANCE = 0.3;
+
+// Keyframe animations
+const pulseAnimation = keyframes`
+  0% {
+    box-shadow: 0 0 0 0 rgba(var(--pulse-color), 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 20px rgba(var(--pulse-color), 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(var(--pulse-color), 0);
+  }
+`;
+
+const shimmerAnimation = keyframes`
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+`;
+
+const glowAnimation = keyframes`
+  0%, 100% {
+    box-shadow: 0 0 20px 5px rgba(var(--glow-color), 0.3);
+  }
+  50% {
+    box-shadow: 0 0 35px 10px rgba(var(--glow-color), 0.5);
+  }
+`;
 
 export const Sheet: React.FC<SheetProps> = ({
   open = false,
@@ -107,34 +140,6 @@ export const Sheet: React.FC<SheetProps> = ({
     return points.filter(point => point >= minSnapPoint && point <= maxSnapPoint);
   }, [snapPoints, minSnapPoint, maxSnapPoint]);
 
-  useEffect(() => {
-    setIsOpen(open);
-    if (open) {
-      onOpen?.();
-      if (isDraggableVariant && isVerticalSheet) {
-        // Initialize at default snap point
-        setCurrentSnapPoint(defaultSnapPoint);
-        updateSheetHeight(defaultSnapPoint);
-      }
-    }
-  }, [open, onOpen, isDraggableVariant, isVerticalSheet, defaultSnapPoint]);
-
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (closeOnEscape && e.key === 'Escape' && isOpen) {
-        handleClose();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleEscape);
-    };
-  }, [isOpen, closeOnEscape]);
-
   const handleClose = useCallback(() => {
     if (!persistent && !disabled) {
       setIsOpen(false);
@@ -142,12 +147,6 @@ export const Sheet: React.FC<SheetProps> = ({
       onClose?.();
     }
   }, [persistent, disabled, onOpenChange, onClose]);
-
-  const handleOverlayClick = useCallback(() => {
-    if (closeOnOverlayClick && !persistent) {
-      handleClose();
-    }
-  }, [closeOnOverlayClick, persistent, handleClose]);
 
   const updateSheetHeight = useCallback((snapPoint: number) => {
     if (!sheetRef.current || !isVerticalSheet) return;
@@ -165,13 +164,19 @@ export const Sheet: React.FC<SheetProps> = ({
     setCurrentHeight(height);
   }, [isBottomSheet, isTopSheet, isVerticalSheet]);
 
+  const handleOverlayClick = useCallback(() => {
+    if (closeOnOverlayClick && !persistent) {
+      handleClose();
+    }
+  }, [closeOnOverlayClick, persistent, handleClose]);
+
   const animateToSnapPoint = useCallback((targetSnapPoint: number, velocity = 0) => {
     if (!sheetRef.current || !isVerticalSheet) return;
     
     setIsAnimating(true);
     const startSnapPoint = currentSnapPoint;
     const distance = targetSnapPoint - startSnapPoint;
-    const startTime = performance.now();
+    const startTime = globalThis.performance.now();
     
     // Spring animation parameters
     const { tension, friction } = { ...SPRING_CONFIG, ...animationConfig };
@@ -179,7 +184,7 @@ export const Sheet: React.FC<SheetProps> = ({
     let currentVelocity = velocity * 1000; // Convert to pixels per second
     
     const animate = () => {
-      const now = performance.now();
+      const now = globalThis.performance.now();
       const elapsed = (now - startTime) / 1000; // Convert to seconds
       
       // Spring physics calculations
@@ -242,7 +247,7 @@ export const Sheet: React.FC<SheetProps> = ({
     setIsDragging(true);
     setDragStartY(clientY);
     lastYRef.current = clientY;
-    lastTimeRef.current = performance.now();
+    lastTimeRef.current = globalThis.performance.now();
     velocityRef.current = 0;
     
     if (animationFrameRef.current) {
@@ -252,12 +257,12 @@ export const Sheet: React.FC<SheetProps> = ({
     onDragStart?.();
   }, [isDraggableVariant, isVerticalSheet, isAnimating, onDragStart]);
 
-  const handleDragMove = useCallback((e: MouseEvent | TouchEvent) => {
+  const handleDragMove = useCallback((e: globalThis.MouseEvent | globalThis.TouchEvent) => {
     if (!isDragging || !sheetRef.current || !isVerticalSheet) return;
     
     e.preventDefault();
     const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
-    const currentTime = performance.now();
+    const currentTime = globalThis.performance.now();
     
     // Calculate velocity
     const deltaY = clientY - lastYRef.current;
@@ -286,7 +291,35 @@ export const Sheet: React.FC<SheetProps> = ({
     updateSheetHeight(newSnapPoint);
   }, [isDragging, isVerticalSheet, isBottomSheet, dragStartY, currentSnapPoint, minSnapPoint, maxSnapPoint, dragResistance, updateSheetHeight]);
 
-  const handleDragEnd = useCallback((e: MouseEvent | TouchEvent) => {
+  useEffect(() => {
+    setIsOpen(open);
+    if (open) {
+      onOpen?.();
+      if (isDraggableVariant && isVerticalSheet) {
+        // Initialize at default snap point
+        setCurrentSnapPoint(defaultSnapPoint);
+        updateSheetHeight(defaultSnapPoint);
+      }
+    }
+  }, [open, onOpen, isDraggableVariant, isVerticalSheet, defaultSnapPoint, updateSheetHeight]);
+
+  useEffect(() => {
+    const handleEscape = (e: globalThis.KeyboardEvent) => {
+      if (closeOnEscape && e.key === 'Escape' && isOpen) {
+        handleClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isOpen, closeOnEscape, handleClose]);
+
+  const handleDragEnd = useCallback((e: globalThis.MouseEvent | globalThis.TouchEvent) => {
     if (!isDragging || !isVerticalSheet) return;
     
     e.preventDefault();
@@ -299,7 +332,7 @@ export const Sheet: React.FC<SheetProps> = ({
     const currentPosition = currentSnapPoint + deltaSnapPoint;
     
     // Calculate final velocity for momentum-based snapping
-    const velocity = isBottomSheet ? -velocityRef.current : velocityRef.current;
+    const velocity = isBottomSheet ? -(velocityRef.current || 0) : (velocityRef.current || 0);
     
     // Find and animate to closest snap point
     const targetSnapPoint = findClosestSnapPoint(currentPosition, velocity);
@@ -312,10 +345,10 @@ export const Sheet: React.FC<SheetProps> = ({
   // Add drag event listeners
   useEffect(() => {
     if (isDragging) {
-      const handleMouseMove = (e: MouseEvent) => handleDragMove(e);
-      const handleMouseUp = (e: MouseEvent) => handleDragEnd(e);
-      const handleTouchMove = (e: TouchEvent) => handleDragMove(e);
-      const handleTouchEnd = (e: TouchEvent) => handleDragEnd(e);
+      const handleMouseMove = (e: globalThis.MouseEvent) => handleDragMove(e);
+      const handleMouseUp = (e: globalThis.MouseEvent) => handleDragEnd(e);
+      const handleTouchMove = (e: globalThis.TouchEvent) => handleDragMove(e);
+      const handleTouchEnd = (e: globalThis.TouchEvent) => handleDragEnd(e);
       
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
@@ -358,30 +391,42 @@ export const Sheet: React.FC<SheetProps> = ({
   };
 
   const getVariantStyles = () => {
+    // Extract RGB values for CSS variables
+    const getRgbValues = (hexColor: string) => {
+      const hex = hexColor.replace('#', '');
+      const r = parseInt(hex.substring(0, 2), 16);
+      const g = parseInt(hex.substring(2, 4), 16);
+      const b = parseInt(hex.substring(4, 6), 16);
+      return `${r}, ${g}, ${b}`;
+    };
+
+    const colorMain = theme.palette[color]?.main || theme.palette.primary.main;
+    const colorRgb = getRgbValues(colorMain);
+
     const baseStyles = {
       backgroundColor: theme.palette.background.paper,
       transition: !isDragging && !isAnimating 
         ? theme.transitions.create(['all'], {
             duration: theme.transitions.duration.standard,
+            easing: theme.transitions.easing.easeInOut,
           })
         : 'none',
       opacity: disabled ? 0.5 : 1,
       pointerEvents: disabled ? 'none' as const : 'auto' as const,
       cursor: isDraggableVariant && isVerticalSheet ? 'grab' : 'auto',
+      '--pulse-color': colorRgb,
+      '--glow-color': colorRgb,
       ...(isDragging && { cursor: 'grabbing' }),
     };
 
     const glowStyles = glow ? {
-      boxShadow: `0 0 30px ${alpha(theme.palette[color].main, 0.4)}`,
+      animation: `${glowAnimation} 2s ease-in-out infinite`,
+      filter: 'brightness(1.05)',
     } : {};
 
     const pulseStyles = pulse ? {
-      animation: 'pulse 2s infinite',
-      '@keyframes pulse': {
-        '0%': { boxShadow: `0 0 0 0 ${alpha(theme.palette[color].main, 0.4)}` },
-        '70%': { boxShadow: `0 0 0 20px ${alpha(theme.palette[color].main, 0)}` },
-        '100%': { boxShadow: `0 0 0 0 ${alpha(theme.palette[color].main, 0)}` },
-      },
+      animation: `${pulseAnimation} 2s infinite`,
+      position: 'relative' as const,
     } : {};
 
     const roundedStyles = rounded && (position === 'top' || position === 'bottom') ? {
@@ -401,9 +446,22 @@ export const Sheet: React.FC<SheetProps> = ({
           ...glowStyles,
           ...pulseStyles,
           ...roundedStyles,
-          boxShadow: theme.shadows[Math.min(elevation + 4, 24)],
-          // Add subtle border for better visibility
+          boxShadow: `
+            ${theme.shadows[Math.min(elevation + 4, 24)]},
+            0 -2px 10px 0 ${alpha(theme.palette.common.black, 0.1)}
+          `,
           border: `1px solid ${alpha(theme.palette.divider, 0.12)}`,
+          borderTop: `2px solid ${alpha(theme.palette[color]?.main || theme.palette.primary.main, 0.3)}`,
+          transition: theme.transitions.create(
+            ['transform', 'box-shadow', 'border-color'],
+            {
+              duration: theme.transitions.duration.shorter,
+              easing: theme.transitions.easing.easeInOut,
+            }
+          ),
+          '&:hover': {
+            borderTopColor: alpha(theme.palette[color]?.main || theme.palette.primary.main, 0.5),
+          },
         };
 
       case 'glass':
@@ -412,9 +470,14 @@ export const Sheet: React.FC<SheetProps> = ({
           ...glowStyles,
           ...pulseStyles,
           ...roundedStyles,
-          backgroundColor: alpha(theme.palette.background.paper, glass ? 0.8 : 0.95),
-          backdropFilter: 'blur(20px)',
-          border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+          backgroundColor: alpha(theme.palette.background.paper, glass ? 0.75 : 0.95),
+          backdropFilter: 'blur(24px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+          border: `1px solid ${alpha(theme.palette.divider, 0.15)}`,
+          boxShadow: `
+            0 8px 32px 0 ${alpha(theme.palette.common.black, 0.15)},
+            inset 0 0 0 1px ${alpha(theme.palette.common.white, 0.1)}
+          `,
         };
 
       case 'gradient':
@@ -424,8 +487,30 @@ export const Sheet: React.FC<SheetProps> = ({
           ...pulseStyles,
           ...roundedStyles,
           background: gradient
-            ? `linear-gradient(135deg, ${theme.palette.background.paper}, ${alpha(theme.palette[color].main, 0.05)})`
+            ? `linear-gradient(
+                135deg,
+                ${theme.palette.background.paper} 0%,
+                ${alpha(theme.palette[color]?.main || theme.palette.primary.main, 0.08)} 50%,
+                ${alpha(theme.palette[color]?.dark || theme.palette[color]?.main || theme.palette.primary.main, 0.12)} 100%
+              )`
             : theme.palette.background.paper,
+          position: 'relative' as const,
+          overflow: 'hidden' as const,
+          '&::before': gradient ? {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: '-100%',
+            width: '100%',
+            height: '100%',
+            background: `linear-gradient(
+              90deg,
+              transparent,
+              ${alpha(theme.palette.common.white, 0.2)},
+              transparent
+            )`,
+            animation: `${shimmerAnimation} 3s infinite`,
+          } : {},
         };
 
       case 'elevated':
@@ -434,7 +519,12 @@ export const Sheet: React.FC<SheetProps> = ({
           ...glowStyles,
           ...pulseStyles,
           ...roundedStyles,
-          boxShadow: theme.shadows[elevation],
+          boxShadow: `
+            ${theme.shadows[elevation]},
+            0 20px 40px -15px ${alpha(theme.palette.common.black, 0.15)}
+          `,
+          transform: 'translateZ(0)',
+          willChange: 'transform',
         };
 
       case 'minimal':
@@ -458,6 +548,7 @@ export const Sheet: React.FC<SheetProps> = ({
   };
 
   const DrawerComponent = swipeable && !isDraggableVariant ? SwipeableDrawer : Drawer;
+  const isSwipeable = swipeable && !isDraggableVariant;
 
   return (
     <>
@@ -470,7 +561,7 @@ export const Sheet: React.FC<SheetProps> = ({
       )}
       
       <DrawerComponent
-        {...(swipeable && !isDraggableVariant ? { 
+        {...(isSwipeable ? { 
           onOpen: () => {
             setIsOpen(true);
             onOpenChange?.(true);
@@ -479,7 +570,7 @@ export const Sheet: React.FC<SheetProps> = ({
           onClose: handleClose,
           disableSwipeToOpen: false,
           swipeAreaWidth: 20,
-        } : {
+        } as React.ComponentProps<typeof SwipeableDrawer> : {
           onClose: handleClose,
         })}
         anchor={position}
@@ -598,14 +689,39 @@ export const SheetHeader: React.FC<SheetHeaderProps> = ({
             sx={{
               width: isDraggable ? 48 : 32,
               height: isDraggable ? 6 : 4,
-              backgroundColor: theme.palette.text.disabled,
+              backgroundColor: alpha(theme.palette.text.primary, 0.3),
               borderRadius: 3,
-              transition: 'all 0.3s ease',
+              transition: theme.transitions.create(
+                ['all'],
+                {
+                  duration: theme.transitions.duration.short,
+                  easing: theme.transitions.easing.easeInOut,
+                }
+              ),
+              position: 'relative',
+              overflow: 'hidden',
+              '&::after': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: '-100%',
+                width: '100%',
+                height: '100%',
+                background: `linear-gradient(
+                  90deg,
+                  transparent,
+                  ${alpha(theme.palette.common.white, 0.3)},
+                  transparent
+                )`,
+                animation: isDraggable ? `${shimmerAnimation} 2s infinite` : 'none',
+              },
               ...(isDraggable && {
-                backgroundColor: theme.palette.action.active,
+                backgroundColor: alpha(theme.palette.primary.main, 0.4),
+                boxShadow: `0 2px 4px ${alpha(theme.palette.primary.main, 0.2)}`,
                 '&:hover': {
                   backgroundColor: theme.palette.primary.main,
-                  transform: 'scaleX(1.1)',
+                  transform: 'scaleX(1.15) scaleY(1.2)',
+                  boxShadow: `0 3px 6px ${alpha(theme.palette.primary.main, 0.3)}`,
                 },
               }),
             }}
@@ -707,16 +823,22 @@ export const SheetOverlay: React.FC<SheetOverlayProps> = ({
   const theme = useTheme();
 
   return (
-    <Backdrop
-      open={open}
-      onClick={onClick}
-      className={className}
-      sx={{
-        zIndex: theme.zIndex.drawer - 1,
-        backgroundColor: alpha(theme.palette.common.black, 0.5),
-        backdropFilter: blur ? 'blur(4px)' : 'none',
-        ...style,
-      }}
-    />
+    <Fade in={open} timeout={300}>
+      <Backdrop
+        open={open}
+        onClick={onClick}
+        className={className}
+        sx={{
+          zIndex: theme.zIndex.drawer - 1,
+          backgroundColor: alpha(
+            theme.palette.common.black,
+            blur ? 0.6 : 0.5
+          ),
+          backdropFilter: blur ? 'blur(8px) saturate(180%)' : 'none',
+          WebkitBackdropFilter: blur ? 'blur(8px) saturate(180%)' : 'none',
+          ...style,
+        }}
+      />
+    </Fade>
   );
 };

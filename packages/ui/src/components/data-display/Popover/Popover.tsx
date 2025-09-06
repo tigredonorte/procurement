@@ -106,7 +106,6 @@ export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(
     variant = 'default',
     glow = false,
     pulse = false,
-    arrow = false,
     maxWidth = 400,
     children,
     ...props
@@ -121,7 +120,7 @@ export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(
           pulse,
           sx: { maxWidth },
           ...props.PaperProps,
-        } as any}
+        } as PaperProps & { customVariant?: string; glow?: boolean; pulse?: boolean }}
         {...props}
       >
         {children}

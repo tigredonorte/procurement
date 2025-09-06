@@ -17,7 +17,7 @@ export interface ColumnConfig {
   minWidth?: number;
   priority?: number; // 1 = highest priority, higher numbers = lower priority
   align?: 'left' | 'center' | 'right';
-  render?: (value: any, rowData: any) => React.ReactNode;
+  render?: (value: unknown, rowData: Record<string, unknown>) => React.ReactNode;
 }
 
 export interface VirtualScrollConfig {
@@ -44,7 +44,7 @@ export interface SelectionConfig {
   selectedRows: (string | number)[];
   onSelectionChange: (selectedRows: (string | number)[]) => void;
   selectAllEnabled?: boolean;
-  rowKeyExtractor?: (rowData: any, index: number) => string | number;
+  rowKeyExtractor?: (rowData: Record<string, unknown>, index: number) => string | number;
 }
 
 export interface TableProps extends Omit<MuiTableProps, 'variant'> {
@@ -76,17 +76,17 @@ export interface TableProps extends Omit<MuiTableProps, 'variant'> {
   /**
    * Handler for row click
    */
-  onRowClick?: (event: React.MouseEvent<HTMLTableRowElement>, rowData: any) => void;
+  onRowClick?: (event: React.MouseEvent<globalThis.HTMLTableRowElement>, rowData: Record<string, unknown>) => void;
   
   /**
    * Handler for row focus
    */
-  onRowFocus?: (event: React.FocusEvent<HTMLTableRowElement>, rowData: any) => void;
+  onRowFocus?: (event: React.FocusEvent<globalThis.HTMLTableRowElement>, rowData: Record<string, unknown>) => void;
   
   /**
    * Handler for row blur
    */
-  onRowBlur?: (event: React.FocusEvent<HTMLTableRowElement>, rowData: any) => void;
+  onRowBlur?: (event: React.FocusEvent<globalThis.HTMLTableRowElement>, rowData: Record<string, unknown>) => void;
 
   // Advanced Features
   
@@ -118,7 +118,7 @@ export interface TableProps extends Omit<MuiTableProps, 'variant'> {
   /**
    * Function to extract unique key from row data
    */
-  rowKeyExtractor?: (rowData: any, index: number) => string | number;
+  rowKeyExtractor?: (rowData: Record<string, unknown>, index: number) => string | number;
   
   /**
    * Whether columns are sortable
@@ -143,7 +143,7 @@ export interface TableProps extends Omit<MuiTableProps, 'variant'> {
   /**
    * Table data for advanced features
    */
-  data?: any[];
+  data?: Record<string, unknown>[];
   
   /**
    * Whether to enable virtual scrolling for large datasets
@@ -208,12 +208,12 @@ export interface TableProps extends Omit<MuiTableProps, 'variant'> {
   /**
    * Custom row renderer for advanced use cases
    */
-  renderRow?: (rowData: any, index: number, isSelected: boolean) => React.ReactNode;
+  renderRow?: (rowData: Record<string, unknown>, index: number, isSelected: boolean) => React.ReactNode;
   
   /**
    * Custom cell renderer
    */
-  renderCell?: (value: any, column: ColumnConfig, rowData: any, rowIndex: number) => React.ReactNode;
+  renderCell?: (value: unknown, column: ColumnConfig, rowData: Record<string, unknown>, rowIndex: number) => React.ReactNode;
   
   /**
    * Whether to enable row drag and drop
@@ -261,19 +261,19 @@ export interface TableHeaderProps {
 }
 
 export interface TableBodyProps {
-  data: any[];
+  data: Record<string, unknown>[];
   columns: ColumnConfig[];
   selectedRows?: (string | number)[];
-  onRowClick?: (event: React.MouseEvent<HTMLTableRowElement>, rowData: any) => void;
-  onRowFocus?: (event: React.FocusEvent<HTMLTableRowElement>, rowData: any) => void;
-  onRowBlur?: (event: React.FocusEvent<HTMLTableRowElement>, rowData: any) => void;
+  onRowClick?: (event: React.MouseEvent<globalThis.HTMLTableRowElement>, rowData: Record<string, unknown>) => void;
+  onRowFocus?: (event: React.FocusEvent<globalThis.HTMLTableRowElement>, rowData: Record<string, unknown>) => void;
+  onRowBlur?: (event: React.FocusEvent<globalThis.HTMLTableRowElement>, rowData: Record<string, unknown>) => void;
   onSelectionChange?: (rowKey: string | number, selected: boolean) => void;
-  rowKeyExtractor?: (rowData: any, index: number) => string | number;
+  rowKeyExtractor?: (rowData: Record<string, unknown>, index: number) => string | number;
   density?: TableDensity;
   selectable?: boolean;
   hoverable?: boolean;
-  renderRow?: (rowData: any, index: number, isSelected: boolean) => React.ReactNode;
-  renderCell?: (value: any, column: ColumnConfig, rowData: any, rowIndex: number) => React.ReactNode;
+  renderRow?: (rowData: Record<string, unknown>, index: number, isSelected: boolean) => React.ReactNode;
+  renderCell?: (value: unknown, column: ColumnConfig, rowData: Record<string, unknown>, rowIndex: number) => React.ReactNode;
   virtualScrolling?: boolean;
   containerHeight?: number;
   rowHeight?: number;

@@ -7,7 +7,7 @@ import {
   alpha,
   keyframes
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled, Theme } from '@mui/material/styles';
 
 import { ProgressProps, ProgressSize, ProgressVariant } from './Progress.types';
 
@@ -24,8 +24,8 @@ const pulseAnimation = keyframes`
   }
 `;
 
-const getColorFromTheme = (theme: any, color: string) => {
-  const colorMap: Record<string, any> = {
+const getColorFromTheme = (theme: Theme, color: string) => {
+  const colorMap: Record<string, typeof theme.palette.primary | typeof theme.palette.grey> = {
     primary: theme.palette.primary,
     secondary: theme.palette.secondary,
     success: theme.palette.success,

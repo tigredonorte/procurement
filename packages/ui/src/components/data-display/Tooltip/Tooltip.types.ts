@@ -1,5 +1,4 @@
 import { TooltipProps as MuiTooltipProps } from '@mui/material';
-import React from 'react';
 
 export interface TooltipProps extends Omit<MuiTooltipProps, 'variant'> {
   /**

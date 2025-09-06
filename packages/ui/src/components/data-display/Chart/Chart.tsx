@@ -57,7 +57,6 @@ export const Chart: React.FC<ChartProps> = ({
   xAxisKey = 'name',
   yAxisLabel,
   xAxisLabel,
-  showGrid = true,
   showLegend = true,
   showTooltip = true,
   showCartesianGrid = true,
@@ -70,7 +69,6 @@ export const Chart: React.FC<ChartProps> = ({
   colors,
   curved = true,
   stacked = false,
-  percentage = false,
   showValues = false,
   responsive = true,
 }) => {

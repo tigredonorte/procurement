@@ -23,7 +23,6 @@ import {
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import SettingsIcon from '@mui/icons-material/Settings';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
@@ -31,7 +30,7 @@ import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 
 import { SheetProps } from './Sheet.types';
-import { Sheet, SheetHeader, SheetContent, SheetFooter, SheetOverlay } from './Sheet';
+import { Sheet } from './Sheet';
 
 const meta: Meta<typeof Sheet> = {
   title: 'Data Display/Sheet',

@@ -17,7 +17,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // Wrapper for interactive stories
-const PopoverDemo = ({ children, ...props }: any) => {
+const PopoverDemo = ({ children, ...props }: { children?: React.ReactNode; [key: string]: unknown }) => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const open = Boolean(anchorEl);
   
