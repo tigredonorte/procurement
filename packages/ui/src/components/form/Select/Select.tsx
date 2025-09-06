@@ -34,7 +34,7 @@ const StyledFormControl = styled(FormControl)<{
   pulse?: boolean;
 }>(({ theme, customVariant, glow, pulse }) => ({
   position: 'relative',
-  
+
   // Glow effect
   ...(glow && {
     '& .MuiOutlinedInput-root': {
@@ -44,7 +44,7 @@ const StyledFormControl = styled(FormControl)<{
       },
     },
   }),
-  
+
   // Pulse animation
   ...(pulse && {
     '&::after': {
@@ -63,10 +63,10 @@ const StyledFormControl = styled(FormControl)<{
       zIndex: -1,
     },
   }),
-  
+
   '& .MuiOutlinedInput-root': {
     transition: 'all 0.3s ease',
-    
+
     // Glass variant
     ...(customVariant === 'glass' && {
       backgroundColor: alpha(theme.palette.background.paper, 0.1),
@@ -85,7 +85,7 @@ const StyledFormControl = styled(FormControl)<{
         boxShadow: `0 0 0 2px ${alpha(theme.palette.primary.main, 0.1)}`,
       },
     }),
-    
+
     // Gradient variant
     ...(customVariant === 'gradient' && {
       background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.1)}, ${alpha(theme.palette.secondary.main, 0.1)})`,
@@ -120,7 +120,7 @@ const StyledFormControl = styled(FormControl)<{
         },
       },
     }),
-    
+
     // Default styles
     ...((customVariant === 'default' || !customVariant) && {
       '& fieldset': {
@@ -147,20 +147,34 @@ const StyledSelect = styled(MuiSelect)(({ theme }) => ({
   },
 }));
 
-export const Select = React.forwardRef<any, SelectProps>(
-  ({
-    variant = 'default',
-    options,
-    label,
-    helperText,
-    fullWidth = true,
-    size = 'medium',
-    error,
-    placeholder,
-    glow = false,
-    pulse = false,
-    ...props
-  }, ref) => {
+export const Select = React.forwardRef<HTMLDivElement, SelectProps>(
+  (
+    {
+      variant = 'default',
+      options,
+      label,
+      helperText,
+      fullWidth = true,
+      size = 'medium',
+      error,
+      placeholder,
+      glow = false,
+      pulse = false,
+      'data-testid': dataTestId,
+      value,
+      ...props
+    },
+    ref,
+  ) => {
+    const labelId = React.useId();
+    const helperTextId = React.useId();
+
+    // Filter out custom props that shouldn't be passed to MUI components
+    const muiSelectProps = props;
+
+    // Ensure value is properly handled for MUI Select
+    const selectValue = value !== undefined ? value : '';
+
     return (
       <StyledFormControl
         fullWidth={fullWidth}
@@ -169,13 +183,22 @@ export const Select = React.forwardRef<any, SelectProps>(
         customVariant={variant}
         glow={glow}
         pulse={pulse}
+        ref={ref}
+        data-testid={dataTestId}
       >
-        {label && <InputLabel>{label}</InputLabel>}
+        {label && (
+          <InputLabel id={labelId} htmlFor={labelId}>
+            {label}
+          </InputLabel>
+        )}
         <StyledSelect
-          ref={ref}
+          labelId={label ? labelId : undefined}
           label={label}
           displayEmpty={!!placeholder}
-          {...props}
+          aria-describedby={helperText ? helperTextId : undefined}
+          data-testid={dataTestId ? `${dataTestId}-select` : 'select'}
+          value={selectValue}
+          {...muiSelectProps}
         >
           {placeholder && (
             <MenuItem value="" disabled>
@@ -187,17 +210,22 @@ export const Select = React.forwardRef<any, SelectProps>(
               key={option.value}
               value={option.value}
               disabled={option.disabled}
+              data-testid={
+                dataTestId ? `${dataTestId}-option-${option.value}` : `option-${option.value}`
+              }
             >
               {option.label}
             </MenuItem>
           ))}
         </StyledSelect>
         {helperText && (
-          <FormHelperText error={error}>{helperText}</FormHelperText>
+          <FormHelperText id={helperTextId} error={error}>
+            {helperText}
+          </FormHelperText>
         )}
       </StyledFormControl>
     );
-  }
+  },
 );
 
 Select.displayName = 'Select';
