@@ -1,6 +1,5 @@
 import React, { forwardRef } from 'react';
 import {
-  FormLabel,
   Tooltip,
   Box,
   CircularProgress,
@@ -11,7 +10,7 @@ import {
 
 import { LabelProps } from './Label.types';
 
-export const Label = forwardRef<HTMLLabelElement, LabelProps>(({
+export const Label = forwardRef<globalThis.HTMLLabelElement, LabelProps>(({
   children,
   htmlFor,
   required = false,
@@ -22,8 +21,6 @@ export const Label = forwardRef<HTMLLabelElement, LabelProps>(({
   color = 'default',
   glow = false,
   pulse = false,
-  glass = false,
-  gradient = false,
   ripple = false,
   loading = false,
   className,
@@ -197,7 +194,7 @@ export const Label = forwardRef<HTMLLabelElement, LabelProps>(({
           } : {},
         };
 
-      case 'gradient':
+      case 'gradient': {
         const gradientColor = color === 'default' ? 'primary' : color;
         return {
           ...baseStyles,
@@ -215,6 +212,7 @@ export const Label = forwardRef<HTMLLabelElement, LabelProps>(({
             backgroundClip: 'text',
           } : {},
         };
+      }
 
       case 'minimal':
         return {

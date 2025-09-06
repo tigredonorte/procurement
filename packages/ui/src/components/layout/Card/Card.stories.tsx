@@ -9,8 +9,7 @@ import {
   LocationOn,
   Phone,
   Email,
-  Edit,
-  Delete
+  Edit
 } from '@mui/icons-material';
 
 import { Card, CardHeader, CardContent, CardActions, CardMedia } from './Card';
