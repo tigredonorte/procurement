@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, IconButton, Tooltip, alpha, Theme } from '@mui/material';
+import { Box, IconButton, Tooltip, alpha } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { ContentCopy, Check } from '@mui/icons-material';
 
@@ -159,8 +159,8 @@ export const Code = React.forwardRef<HTMLElement, CodeProps>(
           await navigator.clipboard.writeText(children);
           setCopied(true);
           window.setTimeout(() => setCopied(false), 2000);
-        } catch (error) {
-          
+        } catch {
+          // Silently fail if clipboard access is denied
         }
       }
     };

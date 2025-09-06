@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 export type DialogVariant = 'default' | 'glass' | 'fullscreen' | 'drawer';
 export type DialogSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
-export interface DialogProps extends Omit<MuiDialogProps, 'variant'> {
+export interface DialogProps extends Omit<MuiDialogProps, 'variant' | 'title'> {
   children: ReactNode;
   variant?: DialogVariant;
   size?: DialogSize;

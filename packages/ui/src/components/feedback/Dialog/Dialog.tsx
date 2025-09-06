@@ -12,6 +12,8 @@ import {
   alpha,
   Backdrop,
   keyframes,
+  SxProps,
+  Theme,
 } from '@mui/material';
 import { Close as CloseIcon } from '@mui/icons-material';
 
@@ -80,7 +82,7 @@ export const Dialog: React.FC<DialogProps> = ({
     }
   };
 
-  const getVariantStyles = () => {
+  const getVariantStyles = (): SxProps<Theme> => {
     const baseStyles = {
       borderRadius: getBorderRadius(),
       maxWidth: getMaxWidth(),
@@ -100,10 +102,10 @@ export const Dialog: React.FC<DialogProps> = ({
     } : {};
 
     const pulseStyles = pulse ? {
-      position: 'relative',
+      position: 'relative' as const,
       '&::after': {
         content: '""',
-        position: 'absolute',
+        position: 'absolute' as const,
         top: 0,
         left: 0,
         right: 0,
@@ -112,7 +114,7 @@ export const Dialog: React.FC<DialogProps> = ({
         backgroundColor: theme.palette.primary.main,
         opacity: 0.3,
         animation: `${pulseAnimation} 2s infinite`,
-        pointerEvents: 'none',
+        pointerEvents: 'none' as const,
         zIndex: -1,
       },
     } : {};
@@ -148,13 +150,13 @@ export const Dialog: React.FC<DialogProps> = ({
           width: getMaxWidth(),
           height: '100vh',
           maxHeight: 'none',
-          position: 'absolute',
+          position: 'absolute' as const,
           right: 0,
           ...glowStyles,
           ...pulseStyles,
         };
 
-      default:
+      default: {
         const gradientStyles = gradient ? {
           background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.1)}, ${alpha(theme.palette.secondary.main, 0.1)})`,
           backdropFilter: 'blur(10px)',
@@ -173,10 +175,11 @@ export const Dialog: React.FC<DialogProps> = ({
             ? `1px solid ${alpha(theme.palette.primary.main, 0.2)}`
             : 'none',
         };
+      }
     }
   };
 
-  const handleClose = (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => {
+  const handleClose = (event: object, reason: 'backdropClick' | 'escapeKeyDown') => {
     if (persistent && (reason === 'backdropClick' || reason === 'escapeKeyDown')) {
       return;
     }

@@ -7,7 +7,7 @@ export interface TextProps extends React.HTMLAttributes<HTMLSpanElement> {
   color?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'neutral';
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   weight?: 'light' | 'normal' | 'medium' | 'semibold' | 'bold';
-  as?: keyof JSX.IntrinsicElements;
+  as?: keyof React.JSX.IntrinsicElements;
   italic?: boolean;
   underline?: boolean;
   strikethrough?: boolean;

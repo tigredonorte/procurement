@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within, expect, waitFor, fn } from '@storybook/test';
+import { within, expect } from '@storybook/test';
 import { Box, Typography, Stack } from '@mui/material';
 import { Separator } from './Separator';
 
@@ -483,11 +483,14 @@ export const PerformanceTest: Story = {
     const canvas = within(canvasElement);
     
     await step('Measure render time for multiple separators', async () => {
+      // eslint-disable-next-line no-undef
       const startTime = performance.now();
       const separators = canvas.getAllByRole('separator');
+      // eslint-disable-next-line no-undef
       const endTime = performance.now();
       
       const renderTime = endTime - startTime;
+      // eslint-disable-next-line no-console
       console.log(`Render time for ${separators.length} separators: ${renderTime}ms`);
       
       // Verify all separators are rendered

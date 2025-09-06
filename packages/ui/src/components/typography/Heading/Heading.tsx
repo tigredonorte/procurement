@@ -9,7 +9,7 @@ const getColorFromTheme = (theme: Theme, color: string) => {
     return theme.palette.text.primary;
   }
 
-  const colorMap: Record<string, any> = {
+  const colorMap: Record<string, string> = {
     primary: theme.palette.primary.main,
     secondary: theme.palette.secondary.main,
     success: theme.palette.success.main,
@@ -130,7 +130,7 @@ const StyledHeading = styled(Typography, {
   };
 });
 
-export const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps>(
+export const Heading = React.forwardRef<globalThis.HTMLHeadingElement, HeadingProps>(
   (
     { level = 'h2', color = 'neutral', weight = 'bold', gradient = false, children, ...props },
     ref,

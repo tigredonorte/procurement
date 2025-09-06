@@ -417,7 +417,7 @@ const sum = numbers.reduce((acc, n) => acc + n, 0);`}
       </Code>
       
       <Typography variant="caption" display="block" sx={{ mt: 2 }}>
-        💡 Tip: These methods don't modify the original array
+        💡 Tip: These methods don&apos;t modify the original array
       </Typography>
     </Paper>
   ),

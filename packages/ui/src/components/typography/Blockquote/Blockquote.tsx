@@ -14,7 +14,7 @@ const getColorFromTheme = (theme: Theme, color: string) => {
     };
   }
 
-  const colorMap: Record<string, any> = {
+  const colorMap: Record<string, typeof theme.palette.primary> = {
     primary: theme.palette.primary,
     secondary: theme.palette.secondary,
     success: theme.palette.success,
@@ -124,12 +124,12 @@ const AuthorName = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(0.5),
 }));
 
-const SourceName = styled(Typography)(({ theme }) => ({
+const SourceName = styled(Typography)(() => ({
   fontSize: '0.75rem',
   opacity: 0.7,
 }));
 
-export const Blockquote = React.forwardRef<HTMLQuoteElement, BlockquoteProps>(
+export const Blockquote = React.forwardRef<globalThis.HTMLQuoteElement, BlockquoteProps>(
   ({ variant = 'default', author, source, color = 'neutral', children, ...props }, ref) => {
     const showCitation = author || source;
     const showIcon = variant === 'bordered' || variant === 'citation';

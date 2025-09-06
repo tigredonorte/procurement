@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 import {
   Card as MuiCard,
   CardHeader as MuiCardHeader,
@@ -7,20 +7,10 @@ import {
   CardMedia as MuiCardMedia,
   useTheme,
   alpha,
-  Typography,
-  Avatar,
   Box,
   keyframes,
   CircularProgress,
-  Skeleton,
-  Collapse,
-  IconButton,
-  Fade,
-  Grow,
-  Slide,
-  Zoom,
 } from '@mui/material';
-import { ExpandMore } from '@mui/icons-material';
 
 import {
   CardProps,
@@ -191,7 +181,7 @@ export const Card: React.FC<CardProps> = ({
           },
         };
 
-      case 'neumorphic':
+      case 'neumorphic': {
         const neumorphicBg = theme.palette.mode === 'dark' 
           ? theme.palette.grey[800] 
           : theme.palette.grey[100];
@@ -217,6 +207,7 @@ export const Card: React.FC<CardProps> = ({
                   : `8px 8px 16px ${alpha(theme.palette.grey[400], 0.2)}, -8px -8px 16px ${alpha(theme.palette.common.white, 0.8)}`),
           },
         };
+      }
 
       default:
         return baseStyles;

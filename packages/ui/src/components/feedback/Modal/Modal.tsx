@@ -12,6 +12,13 @@ import {
 
 import { ModalProps, ModalContentProps } from './Modal.types';
 
+// Define transition component props interface
+interface TransitionProps {
+  children?: React.ReactElement;
+  in?: boolean;
+  timeout?: number;
+}
+
 // Define pulse animation
 const pulseAnimation = keyframes`
   0% {
@@ -182,7 +189,7 @@ export const Modal: React.FC<ModalProps> = ({
     }
   };
 
-  const handleClose = (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => {
+  const handleClose = (event: object, reason: 'backdropClick' | 'escapeKeyDown') => {
     if (persistent && (reason === 'backdropClick' || reason === 'escapeKeyDown')) {
       return;
     }
@@ -191,10 +198,20 @@ export const Modal: React.FC<ModalProps> = ({
 
   const getTransitionComponent = () => {
     switch (variant) {
-      case 'top':
-        return (props: any) => <Slide direction="down" {...props} />;
-      case 'bottom':
-        return (props: any) => <Slide direction="up" {...props} />;
+      case 'top': {
+        const SlideDown = React.forwardRef<HTMLElement, TransitionProps>((props, ref) => 
+          <Slide direction="down" ref={ref} {...props} />
+        );
+        SlideDown.displayName = 'SlideDown';
+        return SlideDown;
+      }
+      case 'bottom': {
+        const SlideUp = React.forwardRef<HTMLElement, TransitionProps>((props, ref) =>
+          <Slide direction="up" ref={ref} {...props} />
+        );
+        SlideUp.displayName = 'SlideUp';
+        return SlideUp;
+      }
       default:
         return Fade;
     }

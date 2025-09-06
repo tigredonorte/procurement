@@ -195,13 +195,13 @@ export const ArticleLayout: Story = {
       </Heading>
       
       <Paragraph variant="lead" spacing="relaxed">
-        Typography is more than just choosing beautiful fonts. It's about creating a reading experience that guides users through content effortlessly.
+        Typography is more than just choosing beautiful fonts. It&apos;s about creating a reading experience that guides users through content effortlessly.
       </Paragraph>
       
       <Heading level={2}>Introduction</Heading>
       
       <Paragraph dropCap indent>
-        Good typography is invisible. When done well, readers don't notice the typeface, spacing, or layout – they simply enjoy reading the content. This invisible art requires careful attention to detail and a deep understanding of how people read and process information.
+        Good typography is invisible. When done well, readers don&apos;t notice the typeface, spacing, or layout – they simply enjoy reading the content. This invisible art requires careful attention to detail and a deep understanding of how people read and process information.
       </Paragraph>
       
       <Paragraph indent>
@@ -240,11 +240,11 @@ export const BlogPost: Story = {
   render: () => (
     <Box sx={{ maxWidth: 700, mx: 'auto' }}>
       <Paragraph variant="lead">
-        In today's fast-paced digital world, the importance of good typography cannot be overstated. It's the foundation of effective communication in web design.
+        In today&apos;s fast-paced digital world, the importance of good typography cannot be overstated. It&apos;s the foundation of effective communication in web design.
       </Paragraph>
       
       <Paragraph>
-        When users visit a website, they're looking for information. The way that information is presented can make the difference between a positive experience and a frustrating one. Typography plays a crucial role in this presentation.
+        When users visit a website, they&apos;re looking for information. The way that information is presented can make the difference between a positive experience and a frustrating one. Typography plays a crucial role in this presentation.
       </Paragraph>
       
       <Paragraph>
@@ -252,11 +252,11 @@ export const BlogPost: Story = {
       </Paragraph>
       
       <Paragraph variant="quote">
-        "Typography is the craft of endowing human language with a durable visual form." — Robert Bringhurst
+        &ldquo;Typography is the craft of endowing human language with a durable visual form.&rdquo; — Robert Bringhurst
       </Paragraph>
       
       <Paragraph>
-        This quote perfectly encapsulates the essence of typography. It's not just about making text visible; it's about giving it a form that enhances its meaning and makes it memorable.
+        This quote perfectly encapsulates the essence of typography. It&apos;s not just about making text visible; it&apos;s about giving it a form that enhances its meaning and makes it memorable.
       </Paragraph>
     </Box>
   ),
