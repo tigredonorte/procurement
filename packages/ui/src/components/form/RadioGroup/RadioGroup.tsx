@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import { 
+import {
   RadioGroup as MuiRadioGroup,
   FormControlLabel,
   Radio,
@@ -13,7 +13,7 @@ import {
   keyframes,
   ButtonBase,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled, Theme } from '@mui/material/styles';
 
 import { RadioGroupProps } from './RadioGroup.types';
 
@@ -63,32 +63,35 @@ const rippleAnimation = keyframes`
   }
 `;
 
-const getColorFromTheme = (theme: { palette: { primary: { main: string; dark?: string; light?: string; contrastText?: string }; secondary: { main: string; dark?: string; light?: string; contrastText?: string }; success: { main: string; dark?: string; light?: string; contrastText?: string }; warning: { main: string; dark?: string; light?: string; contrastText?: string }; error: { main: string; dark?: string; light?: string; contrastText?: string }; grey?: { [key: number]: string } } }, color: string) => {
+const getColorFromTheme = (theme: Theme, color: string) => {
   if (color === 'neutral') {
     return {
       main: theme.palette.grey?.[700] || '#616161',
       dark: theme.palette.grey?.[800] || '#424242',
       light: theme.palette.grey?.[500] || '#9e9e9e',
-      contrastText: '#fff'
+      contrastText: '#fff',
     };
   }
-  
-  const colorMap: Record<string, any> = {
+
+  const colorMap: Record<
+    string,
+    { main: string; dark?: string; light?: string; contrastText?: string }
+  > = {
     primary: theme.palette.primary,
     secondary: theme.palette.secondary,
     success: theme.palette.success,
     warning: theme.palette.warning,
     danger: theme.palette.error,
   };
-  
+
   const palette = colorMap[color] || theme.palette.primary;
-  
+
   // Ensure palette has required properties
   return {
     main: palette?.main || theme.palette.primary.main,
     dark: palette?.dark || palette?.main || theme.palette.primary.dark,
     light: palette?.light || palette?.main || theme.palette.primary.light,
-    contrastText: palette?.contrastText || '#fff'
+    contrastText: palette?.contrastText || '#fff',
   };
 };
 
@@ -109,19 +112,30 @@ const StyledFormLabel = styled(FormLabel, {
 }));
 
 const StyledRadioCard = styled(Card, {
-  shouldForwardProp: (prop) => 
-    !['selected', 'customColor', 'glass', 'gradient', 'glow', 'customSize', 'animated'].includes(prop as string),
-})<{ 
-  selected?: boolean; 
-  customColor?: string; 
-  glass?: boolean; 
-  gradient?: boolean; 
+  shouldForwardProp: (prop) =>
+    !['selected', 'customColor', 'glass', 'gradient', 'glow', 'customSize', 'animated'].includes(
+      prop as string,
+    ),
+})<{
+  selected?: boolean;
+  customColor?: string;
+  glass?: boolean;
+  gradient?: boolean;
   glow?: boolean;
   customSize?: string;
   animated?: boolean;
-}>(({ theme, selected, customColor = 'primary', glass, gradient, glow, customSize = 'md', animated }) => {
+}>(({
+  theme,
+  selected,
+  customColor = 'primary',
+  glass,
+  gradient,
+  glow,
+  customSize = 'md',
+  animated,
+}) => {
   const colorPalette = getColorFromTheme(theme, customColor);
-  
+
   const sizeMap = {
     xs: { padding: '8px', minHeight: '60px' },
     sm: { padding: '12px', minHeight: '70px' },
@@ -134,16 +148,14 @@ const StyledRadioCard = styled(Card, {
     cursor: 'pointer',
     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
     border: `2px solid ${selected ? colorPalette.main : alpha(theme.palette.divider, 0.3)}`,
-    backgroundColor: selected 
-      ? alpha(colorPalette.main, 0.05) 
-      : theme.palette.background.paper,
+    backgroundColor: selected ? alpha(colorPalette.main, 0.05) : theme.palette.background.paper,
     position: 'relative' as const,
     overflow: 'hidden' as const,
-    
+
     ...(animated && {
       animation: `${slideAnimation} 0.4s ease-out`,
     }),
-    
+
     '&::before': {
       content: '""',
       position: 'absolute',
@@ -156,19 +168,19 @@ const StyledRadioCard = styled(Card, {
       transition: 'all 0.5s ease',
       borderRadius: '50%',
     },
-    
+
     '&:hover': {
       borderColor: colorPalette.main,
       backgroundColor: alpha(colorPalette.main, 0.02),
       transform: 'translateY(-2px) scale(1.02)',
       boxShadow: `${theme.shadows[4]}, 0 10px 30px -5px ${alpha(colorPalette.main, 0.2)}`,
-      
+
       '&::before': {
         width: '120%',
         height: '120%',
       },
     },
-    
+
     '&:active': {
       transform: 'scale(0.98)',
     },
@@ -176,23 +188,31 @@ const StyledRadioCard = styled(Card, {
     ...sizeMap[customSize as keyof typeof sizeMap],
   };
 
-  const glassStyles = glass ? {
-    backgroundColor: selected 
-      ? alpha(colorPalette.main, 0.1) 
-      : alpha(theme.palette.background.paper, 0.1),
-    backdropFilter: 'blur(20px)',
-    border: `1px solid ${alpha(theme.palette.divider, 0.2)}`,
-  } : {};
+  const glassStyles = glass
+    ? {
+        backgroundColor: selected
+          ? alpha(colorPalette.main, 0.1)
+          : alpha(theme.palette.background.paper, 0.1),
+        backdropFilter: 'blur(20px)',
+        border: `1px solid ${alpha(theme.palette.divider, 0.2)}`,
+      }
+    : {};
 
-  const gradientStyles = gradient && selected ? {
-    background: `linear-gradient(135deg, ${alpha(colorPalette.main, 0.1)}, ${alpha(colorPalette.light, 0.05)})`,
-    borderColor: colorPalette.main,
-  } : {};
+  const gradientStyles =
+    gradient && selected
+      ? {
+          background: `linear-gradient(135deg, ${alpha(colorPalette.main, 0.1)}, ${alpha(colorPalette.light || colorPalette.main, 0.05)})`,
+          borderColor: colorPalette.main,
+        }
+      : {};
 
-  const glowStyles = glow && selected ? {
-    animation: `${glowAnimation} 2s ease-in-out infinite`,
-    boxShadow: `0 0 15px ${alpha(colorPalette.main, 0.4)}`,
-  } : {};
+  const glowStyles =
+    glow && selected
+      ? {
+          animation: `${glowAnimation} 2s ease-in-out infinite`,
+          boxShadow: `0 0 15px ${alpha(colorPalette.main, 0.4)}`,
+        }
+      : {};
 
   return {
     ...baseStyles,
@@ -203,18 +223,20 @@ const StyledRadioCard = styled(Card, {
 });
 
 const StyledButtonRadio = styled(ButtonBase, {
-  shouldForwardProp: (prop) => 
-    !['selected', 'customColor', 'glass', 'gradient', 'customSize', 'animated'].includes(prop as string),
-})<{ 
-  selected?: boolean; 
-  customColor?: string; 
-  glass?: boolean; 
+  shouldForwardProp: (prop) =>
+    !['selected', 'customColor', 'glass', 'gradient', 'customSize', 'animated'].includes(
+      prop as string,
+    ),
+})<{
+  selected?: boolean;
+  customColor?: string;
+  glass?: boolean;
   gradient?: boolean;
   customSize?: string;
   animated?: boolean;
 }>(({ theme, selected, customColor = 'primary', glass, gradient, customSize = 'md', animated }) => {
   const colorPalette = getColorFromTheme(theme, customColor);
-  
+
   const sizeMap = {
     xs: { padding: '6px 12px', fontSize: '0.75rem', minHeight: '32px' },
     sm: { padding: '8px 16px', fontSize: '0.875rem', minHeight: '36px' },
@@ -232,11 +254,12 @@ const StyledButtonRadio = styled(ButtonBase, {
     color: selected ? colorPalette.contrastText || '#fff' : theme.palette.text.primary,
     position: 'relative' as const,
     overflow: 'hidden' as const,
-    
-    ...(animated && selected && {
-      animation: `${scaleAnimation} 0.3s ease-out`,
-    }),
-    
+
+    ...(animated &&
+      selected && {
+        animation: `${scaleAnimation} 0.3s ease-out`,
+      }),
+
     '&::after': {
       content: '""',
       position: 'absolute',
@@ -249,7 +272,7 @@ const StyledButtonRadio = styled(ButtonBase, {
       transform: 'translate(-50%, -50%)',
       pointerEvents: 'none' as const,
     },
-    
+
     '&:active::after': {
       animation: `${rippleAnimation} 0.6s ease-out`,
       width: '100%',
@@ -262,7 +285,7 @@ const StyledButtonRadio = styled(ButtonBase, {
       transform: 'translateY(-1px) scale(1.02)',
       boxShadow: `0 4px 12px ${alpha(colorPalette.main, 0.2)}`,
     },
-    
+
     '&:active': {
       transform: 'scale(0.98)',
     },
@@ -270,18 +293,23 @@ const StyledButtonRadio = styled(ButtonBase, {
     ...sizeMap[customSize as keyof typeof sizeMap],
   };
 
-  const glassStyles = glass ? {
-    backgroundColor: selected 
-      ? alpha(colorPalette.main, 0.8) 
-      : alpha(theme.palette.background.paper, 0.1),
-    backdropFilter: 'blur(20px)',
-    border: `1px solid ${alpha(theme.palette.divider, 0.2)}`,
-  } : {};
+  const glassStyles = glass
+    ? {
+        backgroundColor: selected
+          ? alpha(colorPalette.main, 0.8)
+          : alpha(theme.palette.background.paper, 0.1),
+        backdropFilter: 'blur(20px)',
+        border: `1px solid ${alpha(theme.palette.divider, 0.2)}`,
+      }
+    : {};
 
-  const gradientStyles = gradient && selected ? {
-    background: `linear-gradient(135deg, ${colorPalette.main}, ${colorPalette.dark})`,
-    border: 'none',
-  } : {};
+  const gradientStyles =
+    gradient && selected
+      ? {
+          background: `linear-gradient(135deg, ${colorPalette.main}, ${colorPalette.dark})`,
+          border: 'none',
+        }
+      : {};
 
   return {
     ...baseStyles,
@@ -298,7 +326,7 @@ const StyledSegmentContainer = styled(Box, {
   return {
     padding: '4px',
     borderRadius: theme.spacing(1.5),
-    backgroundColor: glass 
+    backgroundColor: glass
       ? alpha(theme.palette.background.paper, 0.1)
       : alpha(colorPalette.main, 0.05),
     backdropFilter: glass ? 'blur(20px)' : 'none',
@@ -309,16 +337,16 @@ const StyledSegmentContainer = styled(Box, {
 });
 
 const StyledSegmentButton = styled(ButtonBase, {
-  shouldForwardProp: (prop) => 
+  shouldForwardProp: (prop) =>
     !['selected', 'customColor', 'customSize', 'animated'].includes(prop as string),
-})<{ 
-  selected?: boolean; 
+})<{
+  selected?: boolean;
   customColor?: string;
   customSize?: string;
   animated?: boolean;
 }>(({ theme, selected, customColor = 'primary', customSize = 'md', animated }) => {
   const colorPalette = getColorFromTheme(theme, customColor);
-  
+
   const sizeMap = {
     xs: { padding: '4px 8px', fontSize: '0.75rem' },
     sm: { padding: '6px 12px', fontSize: '0.875rem' },
@@ -334,14 +362,17 @@ const StyledSegmentButton = styled(ButtonBase, {
     fontWeight: 500,
     backgroundColor: selected ? theme.palette.background.paper : 'transparent',
     color: selected ? colorPalette.main : theme.palette.text.secondary,
-    boxShadow: selected ? `${theme.shadows[2]}, inset 0 1px 3px ${alpha(colorPalette.main, 0.1)}` : 'none',
+    boxShadow: selected
+      ? `${theme.shadows[2]}, inset 0 1px 3px ${alpha(colorPalette.main, 0.1)}`
+      : 'none',
     position: 'relative' as const,
     overflow: 'hidden' as const,
-    
-    ...(animated && selected && {
-      animation: `${scaleAnimation} 0.3s ease-out`,
-    }),
-    
+
+    ...(animated &&
+      selected && {
+        animation: `${scaleAnimation} 0.3s ease-out`,
+      }),
+
     '&::before': {
       content: '""',
       position: 'absolute',
@@ -355,18 +386,18 @@ const StyledSegmentButton = styled(ButtonBase, {
     },
 
     '&:hover': {
-      backgroundColor: selected 
-        ? theme.palette.background.paper 
+      backgroundColor: selected
+        ? theme.palette.background.paper
         : alpha(theme.palette.action.hover, 0.08),
       color: colorPalette.main,
-      
+
       '&::before': {
         width: '100%',
         left: 0,
         transform: 'translateX(0)',
       },
     },
-    
+
     '&:active': {
       transform: 'scale(0.98)',
     },
@@ -376,32 +407,34 @@ const StyledSegmentButton = styled(ButtonBase, {
 });
 
 export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
-  ({
-    variant = 'default',
-    color = 'primary',
-    size = 'md',
-    options,
-    label,
-    error = false,
-    helperText,
-    glassLabel = false,
-    glow = false,
-    glass = false,
-    gradient = false,
-    direction = 'column',
-    showDescriptions = true,
-    value,
-    onChange,
-    ...props
-  }, ref) => {
-
+  (
+    {
+      variant = 'default',
+      color = 'primary',
+      size = 'md',
+      options,
+      label,
+      error = false,
+      helperText,
+      glassLabel = false,
+      glow = false,
+      glass = false,
+      gradient = false,
+      direction = 'column',
+      showDescriptions = true,
+      value,
+      onChange,
+      ...props
+    },
+    ref,
+  ) => {
     const renderDefaultRadio = () => (
       <MuiRadioGroup
         ref={ref}
         value={value}
         onChange={onChange}
         {...props}
-        sx={{ 
+        sx={{
           flexDirection: direction,
           gap: 1,
         }}
@@ -411,7 +444,15 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
             key={option.value}
             value={option.value}
             disabled={option.disabled}
-            control={<Radio color={color as any} />}
+            control={
+              <Radio
+                color={
+                  color === 'danger'
+                    ? 'error'
+                    : (color as 'primary' | 'secondary' | 'success' | 'warning' | 'error')
+                }
+              />
+            }
             label={
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 {option.icon}
@@ -431,11 +472,13 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
     );
 
     const renderCardRadio = () => (
-      <Box sx={{ 
-        display: 'flex', 
-        flexDirection: direction,
-        gap: 2 
-      }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: direction,
+          gap: 2,
+        }}
+      >
         {options.map((option) => (
           <StyledRadioCard
             key={option.value}
@@ -446,18 +489,28 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
             glow={glow}
             customSize={size}
             animated
-            onClick={() => !option.disabled && onChange?.({ target: { value: option.value } } as any, option.value)}
+            onClick={() => {
+              if (!option.disabled && onChange) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                onChange({ target: { value: option.value } } as any, option.value);
+              }
+            }}
           >
             <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
               <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
                 {option.icon && (
-                  <Box sx={{ mt: 0.5, color: value === option.value ? `${color}.main` : 'text.secondary' }}>
+                  <Box
+                    sx={{
+                      mt: 0.5,
+                      color: value === option.value ? `${color}.main` : 'text.secondary',
+                    }}
+                  >
                     {option.icon}
                   </Box>
                 )}
                 <Box sx={{ flex: 1 }}>
-                  <Typography 
-                    variant="subtitle1" 
+                  <Typography
+                    variant="subtitle1"
                     fontWeight={600}
                     color={value === option.value ? `${color}.main` : 'text.primary'}
                   >
@@ -477,12 +530,14 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
     );
 
     const renderButtonRadio = () => (
-      <Box sx={{ 
-        display: 'flex', 
-        flexDirection: direction,
-        gap: 1,
-        flexWrap: 'wrap'
-      }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: direction,
+          gap: 1,
+          flexWrap: 'wrap',
+        }}
+      >
         {options.map((option) => (
           <StyledButtonRadio
             key={option.value}
@@ -493,7 +548,12 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
             customSize={size}
             animated
             disabled={option.disabled}
-            onClick={() => !option.disabled && onChange?.({ target: { value: option.value } } as any, option.value)}
+            onClick={() => {
+              if (!option.disabled && onChange) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                onChange({ target: { value: option.value } } as any, option.value);
+              }
+            }}
           >
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               {option.icon}
@@ -514,7 +574,12 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
             customSize={size}
             animated
             disabled={option.disabled}
-            onClick={() => !option.disabled && onChange?.({ target: { value: option.value } } as any, option.value)}
+            onClick={() => {
+              if (!option.disabled && onChange) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                onChange({ target: { value: option.value } } as any, option.value);
+              }
+            }}
           >
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               {option.icon}
@@ -545,9 +610,9 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
             {label}
           </StyledFormLabel>
         )}
-        
+
         {renderRadioGroup()}
-        
+
         {helperText && (
           <FormHelperText error={error} sx={{ mt: 1 }}>
             {helperText}
@@ -555,7 +620,7 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
         )}
       </Box>
     );
-  }
+  },
 );
 
 RadioGroup.displayName = 'RadioGroup';
