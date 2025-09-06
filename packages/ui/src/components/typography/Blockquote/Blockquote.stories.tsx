@@ -168,7 +168,7 @@ export const Testimonials: Story = {
           cite="Michael Chen"
           source="Product Manager"
         >
-          Best investment we've made this year. The ROI was evident within the first month.
+          Best investment we&apos;ve made this year. The ROI was evident within the first month.
         </Blockquote>
       </Paper>
       
@@ -179,7 +179,7 @@ export const Testimonials: Story = {
           cite="Emily Davis"
           source="Designer"
         >
-          The attention to detail and user experience is unmatched. It's rare to find a tool that developers and designers both love.
+          The attention to detail and user experience is unmatched. It&apos;s rare to find a tool that developers and designers both love.
         </Blockquote>
       </Paper>
     </Stack>
@@ -204,7 +204,7 @@ export const FamousQuotes: Story = {
         color="secondary"
         cite="Maya Angelou"
       >
-        I've learned that people will forget what you said, people will forget what you did, but people will never forget how you made them feel.
+        I&apos;ve learned that people will forget what you said, people will forget what you did, but people will never forget how you made them feel.
       </Blockquote>
       
       <Blockquote 
@@ -331,7 +331,7 @@ export const PullQuotes: Story = {
         size="large"
         sx={{ my: 4, textAlign: 'center' }}
       >
-        "This is a pull quote that highlights a key point from the article"
+        &ldquo;This is a pull quote that highlights a key point from the article&rdquo;
       </Blockquote>
       
       <p>

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { userEvent, within, expect, waitFor, fn } from '@storybook/test';
 import { useState } from 'react';
 import { Button, Typography, Box, Stack } from '@mui/material';
-import { ExpandMore, Settings, Info, Security } from '@mui/icons-material';
+import { ExpandMore, Settings } from '@mui/icons-material';
 
 import { Accordion, AccordionSummary, AccordionDetails, AccordionActions } from './Accordion';
 
@@ -581,7 +581,7 @@ export const ResponsiveDesign: Story = {
     });
     
     await step('Expand accordion to test responsive content', async () => {
-      const summary = accordion.querySelector('[data-testid="responsive-accordion"] .MuiAccordionSummary-root');
+      const summary = canvas.getByTestId('responsive-accordion').querySelector('.MuiAccordionSummary-root');
       if (summary) {
         await userEvent.click(summary);
         
@@ -713,11 +713,14 @@ export const PerformanceTest: Story = {
     const canvas = within(canvasElement);
     
     await step('Measure initial render time', async () => {
+      // eslint-disable-next-line no-undef
       const startTime = performance.now();
       const accordions = canvas.getAllByTestId(/^perf-accordion-\d+$/);
+      // eslint-disable-next-line no-undef
       const endTime = performance.now();
       
       const renderTime = endTime - startTime;
+      // eslint-disable-next-line no-console
       console.log(`Render time for ${accordions.length} accordions: ${renderTime}ms`);
       
       await expect(accordions.length).toBe(20);
@@ -726,6 +729,7 @@ export const PerformanceTest: Story = {
     });
     
     await step('Test rapid expand/collapse performance', async () => {
+      // eslint-disable-next-line no-undef
       const startTime = performance.now();
       
       // Rapidly expand/collapse multiple accordions
@@ -735,13 +739,16 @@ export const PerformanceTest: Story = {
         
         if (summary) {
           await userEvent.click(summary);
+          // eslint-disable-next-line no-undef
           await new Promise(resolve => setTimeout(resolve, 50));
           await userEvent.click(summary);
         }
       }
       
+      // eslint-disable-next-line no-undef
       const endTime = performance.now();
       const interactionTime = endTime - startTime;
+      // eslint-disable-next-line no-console
       console.log(`Interaction time for 5 accordions: ${interactionTime}ms`);
       
       // Verify no performance issues

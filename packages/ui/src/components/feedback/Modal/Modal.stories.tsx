@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import { Button, Typography, Box, Card, CardContent, IconButton } from '@mui/material';
+import { Button, Typography, Box, IconButton } from '@mui/material';
 import { Close as CloseIcon } from '@mui/icons-material';
 
 import { Modal, ModalContent } from './Modal';
@@ -45,7 +45,12 @@ const meta: Meta<typeof Modal> = {
 export default meta;
 type Story = StoryObj<typeof Modal>;
 
-const ModalWrapper = ({ children, ...args }: any) => {
+interface ModalWrapperProps {
+  children: React.ReactNode;
+  [key: string]: unknown;
+}
+
+const ModalWrapper = ({ children, ...args }: ModalWrapperProps) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -284,4 +289,228 @@ const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
 
 export const ResponsiveSizes: Story = {
   render: () => <ResponsiveSizesComponent />,
+};
+
+// Enhanced story for all variants
+const AllVariantsComponent = () => {
+  const variants = ['center', 'top', 'bottom', 'glass'] as const;
+  const [openStates, setOpenStates] = useState<Record<string, boolean>>({});
+
+  return (
+    <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+      {variants.map(variant => (
+        <Box key={variant}>
+          <Button 
+            variant="contained"
+            color={variant === 'glass' ? 'secondary' : 'primary'}
+            onClick={() => setOpenStates(prev => ({ ...prev, [variant]: true }))}
+          >
+            {variant.charAt(0).toUpperCase() + variant.slice(1)} Modal
+          </Button>
+          <Modal
+            open={openStates[variant] || false}
+            onClose={() => setOpenStates(prev => ({ ...prev, [variant]: false }))}
+            variant={variant}
+            size="md"
+            glass={variant === 'glass'}
+            glow={variant === 'glass'}
+          >
+            <ModalContent>
+              <Typography variant="h6" gutterBottom>
+                {variant.charAt(0).toUpperCase() + variant.slice(1)} Variant
+              </Typography>
+              <Typography paragraph>
+                This demonstrates the {variant} variant with appropriate animations and styling.
+              </Typography>
+              <Button 
+                onClick={() => setOpenStates(prev => ({ ...prev, [variant]: false }))}
+                variant="contained"
+                fullWidth
+              >
+                Close
+              </Button>
+            </ModalContent>
+          </Modal>
+        </Box>
+      ))}
+    </Box>
+  );
+};
+
+export const AllVariants: Story = {
+  render: () => <AllVariantsComponent />,
+
+};
+
+// Story for testing all border radius options
+const BorderRadiusVariationsComponent = () => {
+  const borderRadii = ['none', 'sm', 'md', 'lg', 'xl'] as const;
+  const [openStates, setOpenStates] = useState<Record<string, boolean>>({});
+
+  return (
+    <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+      {borderRadii.map(radius => (
+        <Box key={radius}>
+          <Button 
+            variant="outlined"
+            onClick={() => setOpenStates(prev => ({ ...prev, [radius]: true }))}
+          >
+            {radius.toUpperCase()} Radius
+          </Button>
+          <Modal
+            open={openStates[radius] || false}
+            onClose={() => setOpenStates(prev => ({ ...prev, [radius]: false }))}
+            variant="center"
+            size="sm"
+            borderRadius={radius}
+            glass={true}
+          >
+            <ModalContent>
+              <Typography variant="h6" gutterBottom>
+                Border Radius: {radius.toUpperCase()}
+              </Typography>
+              <Typography paragraph>
+                This modal demonstrates the {radius} border radius setting.
+              </Typography>
+              <Button 
+                onClick={() => setOpenStates(prev => ({ ...prev, [radius]: false }))}
+                variant="contained"
+                fullWidth
+              >
+                Close
+              </Button>
+            </ModalContent>
+          </Modal>
+        </Box>
+      ))}
+    </Box>
+  );
+};
+
+export const BorderRadiusVariations: Story = {
+  render: () => <BorderRadiusVariationsComponent />,
+
+};
+
+// Story for testing special effects
+const SpecialEffectsComponent = () => {
+  const effects = [
+    { name: 'Pulse', props: { pulse: true } },
+    { name: 'Glow', props: { glow: true } },
+    { name: 'Gradient', props: { gradient: true } },
+    { name: 'Combined', props: { pulse: true, glow: true, gradient: true } },
+  ];
+  const [openStates, setOpenStates] = useState<Record<string, boolean>>({});
+
+  return (
+    <Box sx={{ 
+      bgcolor: 'grey.900', 
+      p: 4, 
+      borderRadius: 2,
+      display: 'flex', 
+      gap: 2, 
+      flexWrap: 'wrap' 
+    }}>
+      {effects.map(effect => (
+        <Box key={effect.name}>
+          <Button 
+            variant="contained"
+            color="secondary"
+            onClick={() => setOpenStates(prev => ({ ...prev, [effect.name]: true }))}
+          >
+            {effect.name} Effect
+          </Button>
+          <Modal
+            open={openStates[effect.name] || false}
+            onClose={() => setOpenStates(prev => ({ ...prev, [effect.name]: false }))}
+            variant="center"
+            size="md"
+            {...effect.props}
+          >
+            <ModalContent>
+              <Typography variant="h6" gutterBottom>
+                {effect.name} Effect Modal
+              </Typography>
+              <Typography paragraph>
+                This modal showcases the {effect.name.toLowerCase()} effect.
+              </Typography>
+              <Button 
+                onClick={() => setOpenStates(prev => ({ ...prev, [effect.name]: false }))}
+                variant="contained"
+                fullWidth
+              >
+                Close
+              </Button>
+            </ModalContent>
+          </Modal>
+        </Box>
+      ))}
+    </Box>
+  );
+};
+
+export const SpecialEffects: Story = {
+  render: () => <SpecialEffectsComponent />,
+
+};
+
+// Story for testing persistent modals
+const PersistentModalComponent = () => {
+  const [open, setOpen] = useState(false);
+  const [forceClose, setForceClose] = useState(false);
+
+  return (
+    <Box>
+      <Button 
+        variant="contained" 
+        color="warning"
+        onClick={() => {
+          setOpen(true);
+          setForceClose(false);
+        }}
+      >
+        Open Persistent Modal
+      </Button>
+      <Modal
+        open={open && !forceClose}
+        onClose={() => {
+          // This will be ignored due to persistent=true
+          // eslint-disable-next-line no-console
+          console.log('Close attempted but modal is persistent');
+        }}
+        variant="center"
+        size="sm"
+        persistent={true}
+        glass={true}
+      >
+        <ModalContent>
+          <Box sx={{ textAlign: 'center' }}>
+            <Typography variant="h6" gutterBottom color="warning.main">
+              ⚠️ Persistent Modal
+            </Typography>
+            <Typography paragraph>
+              This modal cannot be closed by clicking the backdrop or pressing Escape.
+              You must use the close button.
+            </Typography>
+            <Typography variant="body2" color="text.secondary" paragraph>
+              Try clicking outside or pressing Escape - it won&apos;t work!
+            </Typography>
+            <Button 
+              variant="contained"
+              color="error"
+              onClick={() => setForceClose(true)}
+              fullWidth
+            >
+              Force Close
+            </Button>
+          </Box>
+        </ModalContent>
+      </Modal>
+    </Box>
+  );
+};
+
+export const PersistentModal: Story = {
+  render: () => <PersistentModalComponent />,
+
 };

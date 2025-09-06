@@ -9,7 +9,7 @@ const getColorFromTheme = (theme: Theme, color: string) => {
     return theme.palette.text.primary;
   }
 
-  const colorMap: Record<string, any> = {
+  const colorMap: Record<string, string> = {
     primary: theme.palette.primary.main,
     secondary: theme.palette.secondary.main,
     success: theme.palette.success.main,
@@ -81,7 +81,7 @@ const StyledParagraph = styled(Typography, {
   return variantStyles[customVariant as keyof typeof variantStyles] || variantStyles.default;
 });
 
-export const Paragraph = React.forwardRef<HTMLParagraphElement, ParagraphProps>(
+export const Paragraph = React.forwardRef<globalThis.HTMLParagraphElement, ParagraphProps>(
   ({ variant = 'default', color = 'neutral', size = 'md', children, ...props }, ref) => {
     return (
       <StyledParagraph

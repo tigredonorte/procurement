@@ -31,7 +31,8 @@ export default [
         HTMLDivElement: 'readonly',
         HTMLButtonElement: 'readonly',
         HTMLAnchorElement: 'readonly',
-        HTMLSpanElement: 'readonly'
+        HTMLSpanElement: 'readonly',
+        HTMLFormElement: 'readonly'
       }
     },
     plugins: {

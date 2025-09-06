@@ -49,7 +49,7 @@ const meta: Meta<typeof Dialog> = {
 export default meta;
 type Story = StoryObj<typeof Dialog>;
 
-const DialogWrapper = ({ children, ...args }: any) => {
+const DialogWrapper = ({ children, ...args }: { children: React.ReactNode; [key: string]: unknown }) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -252,4 +252,194 @@ const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
 
 export const AllSizes: Story = {
   render: () => <AllSizesComponent />,
+};
+
+// Additional comprehensive stories
+export const WithCustomActions: Story = {
+  render: (args) => (
+    <DialogWrapper {...args}>
+      <DialogHeader
+        title="Custom Actions Dialog"
+        subtitle="Dialog with custom action alignment and spacing"
+      />
+      <DialogContent>
+        <Typography paragraph>
+          This dialog demonstrates custom action alignment and spacing options.
+          You can align actions to left, center, right, or space-between.
+        </Typography>
+      </DialogContent>
+      <DialogActions alignment="space-between" spacing={2}>
+        <Button variant="outlined" color="error">Delete</Button>
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <Button>Cancel</Button>
+          <Button variant="contained">Save Changes</Button>
+        </Box>
+      </DialogActions>
+    </DialogWrapper>
+  ),
+  args: {
+    variant: 'default',
+    size: 'md',
+    borderRadius: 'lg',
+  },
+};
+
+export const WithDividers: Story = {
+  render: (args) => (
+    <DialogWrapper {...args}>
+      <DialogHeader
+        title="Dialog with Dividers"
+        subtitle="Content sections with visual separators"
+      />
+      <DialogContent dividers>
+        <Typography paragraph>
+          This content section has dividers above and below to create clear
+          visual separation from the header and actions.
+        </Typography>
+        <Typography paragraph>
+          This is useful for dialogs with a lot of content or when you need
+          to clearly separate different sections of the dialog.
+        </Typography>
+      </DialogContent>
+      <DialogActions>
+        <Button>Cancel</Button>
+        <Button variant="contained">Continue</Button>
+      </DialogActions>
+    </DialogWrapper>
+  ),
+  args: {
+    variant: 'default',
+    size: 'lg',
+  },
+};
+
+export const DenseContent: Story = {
+  render: (args) => (
+    <DialogWrapper {...args}>
+      <DialogHeader
+        title="Dense Content Dialog"
+        subtitle="Compact spacing for information-heavy dialogs"
+      />
+      <DialogContent dense dividers>
+        <Typography variant="body2" paragraph>
+          Dense content reduces padding to fit more information in a smaller space.
+          This is useful for data tables, forms, or content-heavy dialogs.
+        </Typography>
+        <Typography variant="body2" paragraph>
+          The dense prop reduces internal padding while maintaining readability.
+        </Typography>
+      </DialogContent>
+      <DialogActions>
+        <Button size="small">Cancel</Button>
+        <Button variant="contained" size="small">OK</Button>
+      </DialogActions>
+    </DialogWrapper>
+  ),
+  args: {
+    variant: 'default',
+    size: 'sm',
+  },
+};
+
+export const NoCloseButton: Story = {
+  render: (args) => (
+    <DialogWrapper {...args}>
+      <DialogHeader
+        title="Persistent Dialog"
+        subtitle="No close button - must use action buttons"
+        showCloseButton={false}
+      />
+      <DialogContent>
+        <Typography>
+          This dialog has no close button and is persistent, meaning it cannot
+          be closed by clicking the backdrop or pressing Escape.
+        </Typography>
+      </DialogContent>
+      <DialogActions>
+        <Button color="error">Cancel</Button>
+        <Button variant="contained">Confirm</Button>
+      </DialogActions>
+    </DialogWrapper>
+  ),
+  args: {
+    variant: 'default',
+    size: 'md',
+    persistent: true,
+  },
+};
+
+export const PulseEffect: Story = {
+  render: (args) => (
+    <DialogWrapper {...args}>
+      <DialogHeader
+        title="Pulse Effect Dialog"
+        subtitle="Attention-grabbing pulse animation"
+      />
+      <DialogContent>
+        <Typography>
+          This dialog has a pulse effect to draw attention. The pulse animation
+          creates a subtle highlighting effect around the dialog.
+        </Typography>
+      </DialogContent>
+      <DialogActions>
+        <Button>Dismiss</Button>
+        <Button variant="contained">Take Action</Button>
+      </DialogActions>
+    </DialogWrapper>
+  ),
+  args: {
+    variant: 'default',
+    size: 'md',
+    pulse: true,
+    glow: true,
+  },
+};
+
+const BorderRadiusVariationsComponent = () => {
+  const radiusOptions = ['none', 'sm', 'md', 'lg', 'xl'] as const;
+  const [openStates, setOpenStates] = useState<Record<string, boolean>>({});
+
+    const handleOpen = (radius: string) => {
+      setOpenStates(prev => ({ ...prev, [radius]: true }));
+    };
+
+    const handleClose = (radius: string) => {
+      setOpenStates(prev => ({ ...prev, [radius]: false }));
+    };
+
+    return (
+      <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+        {radiusOptions.map(radius => (
+          <Box key={radius}>
+            <Button 
+              variant="outlined" 
+              onClick={() => handleOpen(radius)}
+              size="small"
+            >
+              {radius.toUpperCase()}
+            </Button>
+            <Dialog
+              open={openStates[radius] || false}
+              onClose={() => handleClose(radius)}
+              borderRadius={radius}
+              variant="glass"
+            >
+              <DialogHeader title={`${radius.toUpperCase()} Border Radius`} />
+              <DialogContent>
+                <Typography>
+                  This dialog demonstrates the {radius} border radius option.
+                </Typography>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => handleClose(radius)}>Close</Button>
+              </DialogActions>
+            </Dialog>
+          </Box>
+        ))}
+      </Box>
+    );
+};
+
+export const BorderRadiusVariations: Story = {
+  render: () => <BorderRadiusVariationsComponent />,
 };
