@@ -36,16 +36,16 @@
 - Container ✓ (completed) - 2025-09-05 23:17 - beta
 - Dialog ✓ (completed) - 2025-09-05 23:17 - beta
 - Accordion ✓ (completed) - alfa: Agent4 - 2025-09-05 23:40
-- omega-1: Alert (working) - 2025-09-06 15:00
+- omega-1: Alert ✓ (completed) - 2025-09-06 15:00
 - RadioGroup ✓ (completed) [alfa] - 2025-09-06 08:50 - Comprehensive test stories, fixed lint/type issues
 - Select ✓ (completed) [alfa: Agent] - 2025-09-06 09:45 - Comprehensive implementation and test coverage verified
 - Checkbox ✓ (completed) - alfa - 2025-09-06 18:45
 - Input ✓ (completed) [alfa] - 2025-09-06 08:00
 - Switch ✓ (completed) [alfa] - 2025-09-06 14:30 - Comprehensive testing and verification complete
 - omega-4: Label (working) - 2025-09-06
-- omega-5: Tabs (working) - 2025-09-06
+- omega-5: Tabs ✓ (completed) - 2025-09-06
 - Tooltip ✓ (completed) [omega-3] - 2025-09-06 14:45
-- omega-2: Card (working) - 2025-09-06
+- omega-2: Card ✓ (completed) - 2025-09-06
 
 ### Status Definitions
 
