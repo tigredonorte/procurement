@@ -50,11 +50,11 @@ const rotateAnimation = keyframes`
   }
 `;
 
-const getColorFromTheme = (
-  theme: Theme,
-  color: string,
-) => {
-  const colorMap: Record<string, { main: string; contrastText?: string; light?: string; dark?: string }> = {
+const getColorFromTheme = (theme: Theme, color: string) => {
+  const colorMap: Record<
+    string,
+    { main: string; contrastText?: string; light?: string; dark?: string }
+  > = {
     primary: theme.palette.primary,
     secondary: theme.palette.secondary,
     success: theme.palette.success,
@@ -79,10 +79,7 @@ const getSizeStyles = (size: AvatarSize) => {
   return sizeMap[size] || sizeMap.md;
 };
 
-const getStatusColor = (
-  status: AvatarStatus,
-  theme: Theme,
-) => {
+const getStatusColor = (status: AvatarStatus, theme: Theme) => {
   const statusColorMap: Record<AvatarStatus, string> = {
     online: theme.palette.success.main,
     offline: theme.palette.grey[500],
@@ -95,9 +92,17 @@ const getStatusColor = (
 
 const StyledAvatar = styled(MuiAvatar, {
   shouldForwardProp: (prop) =>
-    !['customVariant', 'customSize', 'customColor', 'glow', 'pulse', 'bordered', 'isLoading', 'hasError', 'interactive'].includes(
-      prop as string,
-    ),
+    ![
+      'customVariant',
+      'customSize',
+      'customColor',
+      'glow',
+      'pulse',
+      'bordered',
+      'isLoading',
+      'hasError',
+      'interactive',
+    ].includes(prop as string),
 })<{
   customVariant?: string;
   customSize?: AvatarSize;
@@ -357,25 +362,31 @@ export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
       setImageLoading(!!src);
     }, [src]);
 
-    const handleImageError = useCallback((event: React.SyntheticEvent<HTMLImageElement>) => {
-      setImageError(true);
-      setImageLoading(false);
-      onError?.(event);
-    }, [onError]);
+    const handleImageError = useCallback<React.ReactEventHandler>(
+      (event) => {
+        setImageError(true);
+        setImageLoading(false);
+        onError?.(event);
+      },
+      [onError],
+    );
 
     const handleImageLoad = useCallback(() => {
       setImageLoading(false);
     }, []);
 
-    const handleClick = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-      if (interactive || onClick) {
-        onClick?.(event);
-      }
-    }, [interactive, onClick]);
+    const handleClick = useCallback(
+      (event: React.MouseEvent<HTMLDivElement>) => {
+        if (interactive || onClick) {
+          onClick?.(event);
+        }
+      },
+      [interactive, onClick],
+    );
 
     // Determine what content to show
     let avatarContent = children || fallback || icon || <Person />;
-    
+
     if (imageError && showFallbackOnError) {
       avatarContent = fallback || icon || <BrokenImage />;
     }
@@ -405,7 +416,7 @@ export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
             aria-label={alt || 'Avatar'}
             {...props}
           >
-            {(loading || imageLoading) ? null : avatarContent}
+            {loading || imageLoading ? null : avatarContent}
           </StyledAvatar>
           {(loading || imageLoading) && (
             <LoadingOverlay size={size}>
