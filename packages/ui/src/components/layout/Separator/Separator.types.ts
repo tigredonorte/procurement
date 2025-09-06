@@ -13,4 +13,5 @@ export interface SeparatorProps {
   length?: number | string;
   children?: ReactNode;
   className?: string;
+  'data-testid'?: string;
 }

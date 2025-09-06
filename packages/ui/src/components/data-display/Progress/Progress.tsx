@@ -5,9 +5,10 @@ import {
   Box,
   Typography,
   alpha,
-  keyframes
+  keyframes,
+  PaletteColor,
 } from '@mui/material';
-import { styled, Theme } from '@mui/material/styles';
+import { styled, Theme, useTheme } from '@mui/material/styles';
 
 import { ProgressProps, ProgressSize, ProgressVariant } from './Progress.types';
 
@@ -24,114 +25,132 @@ const pulseAnimation = keyframes`
   }
 `;
 
-const getColorFromTheme = (theme: Theme, color: string) => {
-  const colorMap: Record<string, typeof theme.palette.primary | typeof theme.palette.grey> = {
+const getColorFromTheme = (theme: Theme, color: string): PaletteColor => {
+  const colorMap: Record<string, PaletteColor> = {
     primary: theme.palette.primary,
     secondary: theme.palette.secondary,
     success: theme.palette.success,
     warning: theme.palette.warning,
     error: theme.palette.error,
-    neutral: theme.palette.grey,
+    danger: theme.palette.error, // Add danger alias
   };
-  
-  return colorMap[color] || theme.palette.primary;
+
+  // Handle special case for neutral (grey) which is a Color, not PaletteColor
+  if (color === 'neutral') {
+    return {
+      light: theme.palette.grey[300],
+      main: theme.palette.grey[500],
+      dark: theme.palette.grey[700],
+      contrastText: theme.palette.getContrastText(theme.palette.grey[500]),
+    };
+  }
+
+  const selectedColor = colorMap[color];
+  // Ensure we always return a valid color object with main and dark properties
+  return selectedColor || theme.palette.primary;
 };
 
 const getSizeStyles = (size: ProgressSize) => {
-  const sizeMap: Record<ProgressSize, { height: number; circularSize: number; fontSize: string }> = {
-    sm: { height: 4, circularSize: 32, fontSize: '0.75rem' },
-    md: { height: 6, circularSize: 40, fontSize: '0.875rem' },
-    lg: { height: 8, circularSize: 48, fontSize: '1rem' },
-  };
-  
+  const sizeMap: Record<ProgressSize, { height: number; circularSize: number; fontSize: string }> =
+    {
+      sm: { height: 4, circularSize: 32, fontSize: '0.75rem' },
+      md: { height: 6, circularSize: 40, fontSize: '0.875rem' },
+      lg: { height: 8, circularSize: 48, fontSize: '1rem' },
+    };
+
   return sizeMap[size] || sizeMap.md;
 };
 
 const StyledLinearProgress = styled(LinearProgress, {
-  shouldForwardProp: (prop) => 
+  shouldForwardProp: (prop) =>
     !['customVariant', 'customSize', 'customColor', 'glow', 'pulse'].includes(prop as string),
-})<{ 
+})<{
   customVariant?: ProgressVariant;
   customSize?: ProgressSize;
   customColor?: string;
-  glow?: boolean; 
+  glow?: boolean;
   pulse?: boolean;
 }>(({ theme, customVariant, customSize = 'md', customColor = 'primary', glow, pulse }) => {
   const colorPalette = getColorFromTheme(theme, customColor);
   const sizeStyles = getSizeStyles(customSize);
-  
+
   return {
     height: sizeStyles.height,
     borderRadius: sizeStyles.height / 2,
     backgroundColor: alpha(colorPalette.main, 0.1),
-    
+
     '& .MuiLinearProgress-bar': {
       borderRadius: 'inherit',
       transition: 'all 0.3s ease',
-      
+
       ...(customVariant === 'linear' && {
         backgroundColor: colorPalette.main,
       }),
-      
+
       ...(customVariant === 'gradient' && {
         background: `linear-gradient(90deg, ${colorPalette.main} 0%, ${colorPalette.dark || colorPalette.main} 100%)`,
       }),
-      
+
       ...(customVariant === 'glass' && {
         backgroundColor: alpha(colorPalette.main, 0.8),
         backdropFilter: 'blur(10px)',
         border: `1px solid ${alpha(colorPalette.main, 0.3)}`,
       }),
-      
+
       // Glow effect
-      ...(glow && !pulse && {
-        boxShadow: `0 0 10px 2px ${alpha(colorPalette.main, 0.4)}`,
-        filter: 'brightness(1.1)',
-      }),
-      
+      ...(glow &&
+        !pulse && {
+          boxShadow: `0 0 10px 2px ${alpha(colorPalette.main, 0.4)}`,
+          filter: 'brightness(1.1)',
+        }),
+
       // Pulse animation
-      ...(pulse && !glow && {
-        animation: `${pulseAnimation} 2s infinite`,
-      }),
-      
+      ...(pulse &&
+        !glow && {
+          animation: `${pulseAnimation} 2s infinite`,
+        }),
+
       // Both glow and pulse
-      ...(glow && pulse && {
-        boxShadow: `0 0 10px 2px ${alpha(colorPalette.main, 0.4)}`,
-        filter: 'brightness(1.1)',
-        animation: `${pulseAnimation} 2s infinite`,
-      }),
+      ...(glow &&
+        pulse && {
+          boxShadow: `0 0 10px 2px ${alpha(colorPalette.main, 0.4)}`,
+          filter: 'brightness(1.1)',
+          animation: `${pulseAnimation} 2s infinite`,
+        }),
     },
   };
 });
 
 const StyledCircularProgress = styled(CircularProgress, {
-  shouldForwardProp: (prop) => 
-    !['customColor', 'glow', 'pulse'].includes(prop as string),
-})<{ 
+  shouldForwardProp: (prop) => !['customColor', 'glow', 'pulse'].includes(prop as string),
+})<{
   customColor?: string;
-  glow?: boolean; 
+  glow?: boolean;
   pulse?: boolean;
 }>(({ theme, customColor = 'primary', glow, pulse }) => {
   const colorPalette = getColorFromTheme(theme, customColor);
-  
+
   return {
     color: colorPalette.main,
-    
+
     // Glow effect
-    ...(glow && !pulse && {
-      filter: `drop-shadow(0 0 8px ${alpha(colorPalette.main, 0.6)})`,
-    }),
-    
+    ...(glow &&
+      !pulse && {
+        filter: `drop-shadow(0 0 8px ${alpha(colorPalette.main, 0.6)})`,
+      }),
+
     // Pulse animation
-    ...(pulse && !glow && {
-      animation: `${pulseAnimation} 2s infinite`,
-    }),
-    
+    ...(pulse &&
+      !glow && {
+        animation: `${pulseAnimation} 2s infinite`,
+      }),
+
     // Both glow and pulse
-    ...(glow && pulse && {
-      filter: `drop-shadow(0 0 8px ${alpha(colorPalette.main, 0.6)})`,
-      animation: `${pulseAnimation} 2s infinite`,
-    }),
+    ...(glow &&
+      pulse && {
+        filter: `drop-shadow(0 0 8px ${alpha(colorPalette.main, 0.6)})`,
+        animation: `${pulseAnimation} 2s infinite`,
+      }),
   };
 });
 
@@ -143,11 +162,11 @@ const SegmentedProgress: React.FC<{
   glow: boolean;
   pulse: boolean;
 }> = ({ value = 0, segments, color, size, glow, pulse }) => {
-  const theme = { palette: { primary: { main: '#1976d2' }, secondary: { main: '#dc004e' }, success: { main: '#2e7d32' }, warning: { main: '#ed6c02' }, error: { main: '#d32f2f' }, grey: { 500: '#9e9e9e' } } };
+  const theme = useTheme();
   const colorPalette = getColorFromTheme(theme, color);
   const sizeStyles = getSizeStyles(size);
   const filledSegments = Math.floor((value / 100) * segments);
-  
+
   return (
     <Box sx={{ display: 'flex', gap: 0.5, width: '100%' }}>
       {Array.from({ length: segments }, (_, index) => (
@@ -157,16 +176,17 @@ const SegmentedProgress: React.FC<{
             flex: 1,
             height: sizeStyles.height,
             borderRadius: sizeStyles.height / 2,
-            backgroundColor: index < filledSegments 
-              ? colorPalette.main 
-              : alpha(colorPalette.main, 0.1),
+            backgroundColor:
+              index < filledSegments ? colorPalette.main : alpha(colorPalette.main, 0.1),
             transition: 'all 0.3s ease',
-            ...(glow && index < filledSegments && {
-              boxShadow: `0 0 6px 1px ${alpha(colorPalette.main, 0.4)}`,
-            }),
-            ...(pulse && index < filledSegments && {
-              animation: `${pulseAnimation} 2s infinite`,
-            }),
+            ...(glow &&
+              index < filledSegments && {
+                boxShadow: `0 0 6px 1px ${alpha(colorPalette.main, 0.4)}`,
+              }),
+            ...(pulse &&
+              index < filledSegments && {
+                animation: `${pulseAnimation} 2s infinite`,
+              }),
           }}
         />
       ))}
@@ -175,26 +195,29 @@ const SegmentedProgress: React.FC<{
 };
 
 export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
-  ({
-    variant = 'linear',
-    size = 'md',
-    color = 'primary',
-    glow = false,
-    pulse = false,
-    showLabel = false,
-    label,
-    segments = 10,
-    thickness = 4,
-    circularSize,
-    value,
-    ...props
-  }, ref) => {
+  (
+    {
+      variant = 'linear',
+      size = 'md',
+      color = 'primary',
+      glow = false,
+      pulse = false,
+      showLabel = false,
+      label,
+      segments = 10,
+      thickness = 4,
+      circularSize,
+      value,
+      ...props
+    },
+    ref,
+  ) => {
     const sizeStyles = getSizeStyles(size);
     const finalCircularSize = circularSize || sizeStyles.circularSize;
-    
+
     const displayValue = value || 0;
     const displayLabel = label || (showLabel ? `${Math.round(displayValue)}%` : '');
-    
+
     if (variant === 'circular') {
       return (
         <Box ref={ref} sx={{ position: 'relative', display: 'inline-flex' }}>
@@ -234,10 +257,10 @@ export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
         </Box>
       );
     }
-    
+
     if (variant === 'segmented') {
       return (
-        <Box ref={ref} sx={{ width: '100%' }}>
+        <Box ref={ref} sx={{ width: '100%' }} {...props}>
           <SegmentedProgress
             value={displayValue}
             segments={segments}
@@ -263,7 +286,7 @@ export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
         </Box>
       );
     }
-    
+
     return (
       <Box ref={ref} sx={{ width: '100%' }}>
         <StyledLinearProgress
@@ -292,7 +315,7 @@ export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
         )}
       </Box>
     );
-  }
+  },
 );
 
 Progress.displayName = 'Progress';
