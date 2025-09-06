@@ -10,6 +10,31 @@ This document provides systematic instructions for AI agents to verify, enhance,
 - Component path pattern: `packages/ui/src/components/{category}/{ComponentName}/`
 - Categories: `data-display`, `feedback`, `form`, `layout`, `navigation`, `utility`
 
+## CRITICAL AGENT INSTRUCTIONS
+
+### AGENT NAMING & TRACKING
+
+- **Your agent name prefix is: omega-[number]** (e.g., omega-1, omega-2, omega-3, omega-4, omega-5)
+- **ALWAYS include your name when updating components.tasks.md**
+- Format: `- omega-[number]: ComponentName (status) - YYYY-MM-DD HH:MM`
+
+### STORYBOOK ACCESS - DO NOT START NEW INSTANCES
+
+**🚨 CRITICAL: STORYBOOK IS ALREADY RUNNING 🚨**
+
+- **DO NOT** run `npm run storybook`, `npx storybook dev`, or ANY storybook start commands
+- **DO NOT** kill or restart the storybook process
+- **DO NOT** try to access localhost - it WILL NOT work for you
+- **ALWAYS USE**: http://192.168.166.133:6008
+- **NO BROWSER INSTALLATION**: Do not run `npx playwright install` or `mcp__playwright__browser_install`
+
+### BEFORE STARTING ANY COMPONENT
+
+1. **Read components.tasks.md** to see which components are already taken
+2. **Choose an untaken component** (one not listed or marked as completed)
+3. **Update components.tasks.md immediately** with your agent name and "(working)" status
+4. **Create a tests.md file** in your component directory to track test status
+
 ## Step-by-Step Verification Process
 
 ### Phase 1: Documentation Review
@@ -166,12 +191,133 @@ This document provides systematic instructions for AI agents to verify, enhance,
    - Use MCP browser tools to navigate to `http://192.168.166.133:6008/`
    - Navigate to your component's story section
    - Navigate to the Test stories (ComponentName/Tests section)
-   - Verify all test stories render correctly
-   - Ensure all interactive tests pass without errors
-   - Check browser console for any JavaScript errors
-   - Verify all test stories show green checkmarks (✅) indicating passing tests
+3. **CRITICAL: Verify Each Test Passes**
+   - Click on EACH test story one by one
+   - Wait for the test to complete (status changes from "RUNS" to either "PASS" or "FAIL")
+   - **A test is PASSING if you see:** `<div aria-label="Status of the test run" class="css-1p8fchp">PASS</div>`
+   - **A test is RUNNING if you see:** `<div aria-label="Status of the test run">RUNS</div>` (wait for completion)
+   - **A test is FAILING if you see:** `<div aria-label="Status of the test run">FAIL</div>` (MUST BE FIXED)
+   - **DO NOT proceed until ALL tests show PASS**
+   - Update your tests.md file with the status of each test
 
 ### Phase 7: Comprehensive Storybook Tests
+
+#### 7.0 Create Tests Tracking File (tests.md)
+
+**CRITICAL: Create this file BEFORE starting any tests**
+
+Create `packages/ui/src/components/{category}/{ComponentName}/tests.md` with:
+
+````markdown
+# {ComponentName} Test Status Tracking
+
+## Test Files Status
+
+- [ ] {ComponentName}.test.stories.tsx created
+- [ ] All test categories implemented
+
+## Storybook Tests Status
+
+### Direct Links (for quick access)
+
+- Basic Interaction: http://192.168.166.133:6008/?path=/story/category-componentname-tests--basic-interaction
+- Form Interaction: http://192.168.166.133:6008/?path=/story/category-componentname-tests--form-interaction
+- Keyboard Navigation: http://192.168.166.133:6008/?path=/story/category-componentname-tests--keyboard-navigation
+- Screen Reader: http://192.168.166.133:6008/?path=/story/category-componentname-tests--screen-reader
+- Focus Management: http://192.168.166.133:6008/?path=/story/category-componentname-tests--focus-management
+- Responsive Design: http://192.168.166.133:6008/?path=/story/category-componentname-tests--responsive-design
+- Theme Variations: http://192.168.166.133:6008/?path=/story/category-componentname-tests--theme-variations
+- Visual States: http://192.168.166.133:6008/?path=/story/category-componentname-tests--visual-states
+- Performance: http://192.168.166.133:6008/?path=/story/category-componentname-tests--performance
+- Edge Cases: http://192.168.166.133:6008/?path=/story/category-componentname-tests--edge-cases
+- Integration: http://192.168.166.133:6008/?path=/story/category-componentname-tests--integration
+
+### Test Results
+
+| Test Name           | Status | Pass/Fail | Notes       |
+| ------------------- | ------ | --------- | ----------- |
+| Basic Interaction   | ⏳     | -         | Not started |
+| Form Interaction    | ⏳     | -         | Not started |
+| Keyboard Navigation | ⏳     | -         | Not started |
+| Screen Reader       | ⏳     | -         | Not started |
+| Focus Management    | ⏳     | -         | Not started |
+| Responsive Design   | ⏳     | -         | Not started |
+| Theme Variations    | ⏳     | -         | Not started |
+| Visual States       | ⏳     | -         | Not started |
+| Performance         | ⏳     | -         | Not started |
+| Edge Cases          | ⏳     | -         | Not started |
+| Integration         | ⏳     | -         | Not started |
+
+**Legend:**
+
+- ⏳ Not started
+- 🔄 Running
+- ✅ PASS (div with aria-label="Status of the test run" shows PASS)
+- ❌ FAIL (needs fixing)
+
+## Static Stories Status
+
+- [ ] Default story
+- [ ] All variants covered
+- [ ] Glass effect variant (if applicable)
+- [ ] Hover state story
+- [ ] Disabled state story
+- [ ] Loading state story (if applicable)
+- [ ] Error state story (if applicable)
+- [ ] Empty state story (if applicable)
+
+## Lint Status
+
+```bash
+# Run: cd packages/ui && npx eslint src/components/{category}/{ComponentName}/ --ext .ts,.tsx
+```
+````
+
+- [ ] No lint errors
+- [ ] No warnings
+
+### Lint Errors to Fix:
+
+1. (List any errors here)
+
+## TypeCheck Status
+
+```bash
+# Run: cd packages/ui && npx tsc --noEmit --project tsconfig.json
+```
+
+- [ ] No type errors
+- [ ] All props properly typed
+
+### Type Errors to Fix:
+
+1. (List any errors here)
+
+## Storybook Build Status
+
+- [ ] All stories render without console errors
+- [ ] No broken stories in sidebar
+- [ ] Component appears in correct category
+
+### Broken Stories:
+
+1. (List any broken stories)
+
+### Broken Tests:
+
+1. (List any broken tests)
+
+## Overall Component Status
+
+- [ ] All tests passing
+- [ ] Lint clean
+- [ ] TypeCheck clean
+- [ ] Stories working
+- [ ] Ready for production
+
+````
+
+**Update this file as you progress through testing!**
 
 #### 7.1 Create or Update Test Stories File
 
@@ -183,7 +329,7 @@ This document provides systematic instructions for AI agents to verify, enhance,
 
    # If not exists, create it
    # If exists, read and update it
-   ```
+````
 
 2. **Create Complete Test File Structure**
 
@@ -857,6 +1003,7 @@ npx storybook dev --host 0.0.0.0 --port 6007
 - `utility`: AspectRatio, Portal, Transitions, etc.
 
 ## Component Status Tracking
+
 Read `componets.tasks.md`
 
 ## Agent Post-Completion Instructions

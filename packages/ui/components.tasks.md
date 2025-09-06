@@ -14,9 +14,32 @@
    - Include a checkmark ✓ for visual confirmation
    - Format: `- ComponentName ✓ (completed) - YYYY-MM-DD HH:MM`
 
-3. **If errors prevent completion:**
+3. **When rechecking a completed component:**
+   - Update the status from `(completed)` to `(rechecking)`
+   - Format: `- ComponentName 🔍 (rechecking) [agent-name] - YYYY-MM-DD HH:MM`
+   - After verification, update to either:
+     - `- ComponentName ✅ (verified) [agent-name] - YYYY-MM-DD HH:MM` if all tests pass
+     - `- ComponentName ⚠️ (needs-fixes: reason) [agent-name] - YYYY-MM-DD HH:MM` if issues found
+
+4. **If errors prevent completion:**
    - Update status to `(blocked: reason)`
    - Format: `- ComponentName (blocked: lint errors) - YYYY-MM-DD HH:MM`
+
+### Rechecking Workflow
+
+**For Quality Assurance of Completed Components:**
+
+1. **Select a completed component** (marked with ✓)
+2. **Update status to `(rechecking)`** with your agent name
+3. **Verify the following:**
+   - All test stories exist and pass in Storybook
+   - No lint errors: `cd packages/ui && npx eslint src/components/{category}/{ComponentName}/ --ext .ts,.tsx`
+   - No type errors: `cd packages/ui && npx tsc --noEmit --project tsconfig.json`
+   - Component renders correctly at http://192.168.166.133:6008
+   - Accessibility tests pass
+   - Visual states work (hover, disabled, etc.)
+4. **Document findings** in the component's tests.md file
+5. **Update status** based on verification results
 
 ### Component Status List
 
@@ -28,11 +51,11 @@
 - Card (blocked: missing types)  [agent-nickname: agent-name] - 2025-01-05 16:00
 -->
 
-- Avatar ✓ (completed) - 2025-09-05 11:30
-- Badge ✓ (completed) - 2025-09-05 12:15
-- Button ✓ (completed) - 2025-09-05 23:19 - alfa: Agent1
-- Collapsible ✓ (completed) - 2025-09-05 23:38 - alfa: Agent1 (verified beta's exceptional implementation)
-- Command ✓ (completed) - Agent3 - 2025-09-05 23:35
+- Avatar 🔍 (rechecking) [QA-Agent-1] - 2025-09-06 19:00
+- Badge 🔍 (rechecking) [QA-Agent-2] - 2025-09-06 19:00
+- Button 🔍 (rechecking) [QA-Agent-3] - 2025-09-06 19:00
+- Collapsible 🔍 (rechecking) [QA-Agent-4] - 2025-09-06 19:00
+- Command 🔍 (rechecking) [QA-Agent-5] - 2025-09-06 19:00
 - Container ✓ (completed) - 2025-09-05 23:17 - beta
 - Dialog ✓ (completed) - 2025-09-05 23:17 - beta
 - Accordion ✓ (completed) - alfa: Agent4 - 2025-09-05 23:40
@@ -51,6 +74,8 @@
 
 - `(working)` - Currently being processed by an AI agent
 - `(completed)` - All phases successfully completed
+- `(rechecking)` - Completed component undergoing quality assurance review
+- `(verified)` - Component passed rechecking and confirmed production-ready
 - `(blocked: reason)` - Cannot complete due to specified issue
 - `(partial: phase X)` - Partially completed up to specified phase
 
