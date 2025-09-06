@@ -50,4 +50,34 @@ export interface AvatarProps extends Omit<MuiAvatarProps, 'variant'> {
    * Color of the avatar background when no image is provided
    */
   color?: 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'neutral';
+  
+  /**
+   * Whether the avatar is in a loading state
+   */
+  loading?: boolean;
+  
+  /**
+   * Whether the avatar should be interactive (show hover effects)
+   */
+  interactive?: boolean;
+  
+  /**
+   * Whether to show fallback content on image error
+   */
+  showFallbackOnError?: boolean;
+  
+  /**
+   * Animation delay in milliseconds
+   */
+  animationDelay?: number;
+  
+  /**
+   * Error handler for image loading
+   */
+  onError?: (event: React.SyntheticEvent<HTMLImageElement>) => void;
+  
+  /**
+   * Click handler
+   */
+  onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
 }

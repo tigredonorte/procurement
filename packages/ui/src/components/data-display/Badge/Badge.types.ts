@@ -1,8 +1,19 @@
 import { BadgeProps as MuiBadgeProps } from '@mui/material';
 import React from 'react';
 
-export type BadgeVariant = 'default' | 'dot' | 'count' | 'gradient' | 'glass';
-export type BadgeSize = 'sm' | 'md' | 'lg';
+export type BadgeVariant = 
+  | 'default' 
+  | 'dot' 
+  | 'count' 
+  | 'gradient' 
+  | 'glass'
+  | 'outline'
+  | 'secondary'
+  | 'destructive'
+  | 'success'
+  | 'warning';
+
+export type BadgeSize = 'xs' | 'sm' | 'md' | 'lg';
 
 export interface BadgeProps extends Omit<MuiBadgeProps, 'variant' | 'color' | 'content'> {
   /**
@@ -31,6 +42,11 @@ export interface BadgeProps extends Omit<MuiBadgeProps, 'variant' | 'color' | 'c
   pulse?: boolean;
   
   /**
+   * Whether to animate the badge on mount
+   */
+  animate?: boolean;
+  
+  /**
    * Maximum count to display (shows "max+" when exceeded)
    */
   max?: number;
@@ -49,4 +65,49 @@ export interface BadgeProps extends Omit<MuiBadgeProps, 'variant' | 'color' | 'c
    * Position of the badge
    */
   position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
+  
+  /**
+   * Accessibility label for screen readers
+   */
+  'aria-label'?: string;
+  
+  /**
+   * ARIA live region behavior
+   */
+  'aria-live'?: 'off' | 'polite' | 'assertive';
+  
+  /**
+   * Whether the live region should be atomic
+   */
+  'aria-atomic'?: boolean;
+  
+  /**
+   * Additional CSS class name
+   */
+  className?: string;
+
+  /**
+   * Whether the badge should be closable
+   */
+  closable?: boolean;
+
+  /**
+   * Callback when badge is closed
+   */
+  onClose?: () => void;
+
+  /**
+   * Whether to show a shimmer effect
+   */
+  shimmer?: boolean;
+
+  /**
+   * Whether to bounce on mount
+   */
+  bounce?: boolean;
+
+  /**
+   * Custom icon element to display in the badge
+   */
+  icon?: React.ReactNode;
 }

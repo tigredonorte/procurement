@@ -1,8 +1,8 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within, expect, waitFor, fn } from '@storybook/test';
+import { userEvent, within, expect, waitFor } from '@storybook/test';
 import { Button, Stack, Box, IconButton, Typography } from '@mui/material';
-import { Help, Delete, Info, Settings } from '@mui/icons-material';
+import { Help, Delete, Info } from '@mui/icons-material';
 
 import { Tooltip } from './Tooltip';
 
@@ -118,12 +118,10 @@ export const ClickInteraction: Story = {
   }
 };
 
-export const StateChangeTest: Story = {
-  name: '🔄 State Change Test',
-  render: () => {
-    const [variant, setVariant] = React.useState<'default' | 'dark' | 'light' | 'glass'>('default');
-    const [glow, setGlow] = React.useState(false);
-    const [pulse, setPulse] = React.useState(false);
+const StateChangeTestComponent = () => {
+  const [variant, setVariant] = React.useState<'default' | 'dark' | 'light' | 'glass'>('default');
+  const [glow, setGlow] = React.useState(false);
+  const [pulse, setPulse] = React.useState(false);
     
     return (
       <Box sx={{ p: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
@@ -169,7 +167,11 @@ export const StateChangeTest: Story = {
         </Tooltip>
       </Box>
     );
-  },
+};
+
+export const StateChangeTest: Story = {
+  name: '🔄 State Change Test',
+  render: () => <StateChangeTestComponent />,
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
     
@@ -811,12 +813,11 @@ export const PerformanceTest: Story = {
     const canvas = within(canvasElement);
     
     await step('Measure render time for multiple tooltips', async () => {
-      const startTime = performance.now();
+      const startTime = Date.now();
       const elements = canvas.getAllByTestId(/item-/);
-      const endTime = performance.now();
+      const endTime = Date.now();
       
       const renderTime = endTime - startTime;
-      console.log(`Render time for ${elements.length} tooltip items: ${renderTime}ms`);
       
       // Assert reasonable render time
       await expect(renderTime).toBeLessThan(100);
@@ -827,19 +828,17 @@ export const PerformanceTest: Story = {
       const elements = canvas.getAllByTestId(/item-/);
       const testElements = elements.slice(0, 5); // Test first 5 items
       
-      const startTime = performance.now();
+      const startTime = Date.now();
       
       // Rapidly hover over multiple tooltips
       for (const element of testElements) {
         await userEvent.hover(element);
-        await new Promise(resolve => setTimeout(resolve, 50)); // Brief pause
+        await new Promise(resolve => window.setTimeout(resolve, 50)); // Brief pause
         await userEvent.unhover(element);
       }
       
-      const endTime = performance.now();
+      const endTime = Date.now();
       const interactionTime = endTime - startTime;
-      
-      console.log(`Rapid tooltip interactions time: ${interactionTime}ms`);
       
       // Should handle rapid interactions without hanging
       await expect(interactionTime).toBeLessThan(2000);
@@ -848,18 +847,16 @@ export const PerformanceTest: Story = {
     await step('Test scroll performance with tooltips', async () => {
       const scrollContainer = canvas.getByTestId('scroll-container');
       
-      const startTime = performance.now();
+      const startTime = Date.now();
       
       // Simulate scrolling
       for (let i = 0; i < 5; i++) {
         scrollContainer.scrollTop = i * 50;
-        await new Promise(resolve => setTimeout(resolve, 20));
+        await new Promise(resolve => window.setTimeout(resolve, 20));
       }
       
-      const endTime = performance.now();
+      const endTime = Date.now();
       const scrollTime = endTime - startTime;
-      
-      console.log(`Scroll performance with tooltips: ${scrollTime}ms`);
       
       // Verify smooth scrolling
       await expect(scrollTime).toBeLessThan(500);
@@ -908,7 +905,7 @@ export const EdgeCases: Story = {
       </Tooltip>
       
       <Tooltip 
-        title={0 as any}
+        title={0 as unknown as string}
         variant="default"
       >
         <Button variant="outlined" data-testid="invalid-props">
@@ -925,7 +922,7 @@ export const EdgeCases: Story = {
       await userEvent.hover(emptyButton);
       
       // Should handle empty tooltip gracefully (might not show or show empty)
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => window.setTimeout(resolve, 500));
       
       await userEvent.unhover(emptyButton);
     });
@@ -979,18 +976,16 @@ export const EdgeCases: Story = {
       
       await userEvent.hover(invalidButton);
       // Should not crash and either show nothing or handle gracefully
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => window.setTimeout(resolve, 500));
       await userEvent.unhover(invalidButton);
     });
   }
 };
 
 // 7.7 Integration Tests
-export const IntegrationTest: Story = {
-  name: '🔗 Integration Test',
-  render: () => {
-    const [count, setCount] = React.useState(0);
-    const [showTooltips, setShowTooltips] = React.useState(true);
+const IntegrationTestComponent = () => {
+  const [count, setCount] = React.useState(0);
+  const [showTooltips, setShowTooltips] = React.useState(true);
     
     return (
       <Box sx={{ p: 4, display: 'flex', flexDirection: 'column', gap: 3, alignItems: 'center' }}>
@@ -1065,7 +1060,11 @@ export const IntegrationTest: Story = {
         </Stack>
       </Box>
     );
-  },
+};
+
+export const IntegrationTest: Story = {
+  name: '🔗 Integration Test',
+  render: () => <IntegrationTestComponent />,
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
     

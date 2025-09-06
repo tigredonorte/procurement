@@ -1,4 +1,4 @@
-import { ReactNode, CSSProperties } from 'react';
+import { CSSProperties } from 'react';
 
 export type ChartType = 'line' | 'bar' | 'area' | 'pie' | 'radar' | 'scatter' | 'composed';
 
@@ -49,7 +49,7 @@ export interface ChartProps {
   showCartesianGrid?: boolean;
   animate?: boolean;
   animationDuration?: number;
-  onClick?: (data: any) => void;
+  onClick?: (data: ChartDataPoint) => void;
   onFocus?: () => void;
   onBlur?: () => void;
   margin?: { top?: number; right?: number; bottom?: number; left?: number };

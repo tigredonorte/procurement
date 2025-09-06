@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Box, Typography } from '@mui/material';
 
 import { Chart } from './Chart';
-import { ChartDataPoint, ChartSeries } from './Chart.types';
+import { ChartDataPoint } from './Chart.types';
 
 const meta: Meta<typeof Chart> = {
   title: 'Data Display/Chart',

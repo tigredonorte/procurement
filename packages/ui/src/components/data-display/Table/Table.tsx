@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import {
   Table as MuiTable,
   TableHead,
@@ -8,7 +8,6 @@ import {
   TableContainer,
   Checkbox,
   TableSortLabel,
-  CircularProgress,
   Box,
   IconButton,
   Menu,
@@ -23,16 +22,13 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { 
-  MoreVert as MoreVertIcon,
-  KeyboardArrowUp as ArrowUpIcon,
-  KeyboardArrowDown as ArrowDownIcon
+  MoreVert as MoreVertIcon
 } from '@mui/icons-material';
 
 import { 
   TableProps, 
   ColumnConfig, 
-  TableDensity, 
-  SortConfig,
+  TableDensity,
   TableHeaderProps,
   TableBodyProps
 } from './Table.types';
@@ -236,7 +232,7 @@ const StyledTable = styled(MuiTable, {
 
 // Virtual Scrolling Hook
 const useVirtualScrolling = (
-  data: any[],
+  data: Record<string, unknown>[],
   rowHeight: number,
   containerHeight: number,
   overscan: number = 5
@@ -273,8 +269,7 @@ const useVirtualScrolling = (
 // Responsive Hook
 const useResponsive = (
   columns: ColumnConfig[],
-  columnPriorities?: number[],
-  responsiveBreakpoints?: any
+  columnPriorities?: number[]
 ) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -328,8 +323,6 @@ const EnhancedTableHeader: React.FC<TableHeaderProps> = ({
   selectable,
   selectedRows = [],
   onSelectAll,
-  density,
-  stickyHeader,
 }) => {
   const handleSort = (columnKey: string) => {
     if (!sortable || !onSortChange) return;
@@ -339,7 +332,7 @@ const EnhancedTableHeader: React.FC<TableHeaderProps> = ({
     onSortChange(columnKey, direction);
   };
 
-  const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSelectAll = (event: React.ChangeEvent<globalThis.HTMLInputElement>) => {
     if (!onSelectAll) return;
     onSelectAll(event.target.checked);
   };
@@ -395,9 +388,7 @@ const EnhancedTableBody: React.FC<TableBodyProps> = ({
   onRowBlur,
   onSelectionChange,
   rowKeyExtractor,
-  density,
   selectable,
-  hoverable,
   renderRow,
   renderCell,
   virtualScrolling,
@@ -405,7 +396,7 @@ const EnhancedTableBody: React.FC<TableBodyProps> = ({
   rowHeight,
   overscan = 5,
 }) => {
-  const getRowKey = (rowData: any, index: number) => {
+  const getRowKey = (rowData: Record<string, unknown>, index: number) => {
     return rowKeyExtractor ? rowKeyExtractor(rowData, index) : rowData.id || index;
   };
 
@@ -418,7 +409,7 @@ const EnhancedTableBody: React.FC<TableBodyProps> = ({
     onSelectionChange(rowKey, !isRowSelected(rowKey));
   };
 
-  const renderTableRow = (rowData: any, index: number, offsetY: number = 0) => {
+  const renderTableRow = (rowData: Record<string, unknown>, index: number, offsetY: number = 0) => {
     const rowKey = getRowKey(rowData, index);
     const selected = isRowSelected(rowKey);
 
@@ -469,13 +460,14 @@ const EnhancedTableBody: React.FC<TableBodyProps> = ({
     );
   };
 
+  const { visibleItems, handleScroll } = useVirtualScrolling(
+    data, 
+    rowHeight || 40, 
+    typeof containerHeight === 'number' ? containerHeight : 400, 
+    overscan
+  );
+
   if (virtualScrolling && containerHeight && rowHeight) {
-    const { visibleItems, handleScroll } = useVirtualScrolling(
-      data, 
-      rowHeight, 
-      typeof containerHeight === 'number' ? containerHeight : 400, 
-      overscan
-    );
 
     return (
       <Box
@@ -508,7 +500,7 @@ const EnhancedTableBody: React.FC<TableBodyProps> = ({
 };
 
 // Main Table Component
-export const Table = React.forwardRef<HTMLTableElement, TableProps>(
+export const Table = React.forwardRef<globalThis.HTMLTableElement, TableProps>(
   ({
     // Basic props
     variant = 'default',
@@ -540,17 +532,15 @@ export const Table = React.forwardRef<HTMLTableElement, TableProps>(
     containerHeight,
     loadingComponent,
     emptyStateComponent,
-    keyboardNavigation = false,
     renderRow,
     renderCell,
-    rowStyleConfig,
     onRowClick,
     onRowFocus,
     onRowBlur,
     
     ...props
   }, ref) => {
-    const theme = useTheme();
+    useTheme(); // Required for responsive behavior
     
     // Use responsive hook if responsive mode is enabled
     const {

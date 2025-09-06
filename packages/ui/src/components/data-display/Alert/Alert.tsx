@@ -6,13 +6,14 @@ import {
   IconButton,
   alpha,
   keyframes,
+  Box,
 } from '@mui/material';
 import { styled, Theme } from '@mui/material/styles';
 import { CheckCircle, Info, Warning, Error, Close } from '@mui/icons-material';
 
 import { AlertProps } from './Alert.types';
 
-// Define pulse animation
+// Define animations
 const pulseAnimation = keyframes`
   0% {
     box-shadow: 0 0 0 0 currentColor;
@@ -25,6 +26,69 @@ const pulseAnimation = keyframes`
   100% {
     box-shadow: 0 0 0 0 currentColor;
     opacity: 0;
+  }
+`;
+
+// Additional animations can be enabled as needed
+// const slideInAnimation = keyframes`
+//   from {
+//     transform: translateX(-100%);
+//     opacity: 0;
+//   }
+//   to {
+//     transform: translateX(0);
+//     opacity: 1;
+//   }
+// `;
+
+// const bounceIn = keyframes`
+//   0% {
+//     transform: scale(0.3);
+//     opacity: 0;
+//   }
+//   50% {
+//     transform: scale(1.05);
+//   }
+//   70% {
+//     transform: scale(0.9);
+//   }
+//   100% {
+//     transform: scale(1);
+//     opacity: 1;
+//   }
+// `;
+
+// Removed unused slideInAnimation - can be re-added if needed for future features
+
+const shimmerAnimation = keyframes`
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+`;
+
+const fadeInScale = keyframes`
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+`;
+
+const iconRotate = keyframes`
+  0% {
+    transform: rotate(0deg) scale(0.8);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.1);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
   }
 `;
 
@@ -59,26 +123,66 @@ const getVariantIcon = (variant: string) => {
 
 const StyledAlert = styled(MuiAlert, {
   shouldForwardProp: (prop) =>
-    !['customVariant', 'customColor', 'glow', 'pulse'].includes(prop as string),
+    !['customVariant', 'customColor', 'glow', 'pulse', 'animate'].includes(prop as string),
 })<{
   customVariant?: string;
   customColor?: string;
   glow?: boolean;
   pulse?: boolean;
-}>(({ theme, customVariant, customColor, glow, pulse }) => {
+  animate?: boolean;
+}>(({ theme, customVariant, customColor, glow, pulse, animate }) => {
   const colorPalette = getColorFromTheme(theme, customColor || customVariant || 'info');
 
   return {
-    borderRadius: theme.spacing(1),
-    transition: 'all 0.3s ease',
+    borderRadius: theme.spacing(1.5),
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
     position: 'relative',
     overflow: 'hidden',
+    animation: animate ? `${fadeInScale} 0.3s ease-out` : 'none',
+    willChange: 'transform, opacity',
 
-    // Base styles
+    // Enhanced base styles
     '.MuiAlert-message': {
       display: 'flex',
       flexDirection: 'column',
       gap: theme.spacing(0.5),
+      fontSize: '0.95rem',
+      lineHeight: 1.5,
+    },
+
+    '.MuiAlert-icon': {
+      transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+      alignItems: 'center',
+      animation: animate ? `${iconRotate} 0.6s ease-out` : 'none',
+    },
+
+    // Hover effects
+    '&:hover': {
+      transform: 'translateY(-3px) scale(1.01)',
+      boxShadow: `0 8px 20px ${alpha(colorPalette.main, 0.2)}`,
+      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+      
+      '.MuiAlert-icon': {
+        transform: 'scale(1.15) rotate(10deg)',
+      },
+      
+      '&::before': {
+        opacity: 1,
+      },
+    },
+    
+    // Active state
+    '&:active': {
+      transform: 'translateY(-1px) scale(0.99)',
+      transition: 'transform 0.1s ease',
+    },
+
+    // Focus styles for accessibility
+    '&:focus-within': {
+      outline: `3px solid ${alpha(colorPalette.main, 0.5)}`,
+      outlineOffset: '3px',
+      boxShadow: `0 0 0 6px ${alpha(colorPalette.main, 0.1)}`,
+      transition: 'all 0.2s ease',
     },
 
     // Variant styles
@@ -132,11 +236,24 @@ const StyledAlert = styled(MuiAlert, {
       background: `linear-gradient(135deg, ${alpha(colorPalette.light || colorPalette.main, 0.9)}, ${alpha(colorPalette.dark || colorPalette.main, 0.9)})`,
       color: theme.palette.getContrastText(colorPalette.main),
       border: 'none',
+      position: 'relative',
+      overflow: 'hidden',
       '.MuiAlert-icon': {
         color: theme.palette.getContrastText(colorPalette.main),
       },
+      '&::before': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        left: '-1000px',
+        width: '100%',
+        height: '100%',
+        background: `linear-gradient(90deg, transparent, ${alpha(theme.palette.common.white, 0.2)}, transparent)`,
+        animation: `${shimmerAnimation} 3s infinite`,
+      },
       '&:hover': {
-        filter: 'brightness(1.05)',
+        filter: 'brightness(1.1)',
+        transform: 'translateY(-2px) scale(1.01)',
       },
     }),
 
@@ -205,15 +322,23 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
       title,
       description,
       children,
+      animate = true,
+      role = 'alert',
+      'aria-live': ariaLive = variant === 'danger' ? 'assertive' : 'polite',
+      'aria-atomic': ariaAtomic = 'true',
       ...props
     },
     ref,
   ) => {
     const [open, setOpen] = React.useState(true);
+    const [isClosing, setIsClosing] = React.useState(false);
 
     const handleClose = () => {
-      setOpen(false);
-      onClose?.();
+      setIsClosing(true);
+      window.setTimeout(() => {
+        setOpen(false);
+        onClose?.();
+      }, 200);
     };
 
     const severity =
@@ -229,14 +354,37 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
 
     const content = (
       <>
-        {title && <AlertTitle sx={{ fontWeight: 600 }}>{title}</AlertTitle>}
-        {description && <div>{description}</div>}
+        {title && (
+          <AlertTitle 
+            sx={{ 
+              fontWeight: 600,
+              fontSize: '1.05rem',
+              marginBottom: description ? 0.5 : 0
+            }}
+          >
+            {title}
+          </AlertTitle>
+        )}
+        {description && (
+          <Box 
+            component="div" 
+            sx={{ 
+              opacity: 0.9,
+              fontSize: '0.925rem'
+            }}
+          >
+            {description}
+          </Box>
+        )}
         {children}
       </>
     );
 
     return (
-      <Collapse in={open}>
+      <Collapse 
+        in={open && !isClosing}
+        timeout={300}
+      >
         <StyledAlert
           ref={ref}
           severity={severity}
@@ -244,10 +392,34 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
           customColor={color}
           glow={glow}
           pulse={pulse}
+          animate={animate}
           icon={displayIcon}
+          role={role}
+          aria-live={ariaLive}
+          aria-atomic={ariaAtomic}
+          tabIndex={0}
           action={
             closable && (
-              <IconButton aria-label="close" color="inherit" size="small" onClick={handleClose}>
+              <IconButton 
+                aria-label="close alert" 
+                color="inherit" 
+                size="small" 
+                onClick={handleClose}
+                sx={{
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  opacity: 0.7,
+                  '&:hover': {
+                    transform: 'rotate(90deg) scale(1.1)',
+                    opacity: 1,
+                    backgroundColor: alpha(theme => theme.palette.action.hover, 0.1),
+                  },
+                  '&:focus': {
+                    opacity: 1,
+                    outline: 'none',
+                    backgroundColor: alpha(theme => theme.palette.action.focus, 0.1),
+                  },
+                }}
+              >
                 <Close fontSize="inherit" />
               </IconButton>
             )

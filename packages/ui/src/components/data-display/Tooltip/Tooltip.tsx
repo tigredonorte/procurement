@@ -27,7 +27,7 @@ const getSizeStyles = (size: string): { fontSize: string; padding: string } => {
     lg: { fontSize: '1rem', padding: '8px 16px' },
   } as const;
   
-  return (sizeMap as any)[size] || sizeMap.md;
+  return sizeMap[size as keyof typeof sizeMap] || sizeMap.md;
 };
 
 const StyledTooltip = styled(MuiTooltip, {

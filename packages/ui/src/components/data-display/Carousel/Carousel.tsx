@@ -71,7 +71,7 @@ export const Carousel: React.FC<CarouselProps> = ({
         window.clearInterval(intervalRef.current);
       }
     };
-  }, [activeIndex, autoPlay, autoPlayInterval, isHovered, disabled]);
+  }, [activeIndex, autoPlay, autoPlayInterval, isHovered, disabled, handleNext]);
 
   const handleNext = useCallback(() => {
     setActiveIndex((prev) => {

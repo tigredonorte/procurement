@@ -2,7 +2,7 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Box, Typography, Button, Card, CardContent } from '@mui/material';
 
-import { Carousel, CarouselIndicators, CarouselArrows, CarouselThumbnails } from './Carousel';
+import { Carousel } from './Carousel';
 import { CarouselItem } from './Carousel.types';
 
 const meta: Meta<typeof Carousel> = {
@@ -415,7 +415,7 @@ export const CustomContent: Story = {
         content: (
           <Box sx={{ p: 4, textAlign: 'center' }}>
             <Typography variant="h6" gutterBottom>
-              "Amazing product!"
+              &ldquo;Amazing product!&rdquo;
             </Typography>
             <Typography variant="body2" color="text.secondary" paragraph>
               This has completely transformed how we work. The features are intuitive and powerful.
@@ -431,7 +431,7 @@ export const CustomContent: Story = {
         content: (
           <Box sx={{ p: 4, textAlign: 'center' }}>
             <Typography variant="h6" gutterBottom>
-              "Excellent support"
+              &ldquo;Excellent support&rdquo;
             </Typography>
             <Typography variant="body2" color="text.secondary" paragraph>
               The team is responsive and helpful. They go above and beyond to ensure success.

@@ -1,11 +1,11 @@
-import React from 'react';
-import { Avatar as MuiAvatar, Badge, alpha, keyframes } from '@mui/material';
-import { Person } from '@mui/icons-material';
-import { styled } from '@mui/material/styles';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Avatar as MuiAvatar, Badge, alpha, keyframes, Fade, useTheme } from '@mui/material';
+import { Person, BrokenImage } from '@mui/icons-material';
+import { styled, Theme } from '@mui/material/styles';
 
 import { AvatarProps, AvatarSize, AvatarStatus } from './Avatar.types';
 
-// Define pulse animation
+// Define animations
 const pulseAnimation = keyframes`
   0% {
     box-shadow: 0 0 0 0 currentColor;
@@ -21,26 +21,46 @@ const pulseAnimation = keyframes`
   }
 `;
 
+const shimmerAnimation = keyframes`
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+`;
+
+const scaleInAnimation = keyframes`
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+`;
+
+const rotateAnimation = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
 const getColorFromTheme = (
-  theme: {
-    palette: {
-      primary: { main: string; light?: string; dark?: string };
-      secondary: { main: string; light?: string; dark?: string };
-      success: { main: string; light?: string; dark?: string };
-      warning: { main: string; light?: string; dark?: string };
-      error: { main: string; light?: string; dark?: string };
-      grey: { [key: number]: string };
-    };
-  },
+  theme: Theme,
   color: string,
 ) => {
-  const colorMap: Record<string, { main: string; light?: string; dark?: string }> = {
+  const colorMap: Record<string, { main: string; contrastText?: string; light?: string; dark?: string }> = {
     primary: theme.palette.primary,
     secondary: theme.palette.secondary,
     success: theme.palette.success,
     warning: theme.palette.warning,
     error: theme.palette.error,
-    neutral: theme.palette.grey,
+    neutral: { main: theme.palette.grey[700], contrastText: '#fff' },
   };
 
   return colorMap[color] || theme.palette.primary;
@@ -61,13 +81,7 @@ const getSizeStyles = (size: AvatarSize) => {
 
 const getStatusColor = (
   status: AvatarStatus,
-  theme: {
-    palette: {
-      success: { main: string };
-      warning: { main: string };
-      grey: { [key: number]: string };
-    };
-  },
+  theme: Theme,
 ) => {
   const statusColorMap: Record<AvatarStatus, string> = {
     online: theme.palette.success.main,
@@ -81,7 +95,7 @@ const getStatusColor = (
 
 const StyledAvatar = styled(MuiAvatar, {
   shouldForwardProp: (prop) =>
-    !['customVariant', 'customSize', 'customColor', 'glow', 'pulse', 'bordered'].includes(
+    !['customVariant', 'customSize', 'customColor', 'glow', 'pulse', 'bordered', 'isLoading', 'hasError', 'interactive'].includes(
       prop as string,
     ),
 })<{
@@ -91,6 +105,9 @@ const StyledAvatar = styled(MuiAvatar, {
   glow?: boolean;
   pulse?: boolean;
   bordered?: boolean;
+  isLoading?: boolean;
+  hasError?: boolean;
+  interactive?: boolean;
 }>(({
   theme,
   customVariant,
@@ -99,19 +116,49 @@ const StyledAvatar = styled(MuiAvatar, {
   glow,
   pulse,
   bordered,
+  isLoading,
+  hasError,
+  interactive,
 }) => {
   const colorPalette = getColorFromTheme(theme, customColor);
   const sizeStyles = getSizeStyles(customSize);
 
   return {
     ...sizeStyles,
-    transition: 'all 0.3s ease',
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
     position: 'relative',
     overflow: 'visible',
+    animation: `${scaleInAnimation} 0.3s ease-out`,
+    cursor: interactive ? 'pointer' : 'default',
 
     // Base background color when no image
-    backgroundColor: colorPalette.main,
-    color: colorPalette.contrastText || '#fff',
+    backgroundColor: hasError ? theme.palette.error.main : colorPalette.main,
+    color: hasError ? theme.palette.error.contrastText : (colorPalette.contrastText ?? '#fff'),
+
+    // Interactive hover effects
+    ...(interactive && {
+      '&:hover': {
+        transform: 'scale(1.1) translateY(-2px)',
+        boxShadow: `0 8px 20px ${alpha(colorPalette.main, 0.3)}`,
+        filter: 'brightness(1.1)',
+        zIndex: 10,
+      },
+      '&:active': {
+        transform: 'scale(1.05)',
+      },
+    }),
+
+    // Loading state with shimmer
+    ...(isLoading && {
+      background: `linear-gradient(
+        90deg,
+        ${alpha(colorPalette.main, 0.6)},
+        ${alpha(colorPalette.main, 0.8)},
+        ${alpha(colorPalette.main, 0.6)}
+      )`,
+      backgroundSize: '200% 100%',
+      animation: `${shimmerAnimation} 1.5s ease-in-out infinite`,
+    }),
 
     // Variant styles
     ...(customVariant === 'circle' && {
@@ -186,6 +233,55 @@ const StyledAvatar = styled(MuiAvatar, {
           zIndex: -1,
         },
       }),
+
+    // Focus state for accessibility
+    '&:focus-visible': {
+      outline: `3px solid ${alpha(colorPalette.main, 0.5)}`,
+      outlineOffset: 2,
+    },
+  };
+});
+
+const AvatarGroupContainer = styled('div')<{ overlap?: number }>(({ theme, overlap = 8 }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  '& > *': {
+    marginLeft: -overlap,
+    transition: 'all 0.3s ease',
+    position: 'relative',
+    border: `2px solid ${theme.palette.background.paper}`,
+    '&:hover': {
+      zIndex: 100,
+      transform: 'scale(1.1) translateY(-4px)',
+    },
+    '&:first-of-type': {
+      marginLeft: 0,
+    },
+  },
+}));
+
+const LoadingOverlay = styled('div')<{ size: AvatarSize }>(({ theme, size }) => {
+  const sizeStyles = getSizeStyles(size);
+  return {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: sizeStyles.width,
+    height: sizeStyles.height,
+    borderRadius: 'inherit',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: alpha(theme.palette.background.paper, 0.7),
+    backdropFilter: 'blur(2px)',
+    '& .loading-spinner': {
+      width: sizeStyles.width * 0.4,
+      height: sizeStyles.height * 0.4,
+      border: `2px solid ${alpha(theme.palette.primary.main, 0.3)}`,
+      borderTopColor: theme.palette.primary.main,
+      borderRadius: '50%',
+      animation: `${rotateAnimation} 0.8s linear infinite`,
+    },
   };
 });
 
@@ -235,27 +331,89 @@ export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
       src,
       alt,
       children,
+      loading = false,
+      onError,
+      onClick,
+      interactive = false,
+      showFallbackOnError = true,
+      animationDelay = 0,
+      className,
       ...props
     },
     ref,
   ) => {
-    const avatarContent = children || fallback || icon || <Person />;
+    const theme = useTheme();
+    const [imageError, setImageError] = useState(false);
+    const [imageLoading, setImageLoading] = useState(!!src);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+      const timer = window.setTimeout(() => setMounted(true), animationDelay);
+      return () => window.clearTimeout(timer);
+    }, [animationDelay]);
+
+    useEffect(() => {
+      setImageError(false);
+      setImageLoading(!!src);
+    }, [src]);
+
+    const handleImageError = useCallback((event: React.SyntheticEvent<HTMLImageElement>) => {
+      setImageError(true);
+      setImageLoading(false);
+      onError?.(event);
+    }, [onError]);
+
+    const handleImageLoad = useCallback(() => {
+      setImageLoading(false);
+    }, []);
+
+    const handleClick = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+      if (interactive || onClick) {
+        onClick?.(event);
+      }
+    }, [interactive, onClick]);
+
+    // Determine what content to show
+    let avatarContent = children || fallback || icon || <Person />;
+    
+    if (imageError && showFallbackOnError) {
+      avatarContent = fallback || icon || <BrokenImage />;
+    }
 
     const avatarElement = (
-      <StyledAvatar
-        ref={ref}
-        customVariant={variant}
-        customSize={size}
-        customColor={color}
-        glow={glow}
-        pulse={pulse}
-        bordered={bordered}
-        src={src}
-        alt={alt}
-        {...props}
-      >
-        {avatarContent}
-      </StyledAvatar>
+      <Fade in={mounted} timeout={300}>
+        <div style={{ position: 'relative', display: 'inline-block' }}>
+          <StyledAvatar
+            ref={ref}
+            className={className}
+            customVariant={variant}
+            customSize={size}
+            customColor={color}
+            glow={glow}
+            pulse={pulse}
+            bordered={bordered}
+            isLoading={loading || imageLoading}
+            hasError={imageError}
+            interactive={interactive || !!onClick}
+            src={!imageError ? src : undefined}
+            alt={alt}
+            onClick={handleClick}
+            onError={handleImageError}
+            onLoad={handleImageLoad}
+            tabIndex={interactive || onClick ? 0 : undefined}
+            role={interactive || onClick ? 'button' : undefined}
+            aria-label={alt || 'Avatar'}
+            {...props}
+          >
+            {(loading || imageLoading) ? null : avatarContent}
+          </StyledAvatar>
+          {(loading || imageLoading) && (
+            <LoadingOverlay size={size}>
+              <div className="loading-spinner" />
+            </LoadingOverlay>
+          )}
+        </div>
+      </Fade>
     );
 
     // Wrap with status badge if variant is 'status' and status is provided
@@ -265,14 +423,7 @@ export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
           overlap="circular"
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           variant="dot"
-          statusColor={getStatusColor(status, {
-            palette: {
-              success: { main: '#4caf50' },
-              grey: { 500: '#9e9e9e' },
-              warning: { main: '#ff9800' },
-              error: { main: '#f44336' },
-            },
-          })}
+          statusColor={getStatusColor(status, theme)}
           avatarSize={size}
         >
           {avatarElement}
@@ -285,3 +436,31 @@ export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
 );
 
 Avatar.displayName = 'Avatar';
+
+// Export AvatarGroup for grouped avatars
+export const AvatarGroup: React.FC<{
+  children: React.ReactNode;
+  max?: number;
+  overlap?: number;
+  className?: string;
+}> = ({ children, max = 4, overlap = 8, className }) => {
+  const childrenArray = React.Children.toArray(children);
+  const visibleChildren = max ? childrenArray.slice(0, max) : childrenArray;
+  const remainingCount = childrenArray.length - visibleChildren.length;
+
+  return (
+    <AvatarGroupContainer overlap={overlap} className={className}>
+      {visibleChildren}
+      {remainingCount > 0 && (
+        <Avatar
+          size={(visibleChildren[0] as React.ReactElement<AvatarProps>)?.props?.size || 'md'}
+          color="neutral"
+          fallback={`+${remainingCount}`}
+          bordered
+        />
+      )}
+    </AvatarGroupContainer>
+  );
+};
+
+AvatarGroup.displayName = 'AvatarGroup';

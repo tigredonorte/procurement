@@ -1,5 +1,4 @@
 import { PopoverProps as MuiPopoverProps } from '@mui/material';
-import React from 'react';
 
 export interface PopoverProps extends Omit<MuiPopoverProps, 'variant'> {
   /**

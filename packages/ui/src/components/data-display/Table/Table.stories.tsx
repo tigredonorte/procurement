@@ -87,9 +87,9 @@ const extendedColumns: ColumnConfig[] = [
     sortable: false, 
     priority: 1,
     width: 60,
-    render: (_, rowData) => (
+    render: (_: unknown, rowData: Record<string, unknown>) => (
       <Avatar sx={{ width: 32, height: 32 }}>
-        {rowData.name.charAt(0)}
+        {(rowData.name as string).charAt(0)}
       </Avatar>
     )
   },
@@ -124,7 +124,7 @@ const extendedColumns: ColumnConfig[] = [
     sortable: false,
     priority: 8,
     width: 120,
-    render: (_, rowData) => (
+    render: () => (
       <Stack direction="row" spacing={1}>
         <IconButton size="small" color="primary">
           <EditIcon fontSize="small" />
@@ -353,7 +353,7 @@ export const AllFeaturesCombined: Story = {
             
             // Interactions
             hoverable
-            onRowClick={(event, rowData) => {
+            onRowClick={() => {
               
             }}
             
@@ -464,7 +464,7 @@ export const CustomRendering: Story = {
       columns={extendedColumns}
       data={sampleData}
       variant="striped"
-      renderCell={(value, column, rowData, rowIndex) => {
+      renderCell={(value, column, rowData) => {
         // Custom rendering for specific columns
         if (column.key === 'name') {
           return (

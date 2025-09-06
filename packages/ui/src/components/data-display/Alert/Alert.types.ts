@@ -1,7 +1,7 @@
 import { AlertProps as MuiAlertProps } from '@mui/material';
 import React from 'react';
 
-export interface AlertProps extends Omit<MuiAlertProps, 'variant' | 'color'> {
+export interface AlertProps extends Omit<MuiAlertProps, 'variant' | 'color' | 'role'> {
   /**
    * The variant of the alert
    */
@@ -51,4 +51,24 @@ export interface AlertProps extends Omit<MuiAlertProps, 'variant' | 'color'> {
    * Description text
    */
   description?: string;
+  
+  /**
+   * Whether to animate the alert on mount
+   */
+  animate?: boolean;
+  
+  /**
+   * ARIA role for the alert
+   */
+  role?: string;
+  
+  /**
+   * ARIA live region setting
+   */
+  'aria-live'?: 'polite' | 'assertive' | 'off';
+  
+  /**
+   * ARIA atomic setting
+   */
+  'aria-atomic'?: 'true' | 'false';
 }
