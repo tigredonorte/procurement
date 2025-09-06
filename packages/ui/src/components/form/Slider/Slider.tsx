@@ -1,11 +1,5 @@
 import React, { forwardRef } from 'react';
-import { 
-  Slider as MuiSlider,
-  Box,
-  Typography,
-  alpha,
-  keyframes
-} from '@mui/material';
+import { Slider as MuiSlider, Box, Typography, alpha, keyframes } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 import { SliderProps } from './Slider.types';
@@ -49,48 +43,73 @@ const gradientShiftAnimation = keyframes`
   }
 `;
 
-const getColorFromTheme = (theme: { palette: { primary: { main: string; dark?: string; light?: string }; secondary: { main: string; dark?: string; light?: string }; success: { main: string; dark?: string; light?: string }; warning: { main: string; dark?: string; light?: string }; error: { main: string; dark?: string; light?: string }; grey?: { [key: number]: string } } }, color: string) => {
+const getColorFromTheme = (
+  theme: {
+    palette: {
+      primary: { main: string; dark?: string; light?: string };
+      secondary: { main: string; dark?: string; light?: string };
+      success: { main: string; dark?: string; light?: string };
+      warning: { main: string; dark?: string; light?: string };
+      error: { main: string; dark?: string; light?: string };
+      grey?: { [key: number]: string };
+    };
+  },
+  color: string,
+) => {
   if (color === 'neutral') {
     return {
       main: theme.palette.grey?.[700] || '#616161',
       dark: theme.palette.grey?.[800] || '#424242',
       light: theme.palette.grey?.[500] || '#9e9e9e',
-      contrastText: '#fff'
+      contrastText: '#fff',
     };
   }
-  
-  const colorMap: Record<string, any> = {
+
+  const colorMap: Record<
+    string,
+    { main: string; dark?: string; light?: string; contrastText?: string }
+  > = {
     primary: theme.palette.primary,
     secondary: theme.palette.secondary,
     success: theme.palette.success,
     warning: theme.palette.warning,
     danger: theme.palette.error,
   };
-  
+
   const palette = colorMap[color] || theme.palette.primary;
-  
+
   // Ensure palette has required properties
   return {
     main: palette?.main || theme.palette.primary.main,
     dark: palette?.dark || palette?.main || theme.palette.primary.dark,
     light: palette?.light || palette?.main || theme.palette.primary.light,
-    contrastText: palette?.contrastText || '#fff'
+    contrastText: palette?.contrastText || '#fff',
   };
 };
 
 const StyledSlider = styled(MuiSlider, {
-  shouldForwardProp: (prop) => 
-    !['customColor', 'customSize', 'glow', 'glass', 'gradient', 'customVariant'].includes(prop as string),
-})<{ 
+  shouldForwardProp: (prop) =>
+    !['customColor', 'customSize', 'glow', 'glass', 'gradient', 'customVariant'].includes(
+      prop as string,
+    ),
+})<{
   customColor?: string;
   customSize?: string;
   glow?: boolean;
   glass?: boolean;
   gradient?: boolean;
   customVariant?: string;
-}>(({ theme, customColor = 'primary', customSize = 'md', glow, glass, gradient, customVariant }) => {
+}>(({
+  theme,
+  customColor = 'primary',
+  customSize = 'md',
+  glow,
+  glass,
+  gradient,
+  customVariant,
+}) => {
   const colorPalette = getColorFromTheme(theme, customColor);
-  
+
   const sizeMap = {
     xs: { height: 4, thumbSize: 16, markHeight: 8 },
     sm: { height: 6, thumbSize: 18, markHeight: 10 },
@@ -112,14 +131,16 @@ const StyledSlider = styled(MuiSlider, {
       position: 'relative',
       overflow: 'hidden',
       ...(gradient && {
-        background: customVariant === 'gradient'
-          ? `linear-gradient(90deg, 
+        background:
+          customVariant === 'gradient'
+            ? `linear-gradient(90deg, 
               ${colorPalette.light} 0%, 
               ${colorPalette.main} 50%, 
               ${colorPalette.dark} 100%)`
-          : `linear-gradient(90deg, ${colorPalette.light}, ${colorPalette.main})`,
+            : `linear-gradient(90deg, ${colorPalette.light}, ${colorPalette.main})`,
         backgroundSize: '200% 100%',
-        animation: customVariant === 'gradient' ? `${gradientShiftAnimation} 3s ease infinite` : 'none',
+        animation:
+          customVariant === 'gradient' ? `${gradientShiftAnimation} 3s ease infinite` : 'none',
       }),
       ...(glow && {
         animation: `${glowAnimation} 2s ease-in-out infinite`,
@@ -130,16 +151,18 @@ const StyledSlider = styled(MuiSlider, {
         backdropFilter: 'blur(10px)',
         border: `1px solid ${alpha(colorPalette.light, 0.3)}`,
       }),
-      '&::after': gradient ? {
-        content: '""',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        background: `linear-gradient(90deg, transparent, ${alpha('#fff', 0.2)}, transparent)`,
-        animation: `${gradientShiftAnimation} 2s linear infinite`,
-      } : {},
+      '&::after': gradient
+        ? {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: `linear-gradient(90deg, transparent, ${alpha('#fff', 0.2)}, transparent)`,
+            animation: `${gradientShiftAnimation} 2s linear infinite`,
+          }
+        : {},
     },
     '& .MuiSlider-rail': {
       color: alpha(theme.palette.action.disabled, 0.3),
@@ -210,17 +233,17 @@ const StyledSlider = styled(MuiSlider, {
       width: customSize === 'xs' ? 28 : customSize === 'sm' ? 30 : 32,
       height: customSize === 'xs' ? 28 : customSize === 'sm' ? 30 : 32,
       borderRadius: gradient ? '8px' : '50% 50% 50% 0',
-      backgroundColor: gradient 
+      backgroundColor: gradient
         ? 'transparent'
-        : glass 
-        ? alpha(colorPalette.main, 0.9)
-        : colorPalette.main,
-      background: gradient 
+        : glass
+          ? alpha(colorPalette.main, 0.9)
+          : colorPalette.main,
+      background: gradient
         ? `linear-gradient(135deg, ${colorPalette.light}, ${colorPalette.main})`
         : 'unset',
       backdropFilter: glass ? 'blur(10px)' : 'none',
       transformOrigin: 'bottom left',
-      transform: gradient 
+      transform: gradient
         ? 'translate(50%, -150%) scale(0)'
         : 'translate(50%, -100%) rotate(-45deg) scale(0)',
       transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -269,42 +292,46 @@ const StyledSlider = styled(MuiSlider, {
 });
 
 export const Slider = forwardRef<HTMLSpanElement, SliderProps>(
-  ({
-    variant = 'default',
-    color = 'primary',
-    size = 'md',
-    label,
-    showValue = false,
-    glow = false,
-    glass = false,
-    gradient = false,
-    thumbIcon,
-    showMarks = false,
-    customMarks,
-    unit = '',
-    formatValue,
-    value,
-    onChange,
-    ...props
-  }, ref) => {
-
-    const displayValue = Array.isArray(value) 
+  (
+    {
+      variant = 'default',
+      color = 'primary',
+      size = 'md',
+      label,
+      showValue = false,
+      glow = false,
+      glass = false,
+      gradient = false,
+      showMarks = false,
+      customMarks,
+      unit = '',
+      formatValue,
+      value,
+      onChange,
+      ...props
+    },
+    ref,
+  ) => {
+    const displayValue = Array.isArray(value)
       ? `${formatValue ? formatValue(value[0]) : value[0]}${unit} - ${formatValue ? formatValue(value[1]) : value[1]}${unit}`
       : `${formatValue ? formatValue(value as number) : value}${unit}`;
 
-    const marks = variant === 'marks' || showMarks 
-      ? customMarks || (variant === 'marks' ? true : undefined)
-      : undefined;
+    const marks =
+      variant === 'marks' || showMarks
+        ? customMarks || (variant === 'marks' ? true : undefined)
+        : undefined;
 
     return (
       <Box sx={{ width: '100%' }}>
         {(label || showValue) && (
-          <Box sx={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
-            alignItems: 'center',
-            mb: 2 
-          }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              mb: 2,
+            }}
+          >
             {label && (
               <Typography variant="body2" fontWeight={500} color="text.primary">
                 {label}
@@ -317,7 +344,7 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(
             )}
           </Box>
         )}
-        
+
         <Box sx={{ px: 1 }}>
           <StyledSlider
             ref={ref}
@@ -336,7 +363,7 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(
         </Box>
       </Box>
     );
-  }
+  },
 );
 
 Slider.displayName = 'Slider';

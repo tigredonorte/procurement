@@ -11,13 +11,7 @@ import {
   Fade,
 } from '@mui/material';
 import { styled, keyframes } from '@mui/material/styles';
-import {
-  NavigateNext,
-  ChevronRight,
-  ArrowForwardIos,
-  Home,
-  MoreHoriz,
-} from '@mui/icons-material';
+import { NavigateNext, ChevronRight, ArrowForwardIos, Home, MoreHoriz } from '@mui/icons-material';
 
 import { BreadcrumbsProps, BreadcrumbItem } from './Breadcrumbs.types';
 
@@ -46,155 +40,161 @@ const pulse = keyframes`
 `;
 
 const StyledBreadcrumbs = styled(MuiBreadcrumbs, {
-  shouldForwardProp: (prop) => prop !== 'size' && prop !== 'color' && prop !== 'visualStyle' && prop !== 'elevation',
-})<{ size?: string; color?: string; visualStyle?: string; elevation?: number }>(({ theme, size, color, visualStyle, elevation = 0 }) => ({
-  padding: theme.spacing(size === 'sm' ? 0.75 : size === 'lg' ? 1.5 : 1, 2),
-  borderRadius: theme.spacing(visualStyle === 'glass' ? 2 : 1),
-  animation: `${slideIn} 0.3s ease-out`,
-  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-  position: 'relative',
-  
-  // Glass morphism effect
-  ...(visualStyle === 'glass' && {
-    background: theme.palette.mode === 'dark' 
-      ? 'rgba(17, 24, 39, 0.7)' 
-      : 'rgba(255, 255, 255, 0.7)',
-    backdropFilter: 'blur(10px)',
-    WebkitBackdropFilter: 'blur(10px)',
-    border: `1px solid ${theme.palette.mode === 'dark' 
-      ? 'rgba(255, 255, 255, 0.1)' 
-      : 'rgba(0, 0, 0, 0.1)'}`,
-    boxShadow: theme.palette.mode === 'dark'
-      ? `0 ${elevation * 4}px ${elevation * 8}px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)`
-      : `0 ${elevation * 4}px ${elevation * 8}px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8)`,
-  }),
-  
-  // Elevated variant
-  ...(visualStyle === 'elevated' && {
-    background: theme.palette.background.paper,
-    boxShadow: theme.shadows[elevation] || theme.shadows[1],
-    borderRadius: theme.spacing(1.5),
-  }),
-  
-  // Outlined variant
-  ...(visualStyle === 'outlined' && {
-    border: `1px solid ${theme.palette.divider}`,
-    borderRadius: theme.spacing(1),
-  }),
-  
-  '& .MuiBreadcrumbs-ol': {
-    alignItems: 'center',
-    flexWrap: 'nowrap',
-    [theme.breakpoints.down('sm')]: {
-      flexWrap: 'wrap',
-      gap: theme.spacing(0.5),
-    },
-  },
-  
-  '& .MuiBreadcrumbs-separator': {
-    marginLeft: theme.spacing(size === 'sm' ? 0.5 : size === 'lg' ? 1.5 : 1),
-    marginRight: theme.spacing(size === 'sm' ? 0.5 : size === 'lg' ? 1.5 : 1),
-    opacity: 0.6,
-    transition: 'all 0.2s ease',
-    ...(color === 'primary' && {
-      color: theme.palette.primary.main,
-    }),
-    ...(color === 'secondary' && {
-      color: theme.palette.secondary.main,
-    }),
-  },
-  
-  '&:hover': {
+  shouldForwardProp: (prop) =>
+    prop !== 'size' && prop !== 'color' && prop !== 'visualStyle' && prop !== 'elevation',
+})<{ size?: string; color?: string; visualStyle?: string; elevation?: number }>(
+  ({ theme, size, color, visualStyle, elevation = 0 }) => ({
+    padding: theme.spacing(size === 'sm' ? 0.75 : size === 'lg' ? 1.5 : 1, 2),
+    borderRadius: theme.spacing(visualStyle === 'glass' ? 2 : 1),
+    animation: `${slideIn} 0.3s ease-out`,
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+    position: 'relative',
+
+    // Glass morphism effect
     ...(visualStyle === 'glass' && {
-      background: theme.palette.mode === 'dark' 
-        ? 'rgba(17, 24, 39, 0.85)' 
-        : 'rgba(255, 255, 255, 0.85)',
-      boxShadow: theme.palette.mode === 'dark'
-        ? `0 ${elevation * 6}px ${elevation * 12}px rgba(0, 0, 0, 0.4)`
-        : `0 ${elevation * 6}px ${elevation * 12}px rgba(0, 0, 0, 0.12)`,
+      background:
+        theme.palette.mode === 'dark' ? 'rgba(17, 24, 39, 0.7)' : 'rgba(255, 255, 255, 0.7)',
+      backdropFilter: 'blur(10px)',
+      WebkitBackdropFilter: 'blur(10px)',
+      border: `1px solid ${
+        theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
+      }`,
+      boxShadow:
+        theme.palette.mode === 'dark'
+          ? `0 ${elevation * 4}px ${elevation * 8}px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)`
+          : `0 ${elevation * 4}px ${elevation * 8}px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8)`,
     }),
-  },
-}))
+
+    // Elevated variant
+    ...(visualStyle === 'elevated' && {
+      background: theme.palette.background.paper,
+      boxShadow: theme.shadows[elevation] || theme.shadows[1],
+      borderRadius: theme.spacing(1.5),
+    }),
+
+    // Outlined variant
+    ...(visualStyle === 'outlined' && {
+      border: `1px solid ${theme.palette.divider}`,
+      borderRadius: theme.spacing(1),
+    }),
+
+    '& .MuiBreadcrumbs-ol': {
+      alignItems: 'center',
+      flexWrap: 'nowrap',
+      [theme.breakpoints.down('sm')]: {
+        flexWrap: 'wrap',
+        gap: theme.spacing(0.5),
+      },
+    },
+
+    '& .MuiBreadcrumbs-separator': {
+      marginLeft: theme.spacing(size === 'sm' ? 0.5 : size === 'lg' ? 1.5 : 1),
+      marginRight: theme.spacing(size === 'sm' ? 0.5 : size === 'lg' ? 1.5 : 1),
+      opacity: 0.6,
+      transition: 'all 0.2s ease',
+      ...(color === 'primary' && {
+        color: theme.palette.primary.main,
+      }),
+      ...(color === 'secondary' && {
+        color: theme.palette.secondary.main,
+      }),
+    },
+
+    '&:hover': {
+      ...(visualStyle === 'glass' && {
+        background:
+          theme.palette.mode === 'dark' ? 'rgba(17, 24, 39, 0.85)' : 'rgba(255, 255, 255, 0.85)',
+        boxShadow:
+          theme.palette.mode === 'dark'
+            ? `0 ${elevation * 6}px ${elevation * 12}px rgba(0, 0, 0, 0.4)`
+            : `0 ${elevation * 6}px ${elevation * 12}px rgba(0, 0, 0, 0.12)`,
+      }),
+    },
+  }),
+);
 
 const BreadcrumbLink = styled(Link, {
   shouldForwardProp: (prop) => prop !== 'size' && prop !== 'active' && prop !== 'visualStyle',
-})<{ size?: string; active?: boolean; visualStyle?: string }>(({ theme, size, active, visualStyle }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  gap: theme.spacing(0.5),
-  textDecoration: 'none',
-  fontSize: size === 'sm' ? '0.875rem' : size === 'lg' ? '1.125rem' : '1rem',
-  fontWeight: active ? 600 : 400,
-  color: active ? theme.palette.text.primary : theme.palette.text.secondary,
-  padding: theme.spacing(0.5, 0.75),
-  borderRadius: theme.spacing(0.75),
-  position: 'relative',
-  overflow: 'hidden',
-  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-  
-  // Add subtle background for glass variant
-  ...(visualStyle === 'glass' && !active && {
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0)} 0%, ${alpha(theme.palette.primary.main, 0.05)} 100%)`,
-      opacity: 0,
-      transition: 'opacity 0.3s ease',
-      borderRadius: 'inherit',
+})<{ size?: string; active?: boolean; visualStyle?: string }>(
+  ({ theme, size, active, visualStyle }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    gap: theme.spacing(0.5),
+    textDecoration: 'none',
+    fontSize: size === 'sm' ? '0.875rem' : size === 'lg' ? '1.125rem' : '1rem',
+    fontWeight: active ? 600 : 400,
+    color: active ? theme.palette.text.primary : theme.palette.text.secondary,
+    padding: theme.spacing(0.5, 0.75),
+    borderRadius: theme.spacing(0.75),
+    position: 'relative',
+    overflow: 'hidden',
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+
+    // Add subtle background for glass variant
+    ...(visualStyle === 'glass' &&
+      !active && {
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0)} 0%, ${alpha(theme.palette.primary.main, 0.05)} 100%)`,
+          opacity: 0,
+          transition: 'opacity 0.3s ease',
+          borderRadius: 'inherit',
+        },
+      }),
+
+    '&:hover, &[data-hover="true"]': {
+      color: theme.palette.primary.main,
+      backgroundColor: alpha(theme.palette.primary.main, visualStyle === 'glass' ? 0.1 : 0.08),
+      transform: 'translateY(-1px)',
+
+      '&::before': {
+        opacity: 1,
+      },
+
+      '& .breadcrumb-icon': {
+        transform: 'scale(1.1)',
+      },
     },
-  }),
-  
-  '&:hover': {
-    color: theme.palette.primary.main,
-    backgroundColor: alpha(theme.palette.primary.main, visualStyle === 'glass' ? 0.1 : 0.08),
-    transform: 'translateY(-1px)',
-    
-    '&::before': {
-      opacity: 1,
+
+    '&:active': {
+      transform: 'translateY(0)',
+      backgroundColor: alpha(theme.palette.primary.main, 0.12),
     },
-    
-    '& .breadcrumb-icon': {
-      transform: 'scale(1.1)',
+
+    '&:focus-visible': {
+      outline: `2px solid ${theme.palette.primary.main}`,
+      outlineOffset: 2,
+      backgroundColor: alpha(theme.palette.primary.main, 0.04),
     },
-  },
-  
-  '&:active': {
-    transform: 'translateY(0)',
-    backgroundColor: alpha(theme.palette.primary.main, 0.12),
-  },
-  
-  '&:focus-visible': {
-    outline: `2px solid ${theme.palette.primary.main}`,
-    outlineOffset: 2,
-    backgroundColor: alpha(theme.palette.primary.main, 0.04),
-  },
-  
-  ...(active && {
-    pointerEvents: 'none',
-    cursor: 'default',
-    color: theme.palette.primary.main,
-    fontWeight: 600,
-    
-    ...(visualStyle === 'glass' && {
-      background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.1)} 0%, ${alpha(theme.palette.primary.main, 0.05)} 100%)`,
-      animation: `${pulse} 2s infinite`,
+
+    ...(active && {
+      pointerEvents: 'none',
+      cursor: 'default',
+      color: theme.palette.primary.main,
+      fontWeight: 600,
+
+      ...(visualStyle === 'glass' && {
+        background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.1)} 0%, ${alpha(theme.palette.primary.main, 0.05)} 100%)`,
+        animation: `${pulse} 2s infinite`,
+      }),
     }),
+
+    '& .breadcrumb-icon': {
+      transition: 'transform 0.2s ease',
+    },
+
+    // Mobile responsiveness
+    [theme.breakpoints.down('sm')]: {
+      fontSize: size === 'lg' ? '1rem' : size === 'sm' ? '0.75rem' : '0.875rem',
+      padding: theme.spacing(0.375, 0.5),
+    },
   }),
-  
-  '& .breadcrumb-icon': {
-    transition: 'transform 0.2s ease',
-  },
-  
-  // Mobile responsiveness
-  [theme.breakpoints.down('sm')]: {
-    fontSize: size === 'lg' ? '1rem' : size === 'sm' ? '0.75rem' : '0.875rem',
-    padding: theme.spacing(0.375, 0.5),
-  },
-}))
+);
 
 const BreadcrumbText = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'size' && prop !== 'visualStyle',
@@ -208,23 +208,23 @@ const BreadcrumbText = styled(Typography, {
   padding: theme.spacing(0.5, 0.75),
   borderRadius: theme.spacing(0.75),
   position: 'relative',
-  
+
   ...(visualStyle === 'glass' && {
     background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.1)} 0%, ${alpha(theme.palette.primary.main, 0.05)} 100%)`,
     backdropFilter: 'blur(4px)',
     border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
   }),
-  
+
   '& .breadcrumb-icon': {
     color: theme.palette.primary.main,
   },
-  
+
   // Mobile responsiveness
   [theme.breakpoints.down('sm')]: {
     fontSize: size === 'lg' ? '1rem' : size === 'sm' ? '0.75rem' : '0.875rem',
     padding: theme.spacing(0.375, 0.5),
   },
-}))
+}));
 
 // Animated separator wrapper
 const AnimatedSeparator = styled(Box)(() => ({
@@ -232,7 +232,7 @@ const AnimatedSeparator = styled(Box)(() => ({
   alignItems: 'center',
   opacity: 0.6,
   transition: 'all 0.2s ease',
-  
+
   '&:hover': {
     opacity: 1,
     transform: 'scale(1.1)',
@@ -256,7 +256,7 @@ const getSeparator = (separatorType: string) => {
         return <ArrowForwardIos sx={{ fontSize: 12 }} />;
     }
   })();
-  
+
   return <AnimatedSeparator>{separatorContent}</AnimatedSeparator>;
 };
 
@@ -267,18 +267,26 @@ const sizeIconMap = {
 };
 
 // Mobile collapsed menu component
-const CollapsedMenu = ({ items, size, visualStyle }: { items: BreadcrumbItem[]; size: string; visualStyle?: string }) => {
+const CollapsedMenu = ({
+  items,
+  size,
+  visualStyle,
+}: {
+  items: BreadcrumbItem[];
+  size: string;
+  visualStyle?: string;
+}) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  
+
   const handleClose = () => {
     setAnchorEl(null);
   };
-  
+
   return (
     <>
       <Tooltip title="Show more" arrow>
@@ -304,9 +312,10 @@ const CollapsedMenu = ({ items, size, visualStyle }: { items: BreadcrumbItem[]; 
         <Fade in={open}>
           <Box
             sx={{
-              background: (theme) => theme.palette.mode === 'dark' 
-                ? 'rgba(17, 24, 39, 0.95)' 
-                : 'rgba(255, 255, 255, 0.95)',
+              background: (theme) =>
+                theme.palette.mode === 'dark'
+                  ? 'rgba(17, 24, 39, 0.95)'
+                  : 'rgba(255, 255, 255, 0.95)',
               backdropFilter: 'blur(10px)',
               borderRadius: 1,
               boxShadow: 3,
@@ -364,20 +373,20 @@ export const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
       ariaLabel,
       ...props
     },
-    ref
+    ref,
   ) => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const finalSeparator = separator || getSeparator(separatorType);
     const iconSize = sizeIconMap[size];
-    
+
     // Handle mobile collapsing
     const effectiveMaxItems = isMobile ? mobileMaxItems : maxItems;
     const shouldCollapse = items.length > effectiveMaxItems;
-    
+
     let displayItems: (BreadcrumbItem & { isEllipsis?: boolean })[] = items;
     let collapsedItems: typeof items = [];
-    
+
     if (shouldCollapse && collapseBehavior === 'menu') {
       const firstItem = items[0];
       const lastItems = items.slice(-(effectiveMaxItems - 2));
@@ -387,7 +396,7 @@ export const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
       displayItems = [
         ...items.slice(0, Math.floor(effectiveMaxItems / 2)),
         { label: '...', href: '#', isEllipsis: true },
-        ...items.slice(-(Math.floor(effectiveMaxItems / 2))),
+        ...items.slice(-Math.floor(effectiveMaxItems / 2)),
       ];
     }
 
@@ -400,7 +409,7 @@ export const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
         color={color}
         visualStyle={variant}
         elevation={elevation}
-        aria-label={ariaLabel || "breadcrumb navigation"}
+        aria-label={ariaLabel || 'breadcrumb navigation'}
         role="navigation"
         {...props}
       >
@@ -409,7 +418,7 @@ export const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
           const isLast = index === displayItems.length - 1;
           const isActive = item.active || (isLast && !item.isEllipsis);
           const isEllipsis = item.isEllipsis;
-          
+
           // Handle collapsed menu after first item
           if (index === 1 && collapsedItems.length > 0 && collapseBehavior === 'menu') {
             return (
@@ -419,7 +428,7 @@ export const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
               </React.Fragment>
             );
           }
-          
+
           // Handle ellipsis
           if (isEllipsis) {
             return (
@@ -437,24 +446,24 @@ export const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
               </Tooltip>
             );
           }
-          
-          const icon = isFirst && showHomeIcon && !item.icon ? (
-            <Home className="breadcrumb-icon" fontSize={iconSize} />
-          ) : item.icon ? (
-            <Box component="span" className="breadcrumb-icon" sx={{ display: 'flex', alignItems: 'center' }}>
-              {item.icon}
-            </Box>
-          ) : null;
+
+          const icon =
+            isFirst && showHomeIcon && !item.icon ? (
+              <Home className="breadcrumb-icon" fontSize={iconSize} />
+            ) : item.icon ? (
+              <Box
+                component="span"
+                className="breadcrumb-icon"
+                sx={{ display: 'flex', alignItems: 'center' }}
+              >
+                {item.icon}
+              </Box>
+            ) : null;
 
           // Render active/last item
           if (isActive) {
             return (
-              <BreadcrumbText 
-                key={index} 
-                size={size}
-                visualStyle={variant}
-                aria-current="page"
-              >
+              <BreadcrumbText key={index} size={size} visualStyle={variant} aria-current="page">
                 {icon}
                 <span>{item.label}</span>
               </BreadcrumbText>
@@ -463,10 +472,10 @@ export const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
 
           // Render clickable breadcrumb
           return (
-            <Tooltip 
-              key={index} 
-              title={item.tooltip || item.label} 
-              arrow 
+            <Tooltip
+              key={index}
+              title={item.tooltip || item.label}
+              arrow
               disableHoverListener={!item.tooltip}
             >
               <BreadcrumbLink
@@ -486,7 +495,7 @@ export const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
         })}
       </StyledBreadcrumbs>
     );
-  }
+  },
 );
 
 Breadcrumbs.displayName = 'Breadcrumbs';
