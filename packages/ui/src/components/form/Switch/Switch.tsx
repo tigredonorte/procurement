@@ -1,7 +1,6 @@
 import React, { forwardRef } from 'react';
 import { 
   Switch as MuiSwitch,
-  FormControlLabel,
   Box,
   Typography,
   FormHelperText,
@@ -24,14 +23,6 @@ const glowAnimation = keyframes`
   }
 `;
 
-const slideAnimation = keyframes`
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(100%);
-  }
-`;
 
 const bounceAnimation = keyframes`
   0%, 100% {
@@ -39,6 +30,37 @@ const bounceAnimation = keyframes`
   }
   50% {
     transform: scale(1.1);
+  }
+`;
+
+const pulseAnimation = keyframes`
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(0.95);
+  }
+`;
+
+const rippleAnimation = keyframes`
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+`;
+
+const spinAnimation = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 `;
 
@@ -51,7 +73,25 @@ const shimmerAnimation = keyframes`
   }
 `;
 
-const getColorFromTheme = (theme: { palette: { primary: { main: string; dark?: string; light?: string }; secondary: { main: string; dark?: string; light?: string }; success: { main: string; dark?: string; light?: string }; warning: { main: string; dark?: string; light?: string }; error: { main: string; dark?: string; light?: string }; grey?: { [key: number]: string } } }, color: string) => {
+interface ThemePalette {
+  main: string;
+  dark?: string;
+  light?: string;
+  contrastText?: string;
+}
+
+interface Theme {
+  palette: {
+    primary: ThemePalette;
+    secondary: ThemePalette;
+    success: ThemePalette;
+    warning: ThemePalette;
+    error: ThemePalette;
+    grey?: { [key: number]: string };
+  };
+}
+
+const getColorFromTheme = (theme: Theme, color: string) => {
   if (color === 'neutral') {
     return {
       main: theme.palette.grey?.[700] || '#616161',
@@ -61,7 +101,7 @@ const getColorFromTheme = (theme: { palette: { primary: { main: string; dark?: s
     };
   }
   
-  const colorMap: Record<string, any> = {
+  const colorMap: Record<string, ThemePalette> = {
     primary: theme.palette.primary,
     secondary: theme.palette.secondary,
     success: theme.palette.success,
@@ -83,7 +123,7 @@ const getColorFromTheme = (theme: { palette: { primary: { main: string; dark?: s
 const StyledSwitch = styled(MuiSwitch, {
   shouldForwardProp: (prop) => 
     !['customVariant', 'customColor', 'customSize', 'glow', 'glass', 'gradient', 
-      'trackWidth', 'trackHeight', 'onText', 'offText'].includes(prop as string),
+      'trackWidth', 'trackHeight', 'onText', 'offText', 'loading', 'ripple', 'pulse'].includes(prop as string),
 })<{ 
   customVariant?: string;
   customColor?: string;
@@ -95,7 +135,10 @@ const StyledSwitch = styled(MuiSwitch, {
   trackHeight?: number;
   onText?: string;
   offText?: string;
-}>(({ theme, customVariant, customColor = 'primary', customSize = 'md', glow, glass, gradient, trackWidth, trackHeight, onText, offText }) => {
+  loading?: boolean;
+  ripple?: boolean;
+  pulse?: boolean;
+}>(({ theme, customVariant, customColor = 'primary', customSize = 'md', glow, glass, gradient, trackWidth, trackHeight, onText, offText, loading, ripple, pulse }) => {
   const colorPalette = getColorFromTheme(theme, customColor);
   
   const sizeMap = {
@@ -131,15 +174,30 @@ const StyledSwitch = styled(MuiSwitch, {
       }),
       '&:hover': {
         '& .MuiSwitch-thumb': {
-          transform: 'scale(1.05)',
+          transform: loading ? 'none' : 'scale(1.05)',
           boxShadow: `${theme.shadows[4]}, 0 0 12px ${alpha(colorPalette.main, 0.2)}`,
         },
+        ...(ripple && {
+          '&::after': {
+            content: '""',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            width: '100%',
+            height: '100%',
+            borderRadius: '50%',
+            background: alpha(colorPalette.main, 0.2),
+            animation: `${rippleAnimation} 0.6s ease-out`,
+            transform: 'translate(-50%, -50%)',
+            pointerEvents: 'none',
+          },
+        }),
       },
       '&.Mui-checked': {
         transform: `translateX(${width - thumbSize - currentSize.padding * 2}px)`,
         color: '#fff',
         '& .MuiSwitch-thumb': {
-          animation: `${bounceAnimation} 0.3s ease-out`,
+          animation: loading ? 'none' : `${bounceAnimation} 0.3s ease-out`,
         },
         '& + .MuiSwitch-track': {
           backgroundColor: gradient 
@@ -196,6 +254,21 @@ const StyledSwitch = styled(MuiSwitch, {
         backgroundColor: alpha(theme.palette.background.paper, 0.9),
         backdropFilter: 'blur(10px)',
         border: `1px solid ${alpha(theme.palette.divider, 0.2)}`,
+      }),
+      ...(pulse && {
+        animation: `${pulseAnimation} 2s ease-in-out infinite`,
+      }),
+      ...(loading && {
+        '&::after': {
+          content: '""',
+          position: 'absolute',
+          width: thumbSize * 0.6,
+          height: thumbSize * 0.6,
+          border: `2px solid ${colorPalette.main}`,
+          borderTop: `2px solid transparent`,
+          borderRadius: '50%',
+          animation: `${spinAnimation} 1s linear infinite`,
+        },
       }),
       ...(materialVariant && {
         '&::before': {
@@ -269,7 +342,9 @@ const StyledSwitch = styled(MuiSwitch, {
   };
 });
 
-const LabelContainer = styled(Box)<{ labelPosition?: string; error?: boolean }>(
+const LabelContainer = styled(Box, {
+  shouldForwardProp: (prop) => !['labelPosition', 'error'].includes(prop as string),
+})<{ labelPosition?: string; error?: boolean }>(
   ({ theme, labelPosition, error }) => ({
     display: 'flex',
     alignItems: labelPosition === 'top' || labelPosition === 'bottom' ? 'flex-start' : 'center',
@@ -306,6 +381,9 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
     checked,
     onChange,
     animated = true,
+    loading = false,
+    ripple = false,
+    pulse = false,
     ...props
   }, ref) => {
 
@@ -325,6 +403,10 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
           offText={offText}
           checked={checked}
           onChange={onChange}
+          loading={loading}
+          ripple={ripple}
+          pulse={pulse}
+          disabled={loading || props.disabled}
           {...props}
         />
         
