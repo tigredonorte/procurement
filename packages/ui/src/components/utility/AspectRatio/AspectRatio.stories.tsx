@@ -1,7 +1,8 @@
+import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Box, Typography, Card, CardMedia, CardContent } from '@mui/material';
 
 import { AspectRatio } from './AspectRatio';
+import type { AspectRatioVariant } from './AspectRatio.types';
 
 const meta: Meta<typeof AspectRatio> = {
   title: 'Utility/AspectRatio',
@@ -10,7 +11,8 @@ const meta: Meta<typeof AspectRatio> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'A utility component that maintains consistent aspect ratios for content, perfect for images, videos, and responsive layouts.',
+        component:
+          'A utility component that maintains consistent aspect ratios for content, perfect for images, videos, and responsive layouts.',
       },
     },
   },
@@ -112,7 +114,7 @@ export const CustomRatio: Story = {
 
 export const AllVariants: Story = {
   render: () => {
-    const variants: Array<{ variant: any; title: string; color: string }> = [
+    const variants: Array<{ variant: AspectRatioVariant; title: string; color: string }> = [
       { variant: '16:9', title: '16:9 Video', color: '#1976d2' },
       { variant: '4:3', title: '4:3 Classic', color: '#388e3c' },
       { variant: '1:1', title: '1:1 Square', color: '#f57c00' },
@@ -121,13 +123,15 @@ export const AllVariants: Story = {
     ];
 
     return (
-      <Box sx={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-        gap: 3,
-        width: '100%',
-        maxWidth: 1000,
-      }}>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+          gap: 3,
+          width: '100%',
+          maxWidth: 1000,
+        }}
+      >
         {variants.map(({ variant, title, color }) => (
           <Box key={variant}>
             <Typography variant="subtitle2" gutterBottom>
@@ -145,12 +149,14 @@ export const AllVariants: Story = {
 
 export const WithImages: Story = {
   render: () => (
-    <Box sx={{ 
-      display: 'grid', 
-      gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-      gap: 3,
-      maxWidth: 900,
-    }}>
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+        gap: 3,
+        maxWidth: 900,
+      }}
+    >
       <Card>
         <AspectRatio variant="16:9">
           <CardMedia
@@ -195,21 +201,41 @@ export const WithImages: Story = {
 export const ResponsiveGallery: Story = {
   render: () => {
     const images = [
-      { src: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=400&h=300', alt: 'Food 1' },
-      { src: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400&h=300', alt: 'Food 2' },
-      { src: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45?w=400&h=300', alt: 'Food 3' },
-      { src: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c?w=400&h=300', alt: 'Food 4' },
-      { src: 'https://images.unsplash.com/photo-1533725602536-5d0c7ff2f42b?w=400&h=300', alt: 'Food 5' },
-      { src: 'https://images.unsplash.com/photo-1558030006-450675393462?w=400&h=300', alt: 'Food 6' },
+      {
+        src: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=400&h=300',
+        alt: 'Food 1',
+      },
+      {
+        src: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400&h=300',
+        alt: 'Food 2',
+      },
+      {
+        src: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45?w=400&h=300',
+        alt: 'Food 3',
+      },
+      {
+        src: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c?w=400&h=300',
+        alt: 'Food 4',
+      },
+      {
+        src: 'https://images.unsplash.com/photo-1533725602536-5d0c7ff2f42b?w=400&h=300',
+        alt: 'Food 5',
+      },
+      {
+        src: 'https://images.unsplash.com/photo-1558030006-450675393462?w=400&h=300',
+        alt: 'Food 6',
+      },
     ];
 
     return (
-      <Box sx={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-        gap: 2,
-        maxWidth: 800,
-      }}>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+          gap: 2,
+          maxWidth: 800,
+        }}
+      >
         {images.map((image, index) => (
           <AspectRatio key={index} variant="4:3">
             <Box
