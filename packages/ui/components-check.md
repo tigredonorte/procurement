@@ -148,23 +148,28 @@ This document provides systematic instructions for AI agents to verify, enhance,
 
 ### Phase 6: Storybook Testing
 
-1. **Start Storybook**
+**🚨 CRITICAL: DO NOT START STORYBOOK! 🚨**
 
-   ```bash
-   # Kill any existing Storybook process
-   lsof -i :6006 | grep LISTEN | awk '{print $2}' | xargs kill -9 2>/dev/null
+**Storybook is already running at: http://192.168.166.133:6008/**
 
-   # Start on alternative port if 6006 is occupied
-   cd packages/ui && npx storybook dev --host 0.0.0.0 --port 6007 &
+1. **Access Existing Storybook Instance**
 
-   # Get IP address for browser access
-   hostname -I | awk '{print $1}'
+   ```
+   IMPORTANT: DO NOT run any storybook commands!
+   DO NOT execute: npx storybook dev, npm run storybook, or any storybook start commands!
+
+   The Storybook server is already running and accessible at:
+   🔗 http://192.168.166.133:6008/
    ```
 
-2. **Access Storybook**
-   - Use MCP browser tools to navigate to `http://192.xxx.xxx.xxx:6007`
-   - Navigate to component story
-   - Verify all stories render correctly
+2. **Test Component in Browser**
+   - Use MCP browser tools to navigate to `http://192.168.166.133:6008/`
+   - Navigate to your component's story section
+   - Navigate to the Test stories (ComponentName/Tests section)
+   - Verify all test stories render correctly
+   - Ensure all interactive tests pass without errors
+   - Check browser console for any JavaScript errors
+   - Verify all test stories show green checkmarks (✅) indicating passing tests
 
 ### Phase 7: Comprehensive Storybook Tests
 
@@ -936,3 +941,51 @@ Edit components-check.md
 # Update the line to:
 - AspectRatio (blocked: TypeScript errors in stories) - 2025-01-05 16:00
 ```
+
+## Agent Post-Completion Instructions
+
+**CRITICAL: When you finish working on a component, you MUST commit your changes automatically.**
+
+### Required Actions After Component Completion:
+
+1. **Add all modified files to git staging:**
+
+   ```bash
+   git add src/components/{category}/{ComponentName}/
+   ```
+
+2. **Commit with appropriate semantic message:**
+
+   ```bash
+   # For new features/enhancements:
+   git commit -m "feat({ComponentName}): complete comprehensive testing and verification"
+
+   # For bug fixes:
+   git commit -m "fix({ComponentName}): resolve lint errors and add comprehensive test stories"
+
+   # For documentation updates:
+   git commit -m "docs({ComponentName}): update component status and testing coverage"
+   ```
+
+3. **Always include components-check.md in the commit:**
+   ```bash
+   git add components-check.md src/components/{category}/{ComponentName}/
+   ```
+
+### Commit Message Templates:
+
+- **New component completion:** `feat({ComponentName}): complete comprehensive testing and verification`
+- **Bug fixes during verification:** `fix({ComponentName}): resolve lint errors and add comprehensive test stories`
+- **Test story additions:** `test({ComponentName}): add comprehensive interaction and accessibility tests`
+- **Type/lint fixes:** `fix({ComponentName}): resolve TypeScript and lint issues`
+- **Status updates only:** `docs: mark {ComponentName} component as completed in status tracking`
+
+### Example Complete Workflow:
+
+```bash
+# After completing all phases for Switch component:
+git add src/components/form/Switch/ components-check.md
+git commit -m "feat(Switch): complete comprehensive testing and verification"
+```
+
+**DO NOT** push to remote or create pull requests - only commit locally.
