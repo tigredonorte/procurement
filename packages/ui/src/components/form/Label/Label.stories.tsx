@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Box, TextField, Stack } from '@mui/material';
+import { Box, TextField, Stack, Typography } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import StarIcon from '@mui/icons-material/Star';
 import EmailIcon from '@mui/icons-material/Email';
@@ -144,7 +144,7 @@ export const Effects: Story = {
       <Label pulse color="secondary">Label with Pulse</Label>
       <Label glow pulse variant="glass">Glass with Glow and Pulse</Label>
       <Label variant="gradient" glow>Gradient with Glow</Label>
-      <Label onClick={() => console.log('Interactive Label clicked')}>
+      <Label onClick={() => window.alert('Interactive Label clicked')}>
         Interactive Label with Click Handler
       </Label>
     </Stack>
@@ -187,7 +187,7 @@ export const Clickable: Story = {
   render: () => (
     <Stack spacing={2}>
       <Label
-        onClick={() => alert('Label clicked!')}
+        onClick={() => window.alert('Label clicked!')}
         variant="filled"
         color="primary"
         ripple
@@ -195,14 +195,14 @@ export const Clickable: Story = {
         Click me (with ripple)
       </Label>
       <Label
-        onClick={() => alert('Label clicked!')}
+        onClick={() => window.alert('Label clicked!')}
         variant="outlined"
         color="secondary"
       >
         Click me (outlined)
       </Label>
       <Label
-        onClick={() => alert('Label clicked!')}
+        onClick={() => window.alert('Label clicked!')}
         variant="glass"
         glow
       >
@@ -354,7 +354,7 @@ export const AllCombinations: Story = {
       <Label
         variant="filled"
         color="success"
-        onClick={() => console.log('Label clicked')}
+        onClick={() => window.alert('Label clicked')}
       >
         Clickable Label
       </Label>
