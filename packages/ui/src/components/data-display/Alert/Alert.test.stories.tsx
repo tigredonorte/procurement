@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { userEvent, within, expect, waitFor, fn } from '@storybook/test';
+import React from 'react';
 import { Stack, ThemeProvider, createTheme } from '@mui/material';
 
 import { Alert } from './Alert';
-import React from 'react';
 
 const meta: Meta<typeof Alert> = {
   title: 'Data Display/Alert/Tests',
@@ -41,27 +41,30 @@ export const BasicInteraction: Story = {
   },
   play: async ({ canvasElement, step, args }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Initial render verification', async () => {
       const alert = canvas.getByRole('alert');
       await expect(alert).toBeInTheDocument();
       await expect(alert).toHaveAttribute('aria-live', 'polite');
       await expect(alert).toHaveAttribute('aria-atomic', 'true');
     });
-    
+
     await step('Verify title and description', async () => {
       await expect(canvas.getByText('Interactive Alert')).toBeInTheDocument();
       await expect(canvas.getByText('This alert tests basic interactions')).toBeInTheDocument();
     });
-    
+
     await step('Close button interaction', async () => {
       const closeButton = canvas.getByLabelText('close alert');
       await expect(closeButton).toBeInTheDocument();
-      
+
       await userEvent.click(closeButton);
-      await waitFor(() => {
-        expect(args.onClose).toHaveBeenCalledTimes(1);
-      }, { timeout: 500 });
+      await waitFor(
+        () => {
+          expect(args.onClose).toHaveBeenCalledTimes(1);
+        },
+        { timeout: 500 },
+      );
     });
   },
 };
@@ -76,30 +79,33 @@ export const HoverEffects: Story = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Initial state', async () => {
       const alert = canvas.getByRole('alert');
       await expect(alert).toBeInTheDocument();
     });
-    
+
     await step('Hover interaction', async () => {
       const alert = canvas.getByRole('alert');
       await userEvent.hover(alert);
-      
+
       // Check if hover styles are applied
       const computedStyle = window.getComputedStyle(alert);
       await expect(computedStyle.transform).not.toBe('none');
     });
-    
+
     await step('Unhover interaction', async () => {
       const alert = canvas.getByRole('alert');
       await userEvent.unhover(alert);
-      
+
       // Allow transition to complete
-      await waitFor(() => {
-        const computedStyle = window.getComputedStyle(alert);
-        expect(computedStyle.transform).toBe('none');
-      }, { timeout: 400 });
+      await waitFor(
+        () => {
+          const computedStyle = window.getComputedStyle(alert);
+          expect(computedStyle.transform).toBe('none');
+        },
+        { timeout: 400 },
+      );
     });
   },
 };
@@ -116,19 +122,19 @@ export const KeyboardNavigation: Story = {
   },
   play: async ({ canvasElement, step, args }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Tab navigation to alert', async () => {
       const alert = canvas.getByRole('alert');
       alert.focus();
       await expect(alert).toHaveFocus();
     });
-    
+
     await step('Tab to close button', async () => {
       await userEvent.tab();
       const closeButton = canvas.getByLabelText('close alert');
       await expect(closeButton).toHaveFocus();
     });
-    
+
     await step('Activate close button with Enter', async () => {
       await userEvent.keyboard('{Enter}');
       await waitFor(() => {
@@ -148,20 +154,20 @@ export const ScreenReaderTest: Story = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Verify ARIA attributes', async () => {
       const alert = canvas.getByRole('alert');
       await expect(alert).toHaveAttribute('aria-live', 'assertive');
       await expect(alert).toHaveAttribute('aria-atomic', 'true');
       await expect(alert).toHaveAttribute('role', 'alert');
     });
-    
+
     await step('Verify close button accessibility', async () => {
       const closeButton = canvas.getByLabelText('close alert');
       await expect(closeButton).toBeInTheDocument();
       await expect(closeButton).toHaveAttribute('aria-label', 'close alert');
     });
-    
+
     await step('Verify focusable elements', async () => {
       const alert = canvas.getByRole('alert');
       await expect(alert).toHaveAttribute('tabIndex', '0');
@@ -174,7 +180,7 @@ export const AllVariantsVisual: Story = {
   name: '👁️ All Variants Visual Test',
   render: () => {
     const variants = ['info', 'success', 'warning', 'danger', 'glass', 'gradient'] as const;
-    
+
     return (
       <Stack spacing={2}>
         {variants.map((variant) => (
@@ -193,20 +199,20 @@ export const AllVariantsVisual: Story = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Verify all variants rendered', async () => {
       const variants = ['info', 'success', 'warning', 'danger', 'glass', 'gradient'];
-      
+
       for (const variant of variants) {
         const alert = canvas.getByTestId(`alert-${variant}`);
         await expect(alert).toBeInTheDocument();
       }
     });
-    
+
     await step('Verify visual hierarchy', async () => {
       const titles = canvas.getAllByText(/Alert$/);
       expect(titles).toHaveLength(6);
-      
+
       titles.forEach(async (title) => {
         const computedStyle = window.getComputedStyle(title);
         await expect(parseFloat(computedStyle.fontWeight)).toBeGreaterThanOrEqual(600);
@@ -220,42 +226,43 @@ export const ResponsiveDesign: Story = {
   args: {
     variant: 'info',
     title: 'Responsive Alert',
-    description: 'This alert adapts to different screen sizes. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    description:
+      'This alert adapts to different screen sizes. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     closable: true,
   },
   parameters: {
     viewport: {
       viewports: {
-        mobile: { 
-          name: 'Mobile', 
+        mobile: {
+          name: 'Mobile',
           styles: { width: '375px', height: '667px' },
-          type: 'mobile' 
+          type: 'mobile',
         },
-        tablet: { 
-          name: 'Tablet', 
+        tablet: {
+          name: 'Tablet',
           styles: { width: '768px', height: '1024px' },
-          type: 'tablet'
+          type: 'tablet',
         },
-        desktop: { 
-          name: 'Desktop', 
+        desktop: {
+          name: 'Desktop',
           styles: { width: '1920px', height: '1080px' },
-          type: 'desktop'
-        }
+          type: 'desktop',
+        },
       },
-      defaultViewport: 'mobile'
+      defaultViewport: 'mobile',
     },
     chromatic: {
       viewports: [375, 768, 1920],
-      delay: 300
-    }
+      delay: 300,
+    },
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Verify responsive layout', async () => {
       const alert = canvas.getByRole('alert');
       await expect(alert).toBeInTheDocument();
-      
+
       // Check text wrapping
       const description = canvas.getByText(/Lorem ipsum/);
       const computedStyle = window.getComputedStyle(description);
@@ -269,20 +276,28 @@ export const ThemeVariations: Story = {
   render: () => {
     const lightTheme = createTheme({ palette: { mode: 'light' } });
     const darkTheme = createTheme({ palette: { mode: 'dark' } });
-    
+
     return (
       <Stack spacing={4}>
         <ThemeProvider theme={lightTheme}>
           <Stack spacing={2}>
             <Alert variant="info" title="Light Theme" description="Alert in light theme" />
-            <Alert variant="glass" title="Glass Effect" description="Glass morphism in light theme" />
+            <Alert
+              variant="glass"
+              title="Glass Effect"
+              description="Glass morphism in light theme"
+            />
           </Stack>
         </ThemeProvider>
-        
+
         <ThemeProvider theme={darkTheme}>
           <Stack spacing={2} sx={{ bgcolor: 'background.default', p: 2, borderRadius: 1 }}>
             <Alert variant="info" title="Dark Theme" description="Alert in dark theme" />
-            <Alert variant="glass" title="Glass Effect" description="Glass morphism in dark theme" />
+            <Alert
+              variant="glass"
+              title="Glass Effect"
+              description="Glass morphism in dark theme"
+            />
           </Stack>
         </ThemeProvider>
       </Stack>
@@ -290,7 +305,7 @@ export const ThemeVariations: Story = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Verify theme variations', async () => {
       const alerts = canvas.getAllByRole('alert');
       expect(alerts).toHaveLength(4);
@@ -335,17 +350,17 @@ export const AnimationEffects: Story = {
   ),
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Verify glow effect', async () => {
       const glowAlert = canvas.getByTestId('glow-alert');
       const computedStyle = window.getComputedStyle(glowAlert);
       await expect(computedStyle.boxShadow).toContain('rgb');
     });
-    
+
     await step('Verify animations are applied', async () => {
       const pulseAlert = canvas.getByTestId('pulse-alert');
       await expect(pulseAlert).toBeInTheDocument();
-      
+
       const combinedAlert = canvas.getByTestId('combined-alert');
       await expect(combinedAlert).toBeInTheDocument();
     });
@@ -360,27 +375,32 @@ export const EdgeCases: Story = {
       <Alert variant="info" title="Empty Description" />
       <Alert variant="success" description="No Title Alert" />
       <Alert variant="warning" />
-      <Alert 
-        variant="danger" 
+      <Alert
+        variant="danger"
         title="Very Long Title That Should Wrap Properly When It Exceeds The Container Width"
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
       />
-      <Alert variant="glass" showIcon={false} title="No Icon" description="This alert has no icon" />
+      <Alert
+        variant="glass"
+        showIcon={false}
+        title="No Icon"
+        description="This alert has no icon"
+      />
     </Stack>
   ),
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Verify edge cases handled', async () => {
       const alerts = canvas.getAllByRole('alert');
       expect(alerts).toHaveLength(5);
-      
+
       // All alerts should render without errors
       alerts.forEach(async (alert) => {
         await expect(alert).toBeInTheDocument();
       });
     });
-    
+
     await step('Verify text overflow handling', async () => {
       const longTitle = canvas.getByText(/Very Long Title/);
       const computedStyle = window.getComputedStyle(longTitle);
@@ -399,7 +419,7 @@ export const PerformanceTest: Story = {
       title: `Alert ${i + 1}`,
       description: `Performance test alert number ${i + 1}`,
     }));
-    
+
     return (
       <Stack spacing={1} sx={{ maxHeight: '600px', overflow: 'auto' }}>
         {alerts.map((alert) => (
@@ -416,17 +436,17 @@ export const PerformanceTest: Story = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Measure render performance', async () => {
       const startTime = window.performance.now();
       const alerts = canvas.getAllByRole('alert');
       const endTime = window.performance.now();
-      
+
       const renderTime = endTime - startTime;
       // Log render time for performance monitoring (can be removed in production)
       // eslint-disable-next-line no-console
       console.log(`Render time for ${alerts.length} alerts: ${renderTime}ms`);
-      
+
       expect(alerts).toHaveLength(50);
       await expect(renderTime).toBeLessThan(1000);
     });
@@ -445,21 +465,24 @@ export const StateManagement: Story = {
   },
   play: async ({ canvasElement, step, args }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Initial state', async () => {
       const alert = canvas.getByRole('alert');
       await expect(alert).toBeInTheDocument();
       await expect(alert).toBeVisible();
     });
-    
+
     await step('Close alert', async () => {
       const closeButton = canvas.getByLabelText('close alert');
       await userEvent.click(closeButton);
-      
+
       // Wait for closing animation
-      await waitFor(() => {
-        expect(args.onClose).toHaveBeenCalled();
-      }, { timeout: 500 });
+      await waitFor(
+        () => {
+          expect(args.onClose).toHaveBeenCalled();
+        },
+        { timeout: 500 },
+      );
     });
   },
 };
@@ -476,19 +499,19 @@ export const FocusManagement: Story = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Alert receives focus', async () => {
       const alert = canvas.getByRole('alert');
       alert.focus();
       await expect(alert).toHaveFocus();
     });
-    
+
     await step('Tab to close button', async () => {
       await userEvent.tab();
       const closeButton = canvas.getByLabelText('close alert');
       await expect(closeButton).toHaveFocus();
     });
-    
+
     await step('Tab cycles back', async () => {
       await userEvent.tab();
       // Should cycle back to document or next focusable element
@@ -502,13 +525,13 @@ export const FocusManagement: Story = {
 const FormIntegrationComponent = () => {
   const [showAlert, setShowAlert] = React.useState(false);
   const [alertMessage, setAlertMessage] = React.useState('');
-  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setAlertMessage('Form submitted successfully!');
     setShowAlert(true);
   };
-  
+
   return (
     <Stack spacing={2}>
       {showAlert && (
@@ -523,12 +546,7 @@ const FormIntegrationComponent = () => {
       )}
       <form onSubmit={handleSubmit}>
         <Stack spacing={2}>
-          <input
-            type="text"
-            placeholder="Enter your name"
-            data-testid="form-input"
-            required
-          />
+          <input type="text" placeholder="Enter your name" data-testid="form-input" required />
           <button type="submit" data-testid="form-submit">
             Submit
           </button>
@@ -543,15 +561,15 @@ export const FormIntegration: Story = {
   render: FormIntegrationComponent,
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Fill and submit form', async () => {
       const input = canvas.getByTestId('form-input');
       await userEvent.type(input, 'Test User');
-      
+
       const submitButton = canvas.getByTestId('form-submit');
       await userEvent.click(submitButton);
     });
-    
+
     await step('Alert appears after submission', async () => {
       const alert = await canvas.findByTestId('form-alert');
       await expect(alert).toBeInTheDocument();
@@ -565,21 +583,23 @@ export const CustomIconTest: Story = {
   name: '🎨 Custom Icon Test',
   render: () => {
     const CustomIcon = () => (
-      <div style={{ 
-        width: 24, 
-        height: 24, 
-        borderRadius: '50%',
-        background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: 'white',
-        fontWeight: 'bold'
-      }}>
+      <div
+        style={{
+          width: 24,
+          height: 24,
+          borderRadius: '50%',
+          background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'white',
+          fontWeight: 'bold',
+        }}
+      >
         !
       </div>
     );
-    
+
     return (
       <Stack spacing={2}>
         <Alert
@@ -601,7 +621,7 @@ export const CustomIconTest: Story = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Verify custom icon is rendered', async () => {
       const customAlert = canvas.getByTestId('custom-icon-alert');
       await expect(customAlert).toBeInTheDocument();
@@ -609,7 +629,7 @@ export const CustomIconTest: Story = {
       const customIcon = customAlert.querySelector('.MuiAlert-icon');
       await expect(customIcon).toBeInTheDocument();
     });
-    
+
     await step('Verify no icon when disabled', async () => {
       const noIconAlert = canvas.getByTestId('no-icon-alert');
       await expect(noIconAlert).toBeInTheDocument();
@@ -634,11 +654,11 @@ export const ColorOverrideTest: Story = {
   ),
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Verify all color overrides', async () => {
       const alerts = canvas.getAllByRole('alert');
       expect(alerts).toHaveLength(6);
-      
+
       // Each should have different styling
       alerts.forEach(async (alert) => {
         await expect(alert).toBeInTheDocument();
@@ -649,7 +669,7 @@ export const ColorOverrideTest: Story = {
   },
 };
 
-// Animation Control Test  
+// Animation Control Test
 export const AnimationControl: Story = {
   name: '🎬 Animation Control Test',
   render: () => (
@@ -672,11 +692,11 @@ export const AnimationControl: Story = {
   ),
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Verify animation states', async () => {
       const animatedAlert = canvas.getByTestId('animated-alert');
       const staticAlert = canvas.getByTestId('static-alert');
-      
+
       await expect(animatedAlert).toBeInTheDocument();
       await expect(staticAlert).toBeInTheDocument();
     });

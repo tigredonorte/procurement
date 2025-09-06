@@ -161,16 +161,16 @@ const StyledAlert = styled(MuiAlert, {
       transform: 'translateY(-3px) scale(1.01)',
       boxShadow: `0 8px 20px ${alpha(colorPalette.main, 0.2)}`,
       transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-      
+
       '.MuiAlert-icon': {
         transform: 'scale(1.15) rotate(10deg)',
       },
-      
+
       '&::before': {
         opacity: 1,
       },
     },
-    
+
     // Active state
     '&:active': {
       transform: 'translateY(-1px) scale(0.99)',
@@ -355,22 +355,22 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
     const content = (
       <>
         {title && (
-          <AlertTitle 
-            sx={{ 
+          <AlertTitle
+            sx={{
               fontWeight: 600,
               fontSize: '1.05rem',
-              marginBottom: description ? 0.5 : 0
+              marginBottom: description ? 0.5 : 0,
             }}
           >
             {title}
           </AlertTitle>
         )}
         {description && (
-          <Box 
-            component="div" 
-            sx={{ 
+          <Box
+            component="div"
+            sx={{
               opacity: 0.9,
-              fontSize: '0.925rem'
+              fontSize: '0.925rem',
             }}
           >
             {description}
@@ -381,10 +381,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
     );
 
     return (
-      <Collapse 
-        in={open && !isClosing}
-        timeout={300}
-      >
+      <Collapse in={open && !isClosing} timeout={300}>
         <StyledAlert
           ref={ref}
           severity={severity}
@@ -400,25 +397,25 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
           tabIndex={0}
           action={
             closable && (
-              <IconButton 
-                aria-label="close alert" 
-                color="inherit" 
-                size="small" 
+              <IconButton
+                aria-label="close alert"
+                color="inherit"
+                size="small"
                 onClick={handleClose}
-                sx={{
+                sx={(theme) => ({
                   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                   opacity: 0.7,
                   '&:hover': {
                     transform: 'rotate(90deg) scale(1.1)',
                     opacity: 1,
-                    backgroundColor: alpha(theme => theme.palette.action.hover, 0.1),
+                    backgroundColor: alpha(theme.palette.action.hover, 0.1),
                   },
                   '&:focus': {
                     opacity: 1,
                     outline: 'none',
-                    backgroundColor: alpha(theme => theme.palette.action.focus, 0.1),
+                    backgroundColor: alpha(theme.palette.action.focus, 0.1),
                   },
-                }}
+                })}
               >
                 <Close fontSize="inherit" />
               </IconButton>
