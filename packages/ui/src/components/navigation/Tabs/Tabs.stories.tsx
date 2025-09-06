@@ -49,6 +49,7 @@ import {
 } from '@mui/icons-material';
 
 import { Tabs } from './Tabs';
+import type { TabItem } from './Tabs.types';
 
 const meta = {
   title: 'Navigation/Tabs',
@@ -244,7 +245,7 @@ const NotificationsContent = () => (
 );
 
 // Interactive wrapper component
-const TabsWrapper = ({ initialTab = 'dashboard', items, ...props }: { initialTab?: string; items: any; [key: string]: any }) => {
+const TabsWrapper = ({ initialTab = 'dashboard', items, ...props }: { initialTab?: string; items: TabItem[]; [key: string]: unknown }) => {
   const [activeTab, setActiveTab] = useState(initialTab);
   
   const handleChange = (event: React.SyntheticEvent, tabId: string) => {

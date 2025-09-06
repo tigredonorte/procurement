@@ -16,8 +16,8 @@ import { Close } from '@mui/icons-material';
 import { TabsProps, TabPanelProps, TabItem } from './Tabs.types';
 
 const StyledTabs = styled(MuiTabs, {
-  shouldForwardProp: (prop) => !['variant', 'size', 'showDividers'].includes(prop as string),
-})<{ variant?: string; size?: string; showDividers?: boolean }>(({ theme, variant, size, showDividers }) => ({
+  shouldForwardProp: (prop) => !['customVariant', 'size', 'showDividers'].includes(prop as string),
+})<{ customVariant?: string; size?: string; showDividers?: boolean }>(({ theme, customVariant, size, showDividers }) => ({
   position: 'relative',
   
   // Size variants
@@ -40,7 +40,7 @@ const StyledTabs = styled(MuiTabs, {
   }),
   
   // Default variant (standard Material-UI style)
-  ...(variant === 'default' && {
+  ...(customVariant === 'default' && {
     '& .MuiTabs-indicator': {
       height: 3,
       borderRadius: '3px 3px 0 0',
@@ -49,7 +49,7 @@ const StyledTabs = styled(MuiTabs, {
   }),
   
   // Pills variant (rounded tabs)
-  ...(variant === 'pills' && {
+  ...(customVariant === 'pills' && {
     '& .MuiTabs-indicator': {
       display: 'none',
     },
@@ -74,7 +74,7 @@ const StyledTabs = styled(MuiTabs, {
   }),
   
   // Underline variant (minimal underline indicator)
-  ...(variant === 'underline' && {
+  ...(customVariant === 'underline' && {
     '& .MuiTabs-flexContainer': {
       gap: theme.spacing(2),
     },
@@ -99,7 +99,7 @@ const StyledTabs = styled(MuiTabs, {
   }),
   
   // Enclosed variant (bordered tabs)
-  ...(variant === 'enclosed' && {
+  ...(customVariant === 'enclosed' && {
     '& .MuiTabs-indicator': {
       display: 'none',
     },
@@ -126,7 +126,7 @@ const StyledTabs = styled(MuiTabs, {
   }),
   
   // Show dividers
-  ...(showDividers && variant !== 'enclosed' && variant !== 'pills' && {
+  ...(showDividers && customVariant !== 'enclosed' && customVariant !== 'pills' && {
     '& .MuiTab-root:not(:last-child)': {
       borderRight: `1px solid ${alpha(theme.palette.divider, 0.5)}`,
     },
@@ -317,12 +317,12 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
           {...props}
           value={value}
           onChange={handleChange}
-          variant={variant as any}
-          size={size as any}
-          showDividers={showDividers as any}
+          customVariant={variant}
+          size={size}
+          showDividers={showDividers}
           orientation={orientation}
           centered={centered}
-          scrollButtons={scrollable ? scrollButtons : false}
+          scrollButtons={scrollable ? (scrollButtons === 'on' || scrollButtons === 'off' || scrollButtons === 'desktop' ? 'auto' : scrollButtons) : false}
           allowScrollButtonsMobile={scrollable}
           textColor={color}
           indicatorColor={color}

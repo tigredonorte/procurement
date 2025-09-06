@@ -48,7 +48,7 @@ export interface TabItem {
   onClose?: () => void;
 }
 
-export interface TabsProps extends Omit<MuiTabsProps, 'variant' | 'children' | 'indicatorColor'> {
+export interface TabsProps extends Omit<MuiTabsProps, 'variant' | 'children' | 'indicatorColor' | 'scrollButtons'> {
   /**
    * The visual variant of the tabs
    */
