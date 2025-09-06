@@ -1,4 +1,5 @@
 import { CheckboxProps as MuiCheckboxProps } from '@mui/material';
+import { ChangeEvent, MouseEventHandler, FocusEventHandler } from 'react';
 
 export type CheckboxVariant = 'default' | 'rounded' | 'toggle';
 
@@ -11,8 +12,9 @@ export interface CheckboxProps extends Omit<MuiCheckboxProps, 'variant'> {
   ripple?: boolean;
   glow?: boolean;
   pulse?: boolean;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
-  onFocus?: React.FocusEventHandler<HTMLButtonElement>;
-  onBlur?: React.FocusEventHandler<HTMLButtonElement>;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  'data-testid'?: string;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  onFocus?: FocusEventHandler<HTMLButtonElement>;
+  onBlur?: FocusEventHandler<HTMLButtonElement>;
+  onChange?: (event: ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 }
