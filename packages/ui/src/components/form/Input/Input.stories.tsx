@@ -15,7 +15,7 @@ const meta = {
   argTypes: {
     variant: {
       control: { type: 'select' },
-      options: ['outlined', 'filled', 'glass', 'underline'],
+      options: ['outlined', 'filled', 'glass', 'underline', 'gradient'],
     },
     size: {
       control: { type: 'select' },
@@ -51,6 +51,7 @@ export const Variants: Story = {
       <Input variant="filled" label="Filled" placeholder="Filled input" />
       <Input variant="glass" label="Glass" placeholder="Glass morphism input" />
       <Input variant="underline" label="Underline" placeholder="Underline input" />
+      <Input variant="gradient" label="Gradient" placeholder="Gradient border input" />
     </div>
   ),
 };
@@ -132,6 +133,80 @@ export const ErrorStates: Story = {
   ),
 };
 
+// Enhanced Visual Effects Stories
+export const VisualEffects: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', width: '300px', backgroundColor: '#f5f5f5', padding: '24px', borderRadius: '8px' }}>
+      <Input variant="glass" label="Glow Effect" placeholder="Focus me!" glow />
+      <Input variant="outlined" label="Pulse Animation" placeholder="Watch me pulse" pulse />
+      <Input variant="gradient" label="Loading State" placeholder="Processing..." loading />
+      <Input variant="glass" label="Combined Effects" placeholder="Glow + Float" glow floating />
+    </div>
+  ),
+};
+
+// Interactive States
+export const InteractiveStates: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '300px' }}>
+      <Input label="Default State" placeholder="Type here..." />
+      <Input label="Disabled State" placeholder="Cannot type" disabled />
+      <Input label="Readonly State" placeholder="Read only" value="Cannot change this" readOnly />
+      <Input label="Required Field" placeholder="This is required" required />
+    </div>
+  ),
+};
+
+// Different Input Types
+export const InputTypes: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '300px' }}>
+      <Input type="text" label="Text Input" placeholder="Enter text" />
+      <Input type="email" label="Email Input" placeholder="email@example.com" />
+      <Input type="password" label="Password Input" placeholder="Enter password" />
+      <Input type="number" label="Number Input" placeholder="123" />
+      <Input type="tel" label="Phone Input" placeholder="+1 (555) 123-4567" />
+      <Input type="url" label="URL Input" placeholder="https://example.com" />
+    </div>
+  ),
+};
+
+// Edge Cases
+export const EdgeCases: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '300px' }}>
+      <Input label="Long Text Overflow" defaultValue="This is a very long text that should show how the input handles overflow and long content gracefully" />
+      <Input label="Empty with Floating" floating placeholder="Floating label behavior" />
+      <Input label="No Full Width" fullWidth={false} placeholder="Not full width" />
+      <Input variant="glass" label="Glass + All Props" 
+        placeholder="Kitchen sink example"
+        glow pulse floating
+        helperText="This has all visual effects enabled"
+      />
+    </div>
+  ),
+};
+
+// Responsive Design Test
+export const ResponsiveDemo: Story = {
+  render: () => (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '16px' }}>
+      <Input variant="outlined" label="Responsive 1" placeholder="Resize window" />
+      <Input variant="glass" label="Responsive 2" placeholder="Watch layout" />
+      <Input variant="gradient" label="Responsive 3" placeholder="Adapt to screen" />
+    </div>
+  ),
+  parameters: {
+    viewport: {
+      viewports: {
+        mobile: { name: 'Mobile', styles: { width: '375px', height: '667px' }},
+        tablet: { name: 'Tablet', styles: { width: '768px', height: '1024px' }},
+        desktop: { name: 'Desktop', styles: { width: '1200px', height: '800px' }},
+      }
+    }
+  },
+};
+
 export const Playground: Story = {
   args: {
     variant: 'outlined',
@@ -140,6 +215,9 @@ export const Playground: Story = {
     placeholder: 'Type something...',
     fullWidth: true,
     floating: false,
+    glow: false,
+    pulse: false,
+    loading: false,
     error: false,
     helperText: 'This is helper text',
   },

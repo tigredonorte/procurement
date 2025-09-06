@@ -13,11 +13,21 @@ const meta: Meta<typeof Select> = {
   argTypes: {
     variant: {
       control: { type: 'select' },
-      options: ['default', 'searchable', 'multi', 'creatable'],
+      options: ['default', 'glass', 'gradient'],
+      description: 'Visual variant of the select component',
     },
     size: {
       control: { type: 'select' },
       options: ['small', 'medium'],
+      description: 'Size of the select component',
+    },
+    glow: {
+      control: 'boolean',
+      description: 'Whether to show a glow effect',
+    },
+    pulse: {
+      control: 'boolean', 
+      description: 'Whether to show a pulse animation',
     },
   },
 };
@@ -146,14 +156,127 @@ export const NoFullWidth: Story = {
   },
 };
 
+export const GlassVariant: Story = {
+  args: {
+    options: countryOptions,
+    label: 'Glass Select',
+    variant: 'glass',
+    placeholder: 'Choose an option',
+    helperText: 'Glass variant with blur effect',
+  },
+};
+
+export const GradientVariant: Story = {
+  args: {
+    options: defaultOptions,
+    label: 'Gradient Select',
+    variant: 'gradient', 
+    placeholder: 'Choose an option',
+    helperText: 'Gradient variant with colorful border',
+  },
+};
+
+export const AllVariants: Story = {
+  render: () => (
+    <Stack spacing={3} sx={{ width: 400 }}>
+      <Select
+        options={defaultOptions}
+        label="Default Variant"
+        variant="default"
+        placeholder="Default style"
+        helperText="Standard Material-UI select"
+      />
+      <Select
+        options={defaultOptions}
+        label="Glass Variant"
+        variant="glass"
+        placeholder="Glass style"
+        helperText="Glassmorphism effect with blur"
+      />
+      <Select
+        options={defaultOptions}
+        label="Gradient Variant"
+        variant="gradient"
+        placeholder="Gradient style"
+        helperText="Gradient border effect"
+      />
+    </Stack>
+  ),
+};
+
+export const WithGlowEffect: Story = {
+  args: {
+    options: countryOptions,
+    label: 'Glow Select',
+    placeholder: 'Choose with glow',
+    glow: true,
+    helperText: 'Select with glow effect',
+  },
+};
+
+export const WithPulseAnimation: Story = {
+  args: {
+    options: defaultOptions,
+    label: 'Pulse Select',
+    placeholder: 'Choose with pulse',
+    pulse: true,
+    helperText: 'Select with pulse animation',
+  },
+};
+
+export const CombinedEffects: Story = {
+  render: () => (
+    <Stack spacing={3} sx={{ width: 400 }}>
+      <Select
+        options={defaultOptions}
+        label="Glass + Glow"
+        variant="glass"
+        glow={true}
+        placeholder="Glass with glow"
+        helperText="Glass variant with glow effect"
+      />
+      <Select
+        options={defaultOptions}
+        label="Gradient + Pulse"
+        variant="gradient"
+        pulse={true}
+        placeholder="Gradient with pulse"
+        helperText="Gradient variant with pulse animation"
+      />
+      <Select
+        options={countryOptions}
+        label="All Effects"
+        variant="glass"
+        glow={true}
+        pulse={true}
+        placeholder="All effects combined"
+        helperText="Glass with glow and pulse effects"
+      />
+    </Stack>
+  ),
+};
+
+export const DisabledState: Story = {
+  args: {
+    options: defaultOptions,
+    label: 'Disabled Select',
+    placeholder: 'Cannot interact',
+    disabled: true,
+    helperText: 'This select is disabled',
+  },
+};
+
 export const Playground: Story = {
   args: {
     options: countryOptions,
     label: 'Playground Select',
     placeholder: 'Choose an option',
+    variant: 'default',
     size: 'medium',
     fullWidth: true,
     error: false,
+    glow: false,
+    pulse: false,
     helperText: 'This is a playground select component',
   },
 };

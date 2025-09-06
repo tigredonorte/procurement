@@ -899,6 +899,10 @@ npx storybook dev --host 0.0.0.0 --port 6007
 - Checkbox ✓ (completed) - alfa - 2025-09-06 18:45
 - Input ✓ (completed) [alfa] - 2025-09-06 08:00
 - Switch ✓ (completed) [alfa] - 2025-09-06 14:30 - Comprehensive testing and verification complete
+- Card (working) [Omega-2] - 2025-09-06 15:00
+- AspectRatio (working) [Omega-5] - 2025-09-06 20:45
+- Label (working) [Omega-3] - 2025-09-06 19:00
+- Alert (working) [Omega-1] - 2025-09-06 15:00
 
 ### Status Definitions
 

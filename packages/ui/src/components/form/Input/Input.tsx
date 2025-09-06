@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { TextField, alpha, styled, InputAdornment, keyframes, CircularProgress } from '@mui/material';
 
 import { InputProps } from './Input.types';
@@ -19,7 +19,10 @@ const pulseAnimation = keyframes`
   }
 `;
 
-const StyledTextField = styled(TextField)<{ 
+const StyledTextField = styled(TextField, {
+  shouldForwardProp: (prop) => 
+    !['customVariant', 'floating', 'glow', 'pulse', 'loading'].includes(prop as string),
+})<{ 
   customVariant?: InputProps['variant'];
   floating?: boolean;
   glow?: boolean;
@@ -181,18 +184,16 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     onClick,
     onFocus,
     onBlur,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     color, // Extract color to prevent passing to MUI
     ...props
   }, ref) => {
-    const [focused, setFocused] = useState(false);
     
     const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-      setFocused(true);
       onFocus?.(e);
     };
     
     const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-      setFocused(false);
       onBlur?.(e);
     };
     
@@ -206,7 +207,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <StyledTextField
         ref={ref}
-        variant={muiVariant as any}
+        variant={muiVariant as 'outlined' | 'filled' | 'standard'}
         customVariant={variant}
         floating={floating}
         glow={glow}

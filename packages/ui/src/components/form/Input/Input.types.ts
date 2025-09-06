@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, ReactNode } from 'react';
+import React, { InputHTMLAttributes, ReactNode } from 'react';
 
 export type InputVariant = 'outlined' | 'filled' | 'glass' | 'underline' | 'gradient';
 export type InputSize = 'sm' | 'md' | 'lg';

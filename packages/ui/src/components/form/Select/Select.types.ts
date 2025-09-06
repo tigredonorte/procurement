@@ -1,7 +1,6 @@
 import { SelectProps as MuiSelectProps } from '@mui/material';
-import { ReactNode } from 'react';
 
-export type SelectVariant = 'default' | 'searchable' | 'multi' | 'creatable' | 'glass' | 'gradient';
+export type SelectVariant = 'default' | 'glass' | 'gradient';
 
 export interface SelectOption {
   value: string | number;
@@ -10,19 +9,45 @@ export interface SelectOption {
 }
 
 export interface SelectProps extends Omit<MuiSelectProps, 'variant'> {
+  /**
+   * Visual variant of the select component
+   * @default 'default'
+   */
   variant?: SelectVariant;
+  /**
+   * Array of options to display in the select
+   */
   options: SelectOption[];
+  /**
+   * Label for the select field
+   */
   label?: string;
+  /**
+   * Helper text to display below the select
+   */
   helperText?: string;
+  /**
+   * Whether the select should take full width
+   * @default true
+   */
   fullWidth?: boolean;
+  /**
+   * Size of the select component
+   * @default 'medium'
+   */
   size?: 'small' | 'medium';
+  /**
+   * Placeholder text when no option is selected
+   */
   placeholder?: string;
+  /**
+   * Whether to show a glow effect
+   * @default false
+   */
   glow?: boolean;
+  /**
+   * Whether to show a pulse animation
+   * @default false
+   */
   pulse?: boolean;
-  loading?: boolean;
-  ripple?: boolean;
-  onClick?: React.MouseEventHandler<HTMLDivElement>;
-  onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  onBlur?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  onChange?: (event: any, child?: ReactNode) => void;
 }

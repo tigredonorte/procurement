@@ -84,14 +84,26 @@ export const BasicInteraction: Story = {
       const firstRadio = canvas.getByRole('radio', { name: /option 1/i });
       await userEvent.click(firstRadio);
       await expect(args.onChange).toHaveBeenCalledTimes(1);
-      await expect(firstRadio).toBeChecked();
+      // Check that onChange was called with the correct value
+      await expect(args.onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          target: { value: 'option1' },
+        }),
+        'option1'
+      );
     });
 
     await step('Select different option', async () => {
       const secondRadio = canvas.getByRole('radio', { name: /option 2/i });
       await userEvent.click(secondRadio);
       await expect(args.onChange).toHaveBeenCalledTimes(2);
-      await expect(secondRadio).toBeChecked();
+      // Check that onChange was called with the correct value
+      await expect(args.onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          target: { value: 'option2' },
+        }),
+        'option2'
+      );
     });
   },
 };

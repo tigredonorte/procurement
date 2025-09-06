@@ -23,6 +23,18 @@ const meta = {
       control: { type: 'select' },
       options: ['small', 'medium', 'large'],
     },
+    loading: {
+      control: { type: 'boolean' },
+    },
+    ripple: {
+      control: { type: 'boolean' },
+    },
+    glow: {
+      control: { type: 'boolean' },
+    },
+    pulse: {
+      control: { type: 'boolean' },
+    },
   },
 } satisfies Meta<typeof Checkbox>;
 
@@ -38,9 +50,9 @@ export const Default: Story = {
 export const Variants: Story = {
   render: () => (
     <Stack spacing={2}>
-      <Checkbox variant="default" label="Default checkbox" />
-      <Checkbox variant="rounded" label="Rounded checkbox" />
-      <Checkbox variant="toggle" label="Toggle-style checkbox" />
+      <Checkbox variant="default" label="Default checkbox" defaultChecked />
+      <Checkbox variant="rounded" label="Rounded checkbox" defaultChecked />
+      <Checkbox variant="toggle" label="Toggle-style checkbox" defaultChecked />
     </Stack>
   ),
 };
@@ -119,6 +131,47 @@ export const ErrorState: Story = {
   },
 };
 
+export const LoadingState: Story = {
+  render: () => (
+    <Stack spacing={2}>
+      <Checkbox label="Loading checkbox" loading />
+      <Checkbox label="Loading with text" loading defaultChecked />
+      <Checkbox loading /> {/* Without label */}
+    </Stack>
+  ),
+};
+
+export const AnimationEffects: Story = {
+  render: () => (
+    <Stack spacing={2}>
+      <Checkbox label="Glow effect" glow defaultChecked />
+      <Checkbox label="Pulse effect" pulse defaultChecked />
+      <Checkbox label="No ripple effect" ripple={false} />
+      <Checkbox label="All effects" glow pulse defaultChecked />
+    </Stack>
+  ),
+};
+
+export const Accessibility: Story = {
+  render: () => (
+    <Stack spacing={2}>
+      <Checkbox 
+        label="Accessible checkbox"
+        data-testid="accessible-checkbox"
+        aria-describedby="checkbox-description"
+      />
+      <div id="checkbox-description">This checkbox has proper accessibility attributes</div>
+      <Checkbox 
+        label="Required field"
+        required
+        error
+        helperText="This field is required"
+        data-testid="required-checkbox"
+      />
+    </Stack>
+  ),
+};
+
 export const Playground: Story = {
   args: {
     variant: 'default',
@@ -130,5 +183,9 @@ export const Playground: Story = {
     indeterminate: false,
     error: false,
     helperText: '',
+    loading: false,
+    ripple: true,
+    glow: false,
+    pulse: false,
   },
 };

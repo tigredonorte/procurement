@@ -1,5 +1,5 @@
 import { SwitchProps as MuiSwitchProps } from '@mui/material';
-import React from 'react';
+import { ReactNode, MouseEventHandler, FocusEventHandler } from 'react';
 
 export interface SwitchProps extends Omit<MuiSwitchProps, 'color' | 'size'> {
   /**
@@ -50,12 +50,12 @@ export interface SwitchProps extends Omit<MuiSwitchProps, 'color' | 'size'> {
   /**
    * Icon to show when switch is on
    */
-  onIcon?: React.ReactNode;
+  onIcon?: ReactNode;
   
   /**
    * Icon to show when switch is off
    */
-  offIcon?: React.ReactNode;
+  offIcon?: ReactNode;
   
   /**
    * Text to show when switch is on
@@ -110,20 +110,16 @@ export interface SwitchProps extends Omit<MuiSwitchProps, 'color' | 'size'> {
   /**
    * Click handler
    */
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
   
   /**
    * Focus handler
    */
-  onFocus?: React.FocusEventHandler<HTMLButtonElement>;
+  onFocus?: FocusEventHandler<HTMLButtonElement>;
   
   /**
    * Blur handler
    */
-  onBlur?: React.FocusEventHandler<HTMLButtonElement>;
+  onBlur?: FocusEventHandler<HTMLButtonElement>;
   
-  /**
-   * Change handler
-   */
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 }

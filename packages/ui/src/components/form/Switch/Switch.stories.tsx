@@ -15,7 +15,7 @@ const meta: Meta<typeof Switch> = {
   argTypes: {
     variant: {
       control: { type: 'select' },
-      options: ['default', 'ios', 'android', 'label'],
+      options: ['default', 'ios', 'android', 'label', 'material'],
     },
     color: {
       control: { type: 'select' },
@@ -56,6 +56,7 @@ const [states, setStates] = useState({
       default: false,
       ios: false,
       android: false,
+      material: false,
       label: false,
     });
 
@@ -88,6 +89,16 @@ const [states, setStates] = useState({
             label="Android style switch"
             checked={states.android}
             onChange={(e) => setStates(prev => ({ ...prev, android: e.target.checked }))}
+          />
+        </Box>
+        
+        <Box>
+          <Typography variant="h6" gutterBottom>Material Design</Typography>
+          <Switch
+            variant="material"
+            label="Material design switch"
+            checked={states.material}
+            onChange={(e) => setStates(prev => ({ ...prev, material: e.target.checked }))}
           />
         </Box>
         
@@ -423,6 +434,58 @@ export const CustomSizes: Story = {
   render: () => <CustomSizesComponent />,
 };
 
+const AdvancedFeaturesComponent = () => {
+  const [states, setStates] = useState({
+    loading: true,
+    ripple: false,
+    pulse: true,
+  });
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+      <Box>
+        <Typography variant="h6" gutterBottom>Loading State</Typography>
+        <Switch
+          loading
+          label="Processing..."
+          description="Switch is in loading state"
+          color="primary"
+          checked={states.loading}
+          onChange={(e) => setStates(prev => ({ ...prev, loading: e.target.checked }))}
+        />
+      </Box>
+      
+      <Box>
+        <Typography variant="h6" gutterBottom>Ripple Effect</Typography>
+        <Switch
+          ripple
+          label="Ripple on hover"
+          description="Hover over the switch to see ripple effect"
+          color="secondary"
+          checked={states.ripple}
+          onChange={(e) => setStates(prev => ({ ...prev, ripple: e.target.checked }))}
+        />
+      </Box>
+      
+      <Box>
+        <Typography variant="h6" gutterBottom>Pulse Animation</Typography>
+        <Switch
+          pulse
+          label="Pulsing switch"
+          description="Continuous pulse animation"
+          color="success"
+          checked={states.pulse}
+          onChange={(e) => setStates(prev => ({ ...prev, pulse: e.target.checked }))}
+        />
+      </Box>
+    </Box>
+  );
+};
+
+export const AdvancedFeatures: Story = {
+  render: () => <AdvancedFeaturesComponent />,
+};
+
 export const Playground: Story = {
   args: {
     label: 'Toggle Setting',
@@ -438,5 +501,8 @@ export const Playground: Story = {
     helperText: '',
     onText: '',
     offText: '',
+    loading: false,
+    ripple: false,
+    pulse: false,
   },
 };
