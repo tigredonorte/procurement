@@ -115,6 +115,12 @@ export const Separator: React.FC<SeparatorProps> = ({
           borderBottomWidth: 0,
           borderLeftWidth: 0,
           borderRightWidth: 0,
+          borderBottomStyle: 'none',
+          borderLeftStyle: 'none',
+          borderRightStyle: 'none',
+          borderBottomColor: 'transparent',
+          borderLeftColor: 'transparent',
+          borderRightColor: 'transparent',
         }
       : {
           borderLeftWidth: thickness,
@@ -123,6 +129,12 @@ export const Separator: React.FC<SeparatorProps> = ({
           borderTopWidth: 0,
           borderBottomWidth: 0,
           borderRightWidth: 0,
+          borderTopStyle: 'none',
+          borderBottomStyle: 'none',
+          borderRightStyle: 'none',
+          borderTopColor: 'transparent',
+          borderBottomColor: 'transparent',
+          borderRightColor: 'transparent',
         };
 
     return {

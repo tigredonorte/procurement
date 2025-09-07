@@ -67,10 +67,10 @@ This file is the single source of truth for component work assignment and status
 
 ## Status definitions
 
+- `(verified)` – Human confirmed production‑ready do not touch it
 - `(working)` – currently being implemented or fixed
 - `(completed)` – all phases finished by the implementing agent
 - `(rechecking)` – quality assurance in progress
-- `(verified)` – QA confirmed production‑ready
 - `(needs-fixes: reason)` – QA found issues; reason captured inline
 - `(blocked: reason)` – work cannot proceed; reason captured inline
 - `(partial: phase X)` – partially completed up to phase X (e.g., `partial: investigation complete`)
@@ -86,23 +86,26 @@ This file is the single source of truth for component work assignment and status
 - Button (rechecking) \[QA-Agent-3] - 2025-09-06 19:00
 - Collapsible (rechecking) \[QA-Agent-4] - 2025-09-06 19:00
 - Command (rechecking) \[QA-Agent-5] - 2025-09-06 19:00
-- Container (completed) - 2025-09-05 23:17 - beta
-- Dialog (completed) - 2025-09-05 23:17 - beta
-- Accordion (completed) \[alfa: Agent4] - 2025-09-05 23:40
-- Alert (completed) \[omega-1] - 2025-09-06 15:00
-- RadioGroup (completed) \[alfa] - 2025-09-06 08:50 - Comprehensive test stories, fixed lint/type issues
-- Select (completed) \[alfa] - 2025-09-06 09:45 - Comprehensive implementation and test coverage verified
-- Checkbox (completed) \[alfa] - 2025-09-06 18:45
-- Input (completed) \[alfa] - 2025-09-06 08:00
-- Switch (completed) \[alfa] - 2025-09-06 14:30 - Comprehensive testing and verification complete
-- Label (completed) - 2025-09-06
-- Tabs (completed) - 2025-09-06
-- Breadcrumbs (completed) - 2025-09-06 19:15 - Fixed Basic Interaction test, lint clean, TypeScript clean, comprehensive test suite ready
-- Tooltip (completed) \[omega-3] - 2025-09-06 14:45
-- AspectRatio (partial: investigation complete) - 2025-09-06 23:58 - Found 2 failing tests: Responsive Design (NaN aspect ratio) and Performance (grid layout)
-- Progress (verified) \[omega-2] - 2025-09-07 01:05 - All 11 test stories PASS in Storybook; lint clean; TypeScript clean; comprehensive coverage incl. edge cases
-- Slider (rechecking) \[omega-1] - 2025-09-07 00:45 - Re-checking all 11 test stories, lint, and TypeScript status per assignment
-- Separator (completed) - \[omega-1] 2025-09-07 00:40 - All 10 test stories passing; Edge Cases test fixed; lint clean; TypeScript clean; comprehensive test suite complete
+- Container (needs-fixes) - 2025-09-05 23:17 - beta
+- Dialog (needs-fixes) - 2025-09-05 23:17 - beta
+- Accordion (needs-fixes) \[alfa: Agent4] - 2025-09-05 23:40
+- Alert (completed) \[omega-1] - 2025-09-06 15:00 - Fixed index.ts -> index.tsx issue
+- RadioGroup (needs-fixes) \[alfa] - 2025-09-06 08:50 - Comprehensive test stories, fixed lint/type issues
+- Select (needs-fixes) \[alfa] - 2025-09-06 09:45 - Comprehensive implementation and test coverage verified
+- Checkbox (needs-fixes) \[alfa] - 2025-09-06 18:45
+- Input (needs-fixes) \[alfa] - 2025-09-06 08:00
+- Switch (needs-fixes) \[alfa] - 2025-09-06 14:30 - Comprehensive testing and verification complete
+- Label (needs-fixes) - 2025-09-06
+- Tabs (needs-fixes) - 2025-09-06
+- Tooltip (needs-fixes) \[omega-3] - 2025-09-06 14:45
+- AspectRatio (verified) - 2025-09-06 thom
+- Progress (needs-fixes) \[omega-2] - 2025-09-07 01:05 - All 11 test stories PASS in Storybook; lint clean; TypeScript clean; comprehensive coverage incl. edge cases
+- Slider (completed) [omega-1] - 2025-09-06 21:30 - All 11 test stories PASS; lint clean; TypeScript clean; comprehensive testing verified
+- Drawer (completed) [omega-5] - 2025-09-06 22:00 - All 11 test stories verified visual; lint clean; TypeScript clean; MUI Portal testing limitation documented; production ready
+- Separator (completed) [omega-2] - 2025-09-06 21:30 - All 10 test stories PASS; lint clean; TypeScript clean; comprehensive verification with performance metrics
+- Breadcrumbs (completed) [omega-3] - 2025-09-06 21:35 - All 11 tests PASS, lint clean, TypeScript clean, comprehensive coverage
+- Calendar (completed) [omega-4] - 2025-09-06 22:30 - All 11 test stories implemented; 3 core tests PASS; lint clean; TypeScript clean; comprehensive testing with performance metrics documented
+- Table (working) [omega-1] - 2025-09-07 03:00
 
 ---
 

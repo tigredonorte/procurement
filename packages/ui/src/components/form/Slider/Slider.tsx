@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import { Slider as MuiSlider, Box, Typography, alpha, keyframes } from '@mui/material';
+import { Slider as MuiSlider, Box, Typography, alpha, keyframes, Theme } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 import { SliderProps } from './Slider.types';
@@ -43,47 +43,32 @@ const gradientShiftAnimation = keyframes`
   }
 `;
 
-const getColorFromTheme = (
-  theme: {
-    palette: {
-      primary: { main: string; dark?: string; light?: string };
-      secondary: { main: string; dark?: string; light?: string };
-      success: { main: string; dark?: string; light?: string };
-      warning: { main: string; dark?: string; light?: string };
-      error: { main: string; dark?: string; light?: string };
-      grey?: { [key: number]: string };
-    };
-  },
-  color: string,
-) => {
+const getColorFromTheme = (theme: Theme, color: string) => {
   if (color === 'neutral') {
     return {
-      main: theme.palette.grey?.[700] || '#616161',
-      dark: theme.palette.grey?.[800] || '#424242',
-      light: theme.palette.grey?.[500] || '#9e9e9e',
+      main: theme.palette.grey[700],
+      dark: theme.palette.grey[800],
+      light: theme.palette.grey[500],
       contrastText: '#fff',
     };
   }
 
-  const colorMap: Record<
-    string,
-    { main: string; dark?: string; light?: string; contrastText?: string }
-  > = {
+  const colorMap = {
     primary: theme.palette.primary,
     secondary: theme.palette.secondary,
     success: theme.palette.success,
     warning: theme.palette.warning,
     danger: theme.palette.error,
-  };
+  } as const;
 
-  const palette = colorMap[color] || theme.palette.primary;
+  const palette = colorMap[color as keyof typeof colorMap] || theme.palette.primary;
 
   // Ensure palette has required properties
   return {
-    main: palette?.main || theme.palette.primary.main,
-    dark: palette?.dark || palette?.main || theme.palette.primary.dark,
-    light: palette?.light || palette?.main || theme.palette.primary.light,
-    contrastText: palette?.contrastText || '#fff',
+    main: palette.main,
+    dark: palette.dark || palette.main,
+    light: palette.light || palette.main,
+    contrastText: palette.contrastText || '#fff',
   };
 };
 
@@ -149,7 +134,7 @@ const StyledSlider = styled(MuiSlider, {
       ...(glass && {
         backgroundColor: alpha(colorPalette.main, 0.8),
         backdropFilter: 'blur(10px)',
-        border: `1px solid ${alpha(colorPalette.light, 0.3)}`,
+        border: `1px solid ${alpha(colorPalette.light || colorPalette.main, 0.3)}`,
       }),
       '&::after': gradient
         ? {
@@ -313,8 +298,8 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(
     ref,
   ) => {
     const displayValue = Array.isArray(value)
-      ? `${formatValue ? formatValue(value[0]) : value[0]}${unit} - ${formatValue ? formatValue(value[1]) : value[1]}${unit}`
-      : `${formatValue ? formatValue(value as number) : value}${unit}`;
+      ? `${formatValue ? formatValue(value[0] ?? 0) : (value[0] ?? 0)}${unit} - ${formatValue ? formatValue(value[1] ?? 0) : (value[1] ?? 0)}${unit}`
+      : `${formatValue ? formatValue((value as number) ?? 0) : (value ?? 0)}${unit}`;
 
     const marks =
       variant === 'marks' || showMarks
