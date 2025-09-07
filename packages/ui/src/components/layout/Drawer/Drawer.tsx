@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Drawer as MuiDrawer,
-  Box,
-  IconButton,
-  Typography,
-  useTheme,
-  alpha,
-} from '@mui/material';
+import { Drawer as MuiDrawer, Box, IconButton, Typography, useTheme, alpha } from '@mui/material';
 import { Close } from '@mui/icons-material';
 
 import { DrawerProps, DrawerHeaderProps, DrawerContentProps } from './Drawer.types';
@@ -20,17 +13,16 @@ export const Drawer: React.FC<DrawerProps> = ({
   width = 280,
   height = '100%',
   persistent = false,
-  temporary = true,
   backdrop = true,
   hideBackdrop = false,
   keepMounted = false,
   className,
 }) => {
   const theme = useTheme();
-  
+
   const getAnchor = (): 'left' | 'right' | 'top' | 'bottom' => {
     if (anchor) return anchor;
-    
+
     // Map variant to anchor position
     switch (variant) {
       case 'right':
@@ -118,11 +110,7 @@ export const DrawerHeader: React.FC<DrawerHeaderProps> = ({
       }}
     >
       <Box sx={{ flex: 1 }}>
-        {typeof children === 'string' ? (
-          <Typography variant="h6">{children}</Typography>
-        ) : (
-          children
-        )}
+        {typeof children === 'string' ? <Typography variant="h6">{children}</Typography> : children}
       </Box>
       {showCloseButton && onClose && (
         <IconButton onClick={onClose} edge="end">
@@ -133,10 +121,7 @@ export const DrawerHeader: React.FC<DrawerHeaderProps> = ({
   );
 };
 
-export const DrawerContent: React.FC<DrawerContentProps> = ({
-  children,
-  padding = true,
-}) => {
+export const DrawerContent: React.FC<DrawerContentProps> = ({ children, padding = true }) => {
   const theme = useTheme();
 
   return (

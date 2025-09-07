@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container as MuiContainer, useTheme } from '@mui/material';
+import type { SxProps, Theme } from '@mui/material/styles';
 
 import { ContainerProps } from './Container.types';
 
@@ -26,16 +27,17 @@ export const Container: React.FC<ContainerProps> = ({
     return paddingMap[padding] || theme.spacing(3);
   };
 
-  const getMaxWidth = () => {
+  const getMaxWidth = (): 'xs' | 'sm' | 'md' | 'lg' | 'xl' | false => {
     if (variant === 'fluid') return false;
     if (variant === 'centered') return 'md';
     if (typeof maxWidth === 'string' && ['xs', 'sm', 'md', 'lg', 'xl'].includes(maxWidth)) {
-      return maxWidth as 'xs' | 'sm' | 'md' | 'lg' | 'xl' | false;
+      return maxWidth as 'xs' | 'sm' | 'md' | 'lg' | 'xl';
     }
-    return maxWidth;
+    if (maxWidth === false) return false;
+    return 'lg'; // default fallback
   };
 
-  const containerStyles = {
+  const containerStyles: SxProps<Theme> = {
     ...(variant === 'centered' && {
       display: 'flex',
       flexDirection: 'column',
@@ -53,15 +55,11 @@ export const Container: React.FC<ContainerProps> = ({
         padding: theme.spacing(2),
       },
     }),
-    ...sx,
+    ...(sx || {}),
   };
 
   return (
-    <MuiContainer
-      maxWidth={getMaxWidth()}
-      sx={containerStyles}
-      {...props}
-    >
+    <MuiContainer maxWidth={getMaxWidth()} sx={containerStyles} {...props}>
       {children}
     </MuiContainer>
   );
