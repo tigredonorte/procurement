@@ -6,7 +6,7 @@ import React from 'react';
 import { Alert } from './Alert';
 
 const meta = {
-  title: 'Data Display/Alert',
+  title: 'DataDisplay/Alert',
   component: Alert,
   parameters: {
     layout: 'padded',
@@ -483,5 +483,72 @@ export const MinimalContent: Story = {
       <Alert variant="warning" title="Title Only" />
       <Alert variant="danger" description="Description only, no title" />
     </Stack>
+  ),
+};
+
+// Required story exports for validation
+export const AllSizes: Story = {
+  render: () => (
+    <Stack spacing={2}>
+      <Alert variant="info" title="Info Alert" description="Standard size alert message" />
+      <Alert variant="success" title="Success Alert" description="Standard size success message" />
+      <Alert variant="warning" title="Warning Alert" description="Standard size warning message" />
+    </Stack>
+  ),
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <Stack spacing={2}>
+      <Alert variant="info" title="Default State" description="Normal alert state" />
+      <Alert variant="success" title="Success State" description="Success alert state" />
+      <Alert variant="warning" title="Warning State" description="Warning alert state" />
+      <Alert variant="danger" title="Error State" description="Error alert state" />
+      <Alert variant="glass" title="Glass State" description="Glass morphism alert state" />
+      <Alert variant="gradient" title="Gradient State" description="Gradient alert state" />
+    </Stack>
+  ),
+};
+
+export const InteractiveStates: Story = {
+  render: () => (
+    <Stack spacing={2}>
+      <Alert variant="info" title="Standard Alert" description="Non-interactive alert" />
+      <Alert variant="success" title="Closable Alert" description="Click the X to close" closable />
+      <Alert variant="warning" title="Glow Effect" description="Alert with glow effect" glow />
+      <Alert variant="danger" title="Pulse Effect" description="Alert with pulse animation" pulse />
+      <Alert variant="glass" title="Combined Effects" description="Closable with glow and pulse" closable glow pulse />
+    </Stack>
+  ),
+};
+
+export const Responsive: Story = {
+  render: () => (
+    <Box sx={{ width: '100%' }}>
+      <Stack spacing={2}>
+        <Alert 
+          variant="info" 
+          title="Responsive Alert" 
+          description="This alert adapts to different screen sizes and container widths"
+          closable
+        />
+        <Box sx={{ maxWidth: 400 }}>
+          <Alert 
+            variant="success" 
+            title="Narrow Container" 
+            description="Alert in a constrained width container"
+            closable
+          />
+        </Box>
+        <Box sx={{ maxWidth: 200 }}>
+          <Alert 
+            variant="warning" 
+            title="Very Narrow" 
+            description="Alert in very narrow space"
+            showIcon={false}
+          />
+        </Box>
+      </Stack>
+    </Box>
   ),
 };

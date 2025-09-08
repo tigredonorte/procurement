@@ -20,26 +20,7 @@ import {
 import Editor, { Monaco } from '@monaco-editor/react';
 import type { editor } from 'monaco-editor';
 
-// Types
-export type EditorLanguage = 'json' | 'javascript' | 'typescript' | 'css' | 'html' | 'yaml' | 'markdown' | 'sql' | 'python';
-export type EditorTheme = 'light' | 'dark' | 'auto';
-
-export interface CodeEditorProps {
-  language: EditorLanguage;
-  height?: string;
-  theme?: EditorTheme;
-  value: string;
-  onChange?: (value: string) => void;
-  readOnly?: boolean;
-  lineNumbers?: boolean;
-  minimap?: boolean;
-  fontSize?: number;
-  wordWrap?: boolean;
-  showToolbar?: boolean;
-  autoFormat?: boolean;
-  placeholder?: string;
-  onSave?: (value: string) => void;
-}
+import type { CodeEditorProps } from './CodeEditor.types';
 
 // Styled components
 const EditorContainer = styled(Paper)(({ theme }) => ({
@@ -233,7 +214,7 @@ export const CodeEditor: FC<CodeEditorProps> = ({
   // Handle ESC key in fullscreen
   useEffect(() => {
     if (isFullscreen) {
-      const handleEsc = (e: KeyboardEvent) => {
+      const handleEsc = (e: globalThis.KeyboardEvent) => {
         if (e.key === 'Escape') {
           setIsFullscreen(false);
         }
