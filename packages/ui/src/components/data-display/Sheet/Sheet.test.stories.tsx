@@ -23,7 +23,7 @@ const meta: Meta<typeof Sheet> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Sheet'],
 };
 
 export default meta;

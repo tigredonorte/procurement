@@ -11,7 +11,7 @@ const meta: Meta<typeof Switch> = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Switch'],
   argTypes: {
     variant: {
       control: { type: 'select' },

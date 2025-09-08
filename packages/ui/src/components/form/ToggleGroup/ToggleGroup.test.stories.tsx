@@ -26,7 +26,7 @@ const meta: Meta<typeof ToggleGroup> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:ToggleGroup'],
 };
 
 export default meta;

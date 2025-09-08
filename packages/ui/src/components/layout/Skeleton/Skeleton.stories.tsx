@@ -26,7 +26,7 @@ const meta = {
       }
     }
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Skeleton'],
   argTypes: {
     variant: {
       control: { type: 'select' },

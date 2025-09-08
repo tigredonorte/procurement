@@ -11,7 +11,7 @@ const meta: Meta<typeof Container> = {
     layout: 'fullscreen',
     chromatic: { disableSnapshot: false }
   },
-  tags: ['autodocs', 'test']
+  tags: ['autodocs', 'test', 'component:Container']
 };
 
 export default meta;

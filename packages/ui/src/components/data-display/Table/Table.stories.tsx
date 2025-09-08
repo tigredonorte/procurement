@@ -30,7 +30,7 @@ const meta = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Table'],
 } satisfies Meta<typeof Table>;
 
 export default meta;

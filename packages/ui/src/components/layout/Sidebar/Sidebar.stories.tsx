@@ -37,7 +37,7 @@ const meta: Meta<typeof Sidebar> = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Sidebar'],
   argTypes: {
     variant: {
       control: { type: 'select' },

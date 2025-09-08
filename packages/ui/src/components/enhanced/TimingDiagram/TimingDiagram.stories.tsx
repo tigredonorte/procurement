@@ -16,7 +16,7 @@ const meta = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:TimingDiagram'],
   argTypes: {
     data: {
       description: 'Timing data for different phases',

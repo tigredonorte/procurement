@@ -12,7 +12,7 @@ const meta: Meta<typeof Select> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Select'],
 };
 
 export default meta;

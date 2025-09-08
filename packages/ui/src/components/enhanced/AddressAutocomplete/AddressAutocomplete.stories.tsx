@@ -18,7 +18,7 @@ const meta = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:AddressAutocomplete'],
   argTypes: {
     variant: {
       control: { type: 'select' },

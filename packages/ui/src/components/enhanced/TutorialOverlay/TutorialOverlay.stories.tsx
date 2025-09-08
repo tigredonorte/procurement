@@ -17,7 +17,7 @@ const meta = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:TutorialOverlay'],
   argTypes: {
     variant: {
       control: { type: 'select' },

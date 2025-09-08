@@ -12,7 +12,7 @@ const meta: Meta<typeof Pagination> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Pagination'],
   args: {
     page: 5,
     count: 10,

@@ -13,7 +13,7 @@ const meta: Meta<typeof Badge> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false }
   },
-  tags: ['autodocs', 'test']
+  tags: ['autodocs', 'test', 'component:Badge']
 };
 
 export default meta;

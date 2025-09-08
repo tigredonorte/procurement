@@ -13,7 +13,7 @@ const meta: Meta<typeof InfiniteScroll> = {
     chromatic: { disableSnapshot: false },
     viewport: { defaultViewport: 'responsive' },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:InfiniteScroll'],
 };
 
 export default meta;

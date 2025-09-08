@@ -12,7 +12,7 @@ const meta: Meta<typeof Breadcrumbs> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Breadcrumbs'],
 };
 
 export default meta;

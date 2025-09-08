@@ -9,7 +9,7 @@ const meta = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Separator'],
   argTypes: {
     variant: {
       control: { type: 'select' },

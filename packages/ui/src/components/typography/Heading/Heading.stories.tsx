@@ -15,7 +15,7 @@ const meta = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Heading'],
   argTypes: {
     level: {
       control: { type: 'select' },

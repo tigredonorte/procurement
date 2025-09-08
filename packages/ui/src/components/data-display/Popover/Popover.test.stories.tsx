@@ -12,7 +12,7 @@ const meta: Meta<typeof Popover> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Popover'],
 };
 export default meta;
 export type Story = StoryObj<typeof meta>;

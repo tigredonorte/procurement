@@ -13,7 +13,7 @@ const meta: Meta<typeof AlertDialog> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:AlertDialog'],
 };
 
 export default meta;

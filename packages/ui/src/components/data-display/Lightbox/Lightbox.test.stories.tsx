@@ -13,7 +13,7 @@ const meta: Meta<typeof Lightbox> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Lightbox'],
 };
 
 export default meta;

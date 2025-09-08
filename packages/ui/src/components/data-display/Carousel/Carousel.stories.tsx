@@ -11,7 +11,7 @@ const meta: Meta<typeof Carousel> = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Carousel'],
   argTypes: {
     variant: {
       control: 'select',

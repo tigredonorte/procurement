@@ -23,7 +23,7 @@ const meta: Meta<typeof Drawer> = {
     layout: 'fullscreen',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Drawer'],
 };
 
 export default meta;

@@ -20,7 +20,7 @@ const meta = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Card'],
   argTypes: {
     variant: {
       control: { type: 'select' },

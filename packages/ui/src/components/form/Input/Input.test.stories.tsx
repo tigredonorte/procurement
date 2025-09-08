@@ -13,7 +13,7 @@ const meta: Meta<typeof Input> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false }
   },
-  tags: ['autodocs', 'test']
+  tags: ['autodocs', 'test', 'component:Input']
 };
 
 export default meta;

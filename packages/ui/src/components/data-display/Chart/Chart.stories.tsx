@@ -11,7 +11,7 @@ const meta: Meta<typeof Chart> = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Chart'],
   argTypes: {
     type: {
       control: 'select',

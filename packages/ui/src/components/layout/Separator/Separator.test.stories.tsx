@@ -11,7 +11,7 @@ const meta: Meta<typeof Separator> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Separator'],
 };
 
 export default meta;

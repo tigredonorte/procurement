@@ -31,7 +31,7 @@ const meta = {
   parameters: {
     layout: 'fullscreen',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Drawer'],
   argTypes: {
     variant: {
       control: { type: 'select' },

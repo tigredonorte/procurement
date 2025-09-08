@@ -11,7 +11,7 @@ import React, { useState } from 'react';
 import { Avatar, AvatarGroup } from './Avatar';
 
 const meta = {
-  title: 'Data Display/Avatar',
+  title: 'DataDisplay/Avatar',
   component: Avatar,
   parameters: {
     layout: 'centered',
@@ -21,7 +21,7 @@ const meta = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Avatar'],
   argTypes: {
     variant: {
       control: { type: 'select' },
@@ -394,6 +394,120 @@ export const NotificationBadges: Story = {
 };
 
 // All Combinations
+export const AllSizes: Story = {
+  name: '📏 All Sizes',
+  render: () => (
+    <Stack spacing={4} alignItems="center">
+      <Stack direction="row" spacing={2} alignItems="center">
+        <Avatar size="xs" fallback="XS" />
+        <Avatar size="sm" fallback="SM" />
+        <Avatar size="md" fallback="MD" />
+        <Avatar size="lg" fallback="LG" />
+        <Avatar size="xl" fallback="XL" />
+        <Avatar size="xxl" fallback="XXL" />
+      </Stack>
+      <Stack direction="row" spacing={2} alignItems="center">
+        <Avatar size="xs" src="https://i.pravatar.cc/150?img=3" alt="User avatar" />
+        <Avatar size="sm" src="https://i.pravatar.cc/150?img=3" alt="User avatar" />
+        <Avatar size="md" src="https://i.pravatar.cc/150?img=3" alt="User avatar" />
+        <Avatar size="lg" src="https://i.pravatar.cc/150?img=3" alt="User avatar" />
+        <Avatar size="xl" src="https://i.pravatar.cc/150?img=3" alt="User avatar" />
+        <Avatar size="xxl" src="https://i.pravatar.cc/150?img=3" alt="User avatar" />
+      </Stack>
+    </Stack>
+  ),
+};
+
+export const AllVariants: Story = {
+  name: '🎨 All Variants',
+  render: () => (
+    <Stack spacing={4} alignItems="center">
+      <Stack direction="row" spacing={2} alignItems="center">
+        <Avatar variant="circle" fallback="CI" />
+        <Avatar variant="square" fallback="SQ" />
+        <Avatar variant="rounded" fallback="RD" />
+        <Avatar variant="status" status="online" fallback="ST" />
+      </Stack>
+      <Stack direction="row" spacing={2} alignItems="center">
+        <Avatar variant="circle" src="https://i.pravatar.cc/150?img=1" alt="Circle avatar" />
+        <Avatar variant="square" src="https://i.pravatar.cc/150?img=2" alt="Square avatar" />
+        <Avatar variant="rounded" src="https://i.pravatar.cc/150?img=3" alt="Rounded avatar" />
+        <Avatar variant="status" status="online" src="https://i.pravatar.cc/150?img=4" alt="Status avatar" />
+      </Stack>
+    </Stack>
+  ),
+};
+
+export const AllStates: Story = {
+  name: '🔄 All States',
+  render: () => (
+    <Stack spacing={4} alignItems="center">
+      <Stack direction="row" spacing={2} alignItems="center">
+        <Avatar fallback="DT" />
+        <Avatar fallback="LD" loading />
+        <Avatar fallback="GL" glow />
+        <Avatar fallback="PL" pulse />
+        <Avatar fallback="BD" bordered />
+        <Avatar fallback="IN" interactive />
+      </Stack>
+      <Stack direction="row" spacing={2} alignItems="center">
+        <Avatar variant="status" status="online" fallback="ON" />
+        <Avatar variant="status" status="offline" fallback="OF" />
+        <Avatar variant="status" status="away" fallback="AW" />
+        <Avatar variant="status" status="busy" fallback="BS" />
+      </Stack>
+    </Stack>
+  ),
+};
+
+export const InteractiveStates: Story = {
+  name: '🎮 Interactive States',
+  args: {
+    fallback: 'IN',
+    interactive: true,
+  },
+  render: (args) => (
+    <Stack spacing={4} alignItems="center">
+      <Typography variant="caption">Hover over avatars to see effects</Typography>
+      <Stack direction="row" spacing={2}>
+        <Avatar {...args} />
+        <Avatar {...args} glow />
+        <Avatar {...args} pulse />
+        <Avatar {...args} bordered />
+      </Stack>
+    </Stack>
+  ),
+};
+
+export const Responsive: Story = {
+  name: '📱 Responsive',
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
+  render: () => (
+    <Box sx={{ width: '100%', p: 2 }}>
+      <Stack spacing={2}>
+        <Typography variant="h6">Responsive Avatar Layout</Typography>
+        <Stack direction="row" spacing={1} flexWrap="wrap">
+          <Avatar size="xs" fallback="A" />
+          <Avatar size="sm" fallback="B" />
+          <Avatar size="md" fallback="C" />
+          <Avatar size="lg" fallback="D" />
+        </Stack>
+        <AvatarGroup max={3}>
+          <Avatar fallback="U1" />
+          <Avatar fallback="U2" />
+          <Avatar fallback="U3" />
+          <Avatar fallback="U4" />
+          <Avatar fallback="U5" />
+        </AvatarGroup>
+      </Stack>
+    </Box>
+  ),
+};
+
 export const AllSizesWithEffects: Story = {
   render: () => (
     <Stack spacing={3}>

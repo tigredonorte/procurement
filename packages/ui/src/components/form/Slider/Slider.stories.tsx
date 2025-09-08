@@ -10,7 +10,7 @@ const meta: Meta<typeof Slider> = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Slider'],
   argTypes: {
     variant: {
       control: { type: 'select' },

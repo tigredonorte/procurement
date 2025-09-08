@@ -13,7 +13,7 @@ const meta: Meta<typeof Label> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Label'],
 };
 
 export default meta;

@@ -8,7 +8,7 @@ import type { TransitionVariant } from './Transition.types';
 const meta: Meta<typeof Transition> = {
   title: 'Utility/Transition',
   component: Transition,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Transition'],
   parameters: {
     layout: 'centered',
     docs: {

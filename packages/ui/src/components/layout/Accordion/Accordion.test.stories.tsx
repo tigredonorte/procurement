@@ -13,7 +13,7 @@ const meta: Meta<typeof Accordion> = {
     layout: 'padded',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Accordion'],
 };
 
 export default meta;

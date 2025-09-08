@@ -15,34 +15,33 @@ const meta = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Code'],
   argTypes: {
     variant: {
       control: { type: 'select' },
-      options: ['inline', 'block', 'terminal'],
+      options: ['inline', 'block', 'highlight'],
       description: 'Code display variant',
     },
     language: {
-      control: { type: 'select' },
-      options: ['javascript', 'typescript', 'python', 'bash', 'json', 'css', 'html'],
-      description: 'Programming language for syntax highlighting',
-    },
-    theme: {
-      control: { type: 'select' },
-      options: ['light', 'dark', 'github', 'monokai'],
-      description: 'Color theme',
-    },
-    showLineNumbers: {
-      control: 'boolean',
-      description: 'Show line numbers (block variant only)',
+      control: { type: 'text' },
+      description: 'Programming language label for display',
     },
     copyable: {
       control: 'boolean',
-      description: 'Enable copy to clipboard',
+      description: 'Enable copy to clipboard (block and highlight variants only)',
     },
-    wrap: {
+    lineNumbers: {
       control: 'boolean',
-      description: 'Wrap long lines',
+      description: 'Show line numbers (block and highlight variants only)',
+    },
+    size: {
+      control: { type: 'select' },
+      options: ['xs', 'sm', 'md', 'lg'],
+      description: 'Size of the code text',
+    },
+    children: {
+      control: 'text',
+      description: 'Code content to display',
     },
   },
 } satisfies Meta<typeof Code>;
@@ -124,10 +123,205 @@ print(quick_sort([3, 6, 8, 10, 1, 2, 1]))`}
   ),
 };
 
-export const TerminalCode: Story = {
+export const AllVariants: Story = {
   render: () => (
     <Stack spacing={3}>
-      <Code variant="terminal">
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>Inline Variant</Typography>
+        <Typography>
+          Use the <Code variant="inline" size="md">useState()</Code> hook for state management.
+        </Typography>
+      </Box>
+      
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>Block Variant</Typography>
+        <Code variant="block" size="md">
+{`const greeting = "Hello, World!";
+console.log(greeting);`}
+        </Code>
+      </Box>
+      
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>Highlight Variant</Typography>
+        <Code variant="highlight" size="md" language="javascript">
+{`function important() {
+  return "This code is highlighted";
+}`}
+        </Code>
+      </Box>
+    </Stack>
+  ),
+};
+
+export const AllSizes: Story = {
+  render: () => (
+    <Stack spacing={3}>
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>Extra Small (xs)</Typography>
+        <Code variant="inline" size="xs">size="xs"</Code>
+      </Box>
+      
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>Small (sm)</Typography>
+        <Code variant="inline" size="sm">size="sm"</Code>
+      </Box>
+      
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>Medium (md)</Typography>
+        <Code variant="inline" size="md">size="md"</Code>
+      </Box>
+      
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>Large (lg)</Typography>
+        <Code variant="inline" size="lg">size="lg"</Code>
+      </Box>
+      
+      <Typography variant="subtitle2" gutterBottom sx={{ mt: 2 }}>Block Sizes</Typography>
+      <Stack spacing={2}>
+        <Code variant="block" size="xs">Extra small block</Code>
+        <Code variant="block" size="sm">Small block</Code>
+        <Code variant="block" size="md">Medium block</Code>
+        <Code variant="block" size="lg">Large block</Code>
+      </Stack>
+    </Stack>
+  ),
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <Stack spacing={3}>
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>Default State</Typography>
+        <Code variant="block">Default code block</Code>
+      </Box>
+      
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>With Copy Button</Typography>
+        <Code variant="block" copyable>
+{`// Copyable code
+const copyMe = true;`}
+        </Code>
+      </Box>
+      
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>With Line Numbers</Typography>
+        <Code variant="block" lineNumbers>
+{`// Line 1
+// Line 2
+// Line 3`}
+        </Code>
+      </Box>
+      
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>With Language Label</Typography>
+        <Code variant="block" language="TypeScript">
+{`interface Example {
+  id: number;
+}`}
+        </Code>
+      </Box>
+      
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>All Features Combined</Typography>
+        <Code variant="highlight" language="JavaScript" copyable lineNumbers>
+{`function allFeatures() {
+  return "Copy, line numbers, and language";
+}`}
+        </Code>
+      </Box>
+    </Stack>
+  ),
+};
+
+export const InteractiveStates: Story = {
+  render: () => (
+    <Stack spacing={3}>
+      <Typography variant="h6">Interactive Elements</Typography>
+      
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>
+          Hover over the copy button to see tooltip:
+        </Typography>
+        <Code variant="block" copyable>
+{`// Hover over the copy button
+const interactive = true;`}
+        </Code>
+      </Box>
+      
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>
+          Click to copy (watch for feedback):
+        </Typography>
+        <Code variant="highlight" copyable language="bash">
+{`npm install
+npm start`}
+        </Code>
+      </Box>
+      
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>
+          Long content with scroll:
+        </Typography>
+        <Code variant="block" copyable lineNumbers>
+{`// This is a longer code block to demonstrate scrolling
+const longContent = [
+  "Line 1 with some content",
+  "Line 2 with more content",
+  "Line 3 with even more content",
+  "Line 4 continues the pattern",
+  "Line 5 keeps going",
+  "Line 6 and still more",
+  "Line 7 almost there",
+  "Line 8 getting close",
+  "Line 9 nearly done",
+  "Line 10 the final line"
+].join('\n');`}
+        </Code>
+      </Box>
+    </Stack>
+  ),
+};
+
+export const Responsive: Story = {
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
+  render: () => (
+    <Box sx={{ width: '100%', p: 2 }}>
+      <Stack spacing={2}>
+        <Typography variant="h6">Responsive Code Display</Typography>
+        
+        <Typography>
+          Inline code adjusts to text: <Code variant="inline" size="md">responsive()</Code>
+        </Typography>
+        
+        <Code variant="block" copyable>
+{`// This block adapts to container width
+const mobileFirst = true;`}
+        </Code>
+        
+        <Code variant="highlight" language="CSS" copyable lineNumbers>
+{`@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+}`}
+        </Code>
+        
+        <Typography variant="caption">
+          View on different screen sizes to see responsive behavior
+        </Typography>
+      </Stack>
+    </Box>
+  ),
+};
+
+export const HighlightCode: Story = {
+  render: () => (
+    <Stack spacing={3}>
+      <Code variant="highlight" language="bash" copyable>
 {`$ npm install @mui/material @emotion/react @emotion/styled
 $ npm run dev
 
@@ -162,7 +356,7 @@ $ git commit -m "Add Code component"
 export const WithLineNumbers: Story = {
   render: () => (
     <Stack spacing={3}>
-      <Code variant="block" language="javascript" showLineNumbers>
+      <Code variant="block" language="javascript" lineNumbers>
 {`// React component with hooks
 import React, { useState, useEffect } from 'react';
 
@@ -400,7 +594,7 @@ export const MixedContent: Story = {
         creates a new array by transforming each element:
       </Typography>
       
-      <Code variant="block" language="javascript" showLineNumbers>
+      <Code variant="block" language="javascript" lineNumbers>
 {`const numbers = [1, 2, 3, 4, 5];
 const doubled = numbers.map(n => n * 2);
  // [2, 4, 6, 8, 10]`}
@@ -411,7 +605,7 @@ const doubled = numbers.map(n => n * 2);
         <Code variant="inline">reduce()</Code> to compute a single value:
       </Typography>
       
-      <Code variant="block" language="javascript" showLineNumbers>
+      <Code variant="block" language="javascript" lineNumbers>
 {`const evens = numbers.filter(n => n % 2 === 0);
 const sum = numbers.reduce((acc, n) => acc + n, 0);`}
       </Code>

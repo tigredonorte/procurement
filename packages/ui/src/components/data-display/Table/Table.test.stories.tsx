@@ -24,7 +24,7 @@ const meta: Meta<typeof Table> = {
     layout: 'centered', 
     chromatic: { disableSnapshot: false } 
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Table'],
 };
 
 export default meta;

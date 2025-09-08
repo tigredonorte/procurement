@@ -12,7 +12,7 @@ const meta: Meta<typeof Card> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Card'],
 };
 
 export default meta;

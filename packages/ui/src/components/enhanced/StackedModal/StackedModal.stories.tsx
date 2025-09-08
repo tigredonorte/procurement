@@ -85,7 +85,7 @@ const meta: Meta<typeof StackedModal> = {
       </ModalStackProvider>
     ),
   ],
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:StackedModal'],
 };
 
 export default meta;

@@ -14,7 +14,7 @@ const meta: Meta<typeof Toggle> = {
     chromatic: { disableSnapshot: false },
     docs: { source: { type: 'code' } },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Toggle'],
 };
 export default meta;
 export type Story = StoryObj<typeof meta>;

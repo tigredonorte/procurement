@@ -12,7 +12,7 @@ const meta: Meta<typeof HoverCard> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:HoverCard'],
 };
 
 export default meta;

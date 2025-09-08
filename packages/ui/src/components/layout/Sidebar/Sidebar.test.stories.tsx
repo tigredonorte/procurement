@@ -40,7 +40,7 @@ const meta: Meta<typeof Sidebar> = {
       },
     },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Sidebar'],
   argTypes: {
     variant: {
       control: { type: 'select' },

@@ -15,7 +15,7 @@ const meta: Meta<typeof Resizable> = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Resizable'],
   argTypes: {
     variant: {
       control: { type: 'select' },

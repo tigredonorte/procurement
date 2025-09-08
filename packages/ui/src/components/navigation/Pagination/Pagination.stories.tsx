@@ -22,7 +22,7 @@ const meta = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Pagination'],
   argTypes: {
     variant: {
       control: 'select',

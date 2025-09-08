@@ -12,7 +12,7 @@ const meta: Meta<typeof PasswordStrength> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:PasswordStrength'],
 };
 
 export default meta;

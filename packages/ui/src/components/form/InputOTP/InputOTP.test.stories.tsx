@@ -10,7 +10,7 @@ const meta: Meta<typeof InputOTP> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:InputOTP'],
 };
 
 export default meta;

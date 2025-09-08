@@ -51,7 +51,7 @@ A sophisticated breadcrumb navigation component with glass morphism effects, smo
       ],
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Breadcrumbs'],
   argTypes: {
     variant: {
       control: 'select',

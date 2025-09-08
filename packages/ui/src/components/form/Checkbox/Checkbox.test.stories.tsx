@@ -12,7 +12,7 @@ const meta: Meta<typeof Checkbox> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Checkbox'],
 };
 
 export default meta;

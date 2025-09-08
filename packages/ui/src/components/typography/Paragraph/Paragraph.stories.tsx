@@ -16,7 +16,7 @@ const meta = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Paragraph'],
   argTypes: {
     variant: {
       control: { type: 'select' },

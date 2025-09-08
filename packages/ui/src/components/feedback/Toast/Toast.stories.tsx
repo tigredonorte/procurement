@@ -7,6 +7,7 @@ import { Toast, ToastProvider, useToast } from './Toast';
 const meta: Meta<typeof Toast> = {
   title: 'Feedback/Toast',
   component: Toast,
+  tags: ['autodocs', 'component:Toast'],
   parameters: {
     layout: 'centered',
     docs: {

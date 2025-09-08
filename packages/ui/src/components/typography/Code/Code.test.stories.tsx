@@ -13,7 +13,7 @@ const meta: Meta<typeof Code> = {
     chromatic: { disableSnapshot: false },
     docs: { disable: true }
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Code'],
 };
 export default meta;
 export type Story = StoryObj<typeof meta>;
@@ -24,7 +24,7 @@ const mockClipboard = {
 };
 
 // Enhanced test setup function
-const setupTest = (canvas: ReturnType<typeof within>) => {
+const setupTest = () => {
   // Mock clipboard API
   Object.assign(navigator, {
     clipboard: mockClipboard,
@@ -58,7 +58,7 @@ console.log(greeting);`}
   ),
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    const { mockClipboard } = setupTest(canvas);
+    setupTest();
 
     await step('Verify inline code renders correctly', async () => {
       const inlineCode = canvas.getByTestId('inline-code');
@@ -103,7 +103,7 @@ export const CopyToClipboard: Story = {
   ),
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    const { mockClipboard } = setupTest(canvas);
+    setupTest();
 
     await step('Verify copy button exists for copyable code', async () => {
       const copyableCode = canvas.getByTestId('copyable-code');
@@ -155,7 +155,7 @@ export const KeyboardNavigation: Story = {
   ),
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    setupTest(canvas);
+    setupTest();
 
     await step('Verify copy button is keyboard accessible', async () => {
       const copyButton = canvas.getByRole('button', { name: /copy code/i });
@@ -205,7 +205,7 @@ const message = "Hello, screen reader users!";`}
   ),
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    setupTest(canvas);
+    setupTest();
 
     await step('Verify inline code has proper semantics', async () => {
       const inlineCode = canvas.getByTestId('inline-code');
@@ -263,7 +263,7 @@ export const ResponsiveDesign: Story = {
   ),
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    setupTest(canvas);
+    setupTest();
 
     await step('Verify block code adapts to container width', async () => {
       const blockCode = canvas.getByTestId('responsive-block');
@@ -328,7 +328,7 @@ export const ThemeVariations: Story = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    setupTest(canvas);
+    setupTest();
 
     await step('Verify light theme styling', async () => {
       const lightThemeContainer = canvas.getByTestId('light-theme');
@@ -392,7 +392,7 @@ export const VisualStates: Story = {
   ),
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    setupTest(canvas);
+    setupTest();
 
     await step('Verify size variants render with different font sizes', async () => {
       const sizes = ['xs', 'sm', 'md', 'lg'];
@@ -451,15 +451,15 @@ export const Performance: Story = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    setupTest(canvas);
+    setupTest();
 
     await step('Verify large code block renders efficiently', async () => {
-      const startTime = performance.now();
+      const startTime = window.performance.now();
       
       const largeCode = canvas.getByTestId('large-code');
       expect(largeCode).toBeInTheDocument();
       
-      const endTime = performance.now();
+      const endTime = window.performance.now();
       const renderTime = endTime - startTime;
       
       // Should render within reasonable time (less than 100ms)
@@ -501,7 +501,7 @@ export const EdgeCases: Story = {
       </Code>
       
       <Code data-testid="special-chars" variant="block">
-        {`const special = "Hello \n\t\r\\ \"quotes\" 'apostrophes' & <tags> {braces}";`}
+        {`const special = "Hello \n\t\r\\ 'quotes' 'apostrophes' & <tags> {braces}";`}
       </Code>
       
       <Code data-testid="long-line" variant="block">
@@ -519,7 +519,7 @@ export const EdgeCases: Story = {
   ),
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    setupTest(canvas);
+    setupTest();
 
     await step('Verify empty code renders without errors', async () => {
       const emptyCode = canvas.getByTestId('empty-code');
@@ -530,7 +530,7 @@ export const EdgeCases: Story = {
     await step('Verify special characters are preserved', async () => {
       const specialChars = canvas.getByTestId('special-chars');
       expect(specialChars).toBeInTheDocument();
-      expect(specialChars).toHaveTextContent('"quotes"');
+      expect(specialChars).toHaveTextContent("'quotes'");
       expect(specialChars).toHaveTextContent("'apostrophes'");
       expect(specialChars).toHaveTextContent('<tags>');
       expect(specialChars).toHaveTextContent('{braces}');
@@ -596,7 +596,7 @@ export const Integration: Story = {
   ),
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    setupTest(canvas);
+    setupTest();
 
     await step('Verify code integrates well within Typography', async () => {
       const inlineInTypography = canvas.getByTestId('inline-in-typography');

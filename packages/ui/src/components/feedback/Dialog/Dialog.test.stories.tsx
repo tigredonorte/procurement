@@ -19,7 +19,7 @@ const meta: Meta<typeof Dialog> = {
       },
     },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Dialog'],
 };
 
 export default meta;

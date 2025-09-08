@@ -23,7 +23,7 @@ const meta: Meta<typeof ContextMenu> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:ContextMenu'],
 };
 
 export default meta;

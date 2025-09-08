@@ -14,7 +14,7 @@ const meta: Meta<typeof Container> = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Container'],
   argTypes: {
     maxWidth: {
       control: { type: 'select' },

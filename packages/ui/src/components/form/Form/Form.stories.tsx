@@ -19,7 +19,7 @@ const meta = {
       }
     }
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Form'],
   argTypes: {
     variant: {
       control: { type: 'select' },

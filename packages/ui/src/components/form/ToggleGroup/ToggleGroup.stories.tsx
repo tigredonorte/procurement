@@ -31,7 +31,7 @@ const meta: Meta<typeof ToggleGroup> = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:ToggleGroup'],
   argTypes: {
     variant: {
       control: { type: 'select' },

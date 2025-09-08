@@ -17,7 +17,7 @@ const meta: Meta<typeof Menubar> = {
     layout: 'fullscreen',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Menubar'],
 };
 
 export default meta;

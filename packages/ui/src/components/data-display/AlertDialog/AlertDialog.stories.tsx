@@ -11,7 +11,7 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:AlertDialog'],
   argTypes: {
     variant: {
       control: { type: 'select' },
