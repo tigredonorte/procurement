@@ -141,6 +141,10 @@ This file is the single source of truth for component work assignment and status
 58. LottieAnimation (working) [omega-7] - 2025-09-08 17:45
 59. PasswordStrength (working) [omega-9] - 2025-09-09 02:15
 60. CommandPalette (working) [omega-6] - 2025-09-08 22:30
+61. TutorialOverlay (working) [omega-14] - 2025-09-08 21:30
+62. Spacer (working) [omega-15] - 2025-09-09 02:30
+63. StackedModal (working) [omega-11] - 2025-09-09 02:15
+64. Timeline (working) [omega-12] - 2025-09-08 23:00
 
 ---
 
