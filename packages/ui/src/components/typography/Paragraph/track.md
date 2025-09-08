@@ -47,20 +47,22 @@ A semantic paragraph component with multiple visual variants for different conte
 - [ ] Content accessibility and semantic structure
 - [ ] Mixed content rendering within paragraphs
 
-## Storybook Tests Status
+## 5) Storybook Tests
 
-- [ ] Basic Interaction (planned)
-- [ ] Keyboard Navigation (planned)
-- [ ] Screen Reader (planned)
-- [ ] Focus Management (planned)
-- [ ] Responsive Design (planned)
-- [ ] Theme Variations (planned)
-- [ ] Visual States (planned)
-- [ ] Performance (planned)
-- [ ] Edge Cases (planned)
-- [ ] Integration (planned)
+**Stories**
 
-## Current Section - 2025-01-13 21:30 (BRT)
+- Typography/Paragraph/Tests/BasicInteraction
+- Typography/Paragraph/Tests/KeyboardNavigation
+- Typography/Paragraph/Tests/ScreenReader
+- Typography/Paragraph/Tests/FocusManagement
+- Typography/Paragraph/Tests/ResponsiveDesign
+- Typography/Paragraph/Tests/ThemeVariations
+- Typography/Paragraph/Tests/VisualStates
+- Typography/Paragraph/Tests/Performance
+- Typography/Paragraph/Tests/EdgeCases
+- Typography/Paragraph/Tests/Integration
+
+**Current (BRT)**: 2025-09-09 06:30
 
 ### Current Task: Initial track.md file creation
 

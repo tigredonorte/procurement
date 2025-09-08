@@ -76,6 +76,17 @@ A comprehensive charting component built on Recharts, supporting multiple chart 
 - [ ] Curved vs linear line rendering
 - [ ] Click interactions and data point selection
 
+## 5) Storybook Tests
+
+**Stories**:
+
+- DataDisplay/Chart/Default
+- DataDisplay/Chart/AllVariants
+- DataDisplay/Chart/AllSizes
+- DataDisplay/Chart/AllStates
+- DataDisplay/Chart/InteractiveStates
+- DataDisplay/Chart/Responsive
+
 ## Storybook Tests Status
 
 - [ ] Basic Interaction (planned)
@@ -89,19 +100,18 @@ A comprehensive charting component built on Recharts, supporting multiple chart 
 - [ ] Edge Cases (planned)
 - [ ] Integration (planned)
 
-## Current Section - 2025-09-09 02:30 (BRT)
+**Current (BRT)**: 2025-09-08 04:45
 
-### Current Task: omega-1 - Complete comprehensive testing
+### Current Task: omega-20 - Fix stories coverage for Chart component
 
-- Re-implementing Chart component testing
-- Creating Chart.test.stories.tsx with all required test stories
-- Ensuring all 14 validation checks pass
-- Verifying tests in Storybook
+- Fixed Chart.stories.tsx CSF title to "DataDisplay/Chart"
+- Added all required story exports: Default, AllVariants, AllSizes, AllStates, InteractiveStates, Responsive
+- Fixed hooks usage in InteractiveStates component
+- Fixed validator pattern for tags detection
+- Updated track.md format for validation
 
 ### Next Steps:
 
-- Create tests.md tracking file
-- Run initial pnpm check:component validation
-- Implement all test stories
-- Verify all tests pass in Storybook UI
+- Complete validation checks
+- Verify all 14 checks pass
 - Update status to completed

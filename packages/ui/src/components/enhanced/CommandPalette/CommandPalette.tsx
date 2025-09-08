@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, useRef, useMemo } from 'react';
+import React, { FC, useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import {
   Box,
   Dialog,
@@ -16,14 +16,12 @@ import {
   useTheme,
   Chip,
   Divider,
-  Fade,
   Slide,
 } from '@mui/material';
 import {
   Search as SearchIcon,
   Close as CloseIcon,
   History as RecentIcon,
-  TrendingUp as TrendingIcon,
   KeyboardReturn as EnterIcon,
 } from '@mui/icons-material';
 import Fuse from 'fuse.js';
@@ -54,7 +52,7 @@ export interface CommandPaletteProps {
 }
 
 // Styled components
-const StyledDialog = styled(Dialog)(({ theme }) => ({
+const StyledDialog = styled(Dialog)(() => ({
   '& .MuiBackdrop-root': {
     backgroundColor: alpha('#000', 0.6),
     backdropFilter: 'blur(4px)',
@@ -169,7 +167,10 @@ const NoResults = styled(Box)(({ theme }) => ({
 // Transition
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
-    children: React.ReactElement<any, any>;
+    children: React.ReactElement<
+      React.JSXElementConstructor<unknown>,
+      string | React.JSXElementConstructor<unknown>
+    >;
   },
   ref: React.Ref<unknown>,
 ) {
@@ -193,7 +194,7 @@ export const CommandPalette: FC<CommandPaletteProps> = ({
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [recentCommandIds, setRecentCommandIds] = useState<string[]>(recentCommands);
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const listRef = useRef<HTMLUListElement>(null);
+  const listRef = useRef<globalThis.HTMLUListElement>(null);
 
   // Initialize Fuse.js for fuzzy search
   const fuse = useMemo(
@@ -203,7 +204,7 @@ export const CommandPalette: FC<CommandPaletteProps> = ({
         threshold: 0.3,
         includeScore: true,
       }),
-    [commands]
+    [commands],
   );
 
   // Filter commands based on search query
@@ -227,7 +228,7 @@ export const CommandPalette: FC<CommandPaletteProps> = ({
   // Group commands by category
   const groupedCommands = useMemo(() => {
     const groups: Record<string, Command[]> = {};
-    
+
     filteredCommands.forEach((command) => {
       const category = command.category || 'General';
       if (!groups[category]) {
@@ -256,17 +257,37 @@ export const CommandPalette: FC<CommandPaletteProps> = ({
     }
   }, [open]);
 
+  const executeCommand = useCallback(
+    (command: Command) => {
+      // Add to recent commands
+      setRecentCommandIds((prev) => {
+        const newRecent = [command.id, ...prev.filter((id) => id !== command.id)].slice(0, 5);
+        return newRecent;
+      });
+
+      // Execute command action
+      command.action();
+
+      // Call callback if provided
+      if (onCommandExecute) {
+        onCommandExecute(command);
+      }
+
+      // Close palette
+      onClose();
+    },
+    [onCommandExecute, onClose],
+  );
+
   // Keyboard navigation
   useEffect(() => {
     if (!open) return;
 
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const handleKeyDown = (e: globalThis.KeyboardEvent) => {
       switch (e.key) {
         case 'ArrowDown':
           e.preventDefault();
-          setSelectedIndex((prev) => 
-            prev < filteredCommands.length - 1 ? prev + 1 : prev
-          );
+          setSelectedIndex((prev) => (prev < filteredCommands.length - 1 ? prev + 1 : prev));
           break;
         case 'ArrowUp':
           e.preventDefault();
@@ -287,13 +308,13 @@ export const CommandPalette: FC<CommandPaletteProps> = ({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [open, selectedIndex, filteredCommands, onClose]);
+  }, [open, selectedIndex, filteredCommands, onClose, executeCommand]);
 
   // Scroll selected item into view
   useEffect(() => {
     if (listRef.current) {
       const selectedElement = listRef.current.querySelector(
-        `[data-index="${selectedIndex}"]`
+        `[data-index="${selectedIndex}"]`,
       ) as HTMLElement;
       if (selectedElement) {
         selectedElement.scrollIntoView({
@@ -303,25 +324,6 @@ export const CommandPalette: FC<CommandPaletteProps> = ({
       }
     }
   }, [selectedIndex]);
-
-  const executeCommand = (command: Command) => {
-    // Add to recent commands
-    setRecentCommandIds((prev) => {
-      const newRecent = [command.id, ...prev.filter((id) => id !== command.id)].slice(0, 5);
-      return newRecent;
-    });
-
-    // Execute command action
-    command.action();
-
-    // Call callback if provided
-    if (onCommandExecute) {
-      onCommandExecute(command);
-    }
-
-    // Close palette
-    onClose();
-  };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -335,11 +337,7 @@ export const CommandPalette: FC<CommandPaletteProps> = ({
       onClick={() => executeCommand(command)}
       onMouseEnter={() => setSelectedIndex(index)}
     >
-      {command.icon && (
-        <ListItemIcon sx={{ minWidth: 40 }}>
-          {command.icon}
-        </ListItemIcon>
-      )}
+      {command.icon && <ListItemIcon sx={{ minWidth: 40 }}>{command.icon}</ListItemIcon>}
       <ListItemText
         primary={command.label}
         secondary={command.description}
@@ -351,9 +349,7 @@ export const CommandPalette: FC<CommandPaletteProps> = ({
           fontSize: '0.75rem',
         }}
       />
-      {command.shortcut && (
-        <ShortcutChip label={command.shortcut} size="small" />
-      )}
+      {command.shortcut && <ShortcutChip label={command.shortcut} size="small" />}
     </CommandItem>
   );
 
@@ -401,9 +397,7 @@ export const CommandPalette: FC<CommandPaletteProps> = ({
                       const index = commandIndex++;
                       return renderCommand(command as Command, index);
                     })}
-                  {filteredCommands.length > recentCommandIds.length && (
-                    <Divider sx={{ my: 1 }} />
-                  )}
+                  {filteredCommands.length > recentCommandIds.length && <Divider sx={{ my: 1 }} />}
                 </>
               )}
 
@@ -441,7 +435,11 @@ export const CommandPalette: FC<CommandPaletteProps> = ({
             }}
           >
             <Box sx={{ display: 'flex', gap: 1 }}>
-              <ShortcutChip icon={<EnterIcon sx={{ fontSize: 12 }} />} label="Execute" size="small" />
+              <ShortcutChip
+                icon={<EnterIcon sx={{ fontSize: 12 }} />}
+                label="Execute"
+                size="small"
+              />
               <ShortcutChip label="↑↓ Navigate" size="small" />
               <ShortcutChip label="ESC Close" size="small" />
             </Box>

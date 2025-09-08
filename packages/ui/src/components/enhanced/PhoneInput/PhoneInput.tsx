@@ -108,7 +108,7 @@ const formatPhoneNumber = (value: string, country: CountryCode): string => {
     if (phoneNumber) {
       return phoneNumber.formatInternational();
     }
-  } catch (error) {
+  } catch {
     // Invalid number, return as is
   }
   return value;
@@ -143,16 +143,18 @@ export const PhoneInput: FC<PhoneInputProps> = ({
   const theme = useTheme();
   const [value, setValue] = useState(defaultValue);
   const [selectedCountry, setSelectedCountry] = useState(
-    countries.find(c => c.code === initialCountryCode) || countries[0]
+    countries.find((c) => c.code === initialCountryCode) || countries[0],
   );
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isValid, setIsValid] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
+    if (!selectedCountry) return;
+
     const valid = validatePhoneNumber(value, selectedCountry.code);
     setIsValid(valid);
-    
+
     if (onChange) {
       onChange(value, valid, selectedCountry.code);
     }
@@ -166,10 +168,10 @@ export const PhoneInput: FC<PhoneInputProps> = ({
     setAnchorEl(null);
   };
 
-  const handleCountrySelect = (country: typeof countries[0]) => {
+  const handleCountrySelect = (country: (typeof countries)[0]) => {
     setSelectedCountry(country);
     handleCountryClose();
-    
+
     // Reformat number with new country code
     if (value) {
       const formatted = formatPhoneNumber(value, country.code);
@@ -184,7 +186,7 @@ export const PhoneInput: FC<PhoneInputProps> = ({
 
   const handleBlur = () => {
     setIsFocused(false);
-    if (value) {
+    if (value && selectedCountry) {
       const formatted = formatPhoneNumber(value, selectedCountry.code);
       setValue(formatted);
     }
@@ -204,8 +206,7 @@ export const PhoneInput: FC<PhoneInputProps> = ({
         onBlur={handleBlur}
         error={error || (!isValid && value !== '' && !isFocused)}
         helperText={
-          errorMessage ||
-          (!isValid && value !== '' && !isFocused ? 'Invalid phone number' : helper)
+          errorMessage || (!isValid && value !== '' && !isFocused ? 'Invalid phone number' : helper)
         }
         disabled={disabled}
         required={required}
@@ -216,10 +217,10 @@ export const PhoneInput: FC<PhoneInputProps> = ({
             <InputAdornment position="start">
               <CountrySelector onClick={handleCountryClick}>
                 <Typography variant="h6" component="span" sx={{ mr: 0.5 }}>
-                  {selectedCountry.flag}
+                  {selectedCountry?.flag}
                 </Typography>
                 <Typography variant="body2" color="text.secondary" sx={{ mr: 0.5 }}>
-                  {selectedCountry.dial}
+                  {selectedCountry?.dial}
                 </Typography>
                 <ArrowDropDown fontSize="small" />
               </CountrySelector>
@@ -262,7 +263,7 @@ export const PhoneInput: FC<PhoneInputProps> = ({
           <MenuItem
             key={country.code}
             onClick={() => handleCountrySelect(country)}
-            selected={country.code === selectedCountry.code}
+            selected={country.code === selectedCountry?.code}
             sx={{
               '&:hover': {
                 background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.1)} 0%, ${alpha(theme.palette.primary.main, 0.05)} 100%)`,

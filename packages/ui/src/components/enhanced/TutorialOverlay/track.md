@@ -53,22 +53,35 @@ An interactive tutorial overlay system for guiding users through application fea
 - [ ] Conditional step logic
 - [ ] Tutorial state persistence
 
-## Storybook Tests Status
+## 5) Storybook Tests
 
-- [ ] Basic Interaction (planned)
-- [ ] Keyboard Navigation (planned)
-- [ ] Screen Reader (planned)
-- [ ] Focus Management (planned)
-- [ ] Responsive Design (planned)
-- [ ] Theme Variations (planned)
-- [ ] Visual States (planned)
-- [ ] Performance (planned)
-- [ ] Edge Cases (planned)
-- [ ] Integration (planned)
+**Stories**:
 
-## Current Section - 2025-01-13 21:30 (BRT)
+- Enhanced/TutorialOverlay/Default
+- Enhanced/TutorialOverlay/OnboardingFlow
+- Enhanced/TutorialOverlay/FeatureHighlight
+- Enhanced/TutorialOverlay/InteractiveTour
+- Enhanced/TutorialOverlay/CustomStyling
+- Enhanced/TutorialOverlay/AllVariants
+- Enhanced/TutorialOverlay/AllSizes
+- Enhanced/TutorialOverlay/AllStates
+- Enhanced/TutorialOverlay/InteractiveStates
+- Enhanced/TutorialOverlay/Responsive
 
-### Current Task: Initial track.md file creation
+* [ ] Basic Interaction (planned)
+* [ ] Keyboard Navigation (planned)
+* [ ] Screen Reader (planned)
+* [ ] Focus Management (planned)
+* [ ] Responsive Design (planned)
+* [ ] Theme Variations (planned)
+* [ ] Visual States (planned)
+* [ ] Performance (planned)
+* [ ] Edge Cases (planned)
+* [ ] Integration (planned)
+
+**Current (BRT)**: 2025-09-08 15:50 - TutorialOverlay component validation complete
+
+### Current Task: All validation checks pass
 
 - Track.md file structure created
 - Component overview documented

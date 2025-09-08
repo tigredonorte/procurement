@@ -57,6 +57,522 @@ const generateVariableItems = (count: number): VirtualListItem[] => {
   }));
 };
 
+// Required story exports for validation
+export const Default: Story = {
+  render: () => {
+    const items = generateItems(1000);
+
+    return (
+      <Paper sx={{ width: 400, height: 400 }}>
+        <VirtualList
+          items={items}
+          variant="fixed"
+          height={400}
+          itemHeight={80}
+          renderItem={({ item, style }) => (
+            <Box key={item.id} style={style}>
+              <ListItem>
+                <ListItemAvatar>
+                  <Avatar src={item.data.avatar} />
+                </ListItemAvatar>
+                <ListItemText primary={item.data.name} secondary={item.data.description} />
+              </ListItem>
+            </Box>
+          )}
+        />
+      </Paper>
+    );
+  },
+};
+
+export const AllVariants: Story = {
+  render: () => {
+    const fixedItems = generateItems(1000);
+    const variableItems = generateVariableItems(500);
+
+    return (
+      <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
+        <Paper sx={{ width: 350, height: 400 }}>
+          <Box sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
+            <Typography variant="h6">Fixed Height</Typography>
+          </Box>
+          <VirtualList
+            items={fixedItems}
+            variant="fixed"
+            height={350}
+            itemHeight={60}
+            renderItem={({ item, style }) => (
+              <Box key={item.id} style={style}>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar>{item.id + 1}</Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary={item.data.name} secondary="Fixed height item" />
+                </ListItem>
+              </Box>
+            )}
+          />
+        </Paper>
+
+        <Paper sx={{ width: 350, height: 400 }}>
+          <Box sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
+            <Typography variant="h6">Variable Height</Typography>
+          </Box>
+          <VirtualList
+            items={variableItems}
+            variant="variable"
+            height={350}
+            estimatedItemHeight={80}
+            renderItem={({ item, style }) => (
+              <Box key={item.id} style={style}>
+                <ListItem sx={{ alignItems: 'flex-start' }}>
+                  <ListItemAvatar>
+                    <Avatar>{item.id + 1}</Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={item.data.name}
+                    secondary={
+                      <Typography variant="body2" color="text.secondary">
+                        {item.data.description}
+                      </Typography>
+                    }
+                  />
+                </ListItem>
+              </Box>
+            )}
+          />
+        </Paper>
+
+        <Paper sx={{ width: 400, height: 400 }}>
+          <Box sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
+            <Typography variant="h6">Grid Layout</Typography>
+          </Box>
+          <VirtualGrid
+            items={fixedItems.slice(0, 1000)}
+            height={350}
+            width={400}
+            columnCount={3}
+            rowHeight={120}
+            gap={4}
+            renderItem={({ item, style }) => (
+              <Box
+                key={item.id}
+                style={style}
+                sx={{
+                  p: 2,
+                  bgcolor: 'background.paper',
+                  border: '1px solid',
+                  borderColor: 'divider',
+                  borderRadius: 2,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  textAlign: 'center',
+                }}
+              >
+                <Avatar src={item.data.avatar} sx={{ mb: 1 }} />
+                <Typography variant="body2">{item.data.name}</Typography>
+              </Box>
+            )}
+          />
+        </Paper>
+      </Box>
+    );
+  },
+};
+
+export const AllSizes: Story = {
+  render: () => {
+    const items = generateItems(500);
+
+    return (
+      <Box sx={{ display: 'flex', gap: 2 }}>
+        <Paper sx={{ width: 250, height: 300 }}>
+          <Box sx={{ p: 1, borderBottom: '1px solid', borderColor: 'divider' }}>
+            <Typography variant="subtitle2">Small (250x300)</Typography>
+          </Box>
+          <VirtualList
+            items={items}
+            variant="fixed"
+            height={270}
+            itemHeight={50}
+            renderItem={({ item, style }) => (
+              <Box key={item.id} style={style}>
+                <ListItem dense>
+                  <ListItemAvatar>
+                    <Avatar size="small">{item.id + 1}</Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary={`Item ${item.id + 1}`} />
+                </ListItem>
+              </Box>
+            )}
+          />
+        </Paper>
+
+        <Paper sx={{ width: 400, height: 400 }}>
+          <Box sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
+            <Typography variant="subtitle1">Medium (400x400)</Typography>
+          </Box>
+          <VirtualList
+            items={items}
+            variant="fixed"
+            height={360}
+            itemHeight={70}
+            renderItem={({ item, style }) => (
+              <Box key={item.id} style={style}>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar>{item.id + 1}</Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary={item.data.name} secondary="Medium size" />
+                </ListItem>
+              </Box>
+            )}
+          />
+        </Paper>
+
+        <Paper sx={{ width: 600, height: 500 }}>
+          <Box sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
+            <Typography variant="h6">Large (600x500)</Typography>
+          </Box>
+          <VirtualList
+            items={items}
+            variant="fixed"
+            height={450}
+            itemHeight={90}
+            renderItem={({ item, style }) => (
+              <Box key={item.id} style={style}>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar src={item.data.avatar} sx={{ width: 56, height: 56 }} />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={<Typography variant="h6">{item.data.name}</Typography>}
+                    secondary={<Typography variant="body2">{item.data.description}</Typography>}
+                  />
+                </ListItem>
+              </Box>
+            )}
+          />
+        </Paper>
+      </Box>
+    );
+  },
+};
+
+export const AllStates: Story = {
+  render: () => {
+    const items = generateItems(50);
+    const emptyItems: VirtualListItem[] = [];
+    const loadingItems = Array.from({ length: 5 }, (_, i) => ({ id: i }));
+
+    return (
+      <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 3 }}>
+        <Paper sx={{ width: 300, height: 250 }}>
+          <Box sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
+            <Typography variant="subtitle1">Normal State</Typography>
+          </Box>
+          <VirtualList
+            items={items}
+            variant="fixed"
+            height={200}
+            itemHeight={60}
+            renderItem={({ item, style }) => (
+              <Box key={item.id} style={style}>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar>{item.id + 1}</Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary={item.data.name} />
+                </ListItem>
+              </Box>
+            )}
+          />
+        </Paper>
+
+        <Paper sx={{ width: 300, height: 250, position: 'relative' }}>
+          <Box sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
+            <Typography variant="subtitle1">Empty State</Typography>
+          </Box>
+          <VirtualList
+            items={emptyItems}
+            variant="fixed"
+            height={200}
+            itemHeight={60}
+            renderItem={({ item, style }) => (
+              <Box key={item.id} style={style}>
+                <ListItem>
+                  <ListItemText primary="Should not render" />
+                </ListItem>
+              </Box>
+            )}
+          />
+          {emptyItems.length === 0 && (
+            <Box
+              sx={{
+                position: 'absolute',
+                top: '60%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                textAlign: 'center',
+                color: 'text.secondary',
+              }}
+            >
+              <Typography variant="body2">No items to display</Typography>
+            </Box>
+          )}
+        </Paper>
+
+        <Paper sx={{ width: 300, height: 250 }}>
+          <Box sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
+            <Typography variant="subtitle1">Loading State</Typography>
+          </Box>
+          <VirtualList
+            items={loadingItems}
+            variant="fixed"
+            height={200}
+            itemHeight={50}
+            renderItem={({ style }) => (
+              <Box style={style} sx={{ p: 1 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Box
+                    sx={{
+                      width: 32,
+                      height: 32,
+                      borderRadius: '50%',
+                      bgcolor: 'grey.200',
+                      animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                      '@keyframes pulse': {
+                        '0%, 100%': { opacity: 1 },
+                        '50%': { opacity: 0.5 },
+                      },
+                    }}
+                  />
+                  <Box
+                    sx={{
+                      height: 12,
+                      bgcolor: 'grey.200',
+                      borderRadius: 1,
+                      width: '60%',
+                      animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }}
+                  />
+                </Box>
+              </Box>
+            )}
+          />
+        </Paper>
+
+        <Paper sx={{ width: 300, height: 250 }}>
+          <Box sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
+            <Typography variant="subtitle1">Error State</Typography>
+          </Box>
+          <Box
+            sx={{
+              p: 2,
+              textAlign: 'center',
+              height: 200,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Typography variant="h6" color="error.main" gutterBottom>
+              ⚠ Error
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Failed to load data
+            </Typography>
+          </Box>
+        </Paper>
+      </Box>
+    );
+  },
+};
+
+export const InteractiveStates: Story = {
+  render: () => {
+    const items = generateItems(100);
+
+    return (
+      <Box sx={{ display: 'flex', gap: 3 }}>
+        <Paper sx={{ width: 350, height: 400 }}>
+          <Box sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
+            <Typography variant="subtitle1">Hover Effects</Typography>
+          </Box>
+          <VirtualList
+            items={items}
+            variant="fixed"
+            height={350}
+            itemHeight={70}
+            renderItem={({ item, style }) => (
+              <Box key={item.id} style={style}>
+                <ListItem
+                  sx={{
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease-in-out',
+                    '&:hover': {
+                      bgcolor: 'primary.light',
+                      transform: 'translateX(4px)',
+                      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                    },
+                  }}
+                >
+                  <ListItemAvatar>
+                    <Avatar>{item.id + 1}</Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary={item.data.name} secondary="Hover to see effect" />
+                </ListItem>
+              </Box>
+            )}
+          />
+        </Paper>
+
+        <Paper sx={{ width: 350, height: 400, position: 'relative' }}>
+          <Box sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
+            <Typography variant="subtitle1">Disabled State</Typography>
+          </Box>
+          <VirtualList
+            items={items.slice(0, 20)}
+            variant="fixed"
+            height={350}
+            itemHeight={60}
+            renderItem={({ item, style }) => (
+              <Box key={item.id} style={style}>
+                <ListItem
+                  disabled
+                  sx={{
+                    opacity: 0.6,
+                    cursor: 'not-allowed',
+                  }}
+                >
+                  <ListItemAvatar>
+                    <Avatar sx={{ filter: 'grayscale(100%)', opacity: 0.7 }}>{item.id + 1}</Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={
+                      <Typography sx={{ color: 'text.disabled' }}>{item.data.name}</Typography>
+                    }
+                    secondary="Disabled item"
+                  />
+                </ListItem>
+              </Box>
+            )}
+          />
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 50,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              bgcolor: 'rgba(255,255,255,0.7)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backdropFilter: 'blur(1px)',
+            }}
+          >
+            <Typography variant="h6" color="text.disabled">
+              List Disabled
+            </Typography>
+          </Box>
+        </Paper>
+      </Box>
+    );
+  },
+};
+
+export const Responsive: Story = {
+  render: () => {
+    const items = generateItems(500);
+
+    return (
+      <Box
+        sx={{
+          width: '100%',
+          maxWidth: '100vw',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+        }}
+      >
+        <Paper sx={{ width: '100%', height: 300 }}>
+          <Box sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
+            <Typography variant="h6">Responsive Width</Typography>
+            <Typography variant="body2" color="text.secondary">
+              Adapts to container width
+            </Typography>
+          </Box>
+          <VirtualList
+            items={items}
+            variant="fixed"
+            height={250}
+            itemHeight={60}
+            renderItem={({ item, style }) => (
+              <Box key={item.id} style={style}>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar src={item.data.avatar} />
+                  </ListItemAvatar>
+                  <ListItemText primary={item.data.name} secondary="Responsive list item" />
+                </ListItem>
+              </Box>
+            )}
+          />
+        </Paper>
+
+        <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+          <Paper sx={{ flex: '1 1 300px', minWidth: 250, height: 250 }}>
+            <Box sx={{ p: 1, borderBottom: '1px solid', borderColor: 'divider' }}>
+              <Typography variant="subtitle2">Mobile Size</Typography>
+            </Box>
+            <VirtualList
+              items={items}
+              variant="fixed"
+              height={220}
+              itemHeight={50}
+              renderItem={({ item, style }) => (
+                <Box key={item.id} style={style}>
+                  <ListItem dense>
+                    <ListItemAvatar>
+                      <Avatar size="small">{item.id + 1}</Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary={`Item ${item.id + 1}`} />
+                  </ListItem>
+                </Box>
+              )}
+            />
+          </Paper>
+
+          <Paper sx={{ flex: '2 1 400px', minWidth: 350, height: 250 }}>
+            <Box sx={{ p: 1, borderBottom: '1px solid', borderColor: 'divider' }}>
+              <Typography variant="subtitle2">Desktop Size</Typography>
+            </Box>
+            <VirtualList
+              items={items}
+              variant="fixed"
+              height={220}
+              itemHeight={60}
+              renderItem={({ item, style }) => (
+                <Box key={item.id} style={style}>
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Avatar>{item.id + 1}</Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary={item.data.name} secondary={item.data.description} />
+                  </ListItem>
+                </Box>
+              )}
+            />
+          </Paper>
+        </Box>
+      </Box>
+    );
+  },
+};
+
 export const FixedHeightList: Story = {
   render: () => {
     const items = generateItems(10000);

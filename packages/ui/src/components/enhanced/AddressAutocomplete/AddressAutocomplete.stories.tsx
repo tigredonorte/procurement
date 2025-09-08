@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Box, Stack, Typography, Paper, Alert } from '@mui/material';
-import { LocationOn, Home, Business, LocalShipping } from '@mui/icons-material';
+import { Home, Business, LocalShipping } from '@mui/icons-material';
 import React from 'react';
 
-import { AddressAutocomplete, AddressDetails } from './AddressAutocomplete';
+import { AddressAutocomplete } from './AddressAutocomplete';
+import type { AddressDetails } from './AddressAutocomplete.types';
 
 const meta = {
   title: 'Enhanced/AddressAutocomplete',
@@ -12,7 +13,8 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component: 'An advanced address autocomplete component with Google Maps integration, current location support, and beautiful glass morphism effects.',
+        component:
+          'An advanced address autocomplete component with Google Maps integration, current location support, and beautiful glass morphism effects.',
       },
     },
   },
@@ -69,8 +71,8 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const handleAddressSelect = (address: AddressDetails) => {
-  
+const handleAddressSelect = () => {
+  // Handle address selection
 };
 
 export const Default: Story = {
@@ -122,86 +124,86 @@ const MultipleAddressInputsComponent = () => {
     shipping?: AddressDetails;
   }>({});
 
-    return (
-      <Stack spacing={4}>
-        <Typography variant="h6">Manage Your Addresses</Typography>
-        
-        <Paper elevation={2} sx={{ p: 3 }}>
-          <Stack spacing={3}>
-            <Typography variant="subtitle1" color="primary">
-              <Home sx={{ mr: 1, verticalAlign: 'middle' }} />
-              Home Address
-            </Typography>
-            <AddressAutocomplete
-              variant="outlined"
-              label="Home Address"
-              placeholder="Enter your home address"
-              icon={<Home />}
-              googleMapsApiKey="demo-key"
-              onSelect={(address) => {
-                setSelectedAddresses(prev => ({ ...prev, home: address }));
-              }}
-              helperText="This will be your default address"
-            />
-            {selectedAddresses.home && (
-              <Alert severity="success" variant="outlined">
-                Home address set: {selectedAddresses.home.formatted}
-              </Alert>
-            )}
-          </Stack>
-        </Paper>
+  return (
+    <Stack spacing={4}>
+      <Typography variant="h6">Manage Your Addresses</Typography>
 
-        <Paper elevation={2} sx={{ p: 3 }}>
-          <Stack spacing={3}>
-            <Typography variant="subtitle1" color="primary">
-              <Business sx={{ mr: 1, verticalAlign: 'middle' }} />
-              Work Address
-            </Typography>
-            <AddressAutocomplete
-              variant="outlined"
-              label="Work Address"
-              placeholder="Enter your work address"
-              icon={<Business />}
-              googleMapsApiKey="demo-key"
-              onSelect={(address) => {
-                setSelectedAddresses(prev => ({ ...prev, work: address }));
-              }}
-            />
-            {selectedAddresses.work && (
-              <Alert severity="success" variant="outlined">
-                Work address set: {selectedAddresses.work.formatted}
-              </Alert>
-            )}
-          </Stack>
-        </Paper>
+      <Paper elevation={2} sx={{ p: 3 }}>
+        <Stack spacing={3}>
+          <Typography variant="subtitle1" color="primary">
+            <Home sx={{ mr: 1, verticalAlign: 'middle' }} />
+            Home Address
+          </Typography>
+          <AddressAutocomplete
+            variant="outlined"
+            label="Home Address"
+            placeholder="Enter your home address"
+            icon={<Home />}
+            googleMapsApiKey="demo-key"
+            onSelect={(address) => {
+              setSelectedAddresses((prev) => ({ ...prev, home: address }));
+            }}
+            helperText="This will be your default address"
+          />
+          {selectedAddresses.home && (
+            <Alert severity="success" variant="outlined">
+              Home address set: {selectedAddresses.home.formatted}
+            </Alert>
+          )}
+        </Stack>
+      </Paper>
 
-        <Paper elevation={2} sx={{ p: 3 }}>
-          <Stack spacing={3}>
-            <Typography variant="subtitle1" color="primary">
-              <LocalShipping sx={{ mr: 1, verticalAlign: 'middle' }} />
-              Shipping Address
-            </Typography>
-            <AddressAutocomplete
-              variant="filled"
-              label="Shipping Address"
-              placeholder="Where should we deliver?"
-              icon={<LocalShipping />}
-              googleMapsApiKey="demo-key"
-              getCurrentLocation={true}
-              onSelect={(address) => {
-                setSelectedAddresses(prev => ({ ...prev, shipping: address }));
-              }}
-              helperText="We deliver to this address"
-            />
-            {selectedAddresses.shipping && (
-              <Alert severity="success" variant="outlined">
-                Shipping address set: {selectedAddresses.shipping.formatted}
-              </Alert>
-            )}
-          </Stack>
-        </Paper>
-      </Stack>
-    );
+      <Paper elevation={2} sx={{ p: 3 }}>
+        <Stack spacing={3}>
+          <Typography variant="subtitle1" color="primary">
+            <Business sx={{ mr: 1, verticalAlign: 'middle' }} />
+            Work Address
+          </Typography>
+          <AddressAutocomplete
+            variant="outlined"
+            label="Work Address"
+            placeholder="Enter your work address"
+            icon={<Business />}
+            googleMapsApiKey="demo-key"
+            onSelect={(address) => {
+              setSelectedAddresses((prev) => ({ ...prev, work: address }));
+            }}
+          />
+          {selectedAddresses.work && (
+            <Alert severity="success" variant="outlined">
+              Work address set: {selectedAddresses.work.formatted}
+            </Alert>
+          )}
+        </Stack>
+      </Paper>
+
+      <Paper elevation={2} sx={{ p: 3 }}>
+        <Stack spacing={3}>
+          <Typography variant="subtitle1" color="primary">
+            <LocalShipping sx={{ mr: 1, verticalAlign: 'middle' }} />
+            Shipping Address
+          </Typography>
+          <AddressAutocomplete
+            variant="filled"
+            label="Shipping Address"
+            placeholder="Where should we deliver?"
+            icon={<LocalShipping />}
+            googleMapsApiKey="demo-key"
+            getCurrentLocation={true}
+            onSelect={(address) => {
+              setSelectedAddresses((prev) => ({ ...prev, shipping: address }));
+            }}
+            helperText="We deliver to this address"
+          />
+          {selectedAddresses.shipping && (
+            <Alert severity="success" variant="outlined">
+              Shipping address set: {selectedAddresses.shipping.formatted}
+            </Alert>
+          )}
+        </Stack>
+      </Paper>
+    </Stack>
+  );
 };
 
 export const MultipleAddressInputs: Story = {
@@ -213,50 +215,53 @@ const WithValidationComponent = () => {
   const [error, setError] = React.useState(false);
   const [helperText, setHelperText] = React.useState('');
 
-    const handleSubmit = () => {
-      if (!address) {
-        setError(true);
-        setHelperText('Please select a valid address');
-      } else {
-        setError(false);
-        setHelperText('');
-        alert(`Address confirmed: ${address.formatted}`);
-      }
-    };
+  const handleSubmit = () => {
+    if (!address) {
+      setError(true);
+      setHelperText('Please select a valid address');
+    } else {
+      setError(false);
+      setHelperText('');
+      // eslint-disable-next-line no-console
+      console.log(`Address confirmed: ${address.formatted}`);
+    }
+  };
 
-    return (
-      <Stack spacing={3} sx={{ maxWidth: 500 }}>
-        <Typography variant="h6">Address Validation Example</Typography>
-        <AddressAutocomplete
-          variant="outlined"
-          label="Delivery Address"
-          placeholder="Enter a valid address"
-          googleMapsApiKey="demo-key"
-          required
-          error={error}
-          helperText={helperText}
-          onSelect={(addr) => {
-            setAddress(addr);
-            setError(false);
-            setHelperText('');
-          }}
-        />
-        <button onClick={handleSubmit}>Submit Address</button>
-        
-        {address && !error && (
-          <Paper sx={{ p: 2, bgcolor: 'grey.50' }}>
-            <Typography variant="subtitle2" gutterBottom>Selected Address Details:</Typography>
-            <Typography variant="body2">Street: {address.street}</Typography>
-            <Typography variant="body2">City: {address.city}</Typography>
-            <Typography variant="body2">State: {address.state}</Typography>
-            <Typography variant="body2">Postal Code: {address.postalCode}</Typography>
-            <Typography variant="body2">
-              Coordinates: {address.coordinates.lat}, {address.coordinates.lng}
-            </Typography>
-          </Paper>
-        )}
-      </Stack>
-    );
+  return (
+    <Stack spacing={3} sx={{ maxWidth: 500 }}>
+      <Typography variant="h6">Address Validation Example</Typography>
+      <AddressAutocomplete
+        variant="outlined"
+        label="Delivery Address"
+        placeholder="Enter a valid address"
+        googleMapsApiKey="demo-key"
+        required
+        error={error}
+        helperText={helperText}
+        onSelect={(addr) => {
+          setAddress(addr);
+          setError(false);
+          setHelperText('');
+        }}
+      />
+      <button onClick={handleSubmit}>Submit Address</button>
+
+      {address && !error && (
+        <Paper sx={{ p: 2, bgcolor: 'grey.50' }}>
+          <Typography variant="subtitle2" gutterBottom>
+            Selected Address Details:
+          </Typography>
+          <Typography variant="body2">Street: {address.street}</Typography>
+          <Typography variant="body2">City: {address.city}</Typography>
+          <Typography variant="body2">State: {address.state}</Typography>
+          <Typography variant="body2">Postal Code: {address.postalCode}</Typography>
+          <Typography variant="body2">
+            Coordinates: {address.coordinates.lat}, {address.coordinates.lng}
+          </Typography>
+        </Paper>
+      )}
+    </Stack>
+  );
 };
 
 export const WithValidation: Story = {
@@ -342,5 +347,3 @@ export const CustomIcons: Story = {
     </Stack>
   ),
 };
-
-// Add React import for hooks

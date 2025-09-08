@@ -53,18 +53,29 @@ A map preview component for displaying geographic locations with markers, custom
 - [ ] Error handling for invalid coordinates
 - [ ] Performance with multiple markers
 
-## Storybook Tests Status
+## 5) Storybook Tests
 
-- [ ] Basic Interaction (planned)
-- [ ] Keyboard Navigation (planned)
-- [ ] Screen Reader (planned)
-- [ ] Focus Management (planned)
-- [ ] Responsive Design (planned)
-- [ ] Theme Variations (planned)
-- [ ] Visual States (planned)
-- [ ] Performance (planned)
-- [ ] Edge Cases (planned)
-- [ ] Integration (planned)
+**Stories**:
+
+- Enhanced/MapPreview/Default
+- Enhanced/MapPreview/AllVariants
+- Enhanced/MapPreview/AllSizes
+- Enhanced/MapPreview/AllStates
+- Enhanced/MapPreview/InteractiveStates
+- Enhanced/MapPreview/Responsive
+
+* [ ] Basic Interaction (planned)
+* [ ] Keyboard Navigation (planned)
+* [ ] Screen Reader (planned)
+* [ ] Focus Management (planned)
+* [ ] Responsive Design (planned)
+* [ ] Theme Variations (planned)
+* [ ] Visual States (planned)
+* [ ] Performance (planned)
+* [ ] Edge Cases (planned)
+* [ ] Integration (planned)
+
+**Current (BRT)**: 2025-09-08 19:00 - Fixing component validation issues
 
 ## Current Section - 2025-01-13 21:30 (BRT)
 

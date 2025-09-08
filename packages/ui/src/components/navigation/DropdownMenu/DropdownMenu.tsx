@@ -171,7 +171,7 @@ const renderMenuItem = (
     <StyledMenuItem
       key={item.id}
       disabled={item.disabled}
-      onClick={() => handleItemClick(item)}
+      onClick={!item.disabled ? () => handleItemClick(item) : undefined} // ← change
       color={item.color}
       showIconSpace={showIconSpace && !hasIcon}
     >

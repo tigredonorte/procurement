@@ -10,7 +10,6 @@ export * from './components/form/Switch';
 export * from './components/form/Slider';
 export * from './components/form/Toggle';
 export * from './components/form/ToggleGroup';
-export * from './components/form/Calendar';
 export * from './components/form/InputOTP';
 export * from './components/form/Command';
 export * from './components/form/Label';

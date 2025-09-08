@@ -157,15 +157,18 @@ const Step = styled(Box)<{ active: boolean; completed: boolean }>(
     background: completed
       ? `linear-gradient(90deg, ${theme.palette.success.main} 0%, ${theme.palette.success.light} 100%)`
       : active
-      ? `linear-gradient(90deg, ${theme.palette.warning.main} 0%, ${theme.palette.warning.light} 100%)`
-      : alpha(theme.palette.action.disabled, 0.2),
+        ? `linear-gradient(90deg, ${theme.palette.warning.main} 0%, ${theme.palette.warning.light} 100%)`
+        : alpha(theme.palette.action.disabled, 0.2),
     transition: 'all 0.3s ease',
     boxShadow: completed ? `0 2px 8px ${alpha(theme.palette.success.main, 0.3)}` : 'none',
-  })
+  }),
 );
 
 // Helper functions
-const calculatePasswordStrength = (password: string, requirements: PasswordRequirements): number => {
+const calculatePasswordStrength = (
+  password: string,
+  requirements: PasswordRequirements,
+): number => {
   if (!password) return 0;
 
   let strength = 0;
@@ -216,23 +219,24 @@ export const PasswordStrength: FC<PasswordStrengthProps> = ({
   showStrengthLabel = true,
   showSuggestions = false,
   variant = 'linear',
-  animated = true,
+  animated = true, // eslint-disable-line @typescript-eslint/no-unused-vars
 }) => {
   const theme = useTheme();
-  
+
   const strength = useMemo(
     () => calculatePasswordStrength(value, requirements),
-    [value, requirements]
+    [value, requirements],
   );
 
   const requirementChecks = useMemo(() => {
-    if (!value) return {
-      length: false,
-      uppercase: false,
-      lowercase: false,
-      numbers: false,
-      special: false,
-    };
+    if (!value)
+      return {
+        length: false,
+        uppercase: false,
+        lowercase: false,
+        numbers: false,
+        special: false,
+      };
 
     return {
       length: value.length >= (requirements.minLength || 8),
@@ -293,20 +297,17 @@ export const PasswordStrength: FC<PasswordStrengthProps> = ({
           </Box>
         );
 
-      case 'steps':
+      case 'steps': {
         const steps = 5;
         const activeStep = Math.ceil((strength / 100) * steps);
         return (
           <StepsContainer>
             {Array.from({ length: steps }, (_, i) => (
-              <Step
-                key={i}
-                active={i === activeStep - 1}
-                completed={i < activeStep - 1}
-              />
+              <Step key={i} active={i === activeStep - 1} completed={i < activeStep - 1} />
             ))}
           </StepsContainer>
         );
+      }
 
       default:
         return <StrengthBar variant="determinate" value={strength} strength={strength} />;

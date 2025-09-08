@@ -23,7 +23,7 @@ const samplePeople: Person[] = [
 const stringSuggestions = ['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry', 'Fig', 'Grape'];
 
 const meta: Meta<typeof Autocomplete> = {
-  title: 'Form/Autocomplete',
+  title: 'Form/Autocomplete/Tests',
   component: Autocomplete,
   parameters: {
     docs: {
@@ -307,7 +307,7 @@ export const AsyncLoading: Story = {
 };
 
 // Match Mode Tests
-export const FuzzyMatching: Story = {
+export const FuzzyMatchingTest: Story = {
   render: () => (
     <AutocompleteWrapper
       suggestions={['JavaScript', 'TypeScript', 'CoffeeScript', 'ActionScript']}

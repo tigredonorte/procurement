@@ -52,7 +52,7 @@ The DropdownMenu component provides contextual menu functionality with keyboard 
 - [ ] Screen reader compatibility
 - [ ] Portal rendering
 
-## Storybook Tests Status
+## 5) Storybook Tests
 
 - [ ] Basic Interaction (planned)
 - [ ] Keyboard Navigation (planned)
@@ -64,6 +64,30 @@ The DropdownMenu component provides contextual menu functionality with keyboard 
 - [ ] Performance (planned)
 - [ ] Edge Cases (planned)
 - [ ] Integration (planned)
+
+**Stories**
+
+- Navigation/DropdownMenu/Default
+- Navigation/DropdownMenu/GlassVariant
+- Navigation/DropdownMenu/MinimalVariant
+- Navigation/DropdownMenu/WithShortcuts
+- Navigation/DropdownMenu/WithHeaders
+- Navigation/DropdownMenu/SmallSize
+- Navigation/DropdownMenu/LargeSize
+- Navigation/DropdownMenu/UserMenu
+- Navigation/DropdownMenu/IconTrigger
+- Navigation/DropdownMenu/MixedStates
+- Navigation/DropdownMenu/WithClickHandlers
+- Navigation/DropdownMenu/NoIcons
+- Navigation/DropdownMenu/WithIconSpace
+- Navigation/DropdownMenu/GlassShowcase
+- Navigation/DropdownMenu/LongMenu
+- Navigation/DropdownMenu/DarkModeGlass
+- Navigation/DropdownMenu/AllVariants
+- Navigation/DropdownMenu/AllSizes
+- Navigation/DropdownMenu/AllStates
+- Navigation/DropdownMenu/InteractiveStates
+- Navigation/DropdownMenu/Responsive
 
 ## Current Section - 2025-09-07 03:30 (BRT)
 
@@ -80,3 +104,7 @@ The DropdownMenu component provides contextual menu functionality with keyboard 
 - Run pnpm check:component navigation DropdownMenu
 - Verify all tests pass in Storybook
 - Update documentation with results
+
+**Current (BRT)**: 2025-09-08 20:45
+
+Fixed performance API and window.getComputedStyle linting errors. Added required story exports for validation. All checks now pass.

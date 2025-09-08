@@ -555,7 +555,7 @@ const EdgeCasesComponent: React.FC = () => {
       </Box>
 
       <Typography variant="body2" data-testid="scenario-info">
-        {/* eslint-disable-next-line react/prop-types */}
+        {}
         Scenario: {scenario} - Size: {props.width}×{props.height}
       </Typography>
 

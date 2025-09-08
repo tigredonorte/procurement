@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Box, Stack, Typography, Paper, Chip, Button } from '@mui/material';
+import { Box, Stack, Typography, Paper, Button } from '@mui/material';
 import React from 'react';
 
 import { TimingDiagram } from './TimingDiagram';
@@ -11,33 +11,36 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component: 'A Gantt-style timing diagram component for visualizing schedules, project timelines, and resource allocation.',
+        component:
+          'A timing diagram component for visualizing network request phases and performance metrics.',
       },
     },
   },
   tags: ['autodocs'],
   argTypes: {
+    data: {
+      description: 'Timing data for different phases',
+    },
     variant: {
       control: { type: 'select' },
-      options: ['default', 'compact', 'detailed', 'resource'],
+      options: ['waterfall', 'stacked', 'horizontal'],
       description: 'Display variant',
     },
-    showGrid: {
+    showLabels: {
       control: 'boolean',
-      description: 'Show background grid',
+      description: 'Show timing labels on segments',
     },
-    showToday: {
+    showTooltips: {
       control: 'boolean',
-      description: 'Highlight current date',
+      description: 'Enable hover tooltips',
     },
-    interactive: {
+    animated: {
       control: 'boolean',
-      description: 'Enable interactive features',
+      description: 'Enable animations',
     },
-    zoom: {
-      control: { type: 'select' },
-      options: ['day', 'week', 'month', 'quarter', 'year'],
-      description: 'Time scale zoom level',
+    height: {
+      control: { type: 'number', min: 20, max: 200, step: 10 },
+      description: 'Diagram height in pixels',
     },
   },
 } satisfies Meta<typeof TimingDiagram>;
@@ -45,424 +48,427 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const projectTasks = [
-  {
-    id: '1',
-    name: 'Project Planning',
-    start: new Date('2024-01-01'),
-    end: new Date('2024-01-15'),
-    progress: 100,
-    color: '#4CAF50',
-    assignee: 'John Doe',
-  },
-  {
-    id: '2',
-    name: 'Design Phase',
-    start: new Date('2024-01-10'),
-    end: new Date('2024-02-01'),
-    progress: 100,
-    color: '#2196F3',
-    assignee: 'Sarah Smith',
-  },
-  {
-    id: '3',
-    name: 'Development Sprint 1',
-    start: new Date('2024-01-20'),
-    end: new Date('2024-02-15'),
-    progress: 75,
-    color: '#FF9800',
-    assignee: 'Dev Team',
-  },
-  {
-    id: '4',
-    name: 'Testing Phase',
-    start: new Date('2024-02-10'),
-    end: new Date('2024-02-28'),
-    progress: 30,
-    color: '#9C27B0',
-    assignee: 'QA Team',
-  },
-  {
-    id: '5',
-    name: 'Deployment',
-    start: new Date('2024-02-25'),
-    end: new Date('2024-03-05'),
-    progress: 0,
-    color: '#F44336',
-    assignee: 'DevOps',
-  },
-];
+const sampleData = {
+  dns: 45,
+  connect: 120,
+  ssl: 180,
+  request: 25,
+  response: 380,
+  total: 750,
+};
+
+const fastData = {
+  dns: 15,
+  connect: 35,
+  ssl: 65,
+  request: 10,
+  response: 85,
+  total: 210,
+};
+
+const slowData = {
+  dns: 150,
+  connect: 400,
+  ssl: 600,
+  request: 80,
+  response: 1200,
+  total: 2430,
+};
 
 export const Default: Story = {
   args: {
-    tasks: projectTasks,
-    startDate: new Date('2024-01-01'),
-    endDate: new Date('2024-03-31'),
-    variant: 'default',
-    showGrid: true,
-    showToday: true,
+    data: sampleData,
+    variant: 'waterfall',
+    showLabels: true,
+    showTooltips: true,
+    animated: true,
+    height: 40,
   },
 };
 
-const InteractiveGanttComponent = () => {
-const [tasks, setTasks] = React.useState(projectTasks);
-    const [selectedTask, setSelectedTask] = React.useState<string | null>(null);
-
-    const handleTaskClick = (taskId: string) => {
-      setSelectedTask(taskId);
-    };
-
-    const updateProgress = (taskId: string, progress: number) => {
-      setTasks(tasks.map(task => 
-        task.id === taskId ? { ...task, progress } : task
-      ));
-    };
-
-    return (
-      <Stack spacing={3}>
-        <Typography variant="h6">Interactive Project Timeline</Typography>
-        
+export const AllVariants: Story = {
+  render: () => (
+    <Stack spacing={4}>
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Waterfall Variant
+        </Typography>
         <TimingDiagram
-          tasks={tasks}
-          startDate={new Date('2024-01-01')}
-          endDate={new Date('2024-03-31')}
-          variant="detailed"
-          showGrid={true}
-          showToday={true}
-          interactive={true}
-          onTaskClick={handleTaskClick}
+          data={sampleData}
+          variant="waterfall"
+          showLabels={true}
+          showTooltips={true}
+          animated={true}
         />
-        
-        {selectedTask && (
-          <Paper sx={{ p: 2 }}>
-            <Typography variant="subtitle1" gutterBottom>
-              Selected Task: {tasks.find(t => t.id === selectedTask)?.name}
-            </Typography>
-            <Stack direction="row" spacing={2} alignItems="center">
-              <Typography variant="body2">Progress:</Typography>
-              <Button
-                size="small"
-                onClick={() => updateProgress(selectedTask, 0)}
-              >
-                0%
-              </Button>
-              <Button
-                size="small"
-                onClick={() => updateProgress(selectedTask, 50)}
-              >
-                50%
-              </Button>
-              <Button
-                size="small"
-                onClick={() => updateProgress(selectedTask, 100)}
-              >
-                100%
-              </Button>
-            </Stack>
-          </Paper>
-        )}
-      </Stack>
-    );
+      </Box>
+
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Stacked Variant
+        </Typography>
+        <TimingDiagram
+          data={sampleData}
+          variant="stacked"
+          showLabels={true}
+          showTooltips={true}
+          animated={true}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Horizontal Variant
+        </Typography>
+        <TimingDiagram
+          data={sampleData}
+          variant="horizontal"
+          showLabels={true}
+          showTooltips={true}
+          animated={true}
+        />
+      </Box>
+    </Stack>
+  ),
 };
 
-export const InteractiveGantt: Story = {
-  render: () => <InteractiveGanttComponent />,
+export const AllSizes: Story = {
+  render: () => (
+    <Stack spacing={4}>
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Small (height: 30px)
+        </Typography>
+        <TimingDiagram
+          data={sampleData}
+          variant="waterfall"
+          height={30}
+          showLabels={false}
+          animated={true}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Medium (height: 40px)
+        </Typography>
+        <TimingDiagram
+          data={sampleData}
+          variant="waterfall"
+          height={40}
+          showLabels={true}
+          animated={true}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Large (height: 60px)
+        </Typography>
+        <TimingDiagram
+          data={sampleData}
+          variant="waterfall"
+          height={60}
+          showLabels={true}
+          animated={true}
+        />
+      </Box>
+    </Stack>
+  ),
 };
 
-export const ResourceAllocation: Story = {
+export const AllStates: Story = {
+  render: () => (
+    <Stack spacing={4}>
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Fast Request (&lt;300ms)
+        </Typography>
+        <TimingDiagram
+          data={fastData}
+          variant="stacked"
+          showLabels={true}
+          showTooltips={true}
+          animated={true}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Normal Request (~750ms)
+        </Typography>
+        <TimingDiagram
+          data={sampleData}
+          variant="stacked"
+          showLabels={true}
+          showTooltips={true}
+          animated={true}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Slow Request (&gt;2s)
+        </Typography>
+        <TimingDiagram
+          data={slowData}
+          variant="stacked"
+          showLabels={true}
+          showTooltips={true}
+          animated={true}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          No Animation
+        </Typography>
+        <TimingDiagram
+          data={sampleData}
+          variant="stacked"
+          showLabels={true}
+          showTooltips={false}
+          animated={false}
+        />
+      </Box>
+    </Stack>
+  ),
+};
+
+const InteractiveComponent = () => {
+  const [currentData, setCurrentData] = React.useState(sampleData);
+  const [variant, setVariant] = React.useState<'waterfall' | 'stacked' | 'horizontal'>('waterfall');
+
+  const scenarios = [
+    { name: 'Fast', data: fastData },
+    { name: 'Normal', data: sampleData },
+    { name: 'Slow', data: slowData },
+  ];
+
+  return (
+    <Stack spacing={3}>
+      <Typography variant="h6">Interactive Timing Diagram</Typography>
+
+      <Paper sx={{ p: 2 }}>
+        <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
+          <Typography variant="body2" sx={{ alignSelf: 'center' }}>
+            Data:
+          </Typography>
+          {scenarios.map((scenario) => (
+            <Button
+              key={scenario.name}
+              size="small"
+              variant={currentData === scenario.data ? 'contained' : 'outlined'}
+              onClick={() => setCurrentData(scenario.data)}
+            >
+              {scenario.name}
+            </Button>
+          ))}
+        </Stack>
+
+        <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
+          <Typography variant="body2" sx={{ alignSelf: 'center' }}>
+            Variant:
+          </Typography>
+          {['waterfall', 'stacked', 'horizontal'].map((v) => (
+            <Button
+              key={v}
+              size="small"
+              variant={variant === v ? 'contained' : 'outlined'}
+              onClick={() => setVariant(v as typeof variant)}
+            >
+              {v}
+            </Button>
+          ))}
+        </Stack>
+      </Paper>
+
+      <TimingDiagram
+        data={currentData}
+        variant={variant}
+        showLabels={true}
+        showTooltips={true}
+        animated={true}
+      />
+
+      <Paper sx={{ p: 2, bgcolor: 'info.light' }}>
+        <Typography variant="body2">
+          Total time: {currentData.total}ms | DNS: {currentData.dns}ms | Connect:{' '}
+          {currentData.connect}ms | SSL: {currentData.ssl}ms | Request: {currentData.request}ms |
+          Response: {currentData.response}ms
+        </Typography>
+      </Paper>
+    </Stack>
+  );
+};
+
+export const InteractiveStates: Story = {
+  render: () => <InteractiveComponent />,
+};
+
+export const Responsive: Story = {
+  parameters: {
+    viewport: {
+      viewports: {
+        mobile: { name: 'Mobile', styles: { width: '375px', height: '667px' } },
+        tablet: { name: 'Tablet', styles: { width: '768px', height: '1024px' } },
+        desktop: { name: 'Desktop', styles: { width: '1200px', height: '800px' } },
+      },
+    },
+  },
+  render: () => (
+    <Stack spacing={4}>
+      <Typography variant="h6">Responsive Timing Diagrams</Typography>
+
+      <Box>
+        <Typography variant="body2" color="text.secondary" gutterBottom>
+          Waterfall (adapts to container width)
+        </Typography>
+        <TimingDiagram
+          data={sampleData}
+          variant="waterfall"
+          showLabels={true}
+          showTooltips={true}
+          animated={true}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="body2" color="text.secondary" gutterBottom>
+          Stacked (full width)
+        </Typography>
+        <TimingDiagram
+          data={sampleData}
+          variant="stacked"
+          showLabels={true}
+          showTooltips={true}
+          animated={true}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="body2" color="text.secondary" gutterBottom>
+          Horizontal (vertical layout)
+        </Typography>
+        <TimingDiagram
+          data={sampleData}
+          variant="horizontal"
+          showLabels={true}
+          showTooltips={true}
+          animated={true}
+        />
+      </Box>
+    </Stack>
+  ),
+};
+
+export const PerformanceComparison: Story = {
   render: () => {
-    const resources = [
+    const requests = [
       {
-        id: '1',
-        name: 'Frontend Development',
-        tasks: [
-          { start: new Date('2024-01-05'), end: new Date('2024-01-20'), assignee: 'Alice' },
-          { start: new Date('2024-01-25'), end: new Date('2024-02-10'), assignee: 'Bob' },
-        ],
-        color: '#4CAF50',
+        name: 'API Request A',
+        data: { dns: 20, connect: 45, ssl: 80, request: 15, response: 120, total: 280 },
       },
       {
-        id: '2',
-        name: 'Backend Development',
-        tasks: [
-          { start: new Date('2024-01-10'), end: new Date('2024-01-30'), assignee: 'Charlie' },
-          { start: new Date('2024-02-01'), end: new Date('2024-02-20'), assignee: 'David' },
-        ],
-        color: '#2196F3',
+        name: 'API Request B',
+        data: { dns: 55, connect: 120, ssl: 200, request: 35, response: 340, total: 750 },
       },
       {
-        id: '3',
-        name: 'Database Design',
-        tasks: [
-          { start: new Date('2024-01-01'), end: new Date('2024-01-15'), assignee: 'Eve' },
-          { start: new Date('2024-02-15'), end: new Date('2024-02-28'), assignee: 'Frank' },
-        ],
-        color: '#FF9800',
-      },
-      {
-        id: '4',
-        name: 'UI/UX Design',
-        tasks: [
-          { start: new Date('2024-01-01'), end: new Date('2024-01-25'), assignee: 'Grace' },
-        ],
-        color: '#9C27B0',
+        name: 'API Request C',
+        data: { dns: 180, connect: 450, ssl: 600, request: 80, response: 890, total: 2200 },
       },
     ];
 
     return (
       <Stack spacing={3}>
-        <Typography variant="h6">Resource Allocation Chart</Typography>
-        
-        <TimingDiagram
-          tasks={resources.flatMap(r => 
-            r.tasks.map((task, idx) => ({
-              id: `${r.id}-${idx}`,
-              name: `${r.name} - ${task.assignee}`,
-              start: task.start,
-              end: task.end,
-              color: r.color,
-              assignee: task.assignee,
-              progress: 50,
-            }))
-          )}
-          startDate={new Date('2024-01-01')}
-          endDate={new Date('2024-02-28')}
-          variant="resource"
-          showGrid={true}
-          groupBy="assignee"
-        />
-      </Stack>
-    );
-  },
-};
-
-export const SprintPlanning: Story = {
-  render: () => {
-    const sprints = [
-      {
-        id: 'sprint1',
-        name: 'Sprint 1',
-        start: new Date('2024-01-01'),
-        end: new Date('2024-01-14'),
-        tasks: [
-          { name: 'User Authentication', progress: 100 },
-          { name: 'Database Setup', progress: 100 },
-        ],
-      },
-      {
-        id: 'sprint2',
-        name: 'Sprint 2',
-        start: new Date('2024-01-15'),
-        end: new Date('2024-01-28'),
-        tasks: [
-          { name: 'API Development', progress: 80 },
-          { name: 'Frontend Components', progress: 60 },
-        ],
-      },
-      {
-        id: 'sprint3',
-        name: 'Sprint 3',
-        start: new Date('2024-01-29'),
-        end: new Date('2024-02-11'),
-        tasks: [
-          { name: 'Integration Testing', progress: 30 },
-          { name: 'Performance Optimization', progress: 10 },
-        ],
-      },
-    ];
-
-    return (
-      <Stack spacing={3}>
-        <Typography variant="h6">Sprint Overview</Typography>
-        
-        {sprints.map((sprint) => (
-          <Paper key={sprint.id} sx={{ p: 2 }}>
-            <Typography variant="subtitle1" gutterBottom>
-              {sprint.name}
+        <Typography variant="h6">Performance Comparison</Typography>
+        {requests.map((request) => (
+          <Box key={request.name}>
+            <Typography variant="body1" gutterBottom>
+              {request.name}
             </Typography>
             <TimingDiagram
-              tasks={sprint.tasks.map((task, idx) => ({
-                id: `${sprint.id}-${idx}`,
-                name: task.name,
-                start: sprint.start,
-                end: sprint.end,
-                progress: task.progress,
-                color: task.progress === 100 ? '#4CAF50' :
-                       task.progress >= 50 ? '#FF9800' : '#F44336',
-              }))}
-              startDate={sprint.start}
-              endDate={sprint.end}
-              variant="compact"
-              showGrid={false}
-              height={150}
+              data={request.data}
+              variant="stacked"
+              showLabels={true}
+              showTooltips={true}
+              animated={true}
             />
-            <Box mt={1}>
-              <Typography variant="caption" color="text.secondary">
-                Average Progress: {Math.round(
-                  sprint.tasks.reduce((acc, t) => acc + t.progress, 0) / sprint.tasks.length
-                )}%
-              </Typography>
-            </Box>
-          </Paper>
+          </Box>
         ))}
       </Stack>
     );
   },
 };
 
-export const MultipleProjects: Story = {
-  render: () => {
-    const projects = [
-      {
-        name: 'Website Redesign',
-        tasks: [
-          { id: 'w1', name: 'Planning', start: new Date('2024-01-01'), end: new Date('2024-01-10'), color: '#4CAF50' },
-          { id: 'w2', name: 'Design', start: new Date('2024-01-08'), end: new Date('2024-01-25'), color: '#4CAF50' },
-          { id: 'w3', name: 'Development', start: new Date('2024-01-20'), end: new Date('2024-02-15'), color: '#4CAF50' },
-        ],
-      },
-      {
-        name: 'Mobile App',
-        tasks: [
-          { id: 'm1', name: 'Research', start: new Date('2024-01-05'), end: new Date('2024-01-15'), color: '#2196F3' },
-          { id: 'm2', name: 'Prototype', start: new Date('2024-01-12'), end: new Date('2024-01-30'), color: '#2196F3' },
-          { id: 'm3', name: 'Testing', start: new Date('2024-01-25'), end: new Date('2024-02-10'), color: '#2196F3' },
-        ],
-      },
-      {
-        name: 'API Integration',
-        tasks: [
-          { id: 'a1', name: 'Architecture', start: new Date('2024-01-10'), end: new Date('2024-01-20'), color: '#FF9800' },
-          { id: 'a2', name: 'Implementation', start: new Date('2024-01-18'), end: new Date('2024-02-05'), color: '#FF9800' },
-        ],
-      },
-    ];
-
-    return (
-      <Stack spacing={3}>
-        <Typography variant="h6">Multi-Project Timeline</Typography>
-        
-        <TimingDiagram
-          tasks={projects.flatMap(p => 
-            p.tasks.map(t => ({
-              ...t,
-              name: `[${p.name}] ${t.name}`,
-              progress: Math.random() * 100,
-            }))
-          )}
-          startDate={new Date('2024-01-01')}
-          endDate={new Date('2024-02-28')}
-          variant="default"
-          showGrid={true}
-          showToday={true}
-        />
-        
-        <Stack direction="row" spacing={2}>
-          {projects.map((project) => (
-            <Chip
-              key={project.name}
-              label={project.name}
-              sx={{ bgcolor: project.tasks[0].color, color: 'white' }}
-            />
-          ))}
-        </Stack>
-      </Stack>
-    );
+export const MinimalData: Story = {
+  args: {
+    data: {
+      request: 50,
+      response: 150,
+      total: 200,
+    },
+    variant: 'stacked',
+    showLabels: true,
+    showTooltips: true,
+    animated: true,
   },
 };
 
-export const Milestones: Story = {
+export const DetailedBreakdown: Story = {
+  render: () => (
+    <Stack spacing={3}>
+      <Typography variant="h6">Detailed Request Breakdown</Typography>
+
+      <TimingDiagram
+        data={{
+          dns: 125,
+          connect: 250,
+          ssl: 420,
+          request: 45,
+          response: 680,
+          total: 1520,
+        }}
+        variant="horizontal"
+        showLabels={true}
+        showTooltips={true}
+        animated={true}
+      />
+
+      <Paper sx={{ p: 2 }}>
+        <Typography variant="body2" color="text.secondary">
+          💜 DNS Lookup • 🔵 Connection • 🔶 SSL/TLS • 🟢 Request • 🟠 Response
+        </Typography>
+      </Paper>
+    </Stack>
+  ),
+};
+
+export const MultipleRequests: Story = {
   render: () => {
-    const tasksWithMilestones = [
-      {
-        id: '1',
-        name: 'Phase 1: Foundation',
-        start: new Date('2024-01-01'),
-        end: new Date('2024-01-31'),
-        progress: 100,
-        color: '#4CAF50',
-      },
-      {
-        id: 'm1',
-        name: '🎯 Milestone: Architecture Review',
-        start: new Date('2024-01-31'),
-        end: new Date('2024-01-31'),
-        progress: 100,
-        color: '#FFD700',
-        isMilestone: true,
-      },
-      {
-        id: '2',
-        name: 'Phase 2: Development',
-        start: new Date('2024-02-01'),
-        end: new Date('2024-02-28'),
-        progress: 60,
-        color: '#2196F3',
-      },
-      {
-        id: 'm2',
-        name: '🎯 Milestone: Beta Release',
-        start: new Date('2024-02-28'),
-        end: new Date('2024-02-28'),
-        progress: 0,
-        color: '#FFD700',
-        isMilestone: true,
-      },
-      {
-        id: '3',
-        name: 'Phase 3: Testing',
-        start: new Date('2024-03-01'),
-        end: new Date('2024-03-20'),
-        progress: 0,
-        color: '#9C27B0',
-      },
-      {
-        id: 'm3',
-        name: '🎯 Milestone: Production Launch',
-        start: new Date('2024-03-20'),
-        end: new Date('2024-03-20'),
-        progress: 0,
-        color: '#FFD700',
-        isMilestone: true,
-      },
+    const requests = [
+      { name: 'Homepage', data: fastData },
+      { name: 'API Call', data: sampleData },
+      { name: 'Large Asset', data: slowData },
     ];
 
     return (
       <Stack spacing={3}>
-        <Typography variant="h6">Project Phases with Milestones</Typography>
-        
-        <TimingDiagram
-          tasks={tasksWithMilestones}
-          startDate={new Date('2024-01-01')}
-          endDate={new Date('2024-03-31')}
-          variant="detailed"
-          showGrid={true}
-          showToday={true}
-          renderTask={(task) => {
-            if (task.isMilestone) {
-              return (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: '100%',
-                    fontSize: '20px',
-                  }}
-                >
-                  💎
-                </Box>
-              );
-            }
-            return null;
-          }}
-        />
-        
-        <Paper sx={{ p: 2, bgcolor: 'warning.light' }}>
-          <Typography variant="body2">
-            💎 Milestones represent key deliverables and checkpoints
-          </Typography>
-        </Paper>
+        <Typography variant="h6">Multiple Request Timeline</Typography>
+        {requests.map((request, index) => (
+          <Box key={request.name} sx={{ mb: 2 }}>
+            <Typography variant="body1" gutterBottom>
+              {index + 1}. {request.name}
+            </Typography>
+            <TimingDiagram
+              data={request.data}
+              variant="waterfall"
+              showLabels={true}
+              showTooltips={true}
+              animated={true}
+              height={35}
+            />
+          </Box>
+        ))}
       </Stack>
     );
   },

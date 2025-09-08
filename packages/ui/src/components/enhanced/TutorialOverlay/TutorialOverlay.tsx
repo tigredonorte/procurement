@@ -10,45 +10,18 @@ import {
   alpha,
   keyframes,
   styled,
-  useTheme,
   Fade,
-  Zoom,
   LinearProgress,
 } from '@mui/material';
 import {
   Close as CloseIcon,
   NavigateBefore as PrevIcon,
   NavigateNext as NextIcon,
-  PlayArrow as PlayIcon,
   Refresh as RestartIcon,
   CheckCircle as CompleteIcon,
 } from '@mui/icons-material';
 
-// Types
-export interface TutorialStep {
-  target: string; // CSS selector
-  title: string;
-  content: string;
-  placement?: 'top' | 'right' | 'bottom' | 'left' | 'auto';
-  action?: {
-    label: string;
-    onClick: () => void;
-  };
-  spotlightPadding?: number;
-  disableInteraction?: boolean;
-}
-
-export interface TutorialOverlayProps {
-  steps: TutorialStep[];
-  onComplete?: () => void;
-  onSkip?: () => void;
-  initialStep?: number;
-  active?: boolean;
-  showProgress?: boolean;
-  allowKeyboardNavigation?: boolean;
-  allowClickThrough?: boolean;
-  theme?: 'light' | 'dark';
-}
+import type { TutorialOverlayProps, DOMRect, KeyboardEvent } from './TutorialOverlay.types';
 
 // Animation keyframes
 const pulseAnimation = keyframes`
@@ -84,7 +57,7 @@ const Overlay = styled(Box)<{ allowClickThrough?: boolean }>(({ theme, allowClic
   transition: 'opacity 0.3s ease',
 }));
 
-const Backdrop = styled(Box)(({ theme }) => ({
+const Backdrop = styled(Box)(() => ({
   position: 'absolute',
   top: 0,
   left: 0,
@@ -94,27 +67,25 @@ const Backdrop = styled(Box)(({ theme }) => ({
   backdropFilter: 'blur(2px)',
 }));
 
-const Spotlight = styled(Box)<{ bounds: DOMRect; padding: number }>(
-  ({ bounds, padding }) => ({
+const Spotlight = styled(Box)<{ bounds: DOMRect; padding: number }>(({ bounds, padding }) => ({
+  position: 'absolute',
+  top: bounds.top - padding,
+  left: bounds.left - padding,
+  width: bounds.width + padding * 2,
+  height: bounds.height + padding * 2,
+  borderRadius: 8,
+  border: '2px solid rgba(255, 255, 255, 0.5)',
+  animation: `${pulseAnimation} 2s infinite`,
+  pointerEvents: 'none',
+  '&::before': {
+    content: '""',
     position: 'absolute',
-    top: bounds.top - padding,
-    left: bounds.left - padding,
-    width: bounds.width + padding * 2,
-    height: bounds.height + padding * 2,
+    inset: -2,
     borderRadius: 8,
-    border: '2px solid rgba(255, 255, 255, 0.5)',
-    animation: `${pulseAnimation} 2s infinite`,
-    pointerEvents: 'none',
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      inset: -2,
-      borderRadius: 8,
-      background: 'transparent',
-      boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.7)',
-    },
-  })
-);
+    background: 'transparent',
+    boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.7)',
+  },
+}));
 
 const TooltipContainer = styled(Paper)<{ placement: string }>(({ theme, placement }) => ({
   position: 'absolute',
@@ -194,13 +165,13 @@ const StepDot = styled(Box)<{ active?: boolean; completed?: boolean }>(
     background: completed
       ? theme.palette.success.main
       : active
-      ? theme.palette.primary.main
-      : alpha(theme.palette.text.primary, 0.3),
+        ? theme.palette.primary.main
+        : alpha(theme.palette.text.primary, 0.3),
     transition: 'all 0.3s ease',
     ...(active && {
       transform: 'scale(1.5)',
     }),
-  })
+  }),
 );
 
 // Helper function to get element bounds
@@ -215,7 +186,7 @@ const calculateTooltipPosition = (
   targetBounds: DOMRect,
   tooltipBounds: DOMRect,
   placement: string,
-  padding = 16
+  padding = 16,
 ) => {
   const viewport = {
     width: window.innerWidth,
@@ -264,8 +235,14 @@ const calculateTooltipPosition = (
   }
 
   // Ensure tooltip stays within viewport
-  position.top = Math.max(padding, Math.min(position.top, viewport.height - tooltipBounds.height - padding));
-  position.left = Math.max(padding, Math.min(position.left, viewport.width - tooltipBounds.width - padding));
+  position.top = Math.max(
+    padding,
+    Math.min(position.top, viewport.height - tooltipBounds.height - padding),
+  );
+  position.left = Math.max(
+    padding,
+    Math.min(position.left, viewport.width - tooltipBounds.width - padding),
+  );
 
   return { position, placement: finalPlacement };
 };
@@ -280,9 +257,7 @@ export const TutorialOverlay: FC<TutorialOverlayProps> = ({
   showProgress = true,
   allowKeyboardNavigation = true,
   allowClickThrough = false,
-  theme: themeProp = 'dark',
 }) => {
-  const theme = useTheme();
   const [currentStep, setCurrentStep] = useState(initialStep);
   const [targetBounds, setTargetBounds] = useState<DOMRect | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
@@ -323,40 +298,19 @@ export const TutorialOverlay: FC<TutorialOverlayProps> = ({
 
   // Calculate tooltip position
   useEffect(() => {
-    if (!targetBounds || !tooltipRef.current || !isVisible) return;
+    if (!targetBounds || !tooltipRef.current || !isVisible || !currentStepData) return;
 
     const tooltipBounds = tooltipRef.current.getBoundingClientRect();
     const { position, placement } = calculateTooltipPosition(
       targetBounds,
       tooltipBounds,
-      currentStepData.placement || 'auto'
+      currentStepData.placement || 'auto',
     );
     setTooltipPosition(position);
     setActualPlacement(placement);
   }, [targetBounds, currentStepData, isVisible]);
 
-  // Keyboard navigation
-  useEffect(() => {
-    if (!allowKeyboardNavigation || !active) return;
-
-    const handleKeyPress = (e: KeyboardEvent) => {
-      switch (e.key) {
-        case 'ArrowLeft':
-          handlePrev();
-          break;
-        case 'ArrowRight':
-          handleNext();
-          break;
-        case 'Escape':
-          handleSkip();
-          break;
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [currentStep, active, allowKeyboardNavigation]);
-
+  // Handler functions
   const handleNext = useCallback(() => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
@@ -381,24 +335,41 @@ export const TutorialOverlay: FC<TutorialOverlayProps> = ({
     setCurrentStep(0);
   }, []);
 
+  // Keyboard navigation
+  useEffect(() => {
+    if (!allowKeyboardNavigation || !active) return;
+
+    const handleKeyPress = (e: KeyboardEvent) => {
+      switch (e.key) {
+        case 'ArrowLeft':
+          handlePrev();
+          break;
+        case 'ArrowRight':
+          handleNext();
+          break;
+        case 'Escape':
+          handleSkip();
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [active, allowKeyboardNavigation, handleNext, handlePrev, handleSkip]);
+
   if (!active || !currentStepData) return null;
 
   return (
     <Portal>
       <Overlay allowClickThrough={allowClickThrough}>
-        {showProgress && (
-          <ProgressBar variant="determinate" value={progress} />
-        )}
-        
+        {showProgress && <ProgressBar variant="determinate" value={progress} />}
+
         <Backdrop />
-        
+
         {targetBounds && isVisible && (
-          <Spotlight
-            bounds={targetBounds}
-            padding={currentStepData.spotlightPadding || 8}
-          />
+          <Spotlight bounds={targetBounds} padding={currentStepData.spotlightPadding || 8} />
         )}
-        
+
         <Fade in={isVisible} timeout={300}>
           <TooltipContainer
             ref={tooltipRef}
@@ -410,23 +381,21 @@ export const TutorialOverlay: FC<TutorialOverlayProps> = ({
             }}
           >
             <Stack spacing={2}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              <Box
+                sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}
+              >
                 <Typography variant="h6" fontWeight="bold" sx={{ flex: 1 }}>
                   {currentStepData.title}
                 </Typography>
-                <IconButton
-                  size="small"
-                  onClick={handleSkip}
-                  sx={{ ml: 1, mt: -1, mr: -1 }}
-                >
+                <IconButton size="small" onClick={handleSkip} sx={{ ml: 1, mt: -1, mr: -1 }}>
                   <CloseIcon fontSize="small" />
                 </IconButton>
               </Box>
-              
+
               <Typography variant="body2" color="text.secondary">
                 {currentStepData.content}
               </Typography>
-              
+
               {currentStepData.action && (
                 <Button
                   variant="contained"
@@ -440,7 +409,7 @@ export const TutorialOverlay: FC<TutorialOverlayProps> = ({
                   {currentStepData.action.label}
                 </Button>
               )}
-              
+
               <StepIndicator>
                 {steps.map((_, index) => (
                   <StepDot
@@ -450,7 +419,7 @@ export const TutorialOverlay: FC<TutorialOverlayProps> = ({
                   />
                 ))}
               </StepIndicator>
-              
+
               <Stack direction="row" spacing={1} justifyContent="space-between">
                 <Stack direction="row" spacing={1}>
                   <IconButton
@@ -462,7 +431,7 @@ export const TutorialOverlay: FC<TutorialOverlayProps> = ({
                     <RestartIcon fontSize="small" />
                   </IconButton>
                 </Stack>
-                
+
                 <Stack direction="row" spacing={1}>
                   <Button
                     size="small"
@@ -472,7 +441,7 @@ export const TutorialOverlay: FC<TutorialOverlayProps> = ({
                   >
                     Previous
                   </Button>
-                  
+
                   {currentStep < steps.length - 1 ? (
                     <Button
                       variant="contained"

@@ -2,25 +2,7 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import { Box, alpha, styled, useTheme } from '@mui/material';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
 
-// Types
-export type LottieSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl';
-
-export interface LottieAnimationProps {
-  src: string | object; // Path to .json animation file or JSON object
-  size?: LottieSize;
-  autoplay?: boolean;
-  loop?: boolean;
-  onComplete?: () => void;
-  speed?: number;
-  direction?: 1 | -1;
-  className?: string;
-  style?: React.CSSProperties;
-  background?: 'glass' | 'solid' | 'none';
-  glow?: boolean;
-  interactive?: boolean;
-  onSegmentComplete?: (segment: number) => void;
-  segments?: [number, number];
-}
+import { LottieSize, LottieAnimationProps } from './LottieAnimation.types';
 
 // Size configurations
 const sizeConfigs: Record<LottieSize, number> = {
@@ -49,19 +31,19 @@ const LottieContainer = styled(Box)<{
   transition: theme.transitions.create(['transform', 'box-shadow'], {
     duration: theme.transitions.duration.short,
   }),
-  
+
   ...(background === 'glass' && {
     background: `linear-gradient(135deg, ${alpha(theme.palette.background.paper, 0.8)} 0%, ${alpha(theme.palette.background.paper, 0.6)} 100%)`,
     backdropFilter: 'blur(10px)',
     WebkitBackdropFilter: 'blur(10px)',
     border: `1px solid ${alpha(theme.palette.divider, 0.18)}`,
   }),
-  
+
   ...(background === 'solid' && {
     background: theme.palette.background.paper,
     boxShadow: theme.shadows[2],
   }),
-  
+
   ...(glow && {
     boxShadow: `
       0 0 20px ${alpha(theme.palette.primary.main, 0.3)},
@@ -69,7 +51,7 @@ const LottieContainer = styled(Box)<{
       0 0 60px ${alpha(theme.palette.primary.main, 0.1)}
     `,
   }),
-  
+
   ...(interactive && {
     cursor: 'pointer',
     '&:hover': {
@@ -80,7 +62,7 @@ const LottieContainer = styled(Box)<{
       transform: 'scale(0.98)',
     },
   }),
-  
+
   '& > div': {
     width: '100% !important',
     height: '100% !important',
@@ -151,12 +133,12 @@ export const LottieAnimation: FC<LottieAnimationProps> = ({
       if (typeof src === 'string') {
         setIsLoading(true);
         try {
-          const response = await fetch(src);
+          const response = await window.fetch(src);
           const data = await response.json();
           setAnimationData(data);
           setIsLoading(false);
-        } catch (error) {
-          
+        } catch {
+          // Silently handle fetch errors - animation will remain in loading state
           setIsLoading(false);
         }
       } else {
@@ -180,8 +162,9 @@ export const LottieAnimation: FC<LottieAnimationProps> = ({
   // Handle animation progress
   const handleEnterFrame = () => {
     if (lottieRef.current) {
-      const currentFrame = lottieRef.current.getDuration(true) 
-        ? (lottieRef.current as any).animationItem?.currentFrame || 0
+      const currentFrame = lottieRef.current.getDuration(true)
+        ? (lottieRef.current as { animationItem?: { currentFrame?: number } }).animationItem
+            ?.currentFrame || 0
         : 0;
       const totalFrames = lottieRef.current.getDuration(true) || 1;
       const progressPercentage = (currentFrame / totalFrames) * 100;
@@ -192,7 +175,7 @@ export const LottieAnimation: FC<LottieAnimationProps> = ({
   // Handle interactive click
   const handleClick = () => {
     if (!interactive) return;
-    
+
     if (lottieRef.current) {
       if (isPlaying) {
         lottieRef.current.pause();
@@ -209,7 +192,7 @@ export const LottieAnimation: FC<LottieAnimationProps> = ({
     if (lottieRef.current) {
       lottieRef.current.setSpeed(speed);
       lottieRef.current.setDirection(direction);
-      
+
       if (segments) {
         lottieRef.current.playSegments(segments as [number, number], true);
       }
@@ -277,7 +260,7 @@ export const LottieAnimation: FC<LottieAnimationProps> = ({
           />
         </LoadingOverlay>
       )}
-      
+
       <Lottie
         lottieRef={lottieRef}
         animationData={animationData}
@@ -290,10 +273,8 @@ export const LottieAnimation: FC<LottieAnimationProps> = ({
           preserveAspectRatio: 'xMidYMid slice',
         }}
       />
-      
-      {!loop && !isLoading && (
-        <ProgressIndicator progress={progress} />
-      )}
+
+      {!loop && !isLoading && <ProgressIndicator progress={progress} />}
     </LottieContainer>
   );
 };

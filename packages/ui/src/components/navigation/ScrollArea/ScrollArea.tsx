@@ -1,51 +1,54 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { Box, alpha } from '@mui/material';
+import { Box, alpha, Theme } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 
 import { ScrollAreaProps } from './ScrollArea.types';
 
 const getScrollbarStyles = (
-  theme: { palette: { mode: string; primary: { main: string }; grey: Record<number, string> } },
+  theme: Theme,
   variant: string,
   scrollbarColor: string,
   customScrollbarColor: string,
   scrollbarSize: string,
   scrollbarRadius: string,
   glassmorphism: boolean,
-  hideNativeScrollbars: boolean
+  hideNativeScrollbars: boolean,
 ) => {
-  const scrollbarWidth = 
-    scrollbarSize === 'thin' ? 6 : 
-    scrollbarSize === 'thick' ? 16 : 12; // medium
+  const scrollbarWidth = scrollbarSize === 'thin' ? 6 : scrollbarSize === 'thick' ? 16 : 12; // medium
 
-  const borderRadius = 
-    scrollbarRadius === 'none' ? 0 :
-    scrollbarRadius === 'small' ? 2 :
-    scrollbarRadius === 'large' ? 8 :
-    scrollbarRadius === 'full' ? scrollbarWidth / 2 :
-    4; // medium
+  const borderRadius =
+    scrollbarRadius === 'none'
+      ? 0
+      : scrollbarRadius === 'small'
+        ? 2
+        : scrollbarRadius === 'large'
+          ? 8
+          : scrollbarRadius === 'full'
+            ? scrollbarWidth / 2
+            : 4; // medium
 
   const getScrollbarColor = () => {
     if (scrollbarColor === 'custom' && customScrollbarColor) {
       return customScrollbarColor;
     }
     switch (scrollbarColor) {
-      case 'primary': return theme.palette.primary.main;
-      case 'secondary': return theme.palette.secondary.main;
-      case 'dark': return theme.palette.grey[800];
-      case 'light': return theme.palette.grey[400];
-      default: return theme.palette.grey[600];
+      case 'primary':
+        return theme.palette.primary.main;
+      case 'secondary':
+        return theme.palette.secondary?.main || theme.palette.grey[600];
+      case 'dark':
+        return theme.palette.grey[800];
+      case 'light':
+        return theme.palette.grey[400];
+      default:
+        return theme.palette.grey[600];
     }
   };
 
   const baseColor = getScrollbarColor();
   const trackColor = alpha(baseColor, 0.1);
-  const thumbColor = glassmorphism 
-    ? alpha(baseColor, 0.6)
-    : alpha(baseColor, 0.8);
-  const thumbHoverColor = glassmorphism 
-    ? alpha(baseColor, 0.8)
-    : baseColor;
+  const thumbColor = glassmorphism ? alpha(baseColor, 0.6) : alpha(baseColor, 0.8);
+  const thumbHoverColor = glassmorphism ? alpha(baseColor, 0.8) : baseColor;
 
   if (hideNativeScrollbars) {
     return {
@@ -62,13 +65,13 @@ const getScrollbarStyles = (
     /* Firefox */
     scrollbarWidth: scrollbarSize === 'thin' ? 'thin' : 'auto',
     scrollbarColor: `${thumbColor} ${trackColor}`,
-    
+
     /* WebKit browsers */
     '&::-webkit-scrollbar': {
       width: scrollbarWidth,
       height: scrollbarWidth,
     },
-    
+
     '&::-webkit-scrollbar-track': {
       background: trackColor,
       borderRadius: borderRadius,
@@ -77,16 +80,16 @@ const getScrollbarStyles = (
         background: alpha(trackColor, 0.3),
       }),
     },
-    
+
     '&::-webkit-scrollbar-thumb': {
       background: thumbColor,
       borderRadius: borderRadius,
       transition: 'all 0.2s ease',
       ...(glassmorphism && {
         backdropFilter: 'blur(10px)',
-        border: `1px solid ${alpha(theme.palette.common.white, 0.2)}`,
+        border: `1px solid ${alpha(theme.palette.common?.white || '#ffffff', 0.2)}`,
       }),
-      
+
       '&:hover': {
         background: thumbHoverColor,
         ...(glassmorphism && {
@@ -94,7 +97,7 @@ const getScrollbarStyles = (
         }),
       },
     },
-    
+
     '&::-webkit-scrollbar-corner': {
       background: trackColor,
     },
@@ -196,7 +199,7 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
       style,
       ...props
     },
-    ref
+    ref,
   ) => {
     const theme = useTheme();
     const scrollRef = useRef<HTMLDivElement>(null);
@@ -211,39 +214,41 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
     const [, setShowTopShadow] = useState(false);
     const [, setShowBottomShadow] = useState(false);
 
-    const handleScroll = useCallback((event: React.UIEvent<HTMLDivElement>) => {
-      const target = event.currentTarget;
-      const newScrollInfo = {
-        scrollTop: target.scrollTop,
-        scrollLeft: target.scrollLeft,
-        scrollHeight: target.scrollHeight,
-        scrollWidth: target.scrollWidth,
-        clientHeight: target.clientHeight,
-        clientWidth: target.clientWidth,
-      };
+    const handleScroll = useCallback(
+      (event: React.UIEvent<HTMLDivElement>) => {
+        const target = event.currentTarget;
+        const newScrollInfo = {
+          scrollTop: target.scrollTop,
+          scrollLeft: target.scrollLeft,
+          scrollHeight: target.scrollHeight,
+          scrollWidth: target.scrollWidth,
+          clientHeight: target.clientHeight,
+          clientWidth: target.clientWidth,
+        };
 
-      setScrollInfo(newScrollInfo);
+        setScrollInfo(newScrollInfo);
 
-      // Update shadow visibility
-      if (showShadows) {
-        setShowTopShadow(target.scrollTop > 0);
-        setShowBottomShadow(
-          target.scrollTop < target.scrollHeight - target.clientHeight
-        );
-      }
+        // Update shadow visibility
+        if (showShadows) {
+          setShowTopShadow(target.scrollTop > 0);
+          setShowBottomShadow(target.scrollTop < target.scrollHeight - target.clientHeight);
+        }
 
-      // Handle scroll end callbacks
-      if (onScrollEnd) {
-        const { scrollTop, scrollLeft, scrollHeight, scrollWidth, clientHeight, clientWidth } = newScrollInfo;
-        
-        if (scrollTop === 0) onScrollEnd('top');
-        if (scrollTop + clientHeight >= scrollHeight) onScrollEnd('bottom');
-        if (scrollLeft === 0) onScrollEnd('left');
-        if (scrollLeft + clientWidth >= scrollWidth) onScrollEnd('right');
-      }
+        // Handle scroll end callbacks
+        if (onScrollEnd) {
+          const { scrollTop, scrollLeft, scrollHeight, scrollWidth, clientHeight, clientWidth } =
+            newScrollInfo;
 
-      onScroll?.(event);
-    }, [onScroll, onScrollEnd, showShadows]);
+          if (scrollTop === 0) onScrollEnd('top');
+          if (scrollTop + clientHeight >= scrollHeight) onScrollEnd('bottom');
+          if (scrollLeft === 0) onScrollEnd('left');
+          if (scrollLeft + clientWidth >= scrollWidth) onScrollEnd('right');
+        }
+
+        onScroll?.(event);
+      },
+      [onScroll, onScrollEnd, showShadows],
+    );
 
     useEffect(() => {
       const scrollElement = scrollRef.current;
@@ -251,19 +256,99 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
         // Initial shadow state
         setShowTopShadow(scrollElement.scrollTop > 0);
         setShowBottomShadow(
-          scrollElement.scrollTop < scrollElement.scrollHeight - scrollElement.clientHeight
+          scrollElement.scrollTop < scrollElement.scrollHeight - scrollElement.clientHeight,
         );
       }
     }, [showShadows]);
 
-    const scrollPercentage = scrollInfo.scrollHeight > 0 
-      ? Math.round((scrollInfo.scrollTop / (scrollInfo.scrollHeight - scrollInfo.clientHeight)) * 100)
-      : 0;
+    const scrollPercentage =
+      scrollInfo.scrollHeight > 0
+        ? Math.round(
+            (scrollInfo.scrollTop / (scrollInfo.scrollHeight - scrollInfo.clientHeight)) * 100,
+          )
+        : 0;
+
+    const containerStyles = {
+      ...(maxHeight && { maxHeight }),
+      ...(maxWidth && { maxWidth }),
+      ...(width && { width }),
+      ...(height && { height }),
+      position: 'relative' as const,
+      overflow:
+        orientation === 'vertical'
+          ? ('hidden auto' as const)
+          : orientation === 'horizontal'
+            ? ('auto hidden' as const)
+            : ('auto' as const),
+      ...(smoothScrolling && {
+        scrollBehavior: 'smooth' as const,
+      }),
+      ...(disabled && {
+        pointerEvents: 'none' as const,
+        opacity: 0.6,
+      }),
+      ...style,
+    };
+
+    const sxStyles = {
+      ...getScrollbarStyles(
+        theme,
+        variant,
+        scrollbarColor,
+        customScrollbarColor || '',
+        scrollbarSize,
+        scrollbarRadius,
+        glassmorphism,
+        hideNativeScrollbars,
+      ),
+      ...(showShadows && {
+        '&::before, &::after': {
+          content: '""',
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          height: 20,
+          pointerEvents: 'none',
+          zIndex: 1,
+          transition: 'opacity 0.2s ease',
+        },
+        '&::before': {
+          top: 0,
+          background: `linear-gradient(to bottom, ${alpha(theme.palette.background.paper, 0.8)}, transparent)`,
+        },
+        '&::after': {
+          bottom: 0,
+          background: `linear-gradient(to top, ${alpha(theme.palette.background.paper, 0.8)}, transparent)`,
+        },
+      }),
+      ...(fadeEdges && {
+        '&::before, &::after': {
+          content: '""',
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          height: 30,
+          pointerEvents: 'none',
+          zIndex: 2,
+          transition: 'opacity 0.3s ease',
+        },
+        '&::before': {
+          top: 0,
+          background: `linear-gradient(to bottom, ${theme.palette.background.paper} 0%, transparent 100%)`,
+        },
+        '&::after': {
+          bottom: 0,
+          background: `linear-gradient(to top, ${theme.palette.background.paper} 0%, transparent 100%)`,
+        },
+      }),
+    };
 
     return (
       <ScrollContainer
         ref={(element: HTMLDivElement | null) => {
-          scrollRef.current = element;
+          if (scrollRef.current !== element) {
+            (scrollRef as React.MutableRefObject<HTMLDivElement | null>).current = element;
+          }
           if (typeof ref === 'function') {
             ref(element);
           } else if (ref) {
@@ -272,91 +357,18 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
         }}
         className={className}
         onScroll={handleScroll}
-        sx={{
-          maxHeight,
-          maxWidth,
-          width,
-          height,
-          position: 'relative',
-          overflow: orientation === 'vertical' ? 'hidden auto' : 
-                    orientation === 'horizontal' ? 'auto hidden' : 
-                    'auto',
-          ...(smoothScrolling && {
-            scrollBehavior: 'smooth',
-          }),
-          
-          ...getScrollbarStyles(
-            theme, 
-            variant, 
-            scrollbarColor, 
-            customScrollbarColor, 
-            scrollbarSize, 
-            scrollbarRadius, 
-            glassmorphism,
-            hideNativeScrollbars
-          ),
-
-          ...(showShadows && {
-            '&::before, &::after': {
-              content: '""',
-              position: 'absolute',
-              left: 0,
-              right: 0,
-              height: 20,
-              pointerEvents: 'none',
-              zIndex: 1,
-              transition: 'opacity 0.2s ease',
-            },
-            '&::before': {
-              top: 0,
-              background: `linear-gradient(to bottom, ${alpha(theme.palette.background.paper, 0.8)}, transparent)`,
-            },
-            '&::after': {
-              bottom: 0,
-              background: `linear-gradient(to top, ${alpha(theme.palette.background.paper, 0.8)}, transparent)`,
-            },
-          }),
-
-          ...(fadeEdges && {
-            '&::before, &::after': {
-              content: '""',
-              position: 'absolute',
-              left: 0,
-              right: 0,
-              height: 30,
-              pointerEvents: 'none',
-              zIndex: 2,
-              transition: 'opacity 0.3s ease',
-            },
-            '&::before': {
-              top: 0,
-              background: `linear-gradient(to bottom, ${theme.palette.background.paper} 0%, transparent 100%)`,
-            },
-            '&::after': {
-              bottom: 0,
-              background: `linear-gradient(to top, ${theme.palette.background.paper} 0%, transparent 100%)`,
-            },
-          }),
-          ...(disabled && {
-            pointerEvents: 'none',
-            opacity: 0.6,
-          }),
-          ...style,
-        }}
+        style={containerStyles}
+        sx={sxStyles}
         {...props}
       >
         {showScrollIndicator && scrollInfo.scrollHeight > scrollInfo.clientHeight && (
-          <ScrollIndicator>
-            {scrollPercentage}%
-          </ScrollIndicator>
+          <ScrollIndicator>{scrollPercentage}%</ScrollIndicator>
         )}
-        
-        <InnerContainer innerPadding={innerPadding}>
-          {children}
-        </InnerContainer>
+
+        <InnerContainer innerPadding={innerPadding}>{children}</InnerContainer>
       </ScrollContainer>
     );
-  }
+  },
 );
 
 ScrollArea.displayName = 'ScrollArea';

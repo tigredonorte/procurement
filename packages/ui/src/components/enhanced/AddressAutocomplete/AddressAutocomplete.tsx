@@ -1,59 +1,19 @@
-import React, { FC, useRef, useState, useCallback } from 'react';
+import React, { FC, useState } from 'react';
 import {
   Autocomplete,
   TextField,
   Box,
   Paper,
   InputAdornment,
-  Typography,
   alpha,
   styled,
   useTheme,
   CircularProgress,
+  IconButton,
 } from '@mui/material';
-import {
-  LocationOn as LocationIcon,
-  MyLocation as CurrentLocationIcon,
-} from '@mui/icons-material';
-import { useLoadScript, Autocomplete as GoogleAutocomplete } from '@react-google-maps/api';
+import { LocationOn as LocationIcon, MyLocation as CurrentLocationIcon } from '@mui/icons-material';
 
-// Types
-export interface AddressDetails {
-  formatted: string;
-  street: string;
-  city: string;
-  state: string;
-  country: string;
-  postalCode: string;
-  coordinates: {
-    lat: number;
-    lng: number;
-  };
-}
-
-export interface AddressAutocompleteProps {
-  variant?: 'glass' | 'outlined' | 'filled';
-  label?: string;
-  placeholder?: string;
-  icon?: React.ReactNode;
-  onSelect: (address: AddressDetails) => void;
-  googleMapsApiKey: string;
-  floating?: boolean;
-  restrictions?: {
-    country?: string | string[];
-    types?: string[];
-  };
-  error?: boolean;
-  helperText?: string;
-  disabled?: boolean;
-  required?: boolean;
-  fullWidth?: boolean;
-  defaultValue?: string;
-  getCurrentLocation?: boolean;
-}
-
-// Google Maps libraries
-const libraries: ("places" | "geometry" | "drawing" | "visualization")[] = ['places'];
+import type { AddressDetails, AddressAutocompleteProps } from './AddressAutocomplete.types';
 
 // Styled components
 const GlassTextField = styled(TextField)(({ theme }) => ({
@@ -108,31 +68,6 @@ const AddressText = styled(Box)(({ theme }) => ({
   },
 }));
 
-// Helper function to parse Google Places result
-const parseGoogleAddress = (place: google.maps.places.PlaceResult): AddressDetails => {
-  const components = place.address_components || [];
-  
-  const getComponent = (types: string[]): string => {
-    const component = components.find(c => 
-      types.some(type => c.types.includes(type))
-    );
-    return component?.long_name || '';
-  };
-
-  return {
-    formatted: place.formatted_address || '',
-    street: `${getComponent(['street_number'])} ${getComponent(['route'])}`.trim(),
-    city: getComponent(['locality', 'sublocality', 'sublocality_level_1']),
-    state: getComponent(['administrative_area_level_1']),
-    country: getComponent(['country']),
-    postalCode: getComponent(['postal_code']),
-    coordinates: {
-      lat: place.geometry?.location?.lat() || 0,
-      lng: place.geometry?.location?.lng() || 0,
-    },
-  };
-};
-
 // Main component (simplified without actual Google Maps integration for demo)
 export const AddressAutocomplete: FC<AddressAutocompleteProps> = ({
   variant = 'outlined',
@@ -140,9 +75,7 @@ export const AddressAutocomplete: FC<AddressAutocompleteProps> = ({
   placeholder = 'Enter an address',
   icon = <LocationIcon />,
   onSelect,
-  googleMapsApiKey,
   floating = false,
-  restrictions,
   error = false,
   helperText,
   disabled = false,
@@ -168,13 +101,13 @@ export const AddressAutocomplete: FC<AddressAutocompleteProps> = ({
 
   const handleInputChange = (event: React.SyntheticEvent, value: string) => {
     setInputValue(value);
-    
+
     // Simulate API call delay
     setLoading(true);
     window.setTimeout(() => {
       if (value) {
-        const filtered = mockAddresses.filter(addr => 
-          addr.toLowerCase().includes(value.toLowerCase())
+        const filtered = mockAddresses.filter((addr) =>
+          addr.toLowerCase().includes(value.toLowerCase()),
         );
         setOptions(filtered);
       } else {
@@ -189,7 +122,7 @@ export const AddressAutocomplete: FC<AddressAutocompleteProps> = ({
       // Mock address details
       const mockDetails: AddressDetails = {
         formatted: value,
-        street: value.split(',')[0],
+        street: value.split(',')[0] || '',
         city: 'San Francisco',
         state: 'CA',
         country: 'USA',
@@ -224,10 +157,9 @@ export const AddressAutocomplete: FC<AddressAutocompleteProps> = ({
           setInputValue('Current Location');
           setLoading(false);
         },
-        (error) => {
-          
+        () => {
           setLoading(false);
-        }
+        },
       );
     }
   };
@@ -255,11 +187,7 @@ export const AddressAutocomplete: FC<AddressAutocompleteProps> = ({
           required={required}
           InputProps={{
             ...params.InputProps,
-            startAdornment: icon && (
-              <InputAdornment position="start">
-                {icon}
-              </InputAdornment>
-            ),
+            startAdornment: icon && <InputAdornment position="start">{icon}</InputAdornment>,
             endAdornment: (
               <>
                 {loading && <CircularProgress color="inherit" size={20} />}
@@ -282,15 +210,17 @@ export const AddressAutocomplete: FC<AddressAutocompleteProps> = ({
         />
       )}
       renderOption={(props, option) => (
-        <SuggestionItem {...props}>
-          <LocationIconWrapper>
-            <LocationIcon fontSize="small" />
-          </LocationIconWrapper>
-          <AddressText>
-            <div className="primary">{option.split(',')[0]}</div>
-            <div className="secondary">{option.split(',').slice(1).join(',')}</div>
-          </AddressText>
-        </SuggestionItem>
+        <li {...props}>
+          <SuggestionItem>
+            <LocationIconWrapper>
+              <LocationIcon fontSize="small" />
+            </LocationIconWrapper>
+            <AddressText>
+              <div className="primary">{option.split(',')[0]}</div>
+              <div className="secondary">{option.split(',').slice(1).join(',')}</div>
+            </AddressText>
+          </SuggestionItem>
+        </li>
       )}
       PaperComponent={(props) => (
         <Paper
@@ -308,9 +238,6 @@ export const AddressAutocomplete: FC<AddressAutocompleteProps> = ({
     />
   );
 };
-
-// Note: Added IconButton import for the current location feature
-import { IconButton } from '@mui/material';
 
 // Export default
 export default AddressAutocomplete;
