@@ -9,6 +9,7 @@ export default defineConfig(() => {
     : ['src/index.ts'];
 
   if (component && entry.length === 0) {
+    // eslint-disable-next-line no-console
     console.error(`Component "${component}" not found!`);
     process.exit(1);
   }
