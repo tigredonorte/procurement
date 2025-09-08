@@ -793,7 +793,7 @@ export const EdgeCases: Story = {
 
     await step('Long text overflow handling', async () => {
       const longTextInput = canvas.getByTestId('long-text');
-      await expect(longTextInput).toHaveValue(/This is a very long text/);
+      await expect(longTextInput).toHaveValue(expect.stringContaining('This is a very long text'));
       
       // Input should handle overflow gracefully
       await userEvent.click(longTextInput);
@@ -864,8 +864,7 @@ export const PerformanceTest: Story = {
         gap: '16px', 
         maxHeight: '400px', 
         overflowY: 'auto',
-        padding: '16px',
-        data: 'performance-container'
+        padding: '16px'
       }}>
         {inputs}
       </div>

@@ -27,7 +27,7 @@ interface ColorPalette {
   contrastText: string;
 }
 
-const getColorFromTheme = (theme: any, color: string): ColorPalette => {
+const getColorFromTheme = (theme: { palette: any }, color: string): ColorPalette => {
   if (color === 'neutral') {
     return {
       main: theme.palette.grey?.[700] || '#616161',

@@ -524,9 +524,164 @@ const FormIntegrationComponent = () => {
   );
 };
 
+// Theme Variations Test
+export const ThemeVariations: Story = {
+  name: '🎨 Theme Variations Test',
+  render: () => (
+    <Stack spacing={2} data-testid="theme-container">
+      <Checkbox 
+        label="Primary theme checkbox" 
+        defaultChecked 
+        data-testid="primary-checkbox"
+        color="primary"
+      />
+      <Checkbox 
+        label="Secondary theme checkbox" 
+        defaultChecked 
+        data-testid="secondary-checkbox"
+        color="secondary"
+      />
+      <Checkbox 
+        label="Success theme checkbox" 
+        defaultChecked 
+        data-testid="success-checkbox"
+        color="success"
+      />
+      <Checkbox 
+        label="Error theme checkbox" 
+        defaultChecked 
+        data-testid="error-checkbox"
+        color="error"
+      />
+      <Checkbox 
+        label="Warning theme checkbox" 
+        defaultChecked 
+        data-testid="warning-checkbox"
+        color="warning"
+      />
+      <Checkbox 
+        label="Info theme checkbox" 
+        defaultChecked 
+        data-testid="info-checkbox"
+        color="info"
+      />
+    </Stack>
+  ),
+  parameters: {
+    backgrounds: {
+      default: 'light',
+      values: [
+        { name: 'light', value: '#ffffff' },
+        { name: 'dark', value: '#333333' },
+      ],
+    },
+  },
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Verify theme color variations', async () => {
+      const primaryCheckbox = canvas.getByTestId('primary-checkbox');
+      const secondaryCheckbox = canvas.getByTestId('secondary-checkbox');
+      const successCheckbox = canvas.getByTestId('success-checkbox');
+      const errorCheckbox = canvas.getByTestId('error-checkbox');
+      const warningCheckbox = canvas.getByTestId('warning-checkbox');
+      const infoCheckbox = canvas.getByTestId('info-checkbox');
+
+      // Verify all checkboxes are rendered and checked
+      await expect(primaryCheckbox).toBeChecked();
+      await expect(secondaryCheckbox).toBeChecked();
+      await expect(successCheckbox).toBeChecked();
+      await expect(errorCheckbox).toBeChecked();
+      await expect(warningCheckbox).toBeChecked();
+      await expect(infoCheckbox).toBeChecked();
+    });
+
+    await step('Test interaction with different theme colors', async () => {
+      const primaryCheckbox = canvas.getByTestId('primary-checkbox');
+      
+      // Uncheck and recheck to test theme color interactions
+      await userEvent.click(primaryCheckbox);
+      await expect(primaryCheckbox).not.toBeChecked();
+      
+      await userEvent.click(primaryCheckbox);
+      await expect(primaryCheckbox).toBeChecked();
+    });
+  },
+};
+
+// Form Interaction Test (separate from Form Integration)
+export const FormInteraction: Story = {
+  name: '📝 Form Interaction Test',
+  render: () => (
+    <form data-testid="checkbox-form">
+      <Stack spacing={2}>
+        <Checkbox
+          name="terms"
+          label="I agree to the terms and conditions"
+          required
+          data-testid="terms-checkbox"
+          onChange={fn()}
+        />
+        <Checkbox
+          name="newsletter"
+          label="Subscribe to newsletter"
+          data-testid="newsletter-checkbox"
+          onChange={fn()}
+        />
+        <Checkbox
+          name="marketing"
+          label="Receive marketing emails"
+          defaultChecked
+          data-testid="marketing-checkbox"
+          onChange={fn()}
+        />
+        <button type="submit" data-testid="submit-button">
+          Submit
+        </button>
+      </Stack>
+    </form>
+  ),
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Verify form checkboxes initial state', async () => {
+      const termsCheckbox = canvas.getByTestId('terms-checkbox');
+      const newsletterCheckbox = canvas.getByTestId('newsletter-checkbox');
+      const marketingCheckbox = canvas.getByTestId('marketing-checkbox');
+
+      await expect(termsCheckbox).not.toBeChecked();
+      await expect(newsletterCheckbox).not.toBeChecked();
+      await expect(marketingCheckbox).toBeChecked();
+    });
+
+    await step('Test form checkbox interactions', async () => {
+      const termsCheckbox = canvas.getByTestId('terms-checkbox');
+      const newsletterCheckbox = canvas.getByTestId('newsletter-checkbox');
+
+      // Check terms checkbox
+      await userEvent.click(termsCheckbox);
+      await expect(termsCheckbox).toBeChecked();
+
+      // Check newsletter checkbox
+      await userEvent.click(newsletterCheckbox);
+      await expect(newsletterCheckbox).toBeChecked();
+    });
+
+    await step('Verify form attributes', async () => {
+      const termsCheckbox = canvas.getByTestId('terms-checkbox');
+      
+      // Verify required attribute
+      await expect(termsCheckbox).toHaveAttribute('required');
+      
+      // Verify name attributes
+      await expect(termsCheckbox).toHaveAttribute('name', 'terms');
+    });
+  },
+};
+
 // Form Integration Test
-export const FormIntegration: Story = {
-  name: '🔗 Form Integration Test',
+export const Integration: Story = {
+  name: '🔗 Integration Test',
   render: () => <FormIntegrationComponent />,
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);

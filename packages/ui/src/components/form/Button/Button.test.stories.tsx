@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { userEvent, within, expect, waitFor, fn } from '@storybook/test';
-import { Save, Delete, Add, ArrowForward } from '@mui/icons-material';
+import { Save, Delete } from '@mui/icons-material';
 
 import { Button } from './Button';
 
@@ -400,12 +400,12 @@ export const PerformanceTest: Story = {
     const canvas = within(canvasElement);
     
     await step('Measure render time', async () => {
-      const startTime = performance.now();
+      const startTime = Date.now();
       const buttons = canvas.getAllByTestId(/perf-button-/);
-      const endTime = performance.now();
+      const endTime = Date.now();
       
       const renderTime = endTime - startTime;
-      console.log(`Render time for ${buttons.length} buttons: ${renderTime}ms`);
+      // Performance measurement for testing - no console output
       
       // Assert reasonable render time (adjust threshold as needed)
       await expect(renderTime).toBeLessThan(100);

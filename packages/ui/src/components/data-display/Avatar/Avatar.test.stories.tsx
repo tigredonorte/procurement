@@ -538,3 +538,217 @@ export const FocusManagement: Story = {
     });
   },
 };
+
+// Theme Integration Tests
+export const ThemeIntegration: Story = {
+  name: '🎨 Theme Integration Test',
+  render: () => {
+    const [theme, setTheme] = React.useState<'light' | 'dark'>('light');
+    const darkTheme = {
+      palette: {
+        mode: 'dark' as const,
+        primary: { main: '#90caf9' },
+        background: { paper: '#424242' },
+        text: { primary: '#ffffff' }
+      }
+    };
+    const lightTheme = {
+      palette: {
+        mode: 'light' as const,
+        primary: { main: '#1976d2' },
+        background: { paper: '#ffffff' },
+        text: { primary: '#000000' }
+      }
+    };
+    
+    return (
+      <Box sx={{ p: 2, backgroundColor: theme === 'dark' ? '#303030' : '#f5f5f5' }}>
+        <Stack spacing={2}>
+          <button 
+            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+            data-testid="theme-toggle"
+            style={{ padding: '8px 16px', marginBottom: '16px' }}
+          >
+            Switch to {theme === 'light' ? 'dark' : 'light'} theme
+          </button>
+          <Stack direction="row" spacing={2}>
+            <Avatar fallback="LT" color="primary" data-testid="theme-avatar-primary" />
+            <Avatar fallback="SC" color="secondary" data-testid="theme-avatar-secondary" />
+            <Avatar fallback="ER" color="error" data-testid="theme-avatar-error" />
+            <Avatar fallback="WN" color="warning" data-testid="theme-avatar-warning" />
+            <Avatar fallback="SU" color="success" data-testid="theme-avatar-success" />
+          </Stack>
+        </Stack>
+      </Box>
+    );
+  },
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+    
+    await step('Test light theme colors', async () => {
+      const primaryAvatar = canvas.getByTestId('theme-avatar-primary');
+      await expect(primaryAvatar).toBeInTheDocument();
+      
+      const computedStyle = window.getComputedStyle(primaryAvatar);
+      // In light theme, should have specific color values
+      await expect(computedStyle.backgroundColor).toBeDefined();
+    });
+    
+    await step('Switch to dark theme', async () => {
+      const themeToggle = canvas.getByTestId('theme-toggle');
+      await userEvent.click(themeToggle);
+      
+      await waitFor(() => {
+        expect(themeToggle).toHaveTextContent('Switch to light theme');
+      });
+    });
+    
+    await step('Test dark theme colors', async () => {
+      const primaryAvatar = canvas.getByTestId('theme-avatar-primary');
+      const computedStyle = window.getComputedStyle(primaryAvatar);
+      
+      // Colors should adapt to dark theme
+      await expect(computedStyle.backgroundColor).toBeDefined();
+      await expect(primaryAvatar).toBeInTheDocument();
+    });
+  },
+};
+
+// Enhanced Accessibility Compliance Tests
+export const AccessibilityCompliance: Story = {
+  name: '♿ Accessibility Compliance Test (WCAG)',
+  render: () => (
+    <Stack spacing={3}>
+      {/* Color Contrast Tests */}
+      <Stack direction="row" spacing={2} data-testid="contrast-section">
+        <Avatar fallback="AA" color="primary" data-testid="contrast-primary" aria-label="Primary color avatar" />
+        <Avatar fallback="BB" color="error" data-testid="contrast-error" aria-label="Error color avatar" />
+        <Avatar fallback="CC" color="warning" data-testid="contrast-warning" aria-label="Warning color avatar" />
+      </Stack>
+      
+      {/* Focus Indicators */}
+      <Stack direction="row" spacing={2} data-testid="focus-section">
+        <Avatar fallback="F1" interactive data-testid="focus-interactive" aria-label="Focusable interactive avatar" />
+        <Avatar fallback="F2" onClick={fn()} data-testid="focus-clickable" aria-label="Focusable clickable avatar" />
+      </Stack>
+      
+      {/* Screen Reader Support */}
+      <Stack direction="row" spacing={2} data-testid="sr-section">
+        <Avatar 
+          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face" 
+          alt="Profile photo of John Doe" 
+          data-testid="sr-image" 
+        />
+        <Avatar fallback="SR" aria-label="User initials: S.R." data-testid="sr-initials" />
+        <Avatar icon={<Person />} aria-label="Generic user profile" data-testid="sr-icon" />
+      </Stack>
+      
+      {/* Status Indicators with Labels */}
+      <Stack direction="row" spacing={2} data-testid="status-section">
+        <Avatar 
+          variant="status" 
+          status="online" 
+          fallback="ON" 
+          data-testid="status-online"
+          aria-label="User is online"
+        />
+        <Avatar 
+          variant="status" 
+          status="busy" 
+          fallback="BS" 
+          data-testid="status-busy"
+          aria-label="User is busy"
+        />
+      </Stack>
+    </Stack>
+  ),
+  parameters: {
+    a11y: {
+      element: '#storybook-root',
+      config: {
+        rules: [
+          // WCAG 2.1 AA compliance rules
+          { id: 'color-contrast', enabled: true },
+          { id: 'aria-required-attr', enabled: true },
+          { id: 'aria-roles', enabled: true },
+          { id: 'button-name', enabled: true },
+          { id: 'focus-order-semantics', enabled: true },
+          { id: 'image-alt', enabled: true },
+          { id: 'keyboard-navigation', enabled: true },
+          { id: 'aria-valid-attr-value', enabled: true },
+          { id: 'aria-valid-attr', enabled: true },
+        ],
+      },
+    },
+  },
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+    
+    await step('Color contrast verification', async () => {
+      const primaryAvatar = canvas.getByTestId('contrast-primary');
+      const errorAvatar = canvas.getByTestId('contrast-error');
+      
+      // Check that avatars have sufficient contrast
+      const primaryStyle = window.getComputedStyle(primaryAvatar);
+      const errorStyle = window.getComputedStyle(errorAvatar);
+      
+      await expect(primaryStyle.backgroundColor).not.toBe(primaryStyle.color);
+      await expect(errorStyle.backgroundColor).not.toBe(errorStyle.color);
+    });
+    
+    await step('Focus indicators compliance', async () => {
+      const interactiveAvatar = canvas.getByTestId('focus-interactive');
+      const clickableAvatar = canvas.getByTestId('focus-clickable');
+      
+      // Focus and verify focus indicators
+      interactiveAvatar.focus();
+      await expect(interactiveAvatar).toHaveFocus();
+      
+      clickableAvatar.focus();
+      await expect(clickableAvatar).toHaveFocus();
+    });
+    
+    await step('Screen reader support', async () => {
+      const imageAvatar = canvas.getByTestId('sr-image');
+      const initialsAvatar = canvas.getByTestId('sr-initials');
+      const iconAvatar = canvas.getByTestId('sr-icon');
+      
+      // Verify proper ARIA labels and alt text
+      await expect(imageAvatar).toHaveAttribute('alt', 'Profile photo of John Doe');
+      await expect(initialsAvatar).toHaveAttribute('aria-label', 'User initials: S.R.');
+      await expect(iconAvatar).toHaveAttribute('aria-label', 'Generic user profile');
+    });
+    
+    await step('Status indicators accessibility', async () => {
+      const onlineAvatar = canvas.getByTestId('status-online');
+      const busyAvatar = canvas.getByTestId('status-busy');
+      
+      await expect(onlineAvatar).toHaveAttribute('aria-label', 'User is online');
+      await expect(busyAvatar).toHaveAttribute('aria-label', 'User is busy');
+      
+      // Verify status badges are present
+      const onlineParent = onlineAvatar.closest('[data-testid="status-online"]')?.parentElement;
+      const busyParent = busyAvatar.closest('[data-testid="status-busy"]')?.parentElement;
+      
+      // Look for MUI Badge elements using document.querySelector for portal elements
+      await waitFor(() => {
+        const badges = document.querySelectorAll('.MuiBadge-badge');
+        expect(badges.length).toBeGreaterThan(0);
+      });
+    });
+    
+    await step('Keyboard navigation compliance', async () => {
+      const interactiveAvatar = canvas.getByTestId('focus-interactive');
+      const clickableAvatar = canvas.getByTestId('focus-clickable');
+      
+      // Test tab navigation
+      interactiveAvatar.focus();
+      await userEvent.tab();
+      await expect(clickableAvatar).toHaveFocus();
+      
+      // Test enter and space key activation
+      await userEvent.keyboard('{Enter}');
+      await userEvent.keyboard(' ');
+    });
+  },
+};

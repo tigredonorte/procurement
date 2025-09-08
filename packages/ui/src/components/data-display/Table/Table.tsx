@@ -396,8 +396,8 @@ const EnhancedTableBody: React.FC<TableBodyProps> = ({
   rowHeight,
   overscan = 5,
 }) => {
-  const getRowKey = (rowData: Record<string, unknown>, index: number) => {
-    return rowKeyExtractor ? rowKeyExtractor(rowData, index) : rowData.id || index;
+  const getRowKey = (rowData: Record<string, unknown>, index: number): string | number => {
+    return rowKeyExtractor ? rowKeyExtractor(rowData, index) : (rowData.id as string | number) || index;
   };
 
   const isRowSelected = (rowKey: string | number) => {
@@ -419,12 +419,12 @@ const EnhancedTableBody: React.FC<TableBodyProps> = ({
 
     return (
       <TableRow
-        key={rowKey}
+        key={String(rowKey)}
         selected={selected}
         className={selected ? 'selected' : ''}
-        onClick={(event) => onRowClick?.(event, rowData)}
-        onFocus={(event) => onRowFocus?.(event, rowData)}
-        onBlur={(event) => onRowBlur?.(event, rowData)}
+        onClick={(event: React.MouseEvent<globalThis.HTMLTableRowElement>) => onRowClick?.(event, rowData)}
+        onFocus={(event: React.FocusEvent<globalThis.HTMLTableRowElement>) => onRowFocus?.(event, rowData)}
+        onBlur={(event: React.FocusEvent<globalThis.HTMLTableRowElement>) => onRowBlur?.(event, rowData)}
         style={virtualScrolling ? { 
           transform: `translateY(${offsetY}px)`,
           position: 'absolute',
@@ -451,7 +451,7 @@ const EnhancedTableBody: React.FC<TableBodyProps> = ({
                 ? renderCell(value, column, rowData, index)
                 : column.render 
                 ? column.render(value, rowData) 
-                : value
+                : (value as React.ReactNode)
               }
             </TableCell>
           );
@@ -527,7 +527,6 @@ export const Table = React.forwardRef<globalThis.HTMLTableElement, TableProps>(
     overscan = 5,
     responsive = false,
     columnPriorities,
-    responsiveBreakpoints,
     showColumnToggle = true,
     containerHeight,
     loadingComponent,
@@ -552,8 +551,7 @@ export const Table = React.forwardRef<globalThis.HTMLTableElement, TableProps>(
       setHiddenColumns,
     } = useResponsive(
       columns || [],
-      responsive ? columnPriorities : undefined,
-      responsiveBreakpoints
+      responsive ? columnPriorities : undefined
     );
 
     // Handle selection changes
@@ -574,7 +572,7 @@ export const Table = React.forwardRef<globalThis.HTMLTableElement, TableProps>(
       
       if (selected) {
         const allKeys = data.map((rowData, index) => 
-          rowKeyExtractor ? rowKeyExtractor(rowData, index) : rowData.id || index
+          rowKeyExtractor ? rowKeyExtractor(rowData, index) : (rowData.id as string | number) || index
         );
         onSelectionChange(allKeys);
       } else {

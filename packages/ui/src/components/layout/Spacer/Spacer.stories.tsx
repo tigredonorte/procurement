@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Box, Typography, Paper, Stack } from '@mui/material';
+import { Box, Typography, Paper } from '@mui/material';
 
 import { Spacer } from './Spacer';
 

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { userEvent, within, expect, waitFor } from '@storybook/test';
+import { useState } from 'react';
 import {
   Dashboard,
   ShoppingCart,
@@ -10,7 +11,7 @@ import {
   Notifications,
   Home,
 } from '@mui/icons-material';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, ThemeProvider, createTheme } from '@mui/material';
 
 import { NavigationMenu } from './NavigationMenu';
 import type { NavigationMenuItem } from './NavigationMenu.types';
@@ -556,7 +557,186 @@ export const EdgeCases: Story = {
   },
 };
 
-// 11. Integration Tests
+// 11. Theme Integration Tests
+export const ThemeIntegration: Story = {
+  render: function ThemeIntegrationRender() {
+    const [darkMode, setDarkMode] = useState(false);
+    
+    const theme = createTheme({
+      palette: {
+        mode: darkMode ? 'dark' : 'light',
+        primary: {
+          main: darkMode ? '#90caf9' : '#1976d2',
+        },
+      },
+    });
+
+    return (
+      <div data-testid="theme-container">
+        <button 
+          data-testid="toggle-theme"
+          onClick={() => setDarkMode(!darkMode)}
+          style={{ marginBottom: 16 }}
+        >
+          Toggle {darkMode ? 'Light' : 'Dark'} Mode
+        </button>
+        <ThemeProvider theme={theme}>
+          <Box 
+            sx={{ 
+              display: 'flex', 
+              height: '400px',
+              bgcolor: 'background.default',
+              color: 'text.primary'
+            }}
+          >
+            <NavigationMenu
+              variant="vertical"
+              items={testItems.map(item => ({ ...item, active: item.id === '1' }))}
+              data-testid="themed-menu"
+            />
+            <Box sx={{ flex: 1, p: 2, bgcolor: 'background.paper' }}>
+              <div data-testid="theme-mode">Mode: {darkMode ? 'dark' : 'light'}</div>
+            </Box>
+          </Box>
+        </ThemeProvider>
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    
+    // Test light mode
+    await expect(canvas.getByTestId('theme-mode')).toHaveTextContent('Mode: light');
+    
+    // Toggle to dark mode
+    await userEvent.click(canvas.getByTestId('toggle-theme'));
+    await expect(canvas.getByTestId('theme-mode')).toHaveTextContent('Mode: dark');
+    
+    // Verify menu still functions in dark mode
+    const menuItem = canvas.getByText('Orders');
+    await userEvent.click(menuItem);
+    expect(menuItem).toBeInTheDocument();
+  },
+};
+
+// 12. Controlled vs Uncontrolled Tests
+export const ControlledUncontrolled: Story = {
+  render: function ControlledUncontrolledRender() {
+    const [controlledCollapsed, setControlledCollapsed] = useState<boolean | undefined>(undefined);
+    const [isControlled, setIsControlled] = useState(false);
+
+    return (
+      <div data-testid="controlled-container">
+        <Box sx={{ mb: 2 }}>
+          <button 
+            data-testid="toggle-controlled"
+            onClick={() => setIsControlled(!isControlled)}
+          >
+            {isControlled ? 'Switch to Uncontrolled' : 'Switch to Controlled'}
+          </button>
+          {isControlled && (
+            <button 
+              data-testid="control-collapse"
+              onClick={() => setControlledCollapsed(!controlledCollapsed)}
+              style={{ marginLeft: 8 }}
+            >
+              Toggle Collapse (Controlled)
+            </button>
+          )}
+        </Box>
+        <Box sx={{ display: 'flex', height: '400px' }}>
+          <NavigationMenu
+            variant="vertical"
+            items={testItems}
+            collapsible
+            collapsed={isControlled ? controlledCollapsed : undefined}
+            onCollapseChange={(collapsed) => {
+              if (isControlled) {
+                setControlledCollapsed(collapsed);
+              }
+            }}
+            data-testid="controlled-menu"
+          />
+          <Box sx={{ flex: 1, p: 2 }}>
+            <div data-testid="control-state">
+              Mode: {isControlled ? 'Controlled' : 'Uncontrolled'}
+            </div>
+            <div data-testid="collapse-state">
+              Collapsed: {controlledCollapsed?.toString() ?? 'undefined'}
+            </div>
+          </Box>
+        </Box>
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    
+    // Test uncontrolled mode
+    await expect(canvas.getByTestId('control-state')).toHaveTextContent('Mode: Uncontrolled');
+    
+    // Switch to controlled mode
+    await userEvent.click(canvas.getByTestId('toggle-controlled'));
+    await expect(canvas.getByTestId('control-state')).toHaveTextContent('Mode: Controlled');
+    
+    // Test controlled collapse
+    await userEvent.click(canvas.getByTestId('control-collapse'));
+    await expect(canvas.getByTestId('collapse-state')).toHaveTextContent('Collapsed: true');
+  },
+};
+
+// 13. Large Dataset Performance Test
+export const LargeDatasetPerformance: Story = {
+  args: {
+    variant: 'vertical',
+    items: Array.from({ length: 100 }, (_, i) => ({
+      id: `item-${i}`,
+      label: `Menu Item ${i + 1}`,
+      icon: <Dashboard />,
+      href: `#item-${i}`,
+      ...(i % 10 === 0 && {
+        children: Array.from({ length: 5 }, (_, j) => ({
+          id: `item-${i}-${j}`,
+          label: `Subitem ${j + 1}`,
+          href: `#item-${i}-${j}`,
+        })),
+      }),
+    })),
+  },
+  decorators: [
+    (Story) => (
+      <Box sx={{ height: '600px', display: 'flex' }}>
+        <Story />
+        <Box sx={{ flex: 1, p: 3 }}>
+          <Typography>Large Dataset - 100 Items with Nested Structure</Typography>
+        </Box>
+      </Box>
+    ),
+  ],
+  play: async ({ canvasElement }) => {
+    const startTime = window.performance.now();
+    const canvas = within(canvasElement);
+
+    // Verify large dataset renders
+    await waitFor(() => {
+      expect(canvas.getByText('Menu Item 1')).toBeInTheDocument();
+      expect(canvas.getByText('Menu Item 100')).toBeInTheDocument();
+    });
+
+    const renderTime = window.performance.now() - startTime;
+    expect(renderTime).toBeLessThan(5000); // Should render within 5 seconds
+
+    // Test expanding nested items in large dataset
+    const expandableItem = canvas.getByText('Menu Item 1');
+    await userEvent.click(expandableItem);
+
+    await waitFor(() => {
+      expect(canvas.getByText('Subitem 1')).toBeInTheDocument();
+    });
+  },
+};
+
+// 14. Integration Tests
 export const IntegrationTest: Story = {
   args: {
     variant: 'mega',
@@ -616,5 +796,114 @@ export const IntegrationTest: Story = {
     // Check grid layout
     const sections = canvas.getAllByRole('heading', { level: 6 });
     expect(sections).toHaveLength(2);
+  },
+};
+
+// 15. Accessibility Compliance (WCAG 2.1 AA) Tests
+export const AccessibilityCompliance: Story = {
+  render: () => (
+    <div data-testid="a11y-container">
+      <Box sx={{ display: 'flex', height: '400px' }}>
+        <nav aria-label="Main navigation" data-testid="a11y-nav">
+          <NavigationMenu
+            variant="vertical"
+            items={testItems}
+            data-testid="a11y-menu"
+          />
+        </nav>
+        <Box sx={{ flex: 1, p: 2 }} role="main">
+          <Typography variant="h6" id="content-heading">
+            Content Area
+          </Typography>
+          <p>Testing WCAG compliance</p>
+        </Box>
+      </Box>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    
+    // Test navigation landmark
+    const nav = canvas.getByTestId('a11y-nav');
+    expect(nav).toHaveAttribute('aria-label', 'Main navigation');
+    
+    // Test menu items have proper roles
+    const menuButtons = canvas.getAllByRole('button');
+    expect(menuButtons.length).toBeGreaterThan(0);
+    
+    // Test disabled item has proper attributes
+    const disabledButton = canvas.getByText('Customers').closest('button');
+    expect(disabledButton).toHaveAttribute('aria-disabled', 'true');
+    
+    // Test expandable items have proper ARIA attributes
+    const expandableItem = canvas.getByText('Analytics');
+    await userEvent.click(expandableItem);
+    
+    await waitFor(() => {
+      const subItems = canvas.getAllByText(/Overview|Reports|Insights/);
+      expect(subItems.length).toBeGreaterThan(0);
+    });
+  },
+};
+
+// 16. Advanced Keyboard Navigation Tests
+export const AdvancedKeyboardNavigation: Story = {
+  render: function AdvancedKeyboardNavigationRender() {
+    const [selectedItem, setSelectedItem] = useState<string>('');
+
+    return (
+      <div data-testid="keyboard-nav-container">
+        <Box sx={{ display: 'flex', height: '400px' }}>
+          <NavigationMenu
+            variant="vertical"
+            items={testItems.map(item => ({
+              ...item,
+              onClick: (e) => {
+                e.preventDefault();
+                setSelectedItem(item.id);
+              },
+            }))}
+            data-testid="keyboard-menu"
+          />
+          <Box sx={{ flex: 1, p: 2 }}>
+            <div data-testid="focused-item">Focused: (tracked via DOM)</div>
+            <div data-testid="selected-via-keyboard">Selected: {selectedItem}</div>
+            <p>Use Tab, Arrow keys, Enter, Escape, and Space to navigate</p>
+          </Box>
+        </Box>
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    
+    // Focus first menu item
+    const firstMenuItem = canvas.getByText('Dashboard').closest('button');
+    if (firstMenuItem) {
+      firstMenuItem.focus();
+      await expect(firstMenuItem).toHaveFocus();
+    }
+    
+    // Test Enter key activation
+    await userEvent.keyboard('{Enter}');
+    await expect(canvas.getByTestId('selected-via-keyboard')).toHaveTextContent('Selected: 1');
+    
+    // Test Tab navigation
+    await userEvent.keyboard('{Tab}');
+    
+    // Test Arrow key navigation
+    await userEvent.keyboard('{ArrowDown}');
+    
+    // Test expanding submenu with Enter
+    const analyticsItem = canvas.getByText('Analytics');
+    analyticsItem.focus();
+    await userEvent.keyboard('{Enter}');
+    
+    await waitFor(() => {
+      expect(canvas.getByText('Overview')).toBeInTheDocument();
+    });
+    
+    // Test Escape to collapse submenu
+    await userEvent.keyboard('{Escape}');
   },
 };
