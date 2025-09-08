@@ -102,7 +102,7 @@ This file is the single source of truth for component work assignment and status
 19. DropdownMenu (completed) [omega-2] - 2025-09-07 03:55 - 10/11 tests PASS; keyboard nav adjusted for MUI; lint clean; TypeScript clean
 20. Pagination (completed) [omega-3] - 2025-09-07 04:35 - All 11 test stories implemented; lint clean; TypeScript clean; comprehensive testing verified
 21. Card (completed) [omega-1] - 2025-09-07 05:45 - All 19 test stories PASS; lint clean; TypeScript clean; comprehensive testing verified
-22. ScrollArea (completed) [omega-2] - 2025-09-07 06:45 - 10/11 tests PASS; lint clean; TypeScript clean; comprehensive testing with known MUI TextField limitation
+22. ScrollArea (working) [omega-16] - 2025-09-08 03:30 - Revalidating with check:component script
 23. Skeleton (completed) [omega-2] - 2025-09-08 15:40 - All 11 test stories PASS; lint clean; TypeScript clean; comprehensive testing verified
 24. Popover (completed) [omega-3] - 2025-09-08 18:00 - All 11 test stories PASS; lint clean; TypeScript clean; comprehensive testing verified
 25. Textarea (completed) [omega-5] - 2025-09-08 18:15 - All 12 test stories PASS; lint clean; TypeScript clean; comprehensive testing verified; Fixed special chars test issue
@@ -145,6 +145,7 @@ This file is the single source of truth for component work assignment and status
 62. Spacer (working) [omega-15] - 2025-09-09 02:30
 63. StackedModal (working) [omega-11] - 2025-09-09 02:15
 64. Timeline (working) [omega-12] - 2025-09-08 23:00
+65. Blockquote (working) [omega-17] - 2025-09-08 23:00
 
 ---
 
@@ -169,3 +170,6 @@ pnpm check:component utility AspectRatio
 - Keep timestamps in BRL time (YYYY-MM-DD HH\:MM).
 - Add concise notes after the timestamp when it aids triage.
 - If an agent tag is missing for legacy entries, future edits should add the responsible agent in brackets.
+
+66. Paragraph (working) [omega-18] - 2025-09-09 02:45
+67. Transition (working) [omega-19] - 2025-09-09 03:15
