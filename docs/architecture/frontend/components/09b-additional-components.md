@@ -8,6 +8,244 @@
 
 These components extend the core Material UI library with specialized functionality for the Requisio.com platform.
 
+### AutoComplete Component
+
+An autocomplete text input
+(check autocomplete.md for more details)
+
+### RichTextEditor Component
+
+**Purpose**: WYSIWYG or Markdown editor with formatting toolbar
+
+```typescript
+interface RichTextEditorProps {
+  value: string;
+  onChange: (value: string) => void;
+  mode?: 'wysiwyg' | 'markdown' | 'dual';
+  variant?: 'glass' | 'outlined' | 'filled';
+  height?: string;
+  placeholder?: string;
+  readOnly?: boolean;
+  toolbar?: {
+    bold?: boolean;
+    italic?: boolean;
+    underline?: boolean;
+    lists?: boolean;
+    links?: boolean;
+    codeBlocks?: boolean;
+    images?: boolean;
+    tables?: boolean;
+  };
+  collaborative?: {
+    enabled: boolean;
+    userId: string;
+    roomId: string;
+  };
+}
+```
+
+**Features**:
+
+- Bold/italic/underline formatting
+- Ordered and unordered lists
+- Link insertion and editing
+- Code blocks with syntax highlighting
+- Image embeds with drag-and-drop
+- Markdown mode with live preview
+- Collaborative editing (optional)
+- Custom toolbar configuration
+- Keyboard shortcuts support
+
+### DataGrid / AdvancedTable Component
+
+**Purpose**: Enhanced data table with sorting, filtering, pagination, and inline editing
+
+```typescript
+interface DataGridProps<T> {
+  data: T[];
+  columns: ColumnDef<T>[];
+  variant?: 'glass' | 'bordered' | 'striped';
+  pagination?: {
+    enabled: boolean;
+    pageSize?: number;
+    pageSizeOptions?: number[];
+  };
+  sorting?: boolean;
+  filtering?: boolean;
+  editable?: boolean;
+  virtualization?: boolean;
+  stickyHeader?: boolean;
+  export?: {
+    csv?: boolean;
+    excel?: boolean;
+    pdf?: boolean;
+  };
+  onRowEdit?: (row: T) => void;
+  onSelectionChange?: (selected: T[]) => void;
+}
+
+interface ColumnDef<T> {
+  key: keyof T;
+  header: string;
+  width?: number;
+  resizable?: boolean;
+  sortable?: boolean;
+  filterable?: boolean;
+  editable?: boolean;
+  cell?: (value: any, row: T) => React.ReactNode;
+}
+```
+
+**Features**:
+
+- Advanced sorting (multi-column)
+- Column filtering with various operators
+- Pagination with customizable page sizes
+- Inline cell editing
+- Column resizing and reordering
+- Sticky headers for scrolling
+- Row selection (single/multi)
+- Virtualization for large datasets
+- Export to CSV/Excel/PDF
+- Responsive mobile view
+
+### WorkflowBuilder / StepperFlow Component
+
+**Purpose**: Drag-and-drop or linear step builder for automation pipelines and wizards
+
+```typescript
+interface WorkflowStep {
+  id: string;
+  type: 'action' | 'condition' | 'loop' | 'parallel';
+  label: string;
+  description?: string;
+  icon?: React.ReactNode;
+  config?: Record<string, any>;
+  validation?: (config: any) => boolean | string;
+}
+
+interface WorkflowBuilderProps {
+  steps: WorkflowStep[];
+  value: WorkflowStep[];
+  onChange: (workflow: WorkflowStep[]) => void;
+  mode?: 'drag-drop' | 'linear' | 'hybrid';
+  variant?: 'glass' | 'outlined';
+  allowBranching?: boolean;
+  validation?: {
+    perStep?: boolean;
+    onSave?: boolean;
+  };
+  persistence?: {
+    autoSave?: boolean;
+    resumable?: boolean;
+  };
+}
+```
+
+**Features**:
+
+- Drag-and-drop step arrangement
+- Linear step progression
+- Branching logic support
+- Conditional steps
+- Validation per step
+- Save and resume functionality
+- Step templates library
+- Undo/redo support
+- Visual flow preview
+- Mobile-optimized interface
+
+### FileUpload Component
+
+**Purpose**: File picker with drag-and-drop zone and upload management
+
+```typescript
+interface FileUploadProps {
+  accept?: string | string[];
+  multiple?: boolean;
+  maxSize?: number;
+  maxFiles?: number;
+  variant?: 'dropzone' | 'button' | 'inline';
+  onUpload: (files: File[]) => Promise<void>;
+  onProgress?: (progress: number, file: File) => void;
+  onError?: (error: Error, file: File) => void;
+  preview?: boolean;
+  autoUpload?: boolean;
+  allowRetry?: boolean;
+  showProgress?: boolean;
+}
+
+interface UploadedFile {
+  file: File;
+  status: 'pending' | 'uploading' | 'success' | 'error';
+  progress: number;
+  error?: string;
+  preview?: string;
+}
+```
+
+**Features**:
+
+- Drag-and-drop file zone
+- File type validation
+- Size restrictions
+- Progress bars with percentages
+- Thumbnail previews for images
+- Retry failed uploads
+- Cancel ongoing uploads
+- Multiple file selection
+- Paste from clipboard
+- Integration with cloud storage
+
+### NotificationCenter Component
+
+**Purpose**: In-app notification hub for persistent notifications
+
+```typescript
+interface Notification {
+  id: string;
+  type: 'info' | 'success' | 'warning' | 'error';
+  title: string;
+  message: string;
+  timestamp: Date;
+  read: boolean;
+  category?: string;
+  action?: {
+    label: string;
+    onClick: () => void;
+  };
+  metadata?: Record<string, any>;
+}
+
+interface NotificationCenterProps {
+  notifications: Notification[];
+  variant?: 'dropdown' | 'sidebar' | 'modal';
+  groupBy?: 'type' | 'category' | 'date';
+  filters?: {
+    types?: boolean;
+    dateRange?: boolean;
+    search?: boolean;
+  };
+  onMarkAsRead?: (id: string) => void;
+  onMarkAllAsRead?: () => void;
+  onDelete?: (id: string) => void;
+  infiniteScroll?: boolean;
+}
+```
+
+**Features**:
+
+- Grouped by type/category/date
+- Read/unread states with badges
+- Time-based filtering
+- Search functionality
+- Infinite scroll pagination
+- Mark as read (single/all)
+- Delete notifications
+- Real-time updates
+- Sound/desktop notifications
+- Notification preferences
+
 ### StackedModal Component
 
 **Purpose**: GTM-style stacked modal system for nested workflows
