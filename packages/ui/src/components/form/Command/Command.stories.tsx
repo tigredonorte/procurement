@@ -21,7 +21,7 @@ const meta: Meta<typeof Command> = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Command'],
   argTypes: {
     variant: {
       control: 'select',

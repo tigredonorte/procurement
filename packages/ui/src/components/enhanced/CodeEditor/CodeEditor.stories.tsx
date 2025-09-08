@@ -15,7 +15,7 @@ const meta = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:CodeEditor'],
   argTypes: {
     language: {
       control: { type: 'select' },

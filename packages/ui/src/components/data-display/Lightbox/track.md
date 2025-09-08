@@ -1,9 +1,9 @@
 # Lightbox — `track.md`
 
 **Component**: `Lightbox`
-**Category**: `overlays` (modal media viewer)
-**Status**: planned
-**Current (BRT)**: 2025-09-08 09:00
+**Category**: `data-display` (modal media viewer)
+**Status**: completed [omega-57]
+**Current (BRT)**: 2025-09-09 10:30
 
 ---
 

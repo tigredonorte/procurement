@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Box, Typography, ButtonGroup } from '@mui/material';
 
 import { Toast, ToastProvider, useToast } from './Toast';
@@ -28,6 +28,14 @@ const meta: Meta<typeof Toast> = {
 
 export default meta;
 type Story = StoryObj<typeof Toast>;
+
+// Required story export: Default
+export const Default: Story = {
+  args: {
+    message: 'This is a default toast notification',
+    variant: 'default',
+  },
+};
 
 const ToastDemo = () => {
   const { addToast, promise } = useToast();
@@ -299,4 +307,246 @@ const PromiseHandlingComponent = () => {
 
 export const PromiseHandling: Story = {
   render: () => <PromiseHandlingComponent />,
+};
+
+// Required story export: AllVariants
+const AllVariantsComponent = () => {
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <Toast message="Default variant" variant="default" />
+      <Toast message="Success variant" variant="success" />
+      <Toast message="Error variant" variant="error" />
+      <Toast message="Warning variant" variant="warning" />
+      <Toast message="Info variant" variant="info" />
+      <Toast message="Promise variant (loading)" variant="promise" />
+    </Box>
+  );
+};
+
+export const AllVariants: Story = {
+  render: () => <AllVariantsComponent />,
+  parameters: {
+    docs: {
+      description: {
+        story: 'All available toast variants displayed together.',
+      },
+    },
+  },
+};
+
+// Required story export: AllSizes
+const AllSizesComponent = () => {
+  const { addToast } = useToast();
+  
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <Button
+        variant="contained"
+        onClick={() =>
+          addToast({
+            message: 'Short message',
+            variant: 'info',
+          })
+        }
+      >
+        Short Toast
+      </Button>
+      <Button
+        variant="contained"
+        onClick={() =>
+          addToast({
+            message: 'This is a medium length toast message with more content to display to the user.',
+            variant: 'info',
+          })
+        }
+      >
+        Medium Toast
+      </Button>
+      <Button
+        variant="contained"
+        onClick={() =>
+          addToast({
+            message: 'This is a very long toast message that contains a lot of information and will likely wrap to multiple lines. It includes detailed instructions and explanations that might be necessary for complex user notifications or system messages that require more context.',
+            variant: 'info',
+            duration: 10000,
+          })
+        }
+      >
+        Long Toast
+      </Button>
+    </Box>
+  );
+};
+
+export const AllSizes: Story = {
+  render: () => <AllSizesComponent />,
+  parameters: {
+    docs: {
+      description: {
+        story: 'Toast notifications with different content lengths.',
+      },
+    },
+  },
+};
+
+// Required story export: AllStates
+const AllStatesComponent = () => {
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <Toast message="Normal state" variant="info" />
+      <Toast message="With close button" variant="info" closable={true} />
+      <Toast message="Without close button" variant="info" closable={false} />
+      <Toast 
+        message="With action button" 
+        variant="success"
+        action={{
+          label: 'Undo',
+          onClick: () => {
+            // Action clicked
+          },
+        }}
+      />
+      <Toast message="Glass effect enabled" variant="info" glass={true} />
+      <Toast message="Persistent toast (no auto-dismiss)" variant="warning" persistent={true} />
+    </Box>
+  );
+};
+
+export const AllStates: Story = {
+  render: () => <AllStatesComponent />,
+  parameters: {
+    docs: {
+      description: {
+        story: 'Different toast states and configurations.',
+      },
+    },
+  },
+};
+
+// Required story export: InteractiveStates
+const InteractiveStatesComponent = () => {
+  const { addToast } = useToast();
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <Box
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        sx={{
+          p: 2,
+          border: '1px solid',
+          borderColor: isHovered ? 'primary.main' : 'divider',
+          borderRadius: 1,
+          transition: 'all 0.3s',
+        }}
+      >
+        <Toast 
+          message={isHovered ? 'Toast is hovered' : 'Hover over this area'}
+          variant={isHovered ? 'success' : 'default'}
+        />
+      </Box>
+      <Button
+        variant="contained"
+        onClick={() => {
+          addToast({
+            message: 'Click the close button or wait 5 seconds',
+            variant: 'info',
+            duration: 5000,
+            closable: true,
+          });
+        }}
+      >
+        Show Dismissible Toast
+      </Button>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => {
+          addToast({
+            message: 'Interactive toast with action',
+            variant: 'success',
+            action: {
+              label: 'View Details',
+              onClick: () => {
+                addToast({
+                  message: 'Action button was clicked!',
+                  variant: 'info',
+                });
+              },
+            },
+          });
+        }}
+      >
+        Toast with Interactive Action
+      </Button>
+    </Box>
+  );
+};
+
+export const InteractiveStates: Story = {
+  render: () => <InteractiveStatesComponent />,
+  parameters: {
+    docs: {
+      description: {
+        story: 'Interactive toast states including hover and click interactions.',
+      },
+    },
+  },
+};
+
+// Required story export: Responsive
+const ResponsiveComponent = () => {
+  const { addToast } = useToast();
+
+  const showResponsiveToast = (position: string) => {
+    addToast({
+      message: `Toast at ${position}`,
+      variant: 'info',
+      duration: 3000,
+    });
+  };
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}>
+      <Typography variant="h6">Responsive Toast Positions</Typography>
+      <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 1 }}>
+        <Button variant="outlined" onClick={() => showResponsiveToast('top-left')}>
+          Top Left
+        </Button>
+        <Button variant="outlined" onClick={() => showResponsiveToast('top-center')}>
+          Top Center
+        </Button>
+        <Button variant="outlined" onClick={() => showResponsiveToast('top-right')}>
+          Top Right
+        </Button>
+        <Button variant="outlined" onClick={() => showResponsiveToast('bottom-left')}>
+          Bottom Left
+        </Button>
+        <Button variant="outlined" onClick={() => showResponsiveToast('bottom-center')}>
+          Bottom Center
+        </Button>
+        <Button variant="outlined" onClick={() => showResponsiveToast('bottom-right')}>
+          Bottom Right
+        </Button>
+      </Box>
+      <Typography variant="body2" color="text.secondary">
+        Toasts adapt to different screen sizes and maintain proper positioning
+      </Typography>
+    </Box>
+  );
+};
+
+export const Responsive: Story = {
+  render: () => <ResponsiveComponent />,
+  parameters: {
+    viewport: {
+      defaultViewport: 'responsive',
+    },
+    docs: {
+      description: {
+        story: 'Toast notifications adapt to different screen sizes and positions.',
+      },
+    },
+  },
 };

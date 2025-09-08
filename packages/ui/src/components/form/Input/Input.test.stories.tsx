@@ -183,7 +183,7 @@ export const StateChangeTest: Story = {
             Toggle Loading
           </button>
           <div data-testid="state-display">
-            Value: {value} | Error: {error.toString()} | Loading: {loading.toString()}
+            {`Value: ${value || ''} | Error: ${error.toString()} | Loading: ${loading.toString()}`}
           </div>
         </div>
       );
@@ -196,7 +196,7 @@ export const StateChangeTest: Story = {
 
     await step('Verify initial state', async () => {
       const stateDisplay = canvas.getByTestId('state-display');
-      await expect(stateDisplay).toHaveTextContent('Value:  | Error: false | Loading: false');
+      await expect(stateDisplay.textContent).toMatch(/Value:\s+\|\s+Error:\s+false\s+\|\s+Loading:\s+false/);
     });
 
     await step('Type short text to trigger error', async () => {

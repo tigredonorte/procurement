@@ -6,7 +6,7 @@ import { Lightbox } from './Lightbox';
 import { LightboxItem } from './Lightbox.types';
 
 const meta: Meta<typeof Lightbox> = {
-  title: 'Data Display/Lightbox',
+  title: 'DataDisplay/Lightbox',
   component: Lightbox,
   parameters: {
     layout: 'centered',
@@ -208,5 +208,110 @@ export const MobileResponsive: Story = {
   },
   render: () => (
     <LightboxWrapper items={sampleImages} thumbnails={true} triggerText="Open on Mobile" />
+  ),
+};
+
+// Required story exports
+export const AllVariants: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: 4 }}>
+      <Typography variant="h6">All Variants</Typography>
+      <LightboxWrapper items={sampleImages} triggerText="Default" />
+      <LightboxWrapper items={sampleImages} thumbnails={true} triggerText="With Thumbnails" />
+      <LightboxWrapper items={sampleImages} autoplay={true} triggerText="With Autoplay" />
+      <LightboxWrapper items={sampleImages} loop={true} triggerText="With Loop" />
+      <LightboxWrapper items={mixedMediaItems} triggerText="Mixed Media" />
+    </Box>
+  ),
+};
+
+export const AllSizes: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: 4 }}>
+      <Typography variant="h6">All Sizes (Gallery sizes)</Typography>
+      <LightboxWrapper items={[sampleImages[0]]} triggerText="Single Item" />
+      <LightboxWrapper items={sampleImages.slice(0, 2)} triggerText="Two Items" />
+      <LightboxWrapper items={sampleImages} triggerText="Multiple Items" />
+      <LightboxWrapper 
+        items={[...sampleImages, ...sampleImages, ...sampleImages]} 
+        thumbnails={true}
+        triggerText="Large Gallery" 
+      />
+    </Box>
+  ),
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: 4 }}>
+      <Typography variant="h6">All States</Typography>
+      <LightboxWrapper items={sampleImages} triggerText="Normal State" />
+      <LightboxWrapper items={[]} triggerText="Empty State" />
+      <LightboxWrapper 
+        items={sampleImages} 
+        showControls={false} 
+        showCaptions={false}
+        triggerText="Minimal State" 
+      />
+      <LightboxWrapper 
+        items={sampleImages} 
+        thumbnails={true}
+        autoplay={true}
+        loop={true}
+        triggerText="Full Featured State" 
+      />
+    </Box>
+  ),
+};
+
+export const InteractiveStates: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: 4 }}>
+      <Typography variant="h6">Interactive States</Typography>
+      <Typography variant="body2" color="text.secondary">
+        Open any lightbox to test navigation, zoom, and touch gestures
+      </Typography>
+      <LightboxWrapper 
+        items={sampleImages} 
+        zoomable={true}
+        triggerText="Zoomable Images" 
+      />
+      <LightboxWrapper 
+        items={sampleImages} 
+        showControls={true}
+        loop={true}
+        triggerText="With Navigation" 
+      />
+      <LightboxWrapper 
+        items={sampleImages} 
+        thumbnails={true}
+        triggerText="With Thumbnail Navigation" 
+      />
+    </Box>
+  ),
+};
+
+export const Responsive: Story = {
+  parameters: {
+    viewport: {
+      viewports: {
+        mobile: { name: 'Mobile', styles: { width: '320px', height: '568px' } },
+        tablet: { name: 'Tablet', styles: { width: '768px', height: '1024px' } },
+        desktop: { name: 'Desktop', styles: { width: '1200px', height: '800px' } },
+      },
+    },
+  },
+  render: () => (
+    <Box sx={{ p: 2 }}>
+      <Typography variant="h6" gutterBottom>Responsive Lightbox</Typography>
+      <Typography variant="body2" color="text.secondary" paragraph>
+        Resize viewport or use viewport controls to test responsiveness
+      </Typography>
+      <LightboxWrapper 
+        items={sampleImages} 
+        thumbnails={true}
+        triggerText="Open Responsive Lightbox" 
+      />
+    </Box>
   ),
 };
