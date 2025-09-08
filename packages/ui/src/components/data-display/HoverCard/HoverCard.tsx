@@ -75,65 +75,66 @@ const slideInRight = keyframes`
 `;
 
 // Arrow component
-const ArrowContainer = styled('div')<{ placement: HoverCardPlacement; offset: number }>(
-  ({ theme, placement, offset }) => {
-    const arrowSize = 8;
-    const isTop = placement.startsWith('top');
-    const isBottom = placement.startsWith('bottom');
-    const isLeft = placement.startsWith('left');
-    const isRight = placement.startsWith('right');
-    
-    let position: React.CSSProperties = {};
-    let borderStyle: React.CSSProperties = {};
-    
-    if (isTop) {
-      position = { bottom: -arrowSize, left: '50%', transform: 'translateX(-50%)' };
-      borderStyle = { 
-        borderLeft: `${arrowSize}px solid transparent`,
-        borderRight: `${arrowSize}px solid transparent`,
-        borderTop: `${arrowSize}px solid ${theme.palette.background.paper}`,
-      };
-    } else if (isBottom) {
-      position = { top: -arrowSize, left: '50%', transform: 'translateX(-50%)' };
-      borderStyle = {
-        borderLeft: `${arrowSize}px solid transparent`,
-        borderRight: `${arrowSize}px solid transparent`,
-        borderBottom: `${arrowSize}px solid ${theme.palette.background.paper}`,
-      };
-    } else if (isLeft) {
-      position = { right: -arrowSize, top: '50%', transform: 'translateY(-50%)' };
-      borderStyle = {
-        borderTop: `${arrowSize}px solid transparent`,
-        borderBottom: `${arrowSize}px solid transparent`,
-        borderLeft: `${arrowSize}px solid ${theme.palette.background.paper}`,
-      };
-    } else if (isRight) {
-      position = { left: -arrowSize, top: '50%', transform: 'translateY(-50%)' };
-      borderStyle = {
-        borderTop: `${arrowSize}px solid transparent`,
-        borderBottom: `${arrowSize}px solid transparent`,
-        borderRight: `${arrowSize}px solid ${theme.palette.background.paper}`,
-      };
-    }
-    
-    return {
-      position: 'absolute',
-      width: 0,
-      height: 0,
-      ...position,
-      ...borderStyle,
-      zIndex: 1,
+const ArrowContainer = styled('div')<{ placement: HoverCardPlacement; offset: number }>(({
+  theme,
+  placement,
+}) => {
+  const arrowSize = 8;
+  const isTop = placement.startsWith('top');
+  const isBottom = placement.startsWith('bottom');
+  const isLeft = placement.startsWith('left');
+  const isRight = placement.startsWith('right');
+
+  let position: React.CSSProperties = {};
+  let borderStyle: React.CSSProperties = {};
+
+  if (isTop) {
+    position = { bottom: -arrowSize, left: '50%', transform: 'translateX(-50%)' };
+    borderStyle = {
+      borderLeft: `${arrowSize}px solid transparent`,
+      borderRight: `${arrowSize}px solid transparent`,
+      borderTop: `${arrowSize}px solid ${theme.palette.background.paper}`,
+    };
+  } else if (isBottom) {
+    position = { top: -arrowSize, left: '50%', transform: 'translateX(-50%)' };
+    borderStyle = {
+      borderLeft: `${arrowSize}px solid transparent`,
+      borderRight: `${arrowSize}px solid transparent`,
+      borderBottom: `${arrowSize}px solid ${theme.palette.background.paper}`,
+    };
+  } else if (isLeft) {
+    position = { right: -arrowSize, top: '50%', transform: 'translateY(-50%)' };
+    borderStyle = {
+      borderTop: `${arrowSize}px solid transparent`,
+      borderBottom: `${arrowSize}px solid transparent`,
+      borderLeft: `${arrowSize}px solid ${theme.palette.background.paper}`,
+    };
+  } else if (isRight) {
+    position = { left: -arrowSize, top: '50%', transform: 'translateY(-50%)' };
+    borderStyle = {
+      borderTop: `${arrowSize}px solid transparent`,
+      borderBottom: `${arrowSize}px solid transparent`,
+      borderRight: `${arrowSize}px solid ${theme.palette.background.paper}`,
     };
   }
-);
+
+  return {
+    position: 'absolute',
+    width: 0,
+    height: 0,
+    ...position,
+    ...borderStyle,
+    zIndex: 1,
+  };
+});
 
 const StyledCard = styled(Card, {
-  shouldForwardProp: (prop) => 
+  shouldForwardProp: (prop) =>
     !['customVariant', 'glow', 'pulse', 'animation'].includes(prop as string),
-})<{ 
-  customVariant?: string; 
-  glow?: boolean; 
-  pulse?: boolean; 
+})<{
+  customVariant?: string;
+  glow?: boolean;
+  pulse?: boolean;
   animation?: HoverCardAnimation;
 }>(({ theme, customVariant, glow, pulse, animation }) => ({
   borderRadius: theme.spacing(1.5),
@@ -203,50 +204,53 @@ const StyledCard = styled(Card, {
   }),
 
   // Glow effect
-  ...(glow && !pulse && {
-    boxShadow: `0 0 20px 5px ${alpha(theme.palette.primary.main, 0.3)} !important`,
-    filter: 'brightness(1.05)',
-  }),
+  ...(glow &&
+    !pulse && {
+      boxShadow: `0 0 20px 5px ${alpha(theme.palette.primary.main, 0.3)} !important`,
+      filter: 'brightness(1.05)',
+    }),
 
   // Pulse animation
-  ...(pulse && !glow && {
-    position: 'relative',
-    '&::after': {
-      content: '""',
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      borderRadius: 'inherit',
-      backgroundColor: theme.palette.primary.main,
-      opacity: 0.1,
-      animation: `${pulseAnimation} 2s infinite`,
-      pointerEvents: 'none',
-      zIndex: -1,
-    },
-  }),
+  ...(pulse &&
+    !glow && {
+      position: 'relative',
+      '&::after': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        borderRadius: 'inherit',
+        backgroundColor: theme.palette.primary.main,
+        opacity: 0.1,
+        animation: `${pulseAnimation} 2s infinite`,
+        pointerEvents: 'none',
+        zIndex: -1,
+      },
+    }),
 
   // Both glow and pulse
-  ...(glow && pulse && {
-    position: 'relative',
-    boxShadow: `0 0 20px 5px ${alpha(theme.palette.primary.main, 0.3)} !important`,
-    filter: 'brightness(1.05)',
-    '&::after': {
-      content: '""',
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      borderRadius: 'inherit',
-      backgroundColor: theme.palette.primary.main,
-      opacity: 0.1,
-      animation: `${pulseAnimation} 2s infinite`,
-      pointerEvents: 'none',
-      zIndex: -1,
-    },
-  }),
+  ...(glow &&
+    pulse && {
+      position: 'relative',
+      boxShadow: `0 0 20px 5px ${alpha(theme.palette.primary.main, 0.3)} !important`,
+      filter: 'brightness(1.05)',
+      '&::after': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        borderRadius: 'inherit',
+        backgroundColor: theme.palette.primary.main,
+        opacity: 0.1,
+        animation: `${pulseAnimation} 2s infinite`,
+        pointerEvents: 'none',
+        zIndex: -1,
+      },
+    }),
 }));
 
 const StyledPopover = styled(Popover)<{ customAnimation?: HoverCardAnimation }>(
@@ -261,7 +265,7 @@ const StyledPopover = styled(Popover)<{ customAnimation?: HoverCardAnimation }>(
         transformOrigin: 'center',
       },
     }),
-  })
+  }),
 );
 
 const LoadingContainer = styled(Box)(({ theme }) => ({
@@ -306,30 +310,33 @@ const getTransformOrigin = (placement: HoverCardPlacement) => {
 };
 
 export const HoverCard = React.forwardRef<HTMLDivElement, HoverCardProps>(
-  ({
-    variant = 'default',
-    glow = false,
-    pulse = false,
-    title,
-    description,
-    avatar,
-    trigger,
-    placement = 'bottom',
-    showArrow = false,
-    animation = 'fade',
-    enterDelay = 700,
-    exitDelay = 0,
-    maxWidth = 400,
-    loading = false,
-    loadingComponent,
-    touchEnabled = true,
-    offset = 8,
-    disabled = false,
-    onOpen,
-    onClose,
-    children,
-    ...props
-  }, ref) => {
+  (
+    {
+      variant = 'default',
+      glow = false,
+      pulse = false,
+      title,
+      description,
+      avatar,
+      trigger,
+      placement = 'bottom',
+      showArrow = false,
+      animation = 'fade',
+      enterDelay = 700,
+      exitDelay = 0,
+      maxWidth = 400,
+      loading = false,
+      loadingComponent,
+      touchEnabled = true,
+      offset = 8,
+      disabled = false,
+      onOpen,
+      onClose,
+      children,
+      ...props
+    },
+    ref,
+  ) => {
     const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
     const [isOpen, setIsOpen] = React.useState(false);
     const [isTouchDevice, setIsTouchDevice] = React.useState(false);
@@ -344,11 +351,11 @@ export const HoverCard = React.forwardRef<HTMLDivElement, HoverCardProps>(
 
     const openCard = (event: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>) => {
       if (disabled) return;
-      
+
       if (exitTimeoutRef.current) {
         window.clearTimeout(exitTimeoutRef.current);
       }
-      
+
       const target = event.currentTarget;
       enterTimeoutRef.current = window.setTimeout(() => {
         setAnchorEl(target);
@@ -361,7 +368,7 @@ export const HoverCard = React.forwardRef<HTMLDivElement, HoverCardProps>(
       if (enterTimeoutRef.current) {
         window.clearTimeout(enterTimeoutRef.current);
       }
-      
+
       exitTimeoutRef.current = window.setTimeout(() => {
         setIsOpen(false);
         setAnchorEl(null);
@@ -381,17 +388,17 @@ export const HoverCard = React.forwardRef<HTMLDivElement, HoverCardProps>(
 
     const handleTouchStart = (event: React.TouchEvent<HTMLElement>) => {
       if (!touchEnabled) return;
-      
+
       // Clear any existing timeout
       if (touchTimeout) {
         window.clearTimeout(touchTimeout);
       }
-      
+
       // Set a timeout to show hover card on long press
       const timeout = window.setTimeout(() => {
         openCard(event);
       }, enterDelay);
-      
+
       setTouchTimeout(timeout);
     };
 
@@ -451,23 +458,20 @@ export const HoverCard = React.forwardRef<HTMLDivElement, HoverCardProps>(
     const triggerElement = trigger ? (
       React.cloneElement(trigger, triggerProps)
     ) : (
-      <span
-        {...triggerProps}
-        style={{ display: 'inline-block', ...triggerProps.style }}
-      >
+      <span {...triggerProps} style={{ display: 'inline-block', ...triggerProps.style }}>
         {children}
       </span>
     );
 
     const renderAvatar = () => {
       if (!avatar) return null;
-      
+
       if (typeof avatar === 'string') {
         return <Avatar src={avatar} sx={{ width: 48, height: 48, mr: 2 }} />;
       }
-      
+
       return React.cloneElement(avatar as React.ReactElement, {
-        sx: { width: 48, height: 48, mr: 2, ...(avatar as React.ReactElement)?.props?.sx }
+        sx: { width: 48, height: 48, mr: 2, ...(avatar as React.ReactElement)?.props?.sx },
       });
     };
 
@@ -523,8 +527,8 @@ export const HoverCard = React.forwardRef<HTMLDivElement, HoverCardProps>(
       return (
         <>
           {title && (
-            <Typography 
-              variant={variant === 'minimal' ? 'body2' : 'subtitle1'} 
+            <Typography
+              variant={variant === 'minimal' ? 'body2' : 'subtitle1'}
               sx={{ fontWeight: 600, mb: 0.5 }}
             >
               {title}
@@ -555,23 +559,21 @@ export const HoverCard = React.forwardRef<HTMLDivElement, HoverCardProps>(
           customAnimation={animation}
           slotProps={{
             paper: {
-              style: { 
+              style: {
                 pointerEvents: 'auto',
-              }
-            }
+              },
+            },
           }}
           {...props}
         >
           <Box sx={{ position: 'relative' }}>
-            {showArrow && (
-              <ArrowContainer placement={placement} offset={offset} />
-            )}
+            {showArrow && <ArrowContainer placement={placement} offset={offset} />}
             <StyledCard
               customVariant={variant}
               glow={glow}
               pulse={pulse}
               animation={animation}
-              sx={{ 
+              sx={{
                 maxWidth,
                 mt: placement.startsWith('top') ? `${offset}px` : 0,
                 mb: placement.startsWith('bottom') ? `${offset}px` : 0,
@@ -579,10 +581,14 @@ export const HoverCard = React.forwardRef<HTMLDivElement, HoverCardProps>(
                 mr: placement.startsWith('right') ? `${offset}px` : 0,
               }}
             >
-              <CardContent sx={{ 
-                p: variant === 'detailed' ? 3 : variant === 'minimal' ? 1.5 : 2,
-                '&:last-child': { pb: variant === 'detailed' ? 3 : variant === 'minimal' ? 1.5 : 2 }
-              }}>
+              <CardContent
+                sx={{
+                  p: variant === 'detailed' ? 3 : variant === 'minimal' ? 1.5 : 2,
+                  '&:last-child': {
+                    pb: variant === 'detailed' ? 3 : variant === 'minimal' ? 1.5 : 2,
+                  },
+                }}
+              >
                 {renderContent()}
               </CardContent>
             </StyledCard>
@@ -590,7 +596,7 @@ export const HoverCard = React.forwardRef<HTMLDivElement, HoverCardProps>(
         </StyledPopover>
       </>
     );
-  }
+  },
 );
 
 HoverCard.displayName = 'HoverCard';

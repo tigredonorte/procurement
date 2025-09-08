@@ -54,42 +54,52 @@ export const Modal: React.FC<ModalProps> = ({
 
   const getBorderRadius = () => {
     switch (borderRadius) {
-      case 'none': return 0;
-      case 'sm': return theme.spacing(0.5);
-      case 'md': return theme.spacing(1);
-      case 'lg': return theme.spacing(2);
-      case 'xl': return theme.spacing(3);
-      default: return theme.spacing(2);
+      case 'none':
+        return 0;
+      case 'sm':
+        return theme.spacing(0.5);
+      case 'md':
+        return theme.spacing(1);
+      case 'lg':
+        return theme.spacing(2);
+      case 'xl':
+        return theme.spacing(3);
+      default:
+        return theme.spacing(2);
     }
   };
 
   const getSize = () => {
     switch (size) {
-      case 'xs': return { width: 320, maxWidth: '90vw' };
-      case 'sm': return { width: 480, maxWidth: '90vw' };
-      case 'md': return { width: 640, maxWidth: '90vw' };
-      case 'lg': return { width: 800, maxWidth: '90vw' };
-      case 'xl': return { width: 960, maxWidth: '90vw' };
-      default: return { width: 640, maxWidth: '90vw' };
+      case 'xs':
+        return { width: 320, maxWidth: '90vw' };
+      case 'sm':
+        return { width: 480, maxWidth: '90vw' };
+      case 'md':
+        return { width: 640, maxWidth: '90vw' };
+      case 'lg':
+        return { width: 800, maxWidth: '90vw' };
+      case 'xl':
+        return { width: 960, maxWidth: '90vw' };
+      default:
+        return { width: 640, maxWidth: '90vw' };
     }
   };
 
   const getPositionStyles = () => {
     const sizeStyles = getSize();
-    
+
     const baseStyles = {
       position: 'absolute' as const,
       ...sizeStyles,
       borderRadius: getBorderRadius(),
       outline: 0,
-      transition: theme.transitions.create([
-        'box-shadow',
-        'background-color',
-        'backdrop-filter',
-        'transform',
-      ], {
-        duration: theme.transitions.duration.standard,
-      }),
+      transition: theme.transitions.create(
+        ['box-shadow', 'background-color', 'backdrop-filter', 'transform'],
+        {
+          duration: theme.transitions.duration.standard,
+        },
+      ),
     };
 
     switch (variant) {
@@ -129,63 +139,66 @@ export const Modal: React.FC<ModalProps> = ({
 
   const getVariantStyles = () => {
     const positionStyles = getPositionStyles();
-    
-    const glowStyles = glow ? {
-      boxShadow: `0 0 40px ${alpha(theme.palette.primary.main, 0.3)}`,
-    } : {};
 
-    const pulseStyles = pulse ? {
-      position: 'relative',
-      '&::after': {
-        content: '""',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        borderRadius: 'inherit',
-        backgroundColor: theme.palette.primary.main,
-        opacity: 0.3,
-        animation: `${pulseAnimation} 2s infinite`,
-        pointerEvents: 'none',
-        zIndex: -1,
-      },
-    } : {};
+    const baseStyles = {
+      ...positionStyles,
+      position: pulse ? ('relative' as const) : positionStyles.position,
+    };
 
-    const gradientStyles = gradient ? {
-      background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.1)}, ${alpha(theme.palette.secondary.main, 0.1)})`,
-      backdropFilter: 'blur(10px)',
-    } : {};
+    if (pulse) {
+      Object.assign(baseStyles, {
+        '&::after': {
+          content: '""',
+          position: 'absolute' as const,
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          borderRadius: 'inherit',
+          backgroundColor: theme.palette.primary.main,
+          opacity: 0.3,
+          animation: `${pulseAnimation} 2s infinite`,
+          pointerEvents: 'none' as const,
+          zIndex: -1,
+        },
+      });
+    }
 
     switch (variant) {
       case 'glass':
         return {
-          ...positionStyles,
-          ...glowStyles,
-          ...pulseStyles,
+          ...baseStyles,
           backgroundColor: alpha(theme.palette.background.paper, 0.1),
           backdropFilter: 'blur(20px)',
           border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
-          boxShadow: `0 8px 32px ${alpha(theme.palette.common.black, 0.1)}`,
+          boxShadow: glow
+            ? `0 0 40px ${alpha(theme.palette.primary.main, 0.3)}`
+            : `0 8px 32px ${alpha(theme.palette.common.black, 0.1)}`,
         };
 
-      default:
-        return {
-          ...positionStyles,
-          ...glowStyles,
-          ...pulseStyles,
-          ...gradientStyles,
-          backgroundColor: glass 
+      default: {
+        const styles = {
+          ...baseStyles,
+          backgroundColor: glass
             ? alpha(theme.palette.background.paper, 0.1)
             : theme.palette.background.paper,
-          backdropFilter: glass ? 'blur(20px)' : 'none',
-          border: glass 
-            ? `1px solid ${alpha(theme.palette.primary.main, 0.2)}`
-            : 'none',
-          boxShadow: glass 
-            ? `0 8px 32px ${alpha(theme.palette.common.black, 0.1)}`
-            : theme.shadows[8],
+          backdropFilter: glass ? 'blur(20px)' : gradient ? 'blur(10px)' : 'none',
+          border: glass ? `1px solid ${alpha(theme.palette.primary.main, 0.2)}` : 'none',
+          boxShadow: glow
+            ? `0 0 40px ${alpha(theme.palette.primary.main, 0.3)}`
+            : glass
+              ? `0 8px 32px ${alpha(theme.palette.common.black, 0.1)}`
+              : theme.shadows[8],
         };
+
+        if (gradient) {
+          Object.assign(styles, {
+            background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.1)}, ${alpha(theme.palette.secondary.main, 0.1)})`,
+          });
+        }
+
+        return styles;
+      }
     }
   };
 
@@ -199,16 +212,26 @@ export const Modal: React.FC<ModalProps> = ({
   const getTransitionComponent = () => {
     switch (variant) {
       case 'top': {
-        const SlideDown = React.forwardRef<HTMLElement, TransitionProps>((props, ref) => 
-          <Slide direction="down" ref={ref} {...props} />
-        );
+        const SlideDown = React.forwardRef<HTMLElement, TransitionProps>((props, ref) => {
+          const { children, ...rest } = props;
+          return children ? (
+            <Slide direction="down" ref={ref} {...rest}>
+              {children}
+            </Slide>
+          ) : null;
+        });
         SlideDown.displayName = 'SlideDown';
         return SlideDown;
       }
       case 'bottom': {
-        const SlideUp = React.forwardRef<HTMLElement, TransitionProps>((props, ref) =>
-          <Slide direction="up" ref={ref} {...props} />
-        );
+        const SlideUp = React.forwardRef<HTMLElement, TransitionProps>((props, ref) => {
+          const { children, ...rest } = props;
+          return children ? (
+            <Slide direction="up" ref={ref} {...rest}>
+              {children}
+            </Slide>
+          ) : null;
+        });
         SlideUp.displayName = 'SlideUp';
         return SlideUp;
       }
@@ -228,30 +251,22 @@ export const Modal: React.FC<ModalProps> = ({
       BackdropProps={{
         timeout: 500,
         sx: {
-          backgroundColor: glass || variant === 'glass'
-            ? alpha(theme.palette.common.black, 0.2)
-            : alpha(theme.palette.common.black, 0.5),
+          backgroundColor:
+            glass || variant === 'glass'
+              ? alpha(theme.palette.common.black, 0.2)
+              : alpha(theme.palette.common.black, 0.5),
           backdropFilter: glass || variant === 'glass' ? 'blur(8px)' : 'none',
         },
       }}
       {...props}
     >
       <TransitionComponent in={open} timeout={500}>
-        <Box sx={getVariantStyles()}>
-          {children}
-        </Box>
+        <Box sx={getVariantStyles()}>{children}</Box>
       </TransitionComponent>
     </MuiModal>
   );
 };
 
-export const ModalContent: React.FC<ModalContentProps> = ({
-  children,
-  padding = 3,
-}) => {
-  return (
-    <Box sx={{ p: padding }}>
-      {children}
-    </Box>
-  );
+export const ModalContent: React.FC<ModalContentProps> = ({ children, padding = 3 }) => {
+  return <Box sx={{ p: padding }}>{children}</Box>;
 };

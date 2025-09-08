@@ -1,7 +1,13 @@
 import React from 'react';
 import { Box, Stack, styled } from '@mui/material';
 
-import { FormProps, FormFieldProps, FormLabelProps, FormControlProps, FormMessageProps } from './Form.types';
+import {
+  FormProps,
+  FormFieldProps,
+  FormLabelProps,
+  FormControlProps,
+  FormMessageProps,
+} from './Form.types';
 
 const StyledForm = styled('form')<{ variant?: FormProps['variant'] }>(({ theme, variant }) => ({
   width: '100%',
@@ -31,7 +37,7 @@ const maxWidthMap = {
 export const Form = React.forwardRef<HTMLFormElement, FormProps>(
   ({ variant = 'vertical', maxWidth = 'full', spacing = 'md', children, ...props }, ref) => {
     return (
-      <StyledForm ref={ref} variant={variant} {...props}>
+      <StyledForm ref={ref} variant={variant} role="form" {...props}>
         <Box sx={{ maxWidth: maxWidthMap[maxWidth], width: '100%' }}>
           {variant === 'inline' ? (
             children
@@ -41,26 +47,28 @@ export const Form = React.forwardRef<HTMLFormElement, FormProps>(
         </Box>
       </StyledForm>
     );
-  }
+  },
 );
 
 Form.displayName = 'Form';
 
-const StyledFormField = styled(Box)<{ variant?: 'vertical' | 'horizontal' }>(({ theme, variant }) => ({
-  display: variant === 'horizontal' ? 'grid' : 'flex',
-  flexDirection: variant === 'horizontal' ? undefined : 'column',
-  gridTemplateColumns: variant === 'horizontal' ? '200px 1fr' : undefined,
-  gap: theme.spacing(1),
-  alignItems: variant === 'horizontal' ? 'center' : undefined,
-}));
+const StyledFormField = styled(Box)<{ variant?: 'vertical' | 'horizontal' }>(
+  ({ theme, variant }) => ({
+    display: variant === 'horizontal' ? 'grid' : 'flex',
+    flexDirection: variant === 'horizontal' ? undefined : 'column',
+    gridTemplateColumns: variant === 'horizontal' ? '200px 1fr' : undefined,
+    gap: theme.spacing(1),
+    alignItems: variant === 'horizontal' ? 'center' : undefined,
+  }),
+);
 
-export const FormField: React.FC<FormFieldProps> = ({ 
-  name, 
-  label, 
-  required, 
-  error, 
-  helperText, 
-  children 
+export const FormField: React.FC<FormFieldProps> = ({
+  name,
+  label,
+  required,
+  error,
+  helperText,
+  children,
 }) => {
   return (
     <StyledFormField>
@@ -71,9 +79,7 @@ export const FormField: React.FC<FormFieldProps> = ({
       )}
       <FormControl error={!!error} fullWidth>
         {children}
-        {(error || helperText) && (
-          <FormMessage error={!!error}>{error || helperText}</FormMessage>
-        )}
+        {(error || helperText) && <FormMessage error={!!error}>{error || helperText}</FormMessage>}
       </FormControl>
     </StyledFormField>
   );
@@ -92,12 +98,7 @@ const StyledFormLabel = styled('label')<{ error?: boolean }>(({ theme, error }) 
   },
 }));
 
-export const FormLabel: React.FC<FormLabelProps> = ({ 
-  required, 
-  error, 
-  children, 
-  htmlFor 
-}) => {
+export const FormLabel: React.FC<FormLabelProps> = ({ required, error, children, htmlFor }) => {
   return (
     <StyledFormLabel
       error={error}
@@ -109,16 +110,14 @@ export const FormLabel: React.FC<FormLabelProps> = ({
   );
 };
 
-const StyledFormControl = styled(Box)<{ error?: boolean; fullWidth?: boolean }>(({ fullWidth }) => ({
-  width: fullWidth ? '100%' : 'auto',
-  position: 'relative',
-}));
+const StyledFormControl = styled(Box)<{ error?: boolean; fullWidth?: boolean }>(
+  ({ fullWidth }) => ({
+    width: fullWidth ? '100%' : 'auto',
+    position: 'relative',
+  }),
+);
 
-export const FormControl: React.FC<FormControlProps> = ({ 
-  error, 
-  fullWidth = true, 
-  children 
-}) => {
+export const FormControl: React.FC<FormControlProps> = ({ error, fullWidth = true, children }) => {
   return (
     <StyledFormControl error={error} fullWidth={fullWidth}>
       {children}

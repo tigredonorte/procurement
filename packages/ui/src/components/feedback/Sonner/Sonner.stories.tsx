@@ -1,7 +1,8 @@
+import { Box, Button, Paper, Stack, Typography } from '@mui/material';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Button, Stack, Box, Typography, Paper } from '@mui/material';
-import { Toaster, toast } from 'sonner';
 import React from 'react';
+
+import { Toaster, toast } from './Sonner';
 
 const meta = {
   title: 'Feedback/Sonner',
@@ -10,7 +11,8 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component: 'Beautiful, customizable toast notifications powered by Sonner. Provides elegant feedback for user actions with various styles and positions.',
+        component:
+          'Beautiful, customizable toast notifications powered by Sonner. Provides elegant feedback for user actions with various styles and positions.',
       },
     },
   },
@@ -18,7 +20,14 @@ const meta = {
   argTypes: {
     position: {
       control: { type: 'select' },
-      options: ['top-left', 'top-center', 'top-right', 'bottom-left', 'bottom-center', 'bottom-right'],
+      options: [
+        'top-left',
+        'top-center',
+        'top-right',
+        'bottom-left',
+        'bottom-center',
+        'bottom-right',
+      ],
       description: 'Toast position on screen',
     },
     theme: {
@@ -48,10 +57,7 @@ export const Default: Story = {
   render: () => (
     <>
       <Toaster position="bottom-right" />
-      <Button 
-        variant="contained"
-        onClick={() => toast('This is a default toast notification')}
-      >
+      <Button variant="contained" onClick={() => toast('This is a default toast notification')}>
         Show Toast
       </Button>
     </>
@@ -63,38 +69,35 @@ export const ToastTypes: Story = {
     <>
       <Toaster richColors closeButton />
       <Stack spacing={2}>
-        <Button 
-          variant="contained"
-          onClick={() => toast('Default toast message')}
-        >
+        <Button variant="contained" onClick={() => toast('Default toast message')}>
           Default Toast
         </Button>
-        
-        <Button 
+
+        <Button
           variant="contained"
           color="success"
           onClick={() => toast.success('Operation completed successfully!')}
         >
           Success Toast
         </Button>
-        
-        <Button 
+
+        <Button
           variant="contained"
           color="error"
           onClick={() => toast.error('Something went wrong. Please try again.')}
         >
           Error Toast
         </Button>
-        
-        <Button 
+
+        <Button
           variant="contained"
           color="warning"
           onClick={() => toast.warning('Please review before proceeding')}
         >
           Warning Toast
         </Button>
-        
-        <Button 
+
+        <Button
           variant="contained"
           color="info"
           onClick={() => toast.info('New updates are available')}
@@ -107,78 +110,80 @@ export const ToastTypes: Story = {
 };
 
 const ToastPositionsComponent = () => {
-const [position, setPosition] = React.useState<'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'>('bottom-right');
-    
-    return (
-      <>
-        <Toaster position={position} />
-        <Stack spacing={3}>
-          <Typography variant="h6">Toast Position</Typography>
-          
-          <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap={2}>
-            <Button 
-              variant={position === 'top-left' ? 'contained' : 'outlined'}
-              onClick={() => {
-                setPosition('top-left');
-                toast('Top Left Position');
-              }}
-            >
-              Top Left
-            </Button>
-            
-            <Button 
-              variant={position === 'top-center' ? 'contained' : 'outlined'}
-              onClick={() => {
-                setPosition('top-center');
-                toast('Top Center Position');
-              }}
-            >
-              Top Center
-            </Button>
-            
-            <Button 
-              variant={position === 'top-right' ? 'contained' : 'outlined'}
-              onClick={() => {
-                setPosition('top-right');
-                toast('Top Right Position');
-              }}
-            >
-              Top Right
-            </Button>
-            
-            <Button 
-              variant={position === 'bottom-left' ? 'contained' : 'outlined'}
-              onClick={() => {
-                setPosition('bottom-left');
-                toast('Bottom Left Position');
-              }}
-            >
-              Bottom Left
-            </Button>
-            
-            <Button 
-              variant={position === 'bottom-center' ? 'contained' : 'outlined'}
-              onClick={() => {
-                setPosition('bottom-center');
-                toast('Bottom Center Position');
-              }}
-            >
-              Bottom Center
-            </Button>
-            
-            <Button 
-              variant={position === 'bottom-right' ? 'contained' : 'outlined'}
-              onClick={() => {
-                setPosition('bottom-right');
-                toast('Bottom Right Position');
-              }}
-            >
-              Bottom Right
-            </Button>
-          </Box>
-        </Stack>
-      </>
-    );
+  const [position, setPosition] = React.useState<
+    'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'
+  >('bottom-right');
+
+  return (
+    <>
+      <Toaster position={position} />
+      <Stack spacing={3}>
+        <Typography variant="h6">Toast Position</Typography>
+
+        <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap={2}>
+          <Button
+            variant={position === 'top-left' ? 'contained' : 'outlined'}
+            onClick={() => {
+              setPosition('top-left');
+              toast('Top Left Position');
+            }}
+          >
+            Top Left
+          </Button>
+
+          <Button
+            variant={position === 'top-center' ? 'contained' : 'outlined'}
+            onClick={() => {
+              setPosition('top-center');
+              toast('Top Center Position');
+            }}
+          >
+            Top Center
+          </Button>
+
+          <Button
+            variant={position === 'top-right' ? 'contained' : 'outlined'}
+            onClick={() => {
+              setPosition('top-right');
+              toast('Top Right Position');
+            }}
+          >
+            Top Right
+          </Button>
+
+          <Button
+            variant={position === 'bottom-left' ? 'contained' : 'outlined'}
+            onClick={() => {
+              setPosition('bottom-left');
+              toast('Bottom Left Position');
+            }}
+          >
+            Bottom Left
+          </Button>
+
+          <Button
+            variant={position === 'bottom-center' ? 'contained' : 'outlined'}
+            onClick={() => {
+              setPosition('bottom-center');
+              toast('Bottom Center Position');
+            }}
+          >
+            Bottom Center
+          </Button>
+
+          <Button
+            variant={position === 'bottom-right' ? 'contained' : 'outlined'}
+            onClick={() => {
+              setPosition('bottom-right');
+              toast('Bottom Right Position');
+            }}
+          >
+            Bottom Right
+          </Button>
+        </Box>
+      </Stack>
+    </>
+  );
 };
 
 export const ToastPositions: Story = {
@@ -190,20 +195,24 @@ export const CustomToasts: Story = {
     <>
       <Toaster richColors />
       <Stack spacing={2}>
-        <Button 
+        <Button
           variant="contained"
-          onClick={() => toast('Event has been created', {
-            description: 'Monday, January 3rd at 6:00pm',
-            action: {
-              label: 'Undo',
-              onClick: () => console.log('Undo clicked'),
-            },
-          })}
+          onClick={() =>
+            toast('Event has been created', {
+              description: 'Monday, January 3rd at 6:00pm',
+              action: {
+                label: 'Undo',
+                onClick: () => {
+                  // Undo action would go here
+                },
+              },
+            })
+          }
         >
           Toast with Icon
         </Button>
-        
-        <Button 
+
+        <Button
           variant="contained"
           onClick={() => {
             const toastId = toast.loading('Uploading file...');
@@ -226,7 +235,7 @@ export const PromiseToast: Story = {
     <>
       <Toaster richColors />
       <Stack spacing={2}>
-        <Button 
+        <Button
           variant="contained"
           onClick={() => {
             const promise = new Promise((resolve) => {
@@ -244,8 +253,8 @@ export const PromiseToast: Story = {
         >
           Promise Toast (Success)
         </Button>
-        
-        <Button 
+
+        <Button
           variant="contained"
           color="error"
           onClick={() => {
@@ -274,7 +283,7 @@ export const ActionToasts: Story = {
     <>
       <Toaster closeButton richColors />
       <Stack spacing={2}>
-        <Button 
+        <Button
           variant="contained"
           onClick={() => {
             toast('Message deleted', {
@@ -287,8 +296,8 @@ export const ActionToasts: Story = {
         >
           Toast with Undo Action
         </Button>
-        
-        <Button 
+
+        <Button
           variant="contained"
           onClick={() => {
             toast.error('Connection failed', {
@@ -301,8 +310,8 @@ export const ActionToasts: Story = {
         >
           Error with Retry
         </Button>
-        
-        <Button 
+
+        <Button
           variant="contained"
           onClick={() => {
             toast('New version available', {
@@ -326,31 +335,31 @@ export const DurationControl: Story = {
     <>
       <Toaster />
       <Stack spacing={2}>
-        <Button 
+        <Button
           variant="outlined"
           onClick={() => toast('Quick toast (2 seconds)', { duration: 2000 })}
         >
           2 Second Toast
         </Button>
-        
-        <Button 
+
+        <Button
           variant="outlined"
           onClick={() => toast('Standard toast (4 seconds)', { duration: 4000 })}
         >
           4 Second Toast
         </Button>
-        
-        <Button 
+
+        <Button
           variant="outlined"
           onClick={() => toast('Long toast (10 seconds)', { duration: 10000 })}
         >
           10 Second Toast
         </Button>
-        
-        <Button 
+
+        <Button
           variant="outlined"
           onClick={() => {
-            const id = toast('Persistent toast - click to dismiss', { 
+            const id = toast('Persistent toast - click to dismiss', {
               duration: Infinity,
               onClick: () => toast.dismiss(id),
             });
@@ -368,7 +377,7 @@ export const FormFeedback: Story = {
     const handleSubmit = (success: boolean) => {
       if (success) {
         toast.success('Form submitted successfully!', {
-          description: 'We\'ll get back to you within 24 hours.',
+          description: "We'll get back to you within 24 hours.",
         });
       } else {
         toast.error('Please fix the errors below', {
@@ -384,25 +393,18 @@ export const FormFeedback: Story = {
           <Typography variant="h6" gutterBottom>
             Contact Form
           </Typography>
-          
+
           <Stack spacing={2}>
             <input placeholder="Name" style={{ padding: '8px' }} />
             <input placeholder="Email" style={{ padding: '8px' }} />
             <textarea placeholder="Message" rows={4} style={{ padding: '8px' }} />
-            
+
             <Stack direction="row" spacing={2}>
-              <Button 
-                variant="contained"
-                onClick={() => handleSubmit(true)}
-              >
+              <Button variant="contained" onClick={() => handleSubmit(true)}>
                 Submit (Success)
               </Button>
-              
-              <Button 
-                variant="outlined"
-                color="error"
-                onClick={() => handleSubmit(false)}
-              >
+
+              <Button variant="outlined" color="error" onClick={() => handleSubmit(false)}>
                 Submit (Error)
               </Button>
             </Stack>
@@ -418,7 +420,7 @@ export const MultipleToasts: Story = {
     <>
       <Toaster expand richColors />
       <Stack spacing={2}>
-        <Button 
+        <Button
           variant="contained"
           onClick={() => {
             toast.success('File 1 uploaded');
@@ -429,8 +431,8 @@ export const MultipleToasts: Story = {
         >
           Show Multiple Toasts
         </Button>
-        
-        <Button 
+
+        <Button
           variant="outlined"
           onClick={() => {
             toast('First notification');
@@ -441,12 +443,8 @@ export const MultipleToasts: Story = {
         >
           Staggered Toasts
         </Button>
-        
-        <Button 
-          variant="outlined"
-          color="error"
-          onClick={() => toast.dismiss()}
-        >
+
+        <Button variant="outlined" color="error" onClick={() => toast.dismiss()}>
           Dismiss All
         </Button>
       </Stack>
@@ -455,60 +453,62 @@ export const MultipleToasts: Story = {
 };
 
 const ThemedToastsComponent = () => {
-const [theme, setTheme] = React.useState<'light' | 'dark'>('light');
-    
-    return (
-      <Box sx={{ 
-        p: 3, 
+  const [theme, setTheme] = React.useState<'light' | 'dark'>('light');
+
+  return (
+    <Box
+      sx={{
+        p: 3,
         bgcolor: theme === 'dark' ? 'grey.900' : 'grey.50',
         minHeight: 300,
-      }}>
-        <Toaster theme={theme} richColors />
-        
-        <Stack spacing={3}>
-          <Stack direction="row" spacing={2}>
-            <Button 
-              variant={theme === 'light' ? 'contained' : 'outlined'}
-              onClick={() => setTheme('light')}
-            >
-              Light Theme
-            </Button>
-            
-            <Button 
-              variant={theme === 'dark' ? 'contained' : 'outlined'}
-              onClick={() => setTheme('dark')}
-            >
-              Dark Theme
-            </Button>
-          </Stack>
-          
-          <Stack direction="row" spacing={2}>
-            <Button 
-              variant="contained"
-              onClick={() => toast.success('Success in ' + theme + ' theme')}
-            >
-              Success
-            </Button>
-            
-            <Button 
-              variant="contained"
-              color="error"
-              onClick={() => toast.error('Error in ' + theme + ' theme')}
-            >
-              Error
-            </Button>
-            
-            <Button 
-              variant="contained"
-              color="info"
-              onClick={() => toast.info('Info in ' + theme + ' theme')}
-            >
-              Info
-            </Button>
-          </Stack>
+      }}
+    >
+      <Toaster theme={theme} richColors />
+
+      <Stack spacing={3}>
+        <Stack direction="row" spacing={2}>
+          <Button
+            variant={theme === 'light' ? 'contained' : 'outlined'}
+            onClick={() => setTheme('light')}
+          >
+            Light Theme
+          </Button>
+
+          <Button
+            variant={theme === 'dark' ? 'contained' : 'outlined'}
+            onClick={() => setTheme('dark')}
+          >
+            Dark Theme
+          </Button>
         </Stack>
-      </Box>
-    );
+
+        <Stack direction="row" spacing={2}>
+          <Button
+            variant="contained"
+            onClick={() => toast.success('Success in ' + theme + ' theme')}
+          >
+            Success
+          </Button>
+
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => toast.error('Error in ' + theme + ' theme')}
+          >
+            Error
+          </Button>
+
+          <Button
+            variant="contained"
+            color="info"
+            onClick={() => toast.info('Info in ' + theme + ' theme')}
+          >
+            Info
+          </Button>
+        </Stack>
+      </Stack>
+    </Box>
+  );
 };
 
 export const ThemedToasts: Story = {

@@ -14,14 +14,12 @@ import {
   useTheme,
   alpha,
   Chip,
-  IconButton,
 } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 import {
   MenubarProps,
   MenubarGroupProps,
-  MenubarItemProps,
   MenubarSeparatorProps,
   MenubarItem,
 } from './Menubar.types';
@@ -36,7 +34,6 @@ export const Menubar: React.FC<MenubarProps> = ({
   pulse = false,
   glass = false,
   gradient = false,
-  ripple = true,
   loading = false,
   disabled = false,
   className,
@@ -136,25 +133,31 @@ export const Menubar: React.FC<MenubarProps> = ({
       ...getColorStyles(),
     };
 
-    const glowStyles = glow ? {
-      boxShadow: `0 0 20px ${alpha(
-        color === 'default' ? theme.palette.primary.main : theme.palette[color].main,
-        0.4
-      )}`,
-    } : {};
+    const glowStyles = glow
+      ? {
+          boxShadow: `0 0 20px ${alpha(
+            color === 'default' ? theme.palette.primary.main : theme.palette[color].main,
+            0.4,
+          )}`,
+        }
+      : {};
 
-    const pulseStyles = pulse ? {
-      animation: 'pulse 2s infinite',
-      '@keyframes pulse': {
-        '0%': { opacity: 1 },
-        '50%': { opacity: 0.8 },
-        '100%': { opacity: 1 },
-      },
-    } : {};
+    const pulseStyles = pulse
+      ? {
+          animation: 'pulse 2s infinite',
+          '@keyframes pulse': {
+            '0%': { opacity: 1 },
+            '50%': { opacity: 0.8 },
+            '100%': { opacity: 1 },
+          },
+        }
+      : {};
 
-    const blurStyles = blur ? {
-      backdropFilter: 'blur(10px)',
-    } : {};
+    const blurStyles = blur
+      ? {
+          backdropFilter: 'blur(10px)',
+        }
+      : {};
 
     switch (variant) {
       case 'glass':
@@ -167,7 +170,7 @@ export const Menubar: React.FC<MenubarProps> = ({
           borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
         };
 
-      case 'gradient':
+      case 'gradient': {
         const gradientColor = color === 'default' ? 'primary' : color;
         return {
           ...baseStyles,
@@ -178,6 +181,7 @@ export const Menubar: React.FC<MenubarProps> = ({
             : theme.palette[gradientColor].main,
           color: theme.palette[gradientColor].contrastText,
         };
+      }
 
       case 'elevated':
         return {
@@ -247,7 +251,7 @@ export const Menubar: React.FC<MenubarProps> = ({
         >
           {item.label}
         </Button>
-        
+
         {hasChildren && (
           <Menu
             anchorEl={menuRefs.current[item.id]}
@@ -269,9 +273,7 @@ export const Menubar: React.FC<MenubarProps> = ({
                   onClick={() => handleItemClick(child)}
                   disabled={child.disabled}
                 >
-                  {child.icon && (
-                    <ListItemIcon>{child.icon}</ListItemIcon>
-                  )}
+                  {child.icon && <ListItemIcon>{child.icon}</ListItemIcon>}
                   <ListItemText>{child.label}</ListItemText>
                   {child.shortcut && (
                     <Chip
@@ -282,7 +284,7 @@ export const Menubar: React.FC<MenubarProps> = ({
                     />
                   )}
                 </MenuItem>
-              )
+              ),
             )}
           </Menu>
         )}
@@ -302,12 +304,8 @@ export const Menubar: React.FC<MenubarProps> = ({
       onFocus={onFocus}
       onBlur={onBlur}
     >
-      {logo && (
-        <Box sx={{ mr: 2, display: 'flex', alignItems: 'center' }}>
-          {logo}
-        </Box>
-      )}
-      
+      {logo && <Box sx={{ mr: 2, display: 'flex', alignItems: 'center' }}>{logo}</Box>}
+
       {loading ? (
         <CircularProgress size={20} color="inherit" />
       ) : (
@@ -322,12 +320,8 @@ export const Menubar: React.FC<MenubarProps> = ({
           {items.map(renderMenubarItem)}
         </Box>
       )}
-      
-      {endContent && (
-        <Box sx={{ ml: 'auto' }}>
-          {endContent}
-        </Box>
-      )}
+
+      {endContent && <Box sx={{ ml: 'auto' }}>{endContent}</Box>}
     </Toolbar>
   );
 
@@ -370,8 +364,6 @@ export const MenubarGroup: React.FC<MenubarGroupProps> = ({
   open,
   onOpenChange,
   onClick,
-  size = 'md',
-  color = 'default',
   className,
   style,
 }) => {
@@ -408,20 +400,12 @@ export const MenubarGroup: React.FC<MenubarGroupProps> = ({
       >
         {label}
       </Button>
-      <Menu
-        anchorEl={anchorEl}
-        open={isOpen}
-        onClose={handleClose}
-      >
+      <Menu anchorEl={anchorEl} open={isOpen} onClose={handleClose}>
         {items.map((item) =>
           item.divider ? (
             <Divider key={item.id} />
           ) : (
-            <MenuItem
-              key={item.id}
-              onClick={() => handleItemClick(item)}
-              disabled={item.disabled}
-            >
+            <MenuItem key={item.id} onClick={() => handleItemClick(item)} disabled={item.disabled}>
               {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
               <ListItemText>{item.label}</ListItemText>
               {item.shortcut && (
@@ -430,7 +414,7 @@ export const MenubarGroup: React.FC<MenubarGroupProps> = ({
                 </Typography>
               )}
             </MenuItem>
-          )
+          ),
         )}
       </Menu>
     </>

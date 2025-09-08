@@ -2,10 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Box, Paper, Typography, Divider } from '@mui/material';
 import {
-  FirstPage,
-  LastPage,
-  NavigateBefore,
-  NavigateNext,
   KeyboardArrowLeft,
   KeyboardArrowRight,
   KeyboardDoubleArrowLeft,
@@ -21,7 +17,8 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'A pagination component with multiple variants including default, rounded, dots, and minimal styles.',
+        component:
+          'A pagination component with multiple variants including default, rounded, dots, and minimal styles.',
       },
     },
   },
@@ -73,25 +70,40 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // Wrapper component for interactive stories
-const PaginationWrapper = ({ 
-  initialPage = 1, 
-  count = 10, 
-  ...props 
-}: any) => {
+const PaginationWrapper = ({
+  initialPage = 1,
+  count = 10,
+  ...props
+}: {
+  initialPage?: number;
+  count?: number;
+  page?: number;
+  variant?: 'default' | 'rounded' | 'dots' | 'minimal';
+  size?: 'sm' | 'md' | 'lg';
+  color?: 'primary' | 'secondary' | 'standard';
+  disabled?: boolean;
+  showPageInfo?: boolean;
+  showFirstButton?: boolean;
+  showLastButton?: boolean;
+  boundaryCount?: number;
+  siblingCount?: number;
+  firstIcon?: React.ReactNode;
+  lastIcon?: React.ReactNode;
+  previousIcon?: React.ReactNode;
+  nextIcon?: React.ReactNode;
+  showItemsPerPage?: boolean;
+  itemsPerPage?: number;
+  onItemsPerPageChange?: (value: number) => void;
+  itemsPerPageOptions?: number[];
+  pageInfoFormat?: (page: number, count: number) => string;
+}) => {
   const [page, setPage] = useState(initialPage);
-  
+
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
-  
-  return (
-    <Pagination
-      page={page}
-      count={count}
-      onChange={handleChange}
-      {...props}
-    />
-  );
+
+  return <Pagination page={page} count={count} onChange={handleChange} {...props} />;
 };
 
 export const Default: Story = {
@@ -178,39 +190,40 @@ export const WithPageInfo: Story = {
 };
 
 const WithItemsPerPageComponent = () => {
-const [page, setPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(10);
-    const totalItems = 250;
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
-    
-    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-      setPage(value);
-    };
-    
-    const handleItemsPerPageChange = (newItemsPerPage: number) => {
-      setItemsPerPage(newItemsPerPage);
-      setPage(1); // Reset to first page when changing items per page
-    };
-    
-    return (
-      <Box sx={{ textAlign: 'center' }}>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-          Showing {((page - 1) * itemsPerPage) + 1}-{Math.min(page * itemsPerPage, totalItems)} of {totalItems} items
-        </Typography>
-        <Pagination
-          variant="default"
-          page={page}
-          count={totalPages}
-          onChange={handlePageChange}
-          showItemsPerPage
-          itemsPerPage={itemsPerPage}
-          onItemsPerPageChange={handleItemsPerPageChange}
-          itemsPerPageOptions={[10, 25, 50, 100]}
-          showPageInfo
-          pageInfoFormat={(page, count) => `${page} / ${count}`}
-        />
-      </Box>
-    );
+  const [page, setPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const totalItems = 250;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
+
+  const handleItemsPerPageChange = (newItemsPerPage: number) => {
+    setItemsPerPage(newItemsPerPage);
+    setPage(1); // Reset to first page when changing items per page
+  };
+
+  return (
+    <Box sx={{ textAlign: 'center' }}>
+      <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+        Showing {(page - 1) * itemsPerPage + 1}-{Math.min(page * itemsPerPage, totalItems)} of{' '}
+        {totalItems} items
+      </Typography>
+      <Pagination
+        variant="default"
+        page={page}
+        count={totalPages}
+        onChange={handlePageChange}
+        showItemsPerPage
+        itemsPerPage={itemsPerPage}
+        onItemsPerPageChange={handleItemsPerPageChange}
+        itemsPerPageOptions={[10, 25, 50, 100]}
+        showPageInfo
+        pageInfoFormat={(page, count) => `${page} / ${count}`}
+      />
+    </Box>
+  );
 };
 
 export const WithItemsPerPage: Story = {
@@ -278,83 +291,76 @@ export const LongPagination: Story = {
 };
 
 const AllVariantsComparisonComponent = () => {
-const [pages, setPages] = useState({
-      default: 3,
-      rounded: 2,
-      dots: 4,
-      minimal: 5,
-    });
-    
-    const handleChange = (variant: keyof typeof pages) => (
-      event: React.ChangeEvent<unknown>, 
-      value: number
-    ) => {
-      setPages(prev => ({ ...prev, [variant]: value }));
+  const [pages, setPages] = useState({
+    default: 3,
+    rounded: 2,
+    dots: 4,
+    minimal: 5,
+  });
+
+  const handleChange =
+    (variant: keyof typeof pages) => (event: React.ChangeEvent<unknown>, value: number) => {
+      setPages((prev) => ({ ...prev, [variant]: value }));
     };
-    
-    return (
-      <Paper elevation={2} sx={{ p: 4, maxWidth: 600 }}>
-        <Typography variant="h6" gutterBottom>
-          Pagination Variants Comparison
-        </Typography>
-        
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-          <Box>
-            <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-              Default
-            </Typography>
-            <Pagination
-              variant="default"
-              page={pages.default}
-              count={8}
-              onChange={handleChange('default')}
-            />
-          </Box>
-          
-          <Divider />
-          
-          <Box>
-            <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-              Rounded
-            </Typography>
-            <Pagination
-              variant="rounded"
-              page={pages.rounded}
-              count={8}
-              onChange={handleChange('rounded')}
-            />
-          </Box>
-          
-          <Divider />
-          
-          <Box>
-            <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-              Dots
-            </Typography>
-            <Pagination
-              variant="dots"
-              page={pages.dots}
-              count={8}
-              onChange={handleChange('dots')}
-            />
-          </Box>
-          
-          <Divider />
-          
-          <Box>
-            <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-              Minimal
-            </Typography>
-            <Pagination
-              variant="minimal"
-              page={pages.minimal}
-              count={8}
-              onChange={handleChange('minimal')}
-            />
-          </Box>
+
+  return (
+    <Paper elevation={2} sx={{ p: 4, maxWidth: 600 }}>
+      <Typography variant="h6" gutterBottom>
+        Pagination Variants Comparison
+      </Typography>
+
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+        <Box>
+          <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+            Default
+          </Typography>
+          <Pagination
+            variant="default"
+            page={pages.default}
+            count={8}
+            onChange={handleChange('default')}
+          />
         </Box>
-      </Paper>
-    );
+
+        <Divider />
+
+        <Box>
+          <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+            Rounded
+          </Typography>
+          <Pagination
+            variant="rounded"
+            page={pages.rounded}
+            count={8}
+            onChange={handleChange('rounded')}
+          />
+        </Box>
+
+        <Divider />
+
+        <Box>
+          <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+            Dots
+          </Typography>
+          <Pagination variant="dots" page={pages.dots} count={8} onChange={handleChange('dots')} />
+        </Box>
+
+        <Divider />
+
+        <Box>
+          <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+            Minimal
+          </Typography>
+          <Pagination
+            variant="minimal"
+            page={pages.minimal}
+            count={8}
+            onChange={handleChange('minimal')}
+          />
+        </Box>
+      </Box>
+    </Paper>
+  );
 };
 
 export const AllVariantsComparison: Story = {
@@ -362,61 +368,59 @@ export const AllVariantsComparison: Story = {
 };
 
 const SizeComparisonComponent = () => {
-const [pages, setPages] = useState({
-      sm: 2,
-      md: 3,
-      lg: 4,
-    });
-    
-    const handleChange = (size: keyof typeof pages) => (
-      event: React.ChangeEvent<unknown>, 
-      value: number
-    ) => {
-      setPages(prev => ({ ...prev, [size]: value }));
+  const [pages, setPages] = useState({
+    sm: 2,
+    md: 3,
+    lg: 4,
+  });
+
+  const handleChange =
+    (size: keyof typeof pages) => (event: React.ChangeEvent<unknown>, value: number) => {
+      setPages((prev) => ({ ...prev, [size]: value }));
     };
-    
-    return (
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'center' }}>
-        <Box sx={{ textAlign: 'center' }}>
-          <Typography variant="caption" color="text.secondary">
-            Small (sm)
-          </Typography>
-          <Pagination
-            variant="rounded"
-            size="sm"
-            page={pages.sm}
-            count={6}
-            onChange={handleChange('sm')}
-          />
-        </Box>
-        
-        <Box sx={{ textAlign: 'center' }}>
-          <Typography variant="caption" color="text.secondary">
-            Medium (md) - Default
-          </Typography>
-          <Pagination
-            variant="rounded"
-            size="md"
-            page={pages.md}
-            count={6}
-            onChange={handleChange('md')}
-          />
-        </Box>
-        
-        <Box sx={{ textAlign: 'center' }}>
-          <Typography variant="caption" color="text.secondary">
-            Large (lg)
-          </Typography>
-          <Pagination
-            variant="rounded"
-            size="lg"
-            page={pages.lg}
-            count={6}
-            onChange={handleChange('lg')}
-          />
-        </Box>
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'center' }}>
+      <Box sx={{ textAlign: 'center' }}>
+        <Typography variant="caption" color="text.secondary">
+          Small (sm)
+        </Typography>
+        <Pagination
+          variant="rounded"
+          size="sm"
+          page={pages.sm}
+          count={6}
+          onChange={handleChange('sm')}
+        />
       </Box>
-    );
+
+      <Box sx={{ textAlign: 'center' }}>
+        <Typography variant="caption" color="text.secondary">
+          Medium (md) - Default
+        </Typography>
+        <Pagination
+          variant="rounded"
+          size="md"
+          page={pages.md}
+          count={6}
+          onChange={handleChange('md')}
+        />
+      </Box>
+
+      <Box sx={{ textAlign: 'center' }}>
+        <Typography variant="caption" color="text.secondary">
+          Large (lg)
+        </Typography>
+        <Pagination
+          variant="rounded"
+          size="lg"
+          page={pages.lg}
+          count={6}
+          onChange={handleChange('lg')}
+        />
+      </Box>
+    </Box>
+  );
 };
 
 export const SizeComparison: Story = {
@@ -424,29 +428,30 @@ export const SizeComparison: Story = {
 };
 
 const TablePaginationComponent = () => {
-const [page, setPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(25);
-    const totalItems = 1247;
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
-    
-    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-      setPage(value);
-    };
-    
-    const handleItemsPerPageChange = (newItemsPerPage: number) => {
-      setItemsPerPage(newItemsPerPage);
-      setPage(1);
-    };
-    
-    return (
-      <Paper elevation={2} sx={{ p: 3, minWidth: 600 }}>
-        <Typography variant="h6" gutterBottom>
-          Data Table Pagination Example
-        </Typography>
-        
-        <Box sx={{ 
-          border: 1, 
-          borderColor: 'divider', 
+  const [page, setPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(25);
+  const totalItems = 1247;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
+
+  const handleItemsPerPageChange = (newItemsPerPage: number) => {
+    setItemsPerPage(newItemsPerPage);
+    setPage(1);
+  };
+
+  return (
+    <Paper elevation={2} sx={{ p: 3, minWidth: 600 }}>
+      <Typography variant="h6" gutterBottom>
+        Data Table Pagination Example
+      </Typography>
+
+      <Box
+        sx={{
+          border: 1,
+          borderColor: 'divider',
           borderRadius: 1,
           mb: 3,
           p: 2,
@@ -454,41 +459,45 @@ const [page, setPage] = useState(1);
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: 'grey.50'
-        }}>
-          <Typography variant="body2" color="text.secondary">
-            Table data would go here...
-          </Typography>
-        </Box>
-        
-        <Box sx={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
+          backgroundColor: 'grey.50',
+        }}
+      >
+        <Typography variant="body2" color="text.secondary">
+          Table data would go here...
+        </Typography>
+      </Box>
+
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
           alignItems: 'center',
           flexWrap: 'wrap',
-          gap: 2
-        }}>
-          <Typography variant="body2" color="text.secondary">
-            Showing {((page - 1) * itemsPerPage) + 1}-{Math.min(page * itemsPerPage, totalItems)} of {totalItems} entries
-          </Typography>
-          
-          <Pagination
-            variant="default"
-            page={page}
-            count={totalPages}
-            onChange={handlePageChange}
-            showItemsPerPage
-            itemsPerPage={itemsPerPage}
-            onItemsPerPageChange={handleItemsPerPageChange}
-            itemsPerPageOptions={[10, 25, 50, 100]}
-            showFirstButton
-            showLastButton
-            boundaryCount={1}
-            siblingCount={1}
-          />
-        </Box>
-      </Paper>
-    );
+          gap: 2,
+        }}
+      >
+        <Typography variant="body2" color="text.secondary">
+          Showing {(page - 1) * itemsPerPage + 1}-{Math.min(page * itemsPerPage, totalItems)} of{' '}
+          {totalItems} entries
+        </Typography>
+
+        <Pagination
+          variant="default"
+          page={page}
+          count={totalPages}
+          onChange={handlePageChange}
+          showItemsPerPage
+          itemsPerPage={itemsPerPage}
+          onItemsPerPageChange={handleItemsPerPageChange}
+          itemsPerPageOptions={[10, 25, 50, 100]}
+          showFirstButton
+          showLastButton
+          boundaryCount={1}
+          siblingCount={1}
+        />
+      </Box>
+    </Paper>
+  );
 };
 
 export const TablePagination: Story = {

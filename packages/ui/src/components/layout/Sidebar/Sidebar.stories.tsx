@@ -1,8 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Box, Typography, List, ListItem, ListItemIcon, ListItemText, IconButton, Avatar } from '@mui/material';
-import { 
-  Home as HomeIcon, 
-  Dashboard as DashboardIcon, 
+import {
+  Box,
+  Typography,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  IconButton,
+  Avatar,
+} from '@mui/material';
+import {
+  Home as HomeIcon,
+  Dashboard as DashboardIcon,
   Settings as SettingsIcon,
   Person as PersonIcon,
   Menu as MenuIcon,
@@ -10,7 +19,7 @@ import {
   ChevronRight as ChevronRightIcon,
   Inbox as InboxIcon,
   Star as StarIcon,
-  Send as SendIcon
+  Send as SendIcon,
 } from '@mui/icons-material';
 import React, { useState } from 'react';
 
@@ -23,7 +32,8 @@ const meta: Meta<typeof Sidebar> = {
     layout: 'fullscreen',
     docs: {
       description: {
-        component: 'A navigation sidebar component with multiple variants including fixed, collapsible, floating, and glass styles.',
+        component:
+          'A navigation sidebar component with multiple variants including fixed, collapsible, floating, and glass styles.',
       },
     },
   },
@@ -60,7 +70,13 @@ const navigationItems = [
   { icon: <SendIcon />, label: 'Sent' },
 ];
 
-const SidebarDemo = ({ variant = 'fixed', showToggle = false }: { variant?: any; showToggle?: boolean }) => {
+const SidebarDemo = ({
+  variant = 'fixed',
+  showToggle = false,
+}: {
+  variant?: 'fixed' | 'collapsible' | 'floating' | 'glass';
+  showToggle?: boolean;
+}) => {
   const [open, setOpen] = useState(true);
 
   return (
@@ -78,21 +94,18 @@ const SidebarDemo = ({ variant = 'fixed', showToggle = false }: { variant?: any;
             )}
           </Box>
         </SidebarHeader>
-        
+
         <SidebarContent>
           <List>
             {navigationItems.map((item, index) => (
               <ListItem button key={index}>
                 <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText 
-                  primary={item.label} 
-                  sx={{ display: open ? 'block' : 'none' }}
-                />
+                <ListItemText primary={item.label} sx={{ display: open ? 'block' : 'none' }} />
               </ListItem>
             ))}
           </List>
         </SidebarContent>
-        
+
         <SidebarFooter>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Avatar sx={{ width: 32, height: 32 }}>U</Avatar>
@@ -105,9 +118,11 @@ const SidebarDemo = ({ variant = 'fixed', showToggle = false }: { variant?: any;
           </Box>
         </SidebarFooter>
       </Sidebar>
-      
+
       <Box sx={{ flex: 1, p: 3 }}>
-        <Typography variant="h5" gutterBottom>Main Content Area</Typography>
+        <Typography variant="h5" gutterBottom>
+          Main Content Area
+        </Typography>
         <Typography variant="body1" color="text.secondary">
           This is the main content area next to the sidebar. The sidebar can have different variants
           and behaviors.
@@ -135,9 +150,9 @@ export const Floating: Story = {
 
 export const Glass: Story = {
   render: () => (
-    <Box 
-      sx={{ 
-        height: '500px', 
+    <Box
+      sx={{
+        height: '500px',
         position: 'relative',
         background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
       }}
@@ -149,7 +164,7 @@ export const Glass: Story = {
               Glass Sidebar
             </Typography>
           </SidebarHeader>
-          
+
           <SidebarContent>
             <List>
               {navigationItems.map((item, index) => (
@@ -160,7 +175,7 @@ export const Glass: Story = {
               ))}
             </List>
           </SidebarContent>
-          
+
           <SidebarFooter>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <Avatar sx={{ width: 32, height: 32 }}>G</Avatar>
@@ -172,9 +187,11 @@ export const Glass: Story = {
             </Box>
           </SidebarFooter>
         </Sidebar>
-        
+
         <Box sx={{ flex: 1, p: 3, color: 'white' }}>
-          <Typography variant="h4" gutterBottom>Glass Morphism Effect</Typography>
+          <Typography variant="h4" gutterBottom>
+            Glass Morphism Effect
+          </Typography>
           <Typography variant="body1">
             The glass variant creates a beautiful translucent effect with backdrop blur.
           </Typography>
@@ -186,28 +203,44 @@ export const Glass: Story = {
 
 export const RightPositioned: Story = {
   render: () => (
-    <Box sx={{ display: 'flex', height: '500px', bgcolor: 'grey.50', position: 'relative', flexDirection: 'row-reverse' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        height: '500px',
+        bgcolor: 'grey.50',
+        position: 'relative',
+        flexDirection: 'row-reverse',
+      }}
+    >
       <Sidebar variant="fixed" open={true} position="right">
         <SidebarHeader>
-          <Typography variant="h6" align="center">Right Sidebar</Typography>
+          <Typography variant="h6" align="center">
+            Right Sidebar
+          </Typography>
         </SidebarHeader>
-        
+
         <SidebarContent>
           <List>
             <ListItem>
-              <ListItemIcon><SettingsIcon /></ListItemIcon>
+              <ListItemIcon>
+                <SettingsIcon />
+              </ListItemIcon>
               <ListItemText primary="Settings" />
             </ListItem>
             <ListItem>
-              <ListItemIcon><PersonIcon /></ListItemIcon>
+              <ListItemIcon>
+                <PersonIcon />
+              </ListItemIcon>
               <ListItemText primary="Profile" />
             </ListItem>
           </List>
         </SidebarContent>
       </Sidebar>
-      
+
       <Box sx={{ flex: 1, p: 3 }}>
-        <Typography variant="h5" gutterBottom>Right-Positioned Sidebar</Typography>
+        <Typography variant="h5" gutterBottom>
+          Right-Positioned Sidebar
+        </Typography>
         <Typography variant="body1" color="text.secondary">
           The sidebar can also be positioned on the right side of the layout.
         </Typography>
@@ -217,42 +250,40 @@ export const RightPositioned: Story = {
 };
 
 const MiniDrawerComponent = () => {
-const [open, setOpen] = useState(false);
-    
-    return (
-      <Box sx={{ display: 'flex', height: '500px', bgcolor: 'grey.50' }}>
-        <Sidebar 
-          variant="collapsible" 
-          open={open} 
-          width={240}
-          collapsedWidth={56}
-        >
-          <Box sx={{ p: 1, display: 'flex', justifyContent: open ? 'flex-end' : 'center' }}>
-            <IconButton onClick={() => setOpen(!open)}>
-              <MenuIcon />
-            </IconButton>
-          </Box>
-          
-          <List>
-            {navigationItems.map((item, index) => (
-              <ListItem button key={index}>
-                <ListItemIcon sx={{ minWidth: open ? 56 : 40, justifyContent: 'center' }}>
-                  {item.icon}
-                </ListItemIcon>
-                {open && <ListItemText primary={item.label} />}
-              </ListItem>
-            ))}
-          </List>
-        </Sidebar>
-        
-        <Box sx={{ flex: 1, p: 3 }}>
-          <Typography variant="h5" gutterBottom>Mini Drawer Variant</Typography>
-          <Typography variant="body1" color="text.secondary">
-            Click the menu icon to expand/collapse the sidebar. When collapsed, only icons are visible.
-          </Typography>
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Box sx={{ display: 'flex', height: '500px', bgcolor: 'grey.50' }}>
+      <Sidebar variant="collapsible" open={open} width={240} collapsedWidth={56}>
+        <Box sx={{ p: 1, display: 'flex', justifyContent: open ? 'flex-end' : 'center' }}>
+          <IconButton onClick={() => setOpen(!open)}>
+            <MenuIcon />
+          </IconButton>
         </Box>
+
+        <List>
+          {navigationItems.map((item, index) => (
+            <ListItem button key={index}>
+              <ListItemIcon sx={{ minWidth: open ? 56 : 40, justifyContent: 'center' }}>
+                {item.icon}
+              </ListItemIcon>
+              {open && <ListItemText primary={item.label} />}
+            </ListItem>
+          ))}
+        </List>
+      </Sidebar>
+
+      <Box sx={{ flex: 1, p: 3 }}>
+        <Typography variant="h5" gutterBottom>
+          Mini Drawer Variant
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          Click the menu icon to expand/collapse the sidebar. When collapsed, only icons are
+          visible.
+        </Typography>
       </Box>
-    );
+    </Box>
+  );
 };
 
 export const MiniDrawer: Story = {

@@ -10,14 +10,13 @@ import {
   Receipt,
   AccountBalance,
   Help,
-  Logout,
   Notifications,
   Home,
   Business,
   Category,
   Report,
 } from '@mui/icons-material';
-import { Box, Typography, Avatar, Chip } from '@mui/material';
+import { Box, Typography, Avatar } from '@mui/material';
 
 import { NavigationMenu } from './NavigationMenu';
 
@@ -28,7 +27,8 @@ const meta = {
     layout: 'fullscreen',
     docs: {
       description: {
-        component: 'A flexible navigation menu component supporting horizontal, vertical, and mega menu layouts with nested items and customization options.',
+        component:
+          'A flexible navigation menu component supporting horizontal, vertical, and mega menu layouts with nested items and customization options.',
       },
     },
   },
@@ -258,10 +258,7 @@ export const VerticalCollapsed: Story = {
 export const VerticalWithDividers: Story = {
   args: {
     variant: 'vertical',
-    items: [
-      ...basicVerticalItems.slice(0, 3),
-      ...basicVerticalItems.slice(3),
-    ],
+    items: [...basicVerticalItems.slice(0, 3), ...basicVerticalItems.slice(3)],
     size: 'md',
     showDividers: true,
     logo,

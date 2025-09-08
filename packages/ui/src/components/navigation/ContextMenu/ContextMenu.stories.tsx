@@ -1,22 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import {
-  ContentCopy,
-  ContentPaste,
-  ContentCut,
-  Delete,
-  Edit,
-  Share,
-  Download,
-  Archive,
-  Folder,
-  Image,
-  Print,
-  Refresh,
-  Settings,
-  Star,
-  BookmarkBorder,
-  MoreVert,
-} from '@mui/icons-material';
+import { ContentCopy, Edit, Folder, Star } from '@mui/icons-material';
 import { Box, Paper, Typography, Card, CardContent } from '@mui/material';
 
 import { ContextMenu } from './ContextMenu';
@@ -28,7 +11,8 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'A right-click context menu component with multiple variants and customization options. Right-click on the trigger elements to see the menu.',
+        component:
+          'A right-click context menu component with multiple variants and customization options. Right-click on the trigger elements to see the menu.',
       },
     },
   },
@@ -60,7 +44,9 @@ const basicMenuItems = [
     label: 'Copy',
     icon: <ContentCopy />,
     shortcut: 'Ctrl+C',
-    action: () => { /** do nothing */}
+    action: () => {
+      /** do nothing */
+    },
   },
 ];
 
@@ -76,7 +62,9 @@ const advancedMenuItems = [
     icon: <Edit />,
     shortcut: 'F2',
     color: 'primary' as const,
-    action: () => { /** do nothing */}
+    action: () => {
+      /** do nothing */
+    },
   },
 ];
 
@@ -86,7 +74,9 @@ const fileMenuItems = [
     label: 'Open',
     icon: <Folder />,
     shortcut: 'Enter',
-    action: () => { /** do nothing */}
+    action: () => {
+      /** do nothing */
+    },
   },
 ];
 
@@ -320,8 +310,10 @@ export const WithCustomTrigger: Story = {
         label: 'Add to favorites',
         icon: <Star />,
         color: 'warning' as const,
-        action: () => { /** do nothing */}
-      }
+        action: () => {
+          /** do nothing */
+        },
+      },
     ],
   },
 };

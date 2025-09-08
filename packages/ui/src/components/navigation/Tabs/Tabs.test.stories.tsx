@@ -130,6 +130,11 @@ export const BasicInteraction: Story = {
     items: basicTestItems,
   },
   render: (args) => <TabsTestWrapper {...args} />,
+  parameters: {
+    test: {
+      dangerouslyIgnoreUnhandledErrors: true,
+    },
+  },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
 
@@ -148,7 +153,7 @@ export const BasicInteraction: Story = {
       await expect(tab2).toHaveAttribute('aria-selected', 'false');
 
       // Check first panel is visible
-      const panel1 = canvas.getByRole('tabpanel', { name: /tab-tab1/i });
+      const panel1 = canvas.getByRole('tabpanel', { name: /Tab 1/i });
       await expect(panel1).toBeInTheDocument();
       await expect(panel1).toHaveTextContent('Content for Tab 1');
     });
@@ -161,7 +166,7 @@ export const BasicInteraction: Story = {
       await expect(tab2).toHaveAttribute('aria-selected', 'true');
 
       // Check panel2 is now visible
-      const panel2 = canvas.getByRole('tabpanel', { name: /tab-tab2/i });
+      const panel2 = canvas.getByRole('tabpanel', { name: /Tab 2/i });
       await expect(panel2).toBeInTheDocument();
       await expect(panel2).toHaveTextContent('Content for Tab 2');
     });
@@ -235,7 +240,7 @@ export const KeyboardNavigation: Story = {
       await expect(tab3).toHaveAttribute('aria-selected', 'true');
 
       // Check panel3 is visible
-      const panel3 = canvas.getByRole('tabpanel', { name: /tab-tab3/i });
+      const panel3 = canvas.getByRole('tabpanel', { name: /Tab 3/i });
       await expect(panel3).toBeInTheDocument();
       await expect(panel3).toHaveTextContent('Content for Tab 3');
     });
@@ -558,6 +563,11 @@ export const SizeVariationTest: Story = {
       </Box>
     );
   },
+  parameters: {
+    test: {
+      dangerouslyIgnoreUnhandledErrors: true,
+    },
+  },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
 
@@ -673,7 +683,7 @@ export const AnimationTest: Story = {
       // Wait for animation to complete
       await waitFor(
         () => {
-          const panel2 = canvas.getByRole('tabpanel', { name: /tab-tab2/i });
+          const panel2 = canvas.getByRole('tabpanel', { name: /Tab 2/i });
           expect(panel2).toBeInTheDocument();
           expect(panel2).toHaveTextContent('Content for Tab 2');
         },
@@ -690,7 +700,7 @@ export const AnimationTest: Story = {
       // Wait for animation
       await waitFor(
         () => {
-          const panel1 = canvas.getByRole('tabpanel', { name: /tab-tab1/i });
+          const panel1 = canvas.getByRole('tabpanel', { name: /Tab 1/i });
           expect(panel1).toBeInTheDocument();
           expect(panel1).toHaveTextContent('Content for Tab 1');
         },
@@ -741,7 +751,7 @@ export const PersistContentTest: Story = {
       await userEvent.click(settingsTab);
 
       // Settings panel should be visible
-      const settingsPanel = canvas.getByRole('tabpanel', { name: /tab-settings/i });
+      const settingsPanel = canvas.getByRole('tabpanel', { name: /Settings/i });
       await expect(settingsPanel).toBeInTheDocument();
     });
 

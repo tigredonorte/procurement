@@ -50,4 +50,8 @@ export interface SelectProps extends Omit<MuiSelectProps, 'variant'> {
    * @default false
    */
   pulse?: boolean;
+  /**
+   * Test ID for testing purposes
+   */
+  'data-testid'?: string;
 }

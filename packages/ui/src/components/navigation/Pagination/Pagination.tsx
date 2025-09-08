@@ -7,48 +7,41 @@ import {
   Select,
   MenuItem,
   FormControl,
-  InputLabel,
   alpha,
-  useTheme,
 } from '@mui/material';
+import type { PaginationRenderItemParams } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import {
-  FirstPage,
-  LastPage,
-  NavigateBefore,
-  NavigateNext,
-  MoreHoriz,
-} from '@mui/icons-material';
+import { FirstPage, LastPage, NavigateBefore, NavigateNext } from '@mui/icons-material';
 
 import { PaginationProps } from './Pagination.types';
 
 const StyledPagination = styled(MuiPagination, {
-  shouldForwardProp: (prop) => !['variant', 'size'].includes(prop as string),
-})<{ variant?: string; size?: string }>(({ theme, variant, size }) => ({
+  shouldForwardProp: (prop) => !['customVariant', 'customSize'].includes(prop as string),
+})<{ customVariant?: string; customSize?: string }>(({ theme, customVariant, customSize }) => ({
   '& .MuiPagination-ul': {
-    gap: variant === 'minimal' ? theme.spacing(0.5) : theme.spacing(1),
+    gap: customVariant === 'minimal' ? theme.spacing(0.5) : theme.spacing(1),
   },
-  
+
   '& .MuiPaginationItem-root': {
     transition: 'all 0.2s ease',
     fontWeight: 500,
-    
-    ...(size === 'sm' && {
+
+    ...(customSize === 'sm' && {
       fontSize: '0.875rem',
       minWidth: 28,
       height: 28,
       padding: theme.spacing(0.25, 0.5),
     }),
-    
-    ...(size === 'lg' && {
+
+    ...(customSize === 'lg' && {
       fontSize: '1.125rem',
       minWidth: 44,
       height: 44,
       padding: theme.spacing(1, 1.5),
     }),
-    
+
     // Default variant (flat design)
-    ...(variant === 'default' && {
+    ...(customVariant === 'default' && {
       borderRadius: theme.spacing(1),
       '&:hover': {
         backgroundColor: alpha(theme.palette.primary.main, 0.08),
@@ -65,12 +58,12 @@ const StyledPagination = styled(MuiPagination, {
         },
       },
     }),
-    
+
     // Rounded variant
-    ...(variant === 'rounded' && {
+    ...(customVariant === 'rounded' && {
       borderRadius: '50%',
-      minWidth: size === 'sm' ? 28 : size === 'lg' ? 44 : 36,
-      width: size === 'sm' ? 28 : size === 'lg' ? 44 : 36,
+      minWidth: customSize === 'sm' ? 28 : customSize === 'lg' ? 44 : 36,
+      width: customSize === 'sm' ? 28 : customSize === 'lg' ? 44 : 36,
       '&:hover': {
         backgroundColor: alpha(theme.palette.primary.main, 0.08),
         transform: 'scale(1.1)',
@@ -87,13 +80,13 @@ const StyledPagination = styled(MuiPagination, {
         },
       },
     }),
-    
+
     // Dots variant (minimal circular dots)
-    ...(variant === 'dots' && {
+    ...(customVariant === 'dots' && {
       borderRadius: '50%',
-      minWidth: size === 'sm' ? 8 : size === 'lg' ? 12 : 10,
-      width: size === 'sm' ? 8 : size === 'lg' ? 12 : 10,
-      height: size === 'sm' ? 8 : size === 'lg' ? 12 : 10,
+      minWidth: customSize === 'sm' ? 8 : customSize === 'lg' ? 12 : 10,
+      width: customSize === 'sm' ? 8 : customSize === 'lg' ? 12 : 10,
+      height: customSize === 'sm' ? 8 : customSize === 'lg' ? 12 : 10,
       fontSize: 0,
       backgroundColor: alpha(theme.palette.text.secondary, 0.3),
       '&:hover': {
@@ -112,9 +105,9 @@ const StyledPagination = styled(MuiPagination, {
         display: 'none',
       },
     }),
-    
+
     // Minimal variant (text-only)
-    ...(variant === 'minimal' && {
+    ...(customVariant === 'minimal' && {
       borderRadius: theme.spacing(0.5),
       backgroundColor: 'transparent',
       color: theme.palette.text.secondary,
@@ -142,9 +135,9 @@ const StyledPagination = styled(MuiPagination, {
       },
     }),
   },
-  
+
   // Hide ellipsis for dots variant
-  ...(variant === 'dots' && {
+  ...(customVariant === 'dots' && {
     '& .MuiPaginationItem-ellipsis': {
       display: 'none',
     },
@@ -202,15 +195,13 @@ export const Pagination = React.forwardRef<HTMLElement, PaginationProps>(
       className,
       ...props
     },
-    ref
+    ref,
   ) => {
-    const theme = useTheme();
-    
     // For dots variant, we show fewer pages
     const adjustedBoundaryCount = variant === 'dots' ? 0 : boundaryCount;
     const adjustedSiblingCount = variant === 'dots' ? 0 : siblingCount;
-    
-    const renderItem = (item: { type: string; page?: number; selected: boolean; disabled?: boolean; onClick: () => void }) => {
+
+    const renderItem = (item: PaginationRenderItemParams) => {
       // Custom rendering for different variants
       if (variant === 'dots') {
         if (item.type === 'page') {
@@ -229,20 +220,28 @@ export const Pagination = React.forwardRef<HTMLElement, PaginationProps>(
         }
         return null; // Hide navigation buttons for dots
       }
-      
+
+      // Map custom icons to components
+      const iconMap: Record<string, React.ReactElement> = {
+        first: firstIcon as React.ReactElement,
+        last: lastIcon as React.ReactElement,
+        previous: previousIcon as React.ReactElement,
+        next: nextIcon as React.ReactElement,
+      };
+
       return (
         <PaginationItem
-          slots={{
-            first: () => firstIcon,
-            last: () => lastIcon,
-            previous: () => previousIcon,
-            next: () => nextIcon,
-          }}
           {...item}
+          components={{
+            first: () => iconMap.first || <FirstPage />,
+            last: () => iconMap.last || <LastPage />,
+            previous: () => iconMap.previous || <NavigateBefore />,
+            next: () => iconMap.next || <NavigateNext />,
+          }}
         />
       );
     };
-    
+
     return (
       <PaginationContainer className={className}>
         {showItemsPerPage && onItemsPerPageChange && (
@@ -271,14 +270,16 @@ export const Pagination = React.forwardRef<HTMLElement, PaginationProps>(
             </FormControl>
           </ItemsPerPageContainer>
         )}
-        
+
         <StyledPagination
           ref={ref}
           page={page}
           count={count}
           onChange={onChange}
-          variant={variant}
-          size={size}
+          customVariant={variant}
+          customSize={size}
+          variant="outlined"
+          size={size === 'sm' ? 'small' : size === 'lg' ? 'large' : 'medium'}
           boundaryCount={adjustedBoundaryCount}
           siblingCount={adjustedSiblingCount}
           hideNextButton={hideNextButton || variant === 'dots'}
@@ -290,11 +291,11 @@ export const Pagination = React.forwardRef<HTMLElement, PaginationProps>(
           renderItem={renderItem}
           {...props}
         />
-        
+
         {showPageInfo && (
           <PageInfoContainer>
-            <Typography 
-              variant="body2" 
+            <Typography
+              variant="body2"
               color="text.secondary"
               fontSize={size === 'sm' ? '0.75rem' : size === 'lg' ? '1rem' : '0.875rem'}
             >
@@ -304,7 +305,7 @@ export const Pagination = React.forwardRef<HTMLElement, PaginationProps>(
         )}
       </PaginationContainer>
     );
-  }
+  },
 );
 
 Pagination.displayName = 'Pagination';

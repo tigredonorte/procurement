@@ -2,6 +2,6 @@ import { ReactNode } from 'react';
 
 export interface PortalProps {
   children: ReactNode;
-  container?: Element | null;
+  container?: HTMLElement | null;
   disablePortal?: boolean;
 }

@@ -15,15 +15,12 @@ export interface SidebarProps {
 
 export interface SidebarHeaderProps {
   children: ReactNode;
-  collapsed?: boolean;
 }
 
 export interface SidebarContentProps {
   children: ReactNode;
-  collapsed?: boolean;
 }
 
 export interface SidebarFooterProps {
   children: ReactNode;
-  collapsed?: boolean;
 }

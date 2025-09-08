@@ -1,4 +1,4 @@
-export { SonnerProvider, useSonner } from './Sonner';
+export { SonnerProvider, useSonner, Toaster, toast } from './Sonner';
 export type {
   SonnerProps,
   SonnerToasterProps,

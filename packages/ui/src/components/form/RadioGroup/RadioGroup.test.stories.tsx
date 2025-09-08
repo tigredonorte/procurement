@@ -84,13 +84,9 @@ export const BasicInteraction: Story = {
       const firstRadio = canvas.getByRole('radio', { name: /option 1/i });
       await userEvent.click(firstRadio);
       await expect(args.onChange).toHaveBeenCalledTimes(1);
-      // Check that onChange was called with the correct value
-      await expect(args.onChange).toHaveBeenCalledWith(
-        expect.objectContaining({
-          target: { value: 'option1' },
-        }),
-        'option1'
-      );
+      // Check that onChange was called - the first argument can be either a SyntheticEvent or a plain object
+      const firstCall = args.onChange.mock.calls[0];
+      await expect(firstCall[1]).toBe('option1');
     });
 
     await step('Select different option', async () => {
@@ -98,12 +94,8 @@ export const BasicInteraction: Story = {
       await userEvent.click(secondRadio);
       await expect(args.onChange).toHaveBeenCalledTimes(2);
       // Check that onChange was called with the correct value
-      await expect(args.onChange).toHaveBeenCalledWith(
-        expect.objectContaining({
-          target: { value: 'option2' },
-        }),
-        'option2'
-      );
+      const secondCall = args.onChange.mock.calls[1];
+      await expect(secondCall[1]).toBe('option2');
     });
   },
 };
@@ -135,6 +127,8 @@ export const CardInteraction: Story = {
       if (cardContainer) {
         await userEvent.click(cardContainer);
         await expect(args.onChange).toHaveBeenCalledTimes(1);
+        const firstCall = args.onChange.mock.calls[0];
+        await expect(firstCall[1]).toBe('card');
       }
     });
 
@@ -660,12 +654,9 @@ export const IntegrationTest: Story = {
 
       if (cardContainer) {
         await userEvent.click(cardContainer);
-        await expect(args.onChange).toHaveBeenCalledWith(
-          expect.objectContaining({
-            target: { value: 'card' },
-          }),
-          'card',
-        );
+        await expect(args.onChange).toHaveBeenCalled();
+        const firstCall = args.onChange.mock.calls[0];
+        await expect(firstCall[1]).toBe('card');
       }
     });
   },

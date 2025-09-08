@@ -14,18 +14,13 @@ import {
   Paper,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import {
-  ExpandLess,
-  ExpandMore,
-  ChevronRight,
-  Menu as MenuIcon,
-} from '@mui/icons-material';
+import { ExpandLess, ExpandMore, ChevronRight, Menu as MenuIcon } from '@mui/icons-material';
 
 import { NavigationMenuProps, NavigationMenuItem } from './NavigationMenu.types';
 
 const NavigationContainer = styled(Box, {
   shouldForwardProp: (prop) => !['variant', 'collapsed'].includes(prop as string),
-})<{ variant?: string; collapsed?: boolean }>(({ theme, variant, collapsed }) => ({
+})<{ variant?: string; collapsed?: boolean }>(({ variant, collapsed }) => ({
   display: 'flex',
   ...(variant === 'horizontal' && {
     flexDirection: 'row',
@@ -46,7 +41,7 @@ const NavigationContainer = styled(Box, {
 
 const StyledList = styled(List, {
   shouldForwardProp: (prop) => !['variant', 'size'].includes(prop as string),
-})<{ variant?: string; size?: string }>(({ theme, variant, size }) => ({
+})<{ variant?: string; size?: string }>(({ theme, variant }) => ({
   padding: 0,
   width: '100%',
   ...(variant === 'horizontal' && {
@@ -64,57 +59,61 @@ const StyledList = styled(List, {
 
 const StyledListItem = styled(ListItem, {
   shouldForwardProp: (prop) => !['variant', 'active', 'size', 'level'].includes(prop as string),
-})<{ variant?: string; active?: boolean; size?: string; level?: number }>(({ theme, variant, active, size, level = 0 }) => ({
-  padding: 0,
-  ...(variant === 'horizontal' && {
-    width: 'auto',
+})<{ variant?: string; active?: boolean; size?: string; level?: number }>(
+  ({ theme, variant, level = 0 }) => ({
+    padding: 0,
+    ...(variant === 'horizontal' && {
+      width: 'auto',
+    }),
+    ...(level > 0 && {
+      paddingLeft: theme.spacing(2 * level),
+    }),
   }),
-  ...(level > 0 && {
-    paddingLeft: theme.spacing(2 * level),
-  }),
-}));
+);
 
 const StyledListItemButton = styled(ListItemButton, {
   shouldForwardProp: (prop) => !['variant', 'active', 'size', 'collapsed'].includes(prop as string),
-})<{ variant?: string; active?: boolean; size?: string; collapsed?: boolean }>(({ theme, variant, active, size, collapsed }) => ({
-  borderRadius: theme.spacing(1),
-  margin: theme.spacing(0.5),
-  transition: 'all 0.2s ease',
-  
-  ...(size === 'sm' && {
-    padding: theme.spacing(1),
-    fontSize: '0.875rem',
-  }),
-  ...(size === 'lg' && {
-    padding: theme.spacing(2),
-    fontSize: '1.125rem',
-  }),
-  
-  ...(variant === 'horizontal' && {
+})<{ variant?: string; active?: boolean; size?: string; collapsed?: boolean }>(
+  ({ theme, variant, active, size, collapsed }) => ({
     borderRadius: theme.spacing(1),
-    margin: theme.spacing(0, 0.5),
-  }),
-  
-  ...(collapsed && {
-    justifyContent: 'center',
-    minHeight: 48,
-  }),
-  
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.primary.main, 0.08),
-  },
-  
-  ...(active && {
-    backgroundColor: alpha(theme.palette.primary.main, 0.12),
-    color: theme.palette.primary.main,
-    '& .MuiListItemIcon-root': {
-      color: theme.palette.primary.main,
-    },
+    margin: theme.spacing(0.5),
+    transition: 'all 0.2s ease',
+
+    ...(size === 'sm' && {
+      padding: theme.spacing(1),
+      fontSize: '0.875rem',
+    }),
+    ...(size === 'lg' && {
+      padding: theme.spacing(2),
+      fontSize: '1.125rem',
+    }),
+
+    ...(variant === 'horizontal' && {
+      borderRadius: theme.spacing(1),
+      margin: theme.spacing(0, 0.5),
+    }),
+
+    ...(collapsed && {
+      justifyContent: 'center',
+      minHeight: 48,
+    }),
+
     '&:hover': {
-      backgroundColor: alpha(theme.palette.primary.main, 0.16),
+      backgroundColor: alpha(theme.palette.primary.main, 0.08),
     },
+
+    ...(active && {
+      backgroundColor: alpha(theme.palette.primary.main, 0.12),
+      color: theme.palette.primary.main,
+      '& .MuiListItemIcon-root': {
+        color: theme.palette.primary.main,
+      },
+      '&:hover': {
+        backgroundColor: alpha(theme.palette.primary.main, 0.16),
+      },
+    }),
   }),
-}));
+);
 
 const LogoContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2),
@@ -137,17 +136,26 @@ const MegaMenuSection = styled(Box)(({ theme }) => ({
   boxShadow: theme.shadows[1],
 }));
 
-const renderMenuItem = (
-  item: NavigationMenuItem,
-  variant: string = 'vertical',
-  size: string = 'md',
-  collapsed: boolean = false,
-  level: number = 0,
-  onItemClick?: (item: NavigationMenuItem) => void
-): React.ReactNode => {
+interface MenuItemRendererProps {
+  item: NavigationMenuItem;
+  variant: string;
+  size: string;
+  collapsed: boolean;
+  level: number;
+  onItemClick?: (item: NavigationMenuItem) => void;
+}
+
+const MenuItemRenderer: React.FC<MenuItemRendererProps> = ({
+  item,
+  variant,
+  size,
+  collapsed,
+  level,
+  onItemClick,
+}) => {
   const [open, setOpen] = useState(false);
   const hasChildren = item.children && item.children.length > 0;
-  
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     if (hasChildren) {
       setOpen(!open);
@@ -159,7 +167,7 @@ const renderMenuItem = (
       onItemClick(item);
     }
   };
-  
+
   const itemContent = (
     <StyledListItem key={item.id} variant={variant} active={item.active} size={size} level={level}>
       <StyledListItemButton
@@ -169,9 +177,13 @@ const renderMenuItem = (
         collapsed={collapsed}
         disabled={item.disabled}
         onClick={handleClick}
-        component={item.href && !hasChildren ? 'a' : 'div'}
-        href={item.href || undefined}
-        target={item.target || undefined}
+        {...(item.href && !hasChildren
+          ? {
+              component: 'a' as React.ElementType,
+              href: item.href,
+              target: item.target,
+            }
+          : {})}
       >
         {item.icon && (
           <ListItemIcon sx={{ minWidth: collapsed ? 0 : 40, justifyContent: 'center' }}>
@@ -183,30 +195,25 @@ const renderMenuItem = (
             <ListItemText
               primary={item.label}
               secondary={item.description}
-              primaryTypographyProps={{ 
-                variant: size === 'sm' ? 'body2' : size === 'lg' ? 'h6' : 'body1' 
+              primaryTypographyProps={{
+                variant: size === 'sm' ? 'body2' : size === 'lg' ? 'h6' : 'body1',
               }}
             />
-            {item.badge && (
-              <Badge
-                badgeContent={item.badge}
-                color="error"
-                sx={{ mr: 1 }}
-              />
-            )}
-            {hasChildren && (
-              variant === 'horizontal' ? (
+            {item.badge && <Badge badgeContent={item.badge} color="error" sx={{ mr: 1 }} />}
+            {hasChildren &&
+              (variant === 'horizontal' ? (
                 <ChevronRight fontSize="small" />
+              ) : open ? (
+                <ExpandLess />
               ) : (
-                open ? <ExpandLess /> : <ExpandMore />
-              )
-            )}
+                <ExpandMore />
+              ))}
           </>
         )}
       </StyledListItemButton>
     </StyledListItem>
   );
-  
+
   if (hasChildren && variant !== 'horizontal') {
     return (
       <React.Fragment key={item.id}>
@@ -215,7 +222,7 @@ const renderMenuItem = (
           <Collapse in={open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
               {item.children?.map((child) =>
-                renderMenuItem(child, variant, size, collapsed, level + 1, onItemClick)
+                renderMenuItem(child, variant, size, collapsed, level + 1, onItemClick),
               )}
             </List>
           </Collapse>
@@ -223,8 +230,29 @@ const renderMenuItem = (
       </React.Fragment>
     );
   }
-  
+
   return itemContent;
+};
+
+const renderMenuItem = (
+  item: NavigationMenuItem,
+  variant: string = 'vertical',
+  size: string = 'md',
+  collapsed: boolean = false,
+  level: number = 0,
+  onItemClick?: (item: NavigationMenuItem) => void,
+): React.ReactNode => {
+  return (
+    <MenuItemRenderer
+      key={item.id}
+      item={item}
+      variant={variant}
+      size={size}
+      collapsed={collapsed}
+      level={level}
+      onItemClick={onItemClick}
+    />
+  );
 };
 
 export const NavigationMenu = React.forwardRef<HTMLDivElement, NavigationMenuProps>(
@@ -232,7 +260,7 @@ export const NavigationMenu = React.forwardRef<HTMLDivElement, NavigationMenuPro
     {
       variant = 'vertical',
       items,
-      color = 'default',
+      color = 'default', // eslint-disable-line @typescript-eslint/no-unused-vars
       size = 'md',
       collapsible = false,
       collapsed: controlledCollapsed,
@@ -245,24 +273,20 @@ export const NavigationMenu = React.forwardRef<HTMLDivElement, NavigationMenuPro
       style,
       ...props
     },
-    ref
+    ref,
   ) => {
     const [internalCollapsed, setInternalCollapsed] = useState(false);
-    
+
     const isControlled = controlledCollapsed !== undefined;
     const collapsed = isControlled ? controlledCollapsed : internalCollapsed;
-    
+
     const handleCollapseToggle = () => {
       if (!isControlled) {
         setInternalCollapsed(!collapsed);
       }
       onCollapseChange?.(!collapsed);
     };
-    
-    const handleItemClick = (item: NavigationMenuItem) => {
-      // Handle item click logic if needed
-    };
-    
+
     if (variant === 'mega') {
       return (
         <NavigationContainer
@@ -274,16 +298,21 @@ export const NavigationMenu = React.forwardRef<HTMLDivElement, NavigationMenuPro
         >
           <Paper elevation={1} sx={{ width: '100%', overflow: 'hidden' }}>
             {logo && <LogoContainer>{logo}</LogoContainer>}
-            <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 2, p: 2 }}>
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                gap: 2,
+                p: 2,
+              }}
+            >
               {items.map((section) => (
                 <MegaMenuSection key={section.id}>
                   <Typography variant="h6" sx={{ mb: 2, color: 'primary.main' }}>
                     {section.label}
                   </Typography>
                   <List>
-                    {section.children?.map((item) =>
-                      renderMenuItem(item, variant, size, false, 0, handleItemClick)
-                    )}
+                    {section.children?.map((item) => renderMenuItem(item, variant, size, false, 0))}
                   </List>
                 </MegaMenuSection>
               ))}
@@ -292,7 +321,7 @@ export const NavigationMenu = React.forwardRef<HTMLDivElement, NavigationMenuPro
         </NavigationContainer>
       );
     }
-    
+
     return (
       <NavigationContainer
         ref={ref}
@@ -321,7 +350,7 @@ export const NavigationMenu = React.forwardRef<HTMLDivElement, NavigationMenuPro
               )}
             </LogoContainer>
           )}
-          
+
           {collapsible && variant === 'vertical' && (
             <CollapseButton onClick={handleCollapseToggle}>
               <ListItemIcon sx={{ minWidth: collapsed ? 0 : 40, justifyContent: 'center' }}>
@@ -330,25 +359,21 @@ export const NavigationMenu = React.forwardRef<HTMLDivElement, NavigationMenuPro
               {!collapsed && <ListItemText primary="Collapse" />}
             </CollapseButton>
           )}
-          
+
           <StyledList variant={variant} size={size}>
             {items.map((item, index) => (
               <React.Fragment key={item.id}>
-                {renderMenuItem(item, variant, size, collapsed, 0, handleItemClick)}
+                {renderMenuItem(item, variant, size, collapsed, 0)}
                 {showDividers && index < items.length - 1 && <Divider sx={{ my: 1 }} />}
               </React.Fragment>
             ))}
           </StyledList>
-          
-          {endContent && (
-            <Box sx={{ mt: 'auto', p: 2 }}>
-              {endContent}
-            </Box>
-          )}
+
+          {endContent && <Box sx={{ mt: 'auto', p: 2 }}>{endContent}</Box>}
         </Paper>
       </NavigationContainer>
     );
-  }
+  },
 );
 
 NavigationMenu.displayName = 'NavigationMenu';

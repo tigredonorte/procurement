@@ -8,7 +8,6 @@ import {
   Typography,
   Box,
   alpha,
-  Paper,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { ChevronRight, MoreVert } from '@mui/icons-material';
@@ -21,35 +20,29 @@ const StyledMenu = styled(Menu, {
   '& .MuiPaper-root': {
     minWidth: 180,
     borderRadius: theme.spacing(1),
-    
+
     ...(customVariant === 'glass' && {
       backgroundColor: alpha(
-        theme.palette.mode === 'dark' 
-          ? theme.palette.background.paper 
-          : theme.palette.background.paper, 
-        0.75
+        theme.palette.mode === 'dark'
+          ? theme.palette.background.paper
+          : theme.palette.background.paper,
+        0.75,
       ),
       backdropFilter: 'blur(24px) saturate(1.8)',
       WebkitBackdropFilter: 'blur(24px) saturate(1.8)', // Safari support
       border: `1px solid ${alpha(
-        theme.palette.mode === 'dark' 
-          ? theme.palette.common.white 
-          : theme.palette.common.black, 
-        0.12
+        theme.palette.mode === 'dark' ? theme.palette.common.white : theme.palette.common.black,
+        0.12,
       )}`,
       boxShadow: [
         `0 8px 32px ${alpha(theme.palette.common.black, theme.palette.mode === 'dark' ? 0.4 : 0.12)}`,
         `0 0 0 1px ${alpha(
-          theme.palette.mode === 'dark' 
-            ? theme.palette.common.white 
-            : theme.palette.common.black, 
-          0.05
+          theme.palette.mode === 'dark' ? theme.palette.common.white : theme.palette.common.black,
+          0.05,
         )}`,
         `inset 0 1px 0 ${alpha(
-          theme.palette.mode === 'dark' 
-            ? theme.palette.common.white 
-            : theme.palette.common.white, 
-          theme.palette.mode === 'dark' ? 0.2 : 0.8
+          theme.palette.mode === 'dark' ? theme.palette.common.white : theme.palette.common.white,
+          theme.palette.mode === 'dark' ? 0.2 : 0.8,
         )}`,
       ].join(', '),
       // Enhanced glass morphism with subtle gradient overlay
@@ -60,9 +53,10 @@ const StyledMenu = styled(Menu, {
         left: 0,
         right: 0,
         bottom: 0,
-        background: theme.palette.mode === 'dark'
-          ? `linear-gradient(135deg, ${alpha(theme.palette.common.white, 0.1)} 0%, transparent 50%)`
-          : `linear-gradient(135deg, ${alpha(theme.palette.common.white, 0.8)} 0%, transparent 50%)`,
+        background:
+          theme.palette.mode === 'dark'
+            ? `linear-gradient(135deg, ${alpha(theme.palette.common.white, 0.1)} 0%, transparent 50%)`
+            : `linear-gradient(135deg, ${alpha(theme.palette.common.white, 0.8)} 0%, transparent 50%)`,
         borderRadius: 'inherit',
         pointerEvents: 'none',
         zIndex: 1,
@@ -73,12 +67,12 @@ const StyledMenu = styled(Menu, {
         zIndex: 2,
       },
     }),
-    
+
     ...(customVariant === 'minimal' && {
       boxShadow: `0 2px 8px ${alpha(theme.palette.common.black, 0.08)}`,
       border: `1px solid ${theme.palette.divider}`,
     }),
-    
+
     ...(size === 'sm' && {
       '& .MuiMenuItem-root': {
         fontSize: '0.875rem',
@@ -86,7 +80,7 @@ const StyledMenu = styled(Menu, {
         padding: theme.spacing(0.75, 2),
       },
     }),
-    
+
     ...(size === 'lg' && {
       '& .MuiMenuItem-root': {
         fontSize: '1.125rem',
@@ -103,24 +97,33 @@ const StyledMenuItem = styled(MenuItem, {
   borderRadius: theme.spacing(0.5),
   margin: theme.spacing(0.5, 1),
   transition: 'all 0.2s ease',
-  
+
   ...(showIconSpace && {
     paddingLeft: theme.spacing(5),
   }),
-  
+
   '&:hover': {
     backgroundColor: alpha(theme.palette.primary.main, 0.08),
   },
-  
-  ...(color && color !== 'default' && {
-    color: (theme.palette as any)[color]?.main,
-    '& .MuiListItemIcon-root': {
-      color: (theme.palette as any)[color]?.main,
-    },
-    '&:hover': {
-      backgroundColor: alpha((theme.palette as any)[color]?.main || theme.palette.primary.main, 0.08),
-    },
-  }),
+
+  ...(color &&
+    color !== 'default' && {
+      color:
+        theme.palette[color as 'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success']
+          ?.main || theme.palette.text.primary,
+      '& .MuiListItemIcon-root': {
+        color:
+          theme.palette[color as 'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success']
+            ?.main || theme.palette.text.primary,
+      },
+      '&:hover': {
+        backgroundColor: alpha(
+          theme.palette[color as 'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success']
+            ?.main || theme.palette.primary.main,
+          0.08,
+        ),
+      },
+    }),
 }));
 
 const MenuHeader = styled(Typography)(({ theme }) => ({
@@ -143,23 +146,27 @@ const renderMenuItem = (
   item: DropdownMenuItem,
   handleItemClick: (item: DropdownMenuItem) => void,
   showIconSpace?: boolean,
-  size?: string
+  size?: string,
 ) => {
   if (item.type === 'divider') {
     return <Divider key={item.id} sx={{ my: 0.5 }} />;
   }
-  
+
   if (item.type === 'header') {
     return <MenuHeader key={item.id}>{item.label}</MenuHeader>;
   }
-  
+
   if (item.component) {
-    return <Box key={item.id} sx={{ px: 2, py: 1 }}>{item.component}</Box>;
+    return (
+      <Box key={item.id} sx={{ px: 2, py: 1 }}>
+        {item.component}
+      </Box>
+    );
   }
-  
+
   const hasIcon = !!item.icon;
   const hasChildren = item.children && item.children.length > 0;
-  
+
   return (
     <StyledMenuItem
       key={item.id}
@@ -169,13 +176,11 @@ const renderMenuItem = (
       showIconSpace={showIconSpace && !hasIcon}
     >
       {hasIcon && (
-        <ListItemIcon sx={{ minWidth: size === 'sm' ? 32 : 40 }}>
-          {item.icon}
-        </ListItemIcon>
+        <ListItemIcon sx={{ minWidth: size === 'sm' ? 32 : 40 }}>{item.icon}</ListItemIcon>
       )}
       <ListItemText primary={item.label} />
       {item.shortcut && <ShortcutText variant="caption">{item.shortcut}</ShortcutText>}
-      {hasChildren && (item.showChevron !== false) && (
+      {hasChildren && item.showChevron !== false && (
         <ChevronRight fontSize="small" sx={{ ml: 1, opacity: 0.5 }} />
       )}
     </StyledMenuItem>
@@ -199,29 +204,29 @@ export const DropdownMenu = React.forwardRef<HTMLDivElement, DropdownMenuProps>(
       anchorEl: providedAnchorEl,
       ...menuProps
     },
-    ref
+    ref,
   ) => {
     const [internalOpen, setInternalOpen] = useState(false);
     const anchorRef = useRef<HTMLElement>(null);
-    
+
     const isControlled = controlledOpen !== undefined;
     const open = isControlled ? controlledOpen : internalOpen;
     const anchorEl = providedAnchorEl || anchorRef.current;
-    
+
     const handleOpen = () => {
       if (!isControlled) {
         setInternalOpen(true);
       }
       onOpen?.();
     };
-    
+
     const handleClose = () => {
       if (!isControlled) {
         setInternalOpen(false);
       }
       onClose?.();
     };
-    
+
     const handleItemClick = (item: DropdownMenuItem) => {
       if (item.onClick) {
         item.onClick();
@@ -230,7 +235,7 @@ export const DropdownMenu = React.forwardRef<HTMLDivElement, DropdownMenuProps>(
         handleClose();
       }
     };
-    
+
     const handleTriggerClick = (event: React.MouseEvent<HTMLElement>) => {
       if (!isControlled) {
         if (open) {
@@ -241,10 +246,10 @@ export const DropdownMenu = React.forwardRef<HTMLDivElement, DropdownMenuProps>(
         }
       }
     };
-    
+
     const triggerElement = trigger ? (
       isValidElement(trigger) ? (
-        cloneElement(trigger as React.ReactElement<any>, {
+        cloneElement(trigger as React.ReactElement, {
           onClick: handleTriggerClick,
           ref: anchorRef,
         })
@@ -262,7 +267,7 @@ export const DropdownMenu = React.forwardRef<HTMLDivElement, DropdownMenuProps>(
         <MoreVert />
       </Box>
     );
-    
+
     return (
       <>
         {trigger !== undefined && triggerElement}
@@ -288,7 +293,7 @@ export const DropdownMenu = React.forwardRef<HTMLDivElement, DropdownMenuProps>(
         </StyledMenu>
       </>
     );
-  }
+  },
 );
 
 DropdownMenu.displayName = 'DropdownMenu';

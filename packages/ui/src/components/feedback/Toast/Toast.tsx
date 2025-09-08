@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import {
-  Snackbar,
   Alert,
   IconButton,
   Box,
@@ -20,12 +19,7 @@ import {
   Info as InfoIcon,
 } from '@mui/icons-material';
 
-import {
-  ToastProps,
-  ToastContainerProps,
-  ToastContextType,
-  ToastPosition,
-} from './Toast.types';
+import { ToastProps, ToastContainerProps, ToastContextType } from './Toast.types';
 
 const ToastContext = createContext<ToastContextType | null>(null);
 
@@ -35,70 +29,76 @@ interface ToastItem extends ToastProps {
 }
 
 export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [toasts, setToasts] = useState<ToastItem[]>([]);
-  
-  const addToast = useCallback((toast: Omit<ToastProps, 'id'>): string => {
-    const id = `toast-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    const newToast: ToastItem = {
-      ...toast,
-      id,
-      timestamp: Date.now(),
-    };
-    
-    setToasts(prev => [...prev, newToast]);
-    
-    if (!toast.persistent && toast.duration !== 0) {
-      const duration = toast.duration ?? 5000;
-      window.setTimeout(() => {
-        removeToast(id);
-      }, duration);
-    }
-    
-    return id;
-  }, []);
+  const [, setToasts] = useState<ToastItem[]>([]);
 
   const removeToast = useCallback((id: string) => {
-    setToasts(prev => prev.filter(toast => toast.id !== id));
+    setToasts((prev) => prev.filter((toast) => toast.id !== id));
   }, []);
+
+  const addToast = useCallback(
+    (toast: Omit<ToastProps, 'id'>): string => {
+      const id = `toast-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      const newToast: ToastItem = {
+        ...toast,
+        id,
+        timestamp: Date.now(),
+      };
+
+      setToasts((prev) => [...prev, newToast]);
+
+      if (!toast.persistent && toast.duration !== 0) {
+        const duration = toast.duration ?? 5000;
+        window.setTimeout(() => {
+          removeToast(id);
+        }, duration);
+      }
+
+      return id;
+    },
+    [removeToast],
+  );
 
   const clearAllToasts = useCallback(() => {
     setToasts([]);
   }, []);
 
-  const promise = useCallback(async <T,>(
-    promiseToResolve: Promise<T>,
-    options: {
-      loading: string;
-      success: string | ((data: T) => string);
-      error: string | ((error: any) => string);
-    }
-  ): Promise<T> => {
-    const toastId = addToast({
-      message: options.loading,
-      variant: 'promise',
-      persistent: true,
-    });
+  const promise = useCallback(
+    async <T,>(
+      promiseToResolve: Promise<T>,
+      options: {
+        loading: string;
+        success: string | ((data: T) => string);
+        error: string | ((error: unknown) => string);
+      },
+    ): Promise<T> => {
+      const toastId = addToast({
+        message: options.loading,
+        variant: 'promise',
+        persistent: true,
+      });
 
-    try {
-      const data = await promiseToResolve;
-      
-      removeToast(toastId);
-      addToast({
-        message: typeof options.success === 'function' ? options.success(data) : options.success,
-        variant: 'success',
-      });
-      
-      return data;
-    } catch (error) {
-      removeToast(toastId);
-      addToast({
-        message: typeof options.error === 'function' ? options.error(error) : options.error,
-        variant: 'error',
-      });
-      
-      throw error;
-    }
-  }, [addToast, removeToast]);
+      try {
+        const data = await promiseToResolve;
+
+        removeToast(toastId);
+        addToast({
+          message: typeof options.success === 'function' ? options.success(data) : options.success,
+          variant: 'success',
+        });
+
+        return data;
+      } catch (error) {
+        removeToast(toastId);
+        addToast({
+          message: typeof options.error === 'function' ? options.error(error) : options.error,
+          variant: 'error',
+        });
+
+        throw error;
+      }
+    },
+    [addToast, removeToast],
+  );
 
   const contextValue: ToastContextType = {
     addToast,
@@ -107,11 +107,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     promise,
   };
 
-  return (
-    <ToastContext.Provider value={contextValue}>
-      {children}
-    </ToastContext.Provider>
-  );
+  return <ToastContext.Provider value={contextValue}>{children}</ToastContext.Provider>;
 };
 
 export const useToast = (): ToastContextType => {
@@ -128,7 +124,6 @@ export const Toast: React.FC<ToastProps> = ({
   variant = 'default',
   closable = true,
   action,
-  promise,
   glass = false,
   onClose,
 }) => {
@@ -185,21 +180,12 @@ export const Toast: React.FC<ToastProps> = ({
       action={
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           {action && (
-            <Button
-              color="inherit"
-              size="small"
-              onClick={action.onClick}
-            >
+            <Button color="inherit" size="small" onClick={action.onClick}>
               {action.label}
             </Button>
           )}
           {closable && (
-            <IconButton
-              aria-label="close"
-              color="inherit"
-              size="small"
-              onClick={handleClose}
-            >
+            <IconButton aria-label="close" color="inherit" size="small" onClick={handleClose}>
               <CloseIcon fontSize="small" />
             </IconButton>
           )}
@@ -207,9 +193,7 @@ export const Toast: React.FC<ToastProps> = ({
       }
       sx={getVariantStyles()}
     >
-      <Typography variant="body2">
-        {message}
-      </Typography>
+      <Typography variant="body2">{message}</Typography>
     </Alert>
   );
 };
@@ -220,7 +204,7 @@ export const ToastContainer: React.FC<ToastContainerProps> = ({
   gap = 8,
   className,
 }) => {
-  const [toasts, setToasts] = useState<ToastItem[]>([]);
+  const [toasts] = useState<ToastItem[]>([]);
   const context = useContext(ToastContext);
 
   useEffect(() => {
@@ -251,7 +235,13 @@ export const ToastContainer: React.FC<ToastContainerProps> = ({
       case 'bottom-left':
         return { ...baseStyles, bottom: 0, left: 0, flexDirection: 'column-reverse' };
       case 'bottom-center':
-        return { ...baseStyles, bottom: 0, left: '50%', transform: 'translateX(-50%)', flexDirection: 'column-reverse' };
+        return {
+          ...baseStyles,
+          bottom: 0,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          flexDirection: 'column-reverse',
+        };
       case 'bottom-right':
         return { ...baseStyles, bottom: 0, right: 0, flexDirection: 'column-reverse' };
       default:
@@ -261,11 +251,8 @@ export const ToastContainer: React.FC<ToastContainerProps> = ({
 
   return (
     <Portal>
-      <Box
-        className={className}
-        sx={getPositionStyles()}
-      >
-        {toasts.slice(0, maxToasts).map((toast, index) => (
+      <Box className={className} sx={getPositionStyles()}>
+        {toasts.slice(0, maxToasts).map((toast) => (
           <Slide
             key={toast.id}
             direction={position.includes('left') ? 'right' : 'left'}
@@ -274,10 +261,7 @@ export const ToastContainer: React.FC<ToastContainerProps> = ({
             style={{ pointerEvents: 'auto' }}
           >
             <Box>
-              <Toast
-                {...toast}
-                onClose={context?.removeToast}
-              />
+              <Toast {...toast} onClose={context?.removeToast} />
             </Box>
           </Slide>
         ))}

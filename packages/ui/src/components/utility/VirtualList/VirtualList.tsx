@@ -214,9 +214,10 @@ export const VirtualGrid: React.FC<VirtualGridProps> = ({
   const handleScroll = useCallback(
     (event: React.UIEvent<HTMLDivElement>) => {
       const newScrollTop = event.currentTarget.scrollTop;
+      const newScrollLeft = event.currentTarget.scrollLeft;
 
       setScrollTop(newScrollTop);
-      onScroll?.(newScrollTop);
+      onScroll?.(newScrollTop, newScrollLeft);
     },
     [onScroll],
   );

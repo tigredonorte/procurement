@@ -18,14 +18,14 @@ const StyledMenu = styled(Menu, {
   '& .MuiPaper-root': {
     minWidth: 160,
     borderRadius: theme.spacing(1),
-    
+
     ...(customVariant === 'glass' && {
       backgroundColor: alpha(theme.palette.background.paper, 0.85),
       backdropFilter: 'blur(20px)',
       border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
       boxShadow: `0 8px 32px ${alpha(theme.palette.common.black, 0.12)}`,
     }),
-    
+
     ...(customVariant === 'dark' && {
       backgroundColor: alpha(theme.palette.grey[900], 0.95),
       color: theme.palette.common.white,
@@ -39,7 +39,7 @@ const StyledMenu = styled(Menu, {
         borderColor: alpha(theme.palette.common.white, 0.12),
       },
     }),
-    
+
     ...(size === 'sm' && {
       '& .MuiMenuItem-root': {
         fontSize: '0.875rem',
@@ -47,7 +47,7 @@ const StyledMenu = styled(Menu, {
         padding: theme.spacing(0.5, 1.5),
       },
     }),
-    
+
     ...(size === 'lg' && {
       '& .MuiMenuItem-root': {
         fontSize: '1.125rem',
@@ -64,33 +64,37 @@ const StyledMenuItem = styled(MenuItem, {
   borderRadius: theme.spacing(0.5),
   margin: theme.spacing(0.25, 0.5),
   transition: 'all 0.2s ease',
-  
+
   '&:hover': {
-    backgroundColor: alpha(
-      dangerous ? theme.palette.error.main : theme.palette.primary.main, 
-      0.08
-    ),
+    backgroundColor: alpha(dangerous ? theme.palette.error.main : theme.palette.primary.main, 0.08),
   },
-  
+
   ...(dangerous && {
     color: theme.palette.error.main,
     '& .MuiListItemIcon-root': {
       color: theme.palette.error.main,
     },
   }),
-  
-  ...(color && color !== 'default' && !dangerous && {
-    color: (theme.palette as any)[color]?.main,
-    '& .MuiListItemIcon-root': {
-      color: (theme.palette as any)[color]?.main,
-    },
-    '&:hover': {
-      backgroundColor: alpha(
-        (theme.palette as any)[color]?.main || theme.palette.primary.main, 
-        0.08
-      ),
-    },
-  }),
+
+  ...(color &&
+    color !== 'default' &&
+    !dangerous && {
+      color:
+        (theme.palette as unknown as Record<string, { main?: string }>)[color]?.main ||
+        theme.palette.primary.main,
+      '& .MuiListItemIcon-root': {
+        color:
+          (theme.palette as unknown as Record<string, { main?: string }>)[color]?.main ||
+          theme.palette.primary.main,
+      },
+      '&:hover': {
+        backgroundColor: alpha(
+          (theme.palette as unknown as Record<string, { main?: string }>)[color]?.main ||
+            theme.palette.primary.main,
+          0.08,
+        ),
+      },
+    }),
 }));
 
 const MenuHeader = styled(Typography)(({ theme }) => ({
@@ -112,18 +116,18 @@ const ShortcutText = styled(Typography)(({ theme }) => ({
 const renderMenuItem = (
   item: ContextMenuItem,
   handleItemClick: (item: ContextMenuItem) => void,
-  size?: string
+  size?: string,
 ) => {
   if (item.type === 'divider') {
     return <Divider key={item.id} sx={{ my: 0.5 }} />;
   }
-  
+
   if (item.type === 'header') {
     return <MenuHeader key={item.id}>{item.label}</MenuHeader>;
   }
-  
+
   const hasIcon = !!item.icon;
-  
+
   return (
     <StyledMenuItem
       key={item.id}
@@ -133,14 +137,10 @@ const renderMenuItem = (
       dangerous={item.dangerous}
     >
       {hasIcon && (
-        <ListItemIcon sx={{ minWidth: size === 'sm' ? 32 : 40 }}>
-          {item.icon}
-        </ListItemIcon>
+        <ListItemIcon sx={{ minWidth: size === 'sm' ? 32 : 40 }}>{item.icon}</ListItemIcon>
       )}
       <ListItemText primary={item.label} />
-      {item.shortcut && (
-        <ShortcutText variant="caption">{item.shortcut}</ShortcutText>
-      )}
+      {item.shortcut && <ShortcutText variant="caption">{item.shortcut}</ShortcutText>}
     </StyledMenuItem>
   );
 };
@@ -159,16 +159,16 @@ export const ContextMenu = React.forwardRef<HTMLDivElement, ContextMenuProps>(
       triggerStyle,
       ...menuProps
     },
-    ref
+    ref,
   ) => {
     const [contextMenu, setContextMenu] = useState<{
       mouseX: number;
       mouseY: number;
     } | null>(null);
-    
+
     const handleContextMenu = (event: React.MouseEvent) => {
       if (disabled) return;
-      
+
       event.preventDefault();
       setContextMenu(
         contextMenu === null
@@ -176,35 +176,35 @@ export const ContextMenu = React.forwardRef<HTMLDivElement, ContextMenuProps>(
               mouseX: event.clientX + 2,
               mouseY: event.clientY - 6,
             }
-          : null
+          : null,
       );
       onOpen?.(event);
     };
-    
+
     const handleClose = () => {
       setContextMenu(null);
       onClose?.();
     };
-    
+
     const handleItemClick = (item: ContextMenuItem) => {
       if (item.onClick) {
         item.onClick();
       }
       handleClose();
     };
-    
+
     const triggerElement = isValidElement(children) ? (
-      cloneElement(children as React.ReactElement<any>, {
+      cloneElement(children as React.ReactElement, {
         onContextMenu: handleContextMenu,
         className: [
-          (children as any).props.className,
+          (children as React.ReactElement).props.className,
           triggerClassName,
           !disabled ? 'context-menu-trigger' : '',
         ]
           .filter(Boolean)
           .join(' '),
         style: {
-          ...(children as any).props.style,
+          ...(children as React.ReactElement).props.style,
           ...triggerStyle,
           cursor: disabled ? 'default' : 'context-menu',
         },
@@ -221,7 +221,7 @@ export const ContextMenu = React.forwardRef<HTMLDivElement, ContextMenuProps>(
         {children}
       </div>
     );
-    
+
     return (
       <>
         {triggerElement}
@@ -231,9 +231,7 @@ export const ContextMenu = React.forwardRef<HTMLDivElement, ContextMenuProps>(
           onClose={handleClose}
           anchorReference="anchorPosition"
           anchorPosition={
-            contextMenu !== null
-              ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
-              : undefined
+            contextMenu !== null ? { top: contextMenu.mouseY, left: contextMenu.mouseX } : undefined
           }
           customVariant={variant}
           size={size}
@@ -243,7 +241,7 @@ export const ContextMenu = React.forwardRef<HTMLDivElement, ContextMenuProps>(
         </StyledMenu>
       </>
     );
-  }
+  },
 );
 
 ContextMenu.displayName = 'ContextMenu';
