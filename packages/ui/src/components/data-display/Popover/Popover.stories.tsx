@@ -17,18 +17,24 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // Wrapper for interactive stories
-const PopoverDemo = ({ children, ...props }: { children?: React.ReactNode; [key: string]: unknown }) => {
+const PopoverDemo = ({
+  children,
+  ...props
+}: {
+  children?: React.ReactNode;
+  [key: string]: unknown;
+}) => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const open = Boolean(anchorEl);
-  
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  
+
   const handleClose = () => {
     setAnchorEl(null);
   };
-  
+
   return (
     <>
       <Button variant="contained" onClick={handleClick}>
@@ -91,7 +97,9 @@ export const ComplexContent: Story = {
   render: () => (
     <PopoverDemo variant="glass" maxWidth={300}>
       <div style={{ padding: 16 }}>
-        <Typography variant="h6" gutterBottom>Menu Options</Typography>
+        <Typography variant="h6" gutterBottom>
+          Menu Options
+        </Typography>
         <List dense>
           <ListItem button>
             <ListItemText primary="Profile Settings" />
@@ -106,6 +114,76 @@ export const ComplexContent: Story = {
             <ListItemText primary="Sign Out" />
           </ListItem>
         </List>
+      </div>
+    </PopoverDemo>
+  ),
+};
+
+export const GlassEffect: Story = {
+  render: () => (
+    <PopoverDemo variant="glass" glow>
+      <Typography sx={{ p: 3 }}>Glass morphism with glow effect</Typography>
+    </PopoverDemo>
+  ),
+};
+
+export const WithArrow: Story = {
+  render: () => (
+    <PopoverDemo variant="arrow">
+      <Typography sx={{ p: 2 }}>Popover with arrow pointing to anchor</Typography>
+    </PopoverDemo>
+  ),
+};
+
+export const DifferentSizes: Story = {
+  render: () => (
+    <Stack direction="row" spacing={2}>
+      <PopoverDemo maxWidth={200}>
+        <Typography sx={{ p: 2 }}>Small popover (200px max)</Typography>
+      </PopoverDemo>
+      <PopoverDemo maxWidth={400}>
+        <Typography sx={{ p: 2 }}>Medium popover (400px max)</Typography>
+      </PopoverDemo>
+      <PopoverDemo maxWidth={600}>
+        <Typography sx={{ p: 2 }}>Large popover (600px max)</Typography>
+      </PopoverDemo>
+    </Stack>
+  ),
+};
+
+export const CombinedEffects: Story = {
+  render: () => (
+    <PopoverDemo variant="glass" glow pulse>
+      <Typography sx={{ p: 3 }}>Combined glass, glow, and pulse effects</Typography>
+    </PopoverDemo>
+  ),
+};
+
+export const EmptyState: Story = {
+  render: () => (
+    <PopoverDemo>
+      <div style={{ padding: 24, textAlign: 'center' }}>
+        <Typography color="text.secondary">No content available</Typography>
+      </div>
+    </PopoverDemo>
+  ),
+};
+
+export const LoadingState: Story = {
+  render: () => (
+    <PopoverDemo>
+      <div style={{ padding: 24, textAlign: 'center' }}>
+        <Typography>Loading...</Typography>
+      </div>
+    </PopoverDemo>
+  ),
+};
+
+export const ErrorState: Story = {
+  render: () => (
+    <PopoverDemo>
+      <div style={{ padding: 24, textAlign: 'center' }}>
+        <Typography color="error">Error loading content</Typography>
       </div>
     </PopoverDemo>
   ),

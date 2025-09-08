@@ -1,6 +1,6 @@
-import React, { forwardRef, useState, useRef, useEffect } from 'react';
-import { 
-  TextareaAutosize, 
+import React, { useState, useRef, useEffect } from 'react';
+import {
+  TextareaAutosize,
   Box,
   FormHelperText,
   InputLabel,
@@ -8,7 +8,7 @@ import {
   keyframes,
   IconButton,
   Divider,
-  Tooltip
+  Tooltip,
 } from '@mui/material';
 import {
   FormatBold,
@@ -19,13 +19,24 @@ import {
   FormatQuote,
   Code,
   Link,
-  Image,
   FormatColorText,
-  FormatColorFill
+  FormatColorFill,
 } from '@mui/icons-material';
-import { styled } from '@mui/material/styles';
+import { styled, Theme } from '@mui/material/styles';
 
 import { TextareaProps } from './Textarea.types';
+
+// Interface for styled component props
+interface StyledTextareaProps {
+  customVariant?: string;
+  customColor?: string;
+  customSize?: string;
+  glow?: boolean;
+  glass?: boolean;
+  gradient?: boolean;
+  error?: boolean;
+  theme?: Theme;
+}
 
 // Glow animation for enhanced visual effects
 const glowAnimation = keyframes`
@@ -40,17 +51,17 @@ const glowAnimation = keyframes`
   }
 `;
 
-// Ripple animation for buttons
-const rippleAnimation = keyframes`
-  0% {
-    transform: scale(0);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(4);
-    opacity: 0;
-  }
-`;
+// Ripple animation for buttons (commented out - not currently used)
+// const rippleAnimation = keyframes`
+//   0% {
+//     transform: scale(0);
+//     opacity: 1;
+//   }
+//   100% {
+//     transform: scale(4);
+//     opacity: 0;
+//   }
+// `;
 
 // Float animation for rich text toolbar
 const floatAnimation = keyframes`
@@ -65,50 +76,58 @@ const floatAnimation = keyframes`
   }
 `;
 
-const getColorFromTheme = (theme: { palette: { primary: { main: string; dark?: string; light?: string; contrastText?: string }; secondary: { main: string; dark?: string; light?: string; contrastText?: string }; success: { main: string; dark?: string; light?: string; contrastText?: string }; warning: { main: string; dark?: string; light?: string; contrastText?: string }; error: { main: string; dark?: string; light?: string; contrastText?: string }; grey?: { [key: number]: string } } }, color: string) => {
+const getColorFromTheme = (theme: Theme, color: string) => {
   if (color === 'neutral') {
+    const grey = theme.palette.grey as unknown as Record<number, string>;
     return {
-      main: theme.palette.grey?.[700] || '#616161',
-      dark: theme.palette.grey?.[800] || '#424242',
-      light: theme.palette.grey?.[500] || '#9e9e9e',
-      contrastText: '#fff'
+      main: grey?.[700] || '#616161',
+      dark: grey?.[800] || '#424242',
+      light: grey?.[500] || '#9e9e9e',
+      contrastText: '#fff',
     };
   }
-  
-  const colorMap: Record<string, any> = {
+
+  const colorMap: Record<
+    string,
+    { main: string; dark?: string; light?: string; contrastText?: string }
+  > = {
     primary: theme.palette.primary,
     secondary: theme.palette.secondary,
     success: theme.palette.success,
     warning: theme.palette.warning,
     danger: theme.palette.error,
   };
-  
+
   const palette = colorMap[color] || theme.palette.primary;
-  
+
   // Ensure palette has required properties
   return {
     main: palette?.main || theme.palette.primary.main,
     dark: palette?.dark || palette?.main || theme.palette.primary.dark,
     light: palette?.light || palette?.main || theme.palette.primary.light,
-    contrastText: palette?.contrastText || '#fff'
+    contrastText: palette?.contrastText || '#fff',
   };
 };
 
 const StyledTextarea = styled(TextareaAutosize, {
-  shouldForwardProp: (prop) => 
-    !['customVariant', 'customColor', 'customSize', 'glow', 'glass', 'gradient', 'error'].includes(prop as string),
-})<{ 
-  customVariant?: string; 
-  customColor?: string; 
-  customSize?: string;
-  glow?: boolean;
-  glass?: boolean;
-  gradient?: boolean;
-  error?: boolean;
-}>(({ theme, customVariant, customColor = 'primary', customSize = 'md', glow, glass, gradient, error }) => {
+  shouldForwardProp: (prop) =>
+    !['customVariant', 'customColor', 'customSize', 'glow', 'glass', 'gradient', 'error'].includes(
+      prop as string,
+    ),
+})<StyledTextareaProps>(({
+  theme,
+  customVariant,
+  customColor = 'primary',
+  customSize = 'md',
+  glow,
+  glass,
+  gradient,
+  error,
+}) => {
+  if (!theme) return {};
   const colorPalette = getColorFromTheme(theme, customColor);
   const errorColor = theme.palette.error;
-  
+
   const sizeMap = {
     xs: { padding: '6px 8px', fontSize: '0.75rem', minHeight: '60px' },
     sm: { padding: '8px 10px', fontSize: '0.875rem', minHeight: '80px' },
@@ -147,36 +166,42 @@ const StyledTextarea = styled(TextareaAutosize, {
   };
 
   // Glass morphism effect
-  const glassStyles = glass ? {
-    backgroundColor: alpha(theme.palette.background.paper, 0.1),
-    backdropFilter: 'blur(20px)',
-    border: `1px solid ${alpha(theme.palette.divider, 0.2)}`,
-    '&:hover': {
-      backgroundColor: alpha(theme.palette.background.paper, 0.15),
-      backdropFilter: 'blur(25px)',
-    },
-    '&:focus': {
-      backgroundColor: alpha(theme.palette.background.paper, 0.2),
-      backdropFilter: 'blur(30px)',
-    },
-  } : {};
+  const glassStyles = glass
+    ? {
+        backgroundColor: alpha(theme.palette.background.paper, 0.1),
+        backdropFilter: 'blur(20px)',
+        border: `1px solid ${alpha(theme.palette.divider, 0.2)}`,
+        '&:hover': {
+          backgroundColor: alpha(theme.palette.background.paper, 0.15),
+          backdropFilter: 'blur(25px)',
+        },
+        '&:focus': {
+          backgroundColor: alpha(theme.palette.background.paper, 0.2),
+          backdropFilter: 'blur(30px)',
+        },
+      }
+    : {};
 
   // Gradient border effect
-  const gradientStyles = gradient ? {
-    background: `linear-gradient(${theme.palette.background.paper}, ${theme.palette.background.paper}) padding-box,
+  const gradientStyles = gradient
+    ? {
+        background: `linear-gradient(${theme.palette.background.paper}, ${theme.palette.background.paper}) padding-box,
                  linear-gradient(135deg, ${colorPalette.main}, ${colorPalette.light}) border-box`,
-    border: '2px solid transparent',
-    '&:focus': {
-      background: `linear-gradient(${theme.palette.background.paper}, ${theme.palette.background.paper}) padding-box,
+        border: '2px solid transparent',
+        '&:focus': {
+          background: `linear-gradient(${theme.palette.background.paper}, ${theme.palette.background.paper}) padding-box,
                    linear-gradient(135deg, ${colorPalette.main}, ${colorPalette.dark}) border-box`,
-    },
-  } : {};
+        },
+      }
+    : {};
 
   // Glow effect
-  const glowStyles = glow ? {
-    animation: `${glowAnimation} 2s ease-in-out infinite`,
-    boxShadow: `0 0 10px ${alpha(colorPalette.main, 0.3)}`,
-  } : {};
+  const glowStyles = glow
+    ? {
+        animation: `${glowAnimation} 2s ease-in-out infinite`,
+        boxShadow: `0 0 10px ${alpha(colorPalette.main, 0.3)}`,
+      }
+    : {};
 
   return {
     ...baseStyles,
@@ -202,14 +227,18 @@ const StyledLabel = styled(InputLabel, {
   }),
 }));
 
-const IconWrapper = styled(Box)<{ position: 'start' | 'end' }>(({ theme, position }) => ({
-  position: 'absolute',
-  top: '12px',
-  [position === 'start' ? 'left' : 'right']: '12px',
-  color: theme.palette.text.secondary,
-  pointerEvents: 'none',
-  zIndex: 1,
-}));
+// IconWrapper - replaced with inline Box component for better TypeScript compatibility
+// const IconWrapper = styled(Box)<{ position: 'start' | 'end' }>(({ theme, position }) => {
+//   const positionStyles = position === 'start' ? { left: '12px' } : { right: '12px' };
+//   return {
+//     position: 'absolute' as const,
+//     top: '12px',
+//     ...positionStyles,
+//     color: theme.palette.text.secondary,
+//     pointerEvents: 'none' as const,
+//     zIndex: 1,
+//   };
+// });
 
 // Rich text toolbar styling
 const RichToolbar = styled(Box)<{ glass?: boolean }>(({ theme, glass }) => ({
@@ -219,9 +248,7 @@ const RichToolbar = styled(Box)<{ glass?: boolean }>(({ theme, glass }) => ({
   padding: theme.spacing(1),
   borderRadius: `${theme.spacing(1)} ${theme.spacing(1)} 0 0`,
   borderBottom: `1px solid ${theme.palette.divider}`,
-  background: glass 
-    ? alpha(theme.palette.background.paper, 0.1)
-    : theme.palette.background.paper,
+  background: glass ? alpha(theme.palette.background.paper, 0.1) : theme.palette.background.paper,
   ...(glass && {
     backdropFilter: 'blur(15px)',
   }),
@@ -239,7 +266,7 @@ const ToolbarButton = styled(IconButton)<{ active?: boolean }>(({ theme, active 
   transition: 'all 0.2s ease',
   position: 'relative',
   overflow: 'hidden',
-  
+
   '&::before': {
     content: '""',
     position: 'absolute',
@@ -252,19 +279,19 @@ const ToolbarButton = styled(IconButton)<{ active?: boolean }>(({ theme, active 
     transform: 'translate(-50%, -50%)',
     transition: 'width 0.3s, height 0.3s',
   },
-  
+
   '&:hover': {
     color: theme.palette.primary.main,
     backgroundColor: alpha(theme.palette.primary.main, 0.15),
     transform: 'translateY(-1px)',
     animation: `${floatAnimation} 1.5s ease-in-out infinite`,
-    
+
     '&::before': {
       width: '100%',
       height: '100%',
     },
   },
-  
+
   '&:active': {
     transform: 'scale(0.95)',
   },
@@ -273,17 +300,17 @@ const ToolbarButton = styled(IconButton)<{ active?: boolean }>(({ theme, active 
 const CharacterCount = styled(Box)<{ limit?: number; count: number }>(({ theme, limit, count }) => {
   const isWarning = limit && count > limit * 0.8;
   const isError = limit && count > limit;
-  
+
   return {
     position: 'absolute',
     bottom: theme.spacing(1),
     right: theme.spacing(1),
     fontSize: '0.75rem',
-    color: isError 
-      ? theme.palette.error.main 
-      : isWarning 
-      ? theme.palette.warning.main 
-      : theme.palette.text.secondary,
+    color: isError
+      ? theme.palette.error.main
+      : isWarning
+        ? theme.palette.warning.main
+        : theme.palette.text.secondary,
     padding: '2px 6px',
     borderRadius: theme.spacing(0.5),
     backgroundColor: alpha(theme.palette.background.paper, 0.8),
@@ -292,22 +319,24 @@ const CharacterCount = styled(Box)<{ limit?: number; count: number }>(({ theme, 
   };
 });
 
-const ContentEditableDiv = styled('div')<{ 
+const ContentEditableDiv = styled('div')<{
   error?: boolean;
   focused?: boolean;
   glass?: boolean;
   customColor?: string;
+  theme?: Theme;
 }>(({ theme, error, focused, glass, customColor = 'primary' }) => {
+  if (!theme) return {};
   const colorPalette = getColorFromTheme(theme, customColor);
   const errorColor = theme.palette.error;
-  
+
   return {
     minHeight: '120px',
     padding: theme.spacing(1.5),
     borderRadius: `0 0 ${theme.spacing(1)} ${theme.spacing(1)}`,
     border: `2px solid ${error ? errorColor.main : focused ? colorPalette.main : theme.palette.divider}`,
     borderTop: 'none',
-    backgroundColor: glass 
+    backgroundColor: glass
       ? alpha(theme.palette.background.paper, 0.1)
       : theme.palette.background.paper,
     color: theme.palette.text.primary,
@@ -317,26 +346,26 @@ const ContentEditableDiv = styled('div')<{
     outline: 'none',
     transition: 'all 0.3s ease',
     cursor: 'text',
-    
+
     ...(glass && {
       backdropFilter: 'blur(20px)',
     }),
-    
+
     '&:hover': {
       backgroundColor: glass
         ? alpha(theme.palette.background.paper, 0.15)
         : alpha(theme.palette.background.paper, 0.9),
     },
-    
+
     '&:focus': {
       borderColor: error ? errorColor.main : colorPalette.main,
       boxShadow: `0 0 0 3px ${alpha(error ? errorColor.main : colorPalette.main, 0.1)}`,
     },
-    
+
     '& > *': {
       margin: '0.5em 0',
     },
-    
+
     '&[contenteditable="true"]:empty::before': {
       content: 'attr(data-placeholder)',
       color: theme.palette.text.secondary,
@@ -371,7 +400,7 @@ const RichTextEditor: React.FC<{
     code: false,
   });
   const contentRef = useRef<HTMLDivElement>(null);
-  
+
   useEffect(() => {
     if (contentRef.current && value !== undefined) {
       if (contentRef.current.innerHTML !== value) {
@@ -380,7 +409,7 @@ const RichTextEditor: React.FC<{
       setCharacterCount(contentRef.current.innerText.length);
     }
   }, [value]);
-  
+
   const handleInput = () => {
     if (contentRef.current) {
       const html = contentRef.current.innerHTML;
@@ -389,7 +418,7 @@ const RichTextEditor: React.FC<{
       updateActiveFormats();
     }
   };
-  
+
   const updateActiveFormats = () => {
     setActiveFormats({
       bold: document.queryCommandState('bold'),
@@ -401,115 +430,109 @@ const RichTextEditor: React.FC<{
       code: false,
     });
   };
-  
+
   const handleFormat = (command: string, value?: string) => {
     formatText(command, value);
     updateActiveFormats();
     contentRef.current?.focus();
   };
-  
+
   return (
     <Box sx={{ position: 'relative' }}>
       <RichToolbar glass={glass}>
         <Tooltip title="Bold" arrow>
-          <ToolbarButton 
-            size="small" 
+          <ToolbarButton
+            size="small"
             active={activeFormats.bold}
             onClick={() => handleFormat('bold')}
           >
             <FormatBold fontSize="small" />
           </ToolbarButton>
         </Tooltip>
-        
+
         <Tooltip title="Italic" arrow>
-          <ToolbarButton 
-            size="small" 
+          <ToolbarButton
+            size="small"
             active={activeFormats.italic}
             onClick={() => handleFormat('italic')}
           >
             <FormatItalic fontSize="small" />
           </ToolbarButton>
         </Tooltip>
-        
+
         <Tooltip title="Underline" arrow>
-          <ToolbarButton 
-            size="small" 
+          <ToolbarButton
+            size="small"
             active={activeFormats.underline}
             onClick={() => handleFormat('underline')}
           >
             <FormatUnderlined fontSize="small" />
           </ToolbarButton>
         </Tooltip>
-        
+
         <Divider orientation="vertical" flexItem />
-        
+
         <Tooltip title="Bullet List" arrow>
-          <ToolbarButton 
-            size="small" 
+          <ToolbarButton
+            size="small"
             active={activeFormats.list}
             onClick={() => handleFormat('insertUnorderedList')}
           >
             <FormatListBulleted fontSize="small" />
           </ToolbarButton>
         </Tooltip>
-        
+
         <Tooltip title="Numbered List" arrow>
-          <ToolbarButton 
-            size="small" 
+          <ToolbarButton
+            size="small"
             active={activeFormats.orderedList}
             onClick={() => handleFormat('insertOrderedList')}
           >
             <FormatListNumbered fontSize="small" />
           </ToolbarButton>
         </Tooltip>
-        
+
         <Divider orientation="vertical" flexItem />
-        
+
         <Tooltip title="Quote" arrow>
-          <ToolbarButton 
-            size="small" 
-            onClick={() => handleFormat('formatBlock', 'blockquote')}
-          >
+          <ToolbarButton size="small" onClick={() => handleFormat('formatBlock', 'blockquote')}>
             <FormatQuote fontSize="small" />
           </ToolbarButton>
         </Tooltip>
-        
+
         <Tooltip title="Code" arrow>
-          <ToolbarButton 
-            size="small" 
-            onClick={() => handleFormat('formatBlock', 'pre')}
-          >
+          <ToolbarButton size="small" onClick={() => handleFormat('formatBlock', 'pre')}>
             <Code fontSize="small" />
           </ToolbarButton>
         </Tooltip>
-        
+
         <Divider orientation="vertical" flexItem />
-        
+
         <Tooltip title="Insert Link" arrow>
-          <ToolbarButton 
-            size="small" 
+          <ToolbarButton
+            size="small"
             onClick={() => {
-              const url = prompt('Enter URL:');
+              const url = window.prompt('Enter URL:');
               if (url) handleFormat('createLink', url);
             }}
           >
             <Link fontSize="small" />
           </ToolbarButton>
         </Tooltip>
-        
+
         <Tooltip title="Text Color" arrow>
           <ToolbarButton size="small">
             <FormatColorText fontSize="small" />
           </ToolbarButton>
         </Tooltip>
-        
+
         <Tooltip title="Background Color" arrow>
           <ToolbarButton size="small">
             <FormatColorFill fontSize="small" />
           </ToolbarButton>
         </Tooltip>
       </RichToolbar>
-      
+
       <ContentEditableDiv
         ref={contentRef}
         contentEditable
@@ -524,75 +547,48 @@ const RichTextEditor: React.FC<{
         onKeyUp={updateActiveFormats}
         onMouseUp={updateActiveFormats}
       />
-      
+
       {characterLimit && (
         <CharacterCount limit={characterLimit} count={characterCount}>
-          {characterCount}{characterLimit ? `/${characterLimit}` : ''}
+          {characterCount}
+          {characterLimit ? `/${characterLimit}` : ''}
         </CharacterCount>
       )}
     </Box>
   );
 };
 
-export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({
-    variant = 'default',
-    color = 'primary',
-    size = 'md',
-    error = false,
-    helperText,
-    label,
-    glassLabel = false,
-    glow = false,
-    glass = false,
-    gradient = false,
-    icon,
-    iconPosition = 'start',
-    minRows = 3,
-    maxRows,
-    style,
-    ...props
-  }, ref) => {
-    const [richTextValue, setRichTextValue] = useState('');
-    const hasIcon = Boolean(icon);
-    const iconPadding = hasIcon ? (iconPosition === 'start' ? '40px' : '40px') : '0px';
-    
-    const textareaStyle = {
-      ...style,
-      ...(hasIcon && {
-        [iconPosition === 'start' ? 'paddingLeft' : 'paddingRight']: iconPadding,
-      }),
-    };
-    
-    // If rich text variant, use the rich text editor
-    if (variant === 'rich') {
-      return (
-        <Box sx={{ position: 'relative', width: '100%' }}>
-          {label && (
-            <StyledLabel glass={glassLabel} error={error}>
-              {label}
-            </StyledLabel>
-          )}
-          
-          <RichTextEditor
-            value={richTextValue}
-            onChange={setRichTextValue}
-            placeholder={props.placeholder}
-            error={error}
-            glass={glass}
-            color={color}
-            characterLimit={props.maxLength}
-          />
-          
-          {helperText && (
-            <FormHelperText error={error} sx={{ mt: 1 }}>
-              {helperText}
-            </FormHelperText>
-          )}
-        </Box>
-      );
-    }
+export const Textarea: React.FC<TextareaProps> = ({
+  variant = 'default',
+  color = 'primary',
+  size = 'md',
+  error = false,
+  helperText,
+  label,
+  glassLabel = false,
+  glow = false,
+  glass = false,
+  gradient = false,
+  icon,
+  iconPosition = 'start',
+  minRows = 3,
+  maxRows,
+  style,
+  ...props
+}) => {
+  const [richTextValue, setRichTextValue] = useState('');
+  const hasIcon = Boolean(icon);
+  const iconPadding = hasIcon ? (iconPosition === 'start' ? '40px' : '40px') : '0px';
 
+  const textareaStyle = {
+    ...style,
+    ...(hasIcon && {
+      [iconPosition === 'start' ? 'paddingLeft' : 'paddingRight']: iconPadding,
+    }),
+  };
+
+  // If rich text variant, use the rich text editor
+  if (variant === 'rich') {
     return (
       <Box sx={{ position: 'relative', width: '100%' }}>
         {label && (
@@ -600,30 +596,17 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             {label}
           </StyledLabel>
         )}
-        
-        <Box sx={{ position: 'relative' }}>
-          {hasIcon && (
-            <IconWrapper position={iconPosition}>
-              {icon}
-            </IconWrapper>
-          )}
-          
-          <StyledTextarea
-            ref={ref}
-            customVariant={variant}
-            customColor={color}
-            customSize={size}
-            glow={glow}
-            glass={glass}
-            gradient={gradient}
-            error={error}
-            minRows={variant === 'autosize' ? minRows : undefined}
-            maxRows={variant === 'autosize' ? maxRows : undefined}
-            style={textareaStyle}
-            {...props}
-          />
-        </Box>
-        
+
+        <RichTextEditor
+          value={richTextValue}
+          onChange={setRichTextValue}
+          placeholder={props.placeholder}
+          error={error}
+          glass={glass}
+          color={color}
+          characterLimit={props.maxLength}
+        />
+
         {helperText && (
           <FormHelperText error={error} sx={{ mt: 1 }}>
             {helperText}
@@ -632,6 +615,53 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       </Box>
     );
   }
-);
+
+  return (
+    <Box sx={{ position: 'relative', width: '100%' }}>
+      {label && (
+        <StyledLabel glass={glassLabel} error={error}>
+          {label}
+        </StyledLabel>
+      )}
+
+      <Box sx={{ position: 'relative' }}>
+        {hasIcon && (
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '12px',
+              ...(iconPosition === 'start' ? { left: '12px' } : { right: '12px' }),
+              color: 'text.secondary',
+              pointerEvents: 'none',
+              zIndex: 1,
+            }}
+          >
+            {icon}
+          </Box>
+        )}
+
+        <StyledTextarea
+          customVariant={variant}
+          customColor={color}
+          customSize={size}
+          glow={glow}
+          glass={glass}
+          gradient={gradient}
+          error={error}
+          minRows={variant === 'autosize' ? minRows : undefined}
+          maxRows={variant === 'autosize' ? maxRows : undefined}
+          style={textareaStyle}
+          {...props}
+        />
+      </Box>
+
+      {helperText && (
+        <FormHelperText error={error} sx={{ mt: 1 }}>
+          {helperText}
+        </FormHelperText>
+      )}
+    </Box>
+  );
+};
 
 Textarea.displayName = 'Textarea';

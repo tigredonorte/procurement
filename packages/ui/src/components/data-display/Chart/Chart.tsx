@@ -24,16 +24,9 @@ import {
   PolarAngleAxis,
   PolarRadiusAxis,
 } from 'recharts';
-import {
-  Box,
-  Typography,
-  CircularProgress,
-  Paper,
-  useTheme,
-  alpha,
-} from '@mui/material';
+import { Box, Typography, CircularProgress, Paper, useTheme, alpha } from '@mui/material';
 
-import { ChartProps, ChartSeries } from './Chart.types';
+import { ChartProps, ChartSeries, ChartDataPoint } from './Chart.types';
 
 export const Chart: React.FC<ChartProps> = ({
   data,
@@ -76,18 +69,24 @@ export const Chart: React.FC<ChartProps> = ({
 
   const getSizeStyles = () => {
     switch (size) {
-      case 'xs': return { height: height || 200, fontSize: '0.75rem' };
-      case 'sm': return { height: height || 300, fontSize: '0.875rem' };
-      case 'md': return { height: height || 400, fontSize: '1rem' };
-      case 'lg': return { height: height || 500, fontSize: '1.125rem' };
-      case 'xl': return { height: height || 600, fontSize: '1.25rem' };
-      default: return { height: height || 400, fontSize: '1rem' };
+      case 'xs':
+        return { height: height || 200, fontSize: '0.75rem' };
+      case 'sm':
+        return { height: height || 300, fontSize: '0.875rem' };
+      case 'md':
+        return { height: height || 400, fontSize: '1rem' };
+      case 'lg':
+        return { height: height || 500, fontSize: '1.125rem' };
+      case 'xl':
+        return { height: height || 600, fontSize: '1.25rem' };
+      default:
+        return { height: height || 400, fontSize: '1rem' };
     }
   };
 
   const getDefaultColors = () => {
     if (colors) return colors;
-    
+
     const defaultPalette = [
       theme.palette.primary.main,
       theme.palette.secondary.main,
@@ -98,14 +97,7 @@ export const Chart: React.FC<ChartProps> = ({
     ];
 
     if (variant === 'neon') {
-      return [
-        '#00ffff',
-        '#ff00ff',
-        '#ffff00',
-        '#00ff00',
-        '#ff0080',
-        '#8000ff',
-      ];
+      return ['#00ffff', '#ff00ff', '#ffff00', '#00ff00', '#ff0080', '#8000ff'];
     }
 
     return defaultPalette;
@@ -118,21 +110,25 @@ export const Chart: React.FC<ChartProps> = ({
         duration: theme.transitions.duration.standard,
       }),
       opacity: disabled ? 0.5 : 1,
-      pointerEvents: disabled ? 'none' as const : 'auto' as const,
+      pointerEvents: disabled ? ('none' as const) : ('auto' as const),
     };
 
-    const glowStyles = glow ? {
-      boxShadow: `0 0 30px ${alpha(theme.palette[color].main, 0.4)}`,
-    } : {};
+    const glowStyles = glow
+      ? {
+          boxShadow: `0 0 30px ${alpha(theme.palette[color].main, 0.4)}`,
+        }
+      : {};
 
-    const pulseStyles = pulse ? {
-      animation: 'pulse 2s infinite',
-      '@keyframes pulse': {
-        '0%': { boxShadow: `0 0 0 0 ${alpha(theme.palette[color].main, 0.4)}` },
-        '70%': { boxShadow: `0 0 0 20px ${alpha(theme.palette[color].main, 0)}` },
-        '100%': { boxShadow: `0 0 0 0 ${alpha(theme.palette[color].main, 0)}` },
-      },
-    } : {};
+    const pulseStyles = pulse
+      ? {
+          animation: 'pulse 2s infinite',
+          '@keyframes pulse': {
+            '0%': { boxShadow: `0 0 0 0 ${alpha(theme.palette[color].main, 0.4)}` },
+            '70%': { boxShadow: `0 0 0 20px ${alpha(theme.palette[color].main, 0)}` },
+            '100%': { boxShadow: `0 0 0 0 ${alpha(theme.palette[color].main, 0)}` },
+          },
+        }
+      : {};
 
     switch (variant) {
       case 'glass':
@@ -196,11 +192,11 @@ export const Chart: React.FC<ChartProps> = ({
 
   const getDefaultSeries = (): ChartSeries[] => {
     if (series) return series;
-    
+
     // Auto-detect series from data
     if (data.length === 0) return [];
-    
-    const keys = Object.keys(data[0] || {}).filter(key => key !== xAxisKey);
+
+    const keys = Object.keys(data[0] || {}).filter((key) => key !== xAxisKey);
     return keys.map((key, index) => ({
       dataKey: key,
       name: key,
@@ -213,10 +209,17 @@ export const Chart: React.FC<ChartProps> = ({
     const chartSeries = getDefaultSeries();
     const strokeType = curved ? 'monotone' : 'linear';
 
+    const handleChartClick = (data: unknown) => {
+      const chartData = data as { activePayload?: Array<{ payload: ChartDataPoint }> };
+      if (onClick && chartData && chartData.activePayload && chartData.activePayload[0]) {
+        onClick(chartData.activePayload[0].payload);
+      }
+    };
+
     const commonProps = {
       data,
       margin,
-      onClick,
+      onClick: handleChartClick,
     };
 
     const axisStyle = {
@@ -371,7 +374,7 @@ export const Chart: React.FC<ChartProps> = ({
             {showLegend && <Legend />}
             {chartSeries.map((s, index) => {
               const chartColor = s.color || chartColors[index % chartColors.length];
-              
+
               if (s.type === 'bar') {
                 return (
                   <Bar
@@ -437,9 +440,7 @@ export const Chart: React.FC<ChartProps> = ({
       {renderChart() as React.ReactElement}
     </ResponsiveContainer>
   ) : (
-    <Box sx={{ width, height: getSizeStyles().height }}>
-      {renderChart()}
-    </Box>
+    <Box sx={{ width, height: getSizeStyles().height }}>{renderChart()}</Box>
   );
 
   return (
@@ -478,7 +479,7 @@ export const Chart: React.FC<ChartProps> = ({
           )}
         </Box>
       )}
-      
+
       {chartContent}
     </Paper>
   );

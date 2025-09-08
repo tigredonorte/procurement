@@ -1,9 +1,5 @@
 import React, { forwardRef } from 'react';
-import { 
-  ToggleButton,
-  alpha,
-  keyframes
-} from '@mui/material';
+import { ToggleButton, alpha, keyframes, Theme } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 import { ToggleProps } from './Toggle.types';
@@ -14,64 +10,75 @@ const glowAnimation = keyframes`
   100% { box-shadow: 0 0 5px currentColor; }
 `;
 
-const rippleAnimation = keyframes`
-  0% {
-    transform: scale(0);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(4);
-    opacity: 0;
-  }
-`;
+// Ripple animation - reserved for future use
+// const rippleAnimation = keyframes`
+//   0% {
+//     transform: scale(0);
+//     opacity: 1;
+//   }
+//   100% {
+//     transform: scale(4);
+//     opacity: 0;
+//   }
+// `;
 
 const floatAnimation = keyframes`
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-2px); }
 `;
 
-const getColorFromTheme = (theme: { palette: { primary: { main: string; dark?: string; light?: string }; secondary: { main: string; dark?: string; light?: string }; success: { main: string; dark?: string; light?: string }; warning: { main: string; dark?: string; light?: string }; error: { main: string; dark?: string; light?: string }; grey?: { [key: number]: string } } }, color: string) => {
+const getColorFromTheme = (theme: Theme, color: string) => {
   if (color === 'neutral') {
     return {
       main: theme.palette.grey?.[700] || '#616161',
       dark: theme.palette.grey?.[800] || '#424242',
       light: theme.palette.grey?.[500] || '#9e9e9e',
-      contrastText: '#fff'
+      contrastText: '#fff',
     };
   }
-  
-  const colorMap: Record<string, any> = {
+
+  const colorMap: Record<string, typeof theme.palette.primary> = {
     primary: theme.palette.primary,
     secondary: theme.palette.secondary,
     success: theme.palette.success,
     warning: theme.palette.warning,
     danger: theme.palette.error,
   };
-  
+
   const palette = colorMap[color] || theme.palette.primary;
-  
+
   // Ensure palette has required properties
   return {
     main: palette?.main || theme.palette.primary.main,
     dark: palette?.dark || palette?.main || theme.palette.primary.dark,
     light: palette?.light || palette?.main || theme.palette.primary.light,
-    contrastText: palette?.contrastText || '#fff'
+    contrastText: palette?.contrastText || '#fff',
   };
 };
 
 const StyledToggle = styled(ToggleButton, {
-  shouldForwardProp: (prop) => 
-    !['customVariant', 'customColor', 'customSize', 'glow', 'glass', 'gradient'].includes(prop as string),
-})<{ 
+  shouldForwardProp: (prop) =>
+    !['customVariant', 'customColor', 'customSize', 'glow', 'glass', 'gradient'].includes(
+      prop as string,
+    ),
+})<{
   customVariant?: string;
   customColor?: string;
   customSize?: string;
   glow?: boolean;
   glass?: boolean;
   gradient?: boolean;
-}>(({ theme, customVariant, customColor = 'primary', customSize = 'md', glow, glass, gradient }) => {
+}>(({
+  theme,
+  customVariant,
+  customColor = 'primary',
+  customSize = 'md',
+  glow,
+  glass,
+  gradient,
+}) => {
   const colorPalette = getColorFromTheme(theme, customColor);
-  
+
   const sizeMap = {
     xs: { padding: '4px 8px', fontSize: '0.75rem' },
     sm: { padding: '6px 12px', fontSize: '0.875rem' },
@@ -90,7 +97,7 @@ const StyledToggle = styled(ToggleButton, {
     backgroundColor: 'transparent',
     position: 'relative' as const,
     overflow: 'hidden' as const,
-    
+
     '&::before': {
       content: '""',
       position: 'absolute',
@@ -103,20 +110,20 @@ const StyledToggle = styled(ToggleButton, {
       transform: 'translate(-50%, -50%)',
       transition: 'width 0.4s, height 0.4s',
     },
-    
+
     '&:hover': {
       backgroundColor: alpha(colorPalette.main, 0.08),
       borderColor: colorPalette.main,
       transform: 'translateY(-1px)',
       boxShadow: `0 4px 8px ${alpha(colorPalette.main, 0.15)}`,
       animation: `${floatAnimation} 2s ease-in-out infinite`,
-      
+
       '&::before': {
         width: '100%',
         height: '100%',
       },
     },
-    
+
     '&:active': {
       transform: 'scale(0.98)',
     },
@@ -126,7 +133,7 @@ const StyledToggle = styled(ToggleButton, {
       color: colorPalette.contrastText || '#fff',
       borderColor: colorPalette.main,
       boxShadow: `0 2px 8px ${alpha(colorPalette.main, 0.3)}`,
-      
+
       '&::after': {
         content: '""',
         position: 'absolute',
@@ -137,7 +144,7 @@ const StyledToggle = styled(ToggleButton, {
         background: `linear-gradient(135deg, transparent, ${alpha('#fff', 0.1)})`,
         pointerEvents: 'none',
       },
-      
+
       '&:hover': {
         backgroundColor: colorPalette.dark,
         transform: 'translateY(-2px) scale(1.02)',
@@ -153,7 +160,7 @@ const StyledToggle = styled(ToggleButton, {
       backgroundColor: 'transparent',
       border: `2px solid ${colorPalette.main}`,
       color: colorPalette.main,
-      
+
       '&.Mui-selected': {
         backgroundColor: colorPalette.main,
         color: colorPalette.contrastText || '#fff',
@@ -164,7 +171,7 @@ const StyledToggle = styled(ToggleButton, {
       backgroundColor: alpha(colorPalette.main, 0.1),
       border: 'none',
       color: colorPalette.main,
-      
+
       '&.Mui-selected': {
         backgroundColor: alpha(colorPalette.main, 0.2),
         color: colorPalette.main,
@@ -185,7 +192,7 @@ const StyledToggle = styled(ToggleButton, {
         backgroundSize: '200% 200%',
         animation: `${floatAnimation} 3s ease-in-out infinite`,
         border: 'none',
-        
+
         '&:hover': {
           backgroundPosition: '100% 100%',
         },
@@ -208,17 +215,20 @@ const StyledToggle = styled(ToggleButton, {
 });
 
 export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
-  ({
-    variant = 'default',
-    color = 'primary',
-    size = 'md',
-    icon,
-    glow = false,
-    glass = false,
-    gradient = false,
-    children,
-    ...props
-  }, ref) => {
+  (
+    {
+      variant = 'default',
+      color = 'primary',
+      size = 'md',
+      icon,
+      glow = false,
+      glass = false,
+      gradient = false,
+      children,
+      ...props
+    },
+    ref,
+  ) => {
     return (
       <StyledToggle
         ref={ref}
@@ -234,7 +244,7 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
         {children}
       </StyledToggle>
     );
-  }
+  },
 );
 
 Toggle.displayName = 'Toggle';

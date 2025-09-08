@@ -14,7 +14,7 @@ export default [
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
-        project: false
+        project: false,
       },
       globals: {
         console: 'readonly',
@@ -32,14 +32,15 @@ export default [
         HTMLButtonElement: 'readonly',
         HTMLAnchorElement: 'readonly',
         HTMLSpanElement: 'readonly',
-        HTMLFormElement: 'readonly'
-      }
+        HTMLFormElement: 'readonly',
+        HTMLInputElement: 'readonly',
+      },
     },
     plugins: {
       '@typescript-eslint': typescript,
-      'import': importPlugin,
-      'react': react,
-      'react-hooks': reactHooks
+      import: importPlugin,
+      react: react,
+      'react-hooks': reactHooks,
     },
     rules: {
       ...typescript.configs.recommended.rules,
@@ -50,22 +51,22 @@ export default [
         'warn',
         {
           groups: [['builtin', 'external'], 'internal', ['parent', 'sibling', 'index']],
-          'newlines-between': 'always'
-        }
+          'newlines-between': 'always',
+        },
       ],
       'import/no-unresolved': 'off',
-      'react/react-in-jsx-scope': 'off'
+      'react/react-in-jsx-scope': 'off',
     },
     settings: {
       'import/resolver': {
-        typescript: true
+        typescript: true,
       },
-      'react': {
-        version: 'detect'
-      }
-    }
+      react: {
+        version: 'detect',
+      },
+    },
   },
   {
-    ignores: ['**/dist/**', '**/build/**', '**/coverage/**', '**/.husky/**']
-  }
+    ignores: ['**/dist/**', '**/build/**', '**/coverage/**', '**/.husky/**'],
+  },
 ];

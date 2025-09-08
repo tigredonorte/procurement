@@ -1,10 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  Box,
-  CircularProgress,
-  Typography,
-  Alert,
-} from '@mui/material';
+import { Box, CircularProgress, Typography, Alert } from '@mui/material';
 
 import { InfiniteScrollProps } from './InfiniteScroll.types';
 
@@ -72,7 +67,7 @@ export const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
     }
 
     loadingRef.current = true;
-    
+
     try {
       await loadMore();
     } catch (err) {
@@ -88,27 +83,30 @@ export const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
 
     const getScrollableElement = () => {
       if (!scrollableTarget) return null;
-      
+
       if (typeof scrollableTarget === 'string') {
-        return document.getElementById(scrollableTarget) || 
-               document.querySelector(scrollableTarget);
+        return (
+          document.getElementById(scrollableTarget) || document.querySelector(scrollableTarget)
+        );
       }
-      
+
       return scrollableTarget;
     };
 
     const scrollableElement = getScrollableElement();
     const rootElement = scrollableElement || undefined;
 
-    const observer = new IntersectionObserver(
+    const observer = new window.IntersectionObserver(
       ([entry]) => {
-        setIsIntersecting(entry.isIntersecting);
+        if (entry) {
+          setIsIntersecting(entry.isIntersecting);
+        }
       },
       {
         root: rootElement,
         rootMargin: `${threshold}px`,
         threshold: 0,
-      }
+      },
     );
 
     observer.observe(sentinelRef.current);
@@ -141,7 +139,6 @@ export const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
 
     return baseStyles;
   };
-
 
   const renderSentinel = () => {
     if (!hasMore) {
@@ -176,17 +173,15 @@ export const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
       }}
     >
       {variant === 'reverse' && renderSentinel()}
-      
+
       {variant === 'horizontal' ? (
-        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-          {children}
-        </Box>
+        <Box sx={{ display: 'flex', flexDirection: 'row' }}>{children}</Box>
       ) : (
         children
       )}
-      
+
       {variant !== 'reverse' && renderSentinel()}
-      
+
       {variant === 'horizontal' && renderSentinel()}
     </Box>
   );

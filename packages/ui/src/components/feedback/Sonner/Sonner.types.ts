@@ -27,7 +27,13 @@ export interface SonnerProps {
 }
 
 export interface SonnerToasterProps {
-  position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'top-center' | 'bottom-center';
+  position?:
+    | 'top-left'
+    | 'top-right'
+    | 'bottom-left'
+    | 'bottom-right'
+    | 'top-center'
+    | 'bottom-center';
   hotkey?: string[];
   richColors?: boolean;
   expand?: boolean;
@@ -53,7 +59,7 @@ export interface SonnerContextType {
     options: {
       loading: ReactNode;
       success: ReactNode | ((data: T) => ReactNode);
-      error: ReactNode | ((error: any) => ReactNode);
-    }
+      error: ReactNode | ((error: Error) => ReactNode);
+    },
   ) => Promise<T>;
 }

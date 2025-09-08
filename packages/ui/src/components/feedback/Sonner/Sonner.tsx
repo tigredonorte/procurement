@@ -1,14 +1,14 @@
-import React, { createContext, useContext, useState, useCallback, useEffect, useRef } from 'react';
+import React, { createContext, useContext, useState, useCallback, useRef } from 'react';
 import {
   Box,
   Typography,
   IconButton,
   Button,
-  Slide,
   Collapse,
   useTheme,
   alpha,
   Portal,
+  CircularProgress,
 } from '@mui/material';
 import {
   Close as CloseIcon,
@@ -16,14 +16,9 @@ import {
   Error as ErrorIcon,
   Warning as WarningIcon,
   Info as InfoIcon,
-  CircularProgress,
 } from '@mui/icons-material';
 
-import {
-  SonnerProps,
-  SonnerToasterProps,
-  SonnerContextType,
-} from './Sonner.types';
+import { SonnerProps, SonnerContextType } from './Sonner.types';
 
 const SonnerContext = createContext<SonnerContextType | null>(null);
 
@@ -37,101 +32,125 @@ export const SonnerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [toasts, setToasts] = useState<SonnerItem[]>([]);
   const toastCounter = useRef(0);
 
-  const addToast = useCallback((toast: Omit<SonnerProps, 'id'>, type?: SonnerProps['type']): string => {
-    const id = `sonner-${++toastCounter.current}`;
-    const newToast: SonnerItem = {
-      ...toast,
-      id,
-      type: type || toast.type || 'default',
-      createdAt: Date.now(),
-      visible: true,
-    };
-
-    setToasts(prev => [...prev, newToast]);
-
-    if (!toast.persistent && toast.duration !== 0) {
-      const duration = toast.duration ?? 4000;
-      window.setTimeout(() => {
-        dismiss(id);
-      }, duration);
-    }
-
-    return id;
-  }, []);
-
-  const toast = useCallback((message: React.ReactNode, options?: Partial<SonnerProps>) => {
-    return addToast({ ...options, title: message }, 'default');
-  }, [addToast]);
-
-  const success = useCallback((message: React.ReactNode, options?: Partial<SonnerProps>) => {
-    return addToast({ ...options, title: message }, 'success');
-  }, [addToast]);
-
-  const error = useCallback((message: React.ReactNode, options?: Partial<SonnerProps>) => {
-    return addToast({ ...options, title: message }, 'error');
-  }, [addToast]);
-
-  const warning = useCallback((message: React.ReactNode, options?: Partial<SonnerProps>) => {
-    return addToast({ ...options, title: message }, 'warning');
-  }, [addToast]);
-
-  const info = useCallback((message: React.ReactNode, options?: Partial<SonnerProps>) => {
-    return addToast({ ...options, title: message }, 'info');
-  }, [addToast]);
-
-  const loading = useCallback((message: React.ReactNode, options?: Partial<SonnerProps>) => {
-    return addToast({ ...options, title: message, persistent: true }, 'loading');
-  }, [addToast]);
-
   const dismiss = useCallback((id?: string) => {
     if (id) {
-      setToasts(prev => prev.map(toast => 
-        toast.id === id ? { ...toast, visible: false } : toast
-      ));
-      
+      setToasts((prev) =>
+        prev.map((toast) => (toast.id === id ? { ...toast, visible: false } : toast)),
+      );
+
       window.setTimeout(() => {
-        setToasts(prev => prev.filter(toast => toast.id !== id));
+        setToasts((prev) => prev.filter((toast) => toast.id !== id));
       }, 300);
     } else {
-      setToasts(prev => prev.map(toast => ({ ...toast, visible: false })));
-      
+      setToasts((prev) => prev.map((toast) => ({ ...toast, visible: false })));
+
       window.setTimeout(() => {
         setToasts([]);
       }, 300);
     }
   }, []);
 
-  const promise = useCallback(async <T,>(
-    promiseToResolve: Promise<T>,
-    options: {
-      loading: React.ReactNode;
-      success: React.ReactNode | ((data: T) => React.ReactNode);
-      error: React.ReactNode | ((error: any) => React.ReactNode);
-    }
-  ): Promise<T> => {
-    const toastId = loading(options.loading);
+  const addToast = useCallback(
+    (toast: Omit<SonnerProps, 'id'>, type?: SonnerProps['type']): string => {
+      const id = `sonner-${++toastCounter.current}`;
+      const newToast: SonnerItem = {
+        ...toast,
+        id,
+        type: type || toast.type || 'default',
+        createdAt: Date.now(),
+        visible: true,
+      };
 
-    try {
-      const data = await promiseToResolve;
-      dismiss(toastId);
-      
-      const successMessage = typeof options.success === 'function' 
-        ? options.success(data) 
-        : options.success;
-      
-      success(successMessage);
-      return data;
-    } catch (err) {
-      dismiss(toastId);
-      
-      const errorMessage = typeof options.error === 'function' 
-        ? options.error(err) 
-        : options.error;
-      
-      error(errorMessage);
-      throw err;
-    }
-  }, [loading, success, error, dismiss]);
+      setToasts((prev) => [...prev, newToast]);
+
+      if (!toast.persistent && toast.duration !== 0) {
+        const duration = toast.duration ?? 4000;
+        window.setTimeout(() => {
+          dismiss(id);
+        }, duration);
+      }
+
+      return id;
+    },
+    [dismiss],
+  );
+
+  const toast = useCallback(
+    (message: React.ReactNode, options?: Partial<SonnerProps>) => {
+      return addToast({ ...options, title: message }, 'default');
+    },
+    [addToast],
+  );
+
+  const success = useCallback(
+    (message: React.ReactNode, options?: Partial<SonnerProps>) => {
+      return addToast({ ...options, title: message }, 'success');
+    },
+    [addToast],
+  );
+
+  const error = useCallback(
+    (message: React.ReactNode, options?: Partial<SonnerProps>) => {
+      return addToast({ ...options, title: message }, 'error');
+    },
+    [addToast],
+  );
+
+  const warning = useCallback(
+    (message: React.ReactNode, options?: Partial<SonnerProps>) => {
+      return addToast({ ...options, title: message }, 'warning');
+    },
+    [addToast],
+  );
+
+  const info = useCallback(
+    (message: React.ReactNode, options?: Partial<SonnerProps>) => {
+      return addToast({ ...options, title: message }, 'info');
+    },
+    [addToast],
+  );
+
+  const loading = useCallback(
+    (message: React.ReactNode, options?: Partial<SonnerProps>) => {
+      return addToast({ ...options, title: message, persistent: true }, 'loading');
+    },
+    [addToast],
+  );
+
+  const promise = useCallback(
+    async <T,>(
+      promiseToResolve: Promise<T>,
+      options: {
+        loading: React.ReactNode;
+        success: React.ReactNode | ((data: T) => React.ReactNode);
+        error: React.ReactNode | ((error: Error) => React.ReactNode);
+      },
+    ): Promise<T> => {
+      const toastId = loading(options.loading);
+
+      try {
+        const data = await promiseToResolve;
+        dismiss(toastId);
+
+        const successMessage =
+          typeof options.success === 'function' ? options.success(data) : options.success;
+
+        success(successMessage);
+        return data;
+      } catch (err) {
+        dismiss(toastId);
+
+        const errorMessage =
+          typeof options.error === 'function'
+            ? options.error(err instanceof Error ? err : new Error(String(err)))
+            : options.error;
+
+        error(errorMessage);
+        throw err;
+      }
+    },
+    [loading, success, error, dismiss],
+  );
 
   const contextValue: SonnerContextType = {
     toast,
@@ -178,7 +197,7 @@ const SonnerToast: React.FC<SonnerItem & { onDismiss: (id: string) => void }> = 
 
   const getIcon = () => {
     if (icon) return icon;
-    
+
     switch (type) {
       case 'success':
         return <SuccessIcon sx={{ fontSize: 20, color: 'success.main' }} />;
@@ -201,11 +220,7 @@ const SonnerToast: React.FC<SonnerItem & { onDismiss: (id: string) => void }> = 
       border: `1px solid ${theme.palette.divider}`,
       backgroundColor: theme.palette.background.paper,
       boxShadow: theme.shadows[4],
-      transition: theme.transitions.create([
-        'all',
-        'transform',
-        'opacity',
-      ], {
+      transition: theme.transitions.create(['all', 'transform', 'opacity'], {
         duration: theme.transitions.duration.short,
       }),
       transform: visible ? 'scale(1)' : 'scale(0.95)',
@@ -256,7 +271,7 @@ const SonnerToast: React.FC<SonnerItem & { onDismiss: (id: string) => void }> = 
         }}
       >
         {getIcon()}
-        
+
         <Box sx={{ flex: 1, minWidth: 0 }}>
           {title && (
             <Typography
@@ -270,7 +285,7 @@ const SonnerToast: React.FC<SonnerItem & { onDismiss: (id: string) => void }> = 
               {title}
             </Typography>
           )}
-          
+
           {description && (
             <Typography
               variant="body2"
@@ -282,7 +297,7 @@ const SonnerToast: React.FC<SonnerItem & { onDismiss: (id: string) => void }> = 
               {description}
             </Typography>
           )}
-          
+
           {(action || cancel) && (
             <Box sx={{ display: 'flex', gap: 1, mt: 1.5 }}>
               {action && (
@@ -308,7 +323,7 @@ const SonnerToast: React.FC<SonnerItem & { onDismiss: (id: string) => void }> = 
             </Box>
           )}
         </Box>
-        
+
         {closable && (
           <IconButton
             size="small"
@@ -355,3 +370,36 @@ const SonnerToaster: React.FC<{
     </Portal>
   );
 };
+
+// Create a simple toast instance for use in stories
+const createToastInstance = () => {
+  const methods = {
+    toast: () => 'toast-placeholder',
+    success: () => 'success-placeholder',
+    error: () => 'error-placeholder',
+    warning: () => 'warning-placeholder',
+    info: () => 'info-placeholder',
+    loading: () => 'loading-placeholder',
+    dismiss: () => {
+      // Dismiss functionality placeholder
+    },
+    promise: async <T,>(promise: Promise<T>) => {
+      return promise;
+    },
+  };
+
+  return methods;
+};
+
+// Export toast instance for stories compatibility
+export const toast = createToastInstance();
+
+// Export Toaster as alias for SonnerProvider for stories compatibility
+export const Toaster: React.FC<{
+  children?: React.ReactNode;
+  position?: string;
+  theme?: string;
+  expand?: boolean;
+  richColors?: boolean;
+  closeButton?: boolean;
+}> = ({ children }) => <SonnerProvider>{children}</SonnerProvider>;

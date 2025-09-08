@@ -1,20 +1,27 @@
 import React from 'react';
 import { Box, useTheme, alpha } from '@mui/material';
 
-import { SidebarProps, SidebarHeaderProps, SidebarContentProps, SidebarFooterProps } from './Sidebar.types';
+import {
+  SidebarProps,
+  SidebarHeaderProps,
+  SidebarContentProps,
+  SidebarFooterProps,
+} from './Sidebar.types';
 
 export const Sidebar: React.FC<SidebarProps> = ({
   children,
   variant = 'fixed',
   open = true,
-  onToggle,
+  onToggle: _onToggle,
   width = 280,
   collapsedWidth = 64,
   position = 'left',
   className,
 }) => {
+  // Prevent unused variable warning for onToggle
+  void _onToggle;
   const theme = useTheme();
-  
+
   const isCollapsed = variant === 'collapsible' && !open;
   const currentWidth = isCollapsed ? collapsedWidth : width;
 
@@ -64,26 +71,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
         ...getVariantStyles(),
       }}
     >
-      {React.Children.map(children, (child) => {
-        if (React.isValidElement<{ collapsed?: boolean }>(child)) {
-          // Check if this is one of our Sidebar sub-components that accepts collapsed prop
-          const childType = child.type;
-          if (childType === SidebarHeader || childType === SidebarContent || childType === SidebarFooter) {
-            return React.cloneElement(child, { collapsed: isCollapsed });
-          }
-        }
-        return child;
-      })}
+      {children}
     </Box>
   );
 };
 
-export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
-  children,
-  collapsed = false,
-}) => {
+export const SidebarHeader: React.FC<SidebarHeaderProps> = ({ children }) => {
   const theme = useTheme();
-  
+
   return (
     <Box
       sx={{
@@ -98,10 +93,7 @@ export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
   );
 };
 
-export const SidebarContent: React.FC<SidebarContentProps> = ({
-  children,
-  collapsed = false,
-}) => {
+export const SidebarContent: React.FC<SidebarContentProps> = ({ children }) => {
   return (
     <Box
       sx={{
@@ -114,12 +106,9 @@ export const SidebarContent: React.FC<SidebarContentProps> = ({
   );
 };
 
-export const SidebarFooter: React.FC<SidebarFooterProps> = ({
-  children,
-  collapsed = false,
-}) => {
+export const SidebarFooter: React.FC<SidebarFooterProps> = ({ children }) => {
   const theme = useTheme();
-  
+
   return (
     <Box
       sx={{

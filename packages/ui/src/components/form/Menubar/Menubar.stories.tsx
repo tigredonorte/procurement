@@ -2,26 +2,11 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Box, Typography, IconButton, Avatar } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
-import SaveIcon from '@mui/icons-material/Save';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import UndoIcon from '@mui/icons-material/Undo';
-import RedoIcon from '@mui/icons-material/Redo';
-import ContentCutIcon from '@mui/icons-material/ContentCut';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import ContentPasteIcon from '@mui/icons-material/ContentPaste';
-import FormatBoldIcon from '@mui/icons-material/FormatBold';
-import FormatItalicIcon from '@mui/icons-material/FormatItalic';
-import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
-import SettingsIcon from '@mui/icons-material/Settings';
-import HelpIcon from '@mui/icons-material/Help';
-import InfoIcon from '@mui/icons-material/Info';
-import PersonIcon from '@mui/icons-material/Person';
-import LogoutIcon from '@mui/icons-material/Logout';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 
 import { MenubarItem } from './Menubar.types';
-import { Menubar, MenubarGroup, MenubarSeparator } from './Menubar';
+import { Menubar } from './Menubar';
 
 const meta: Meta<typeof Menubar> = {
   title: 'Form/Menubar',
@@ -57,9 +42,7 @@ const sampleMenuItems: MenubarItem[] = [
   {
     id: 'file',
     label: 'File',
-    children: [
-      { id: 'new', label: 'New', shortcut: '⌘N', action: () => console.log('New clicked') },
-    ],
+    children: [{ id: 'new', label: 'New', shortcut: '⌘N', action: () => {} }],
   },
 ];
 
@@ -165,12 +148,7 @@ export const Sizes: Story = {
           <Typography variant="caption" sx={{ mb: 1, display: 'block' }}>
             Size: {size}
           </Typography>
-          <Menubar
-            items={sampleMenuItems}
-            size={size}
-            variant="bordered"
-            logo={<Logo />}
-          />
+          <Menubar items={sampleMenuItems} size={size} variant="bordered" logo={<Logo />} />
         </Box>
       ))}
     </Box>
@@ -180,19 +158,16 @@ export const Sizes: Story = {
 export const Colors: Story = {
   render: () => (
     <Box>
-      {(['default', 'primary', 'secondary', 'success', 'error', 'warning', 'info'] as const).map((color) => (
-        <Box key={color} sx={{ mb: 2 }}>
-          <Typography variant="caption" sx={{ mb: 1, display: 'block' }}>
-            Color: {color}
-          </Typography>
-          <Menubar
-            items={sampleMenuItems}
-            color={color}
-            variant="elevated"
-            logo={<Logo />}
-          />
-        </Box>
-      ))}
+      {(['default', 'primary', 'secondary', 'success', 'error', 'warning', 'info'] as const).map(
+        (color) => (
+          <Box key={color} sx={{ mb: 2 }}>
+            <Typography variant="caption" sx={{ mb: 1, display: 'block' }}>
+              Color: {color}
+            </Typography>
+            <Menubar items={sampleMenuItems} color={color} variant="elevated" logo={<Logo />} />
+          </Box>
+        ),
+      )}
     </Box>
   ),
 };
@@ -201,12 +176,7 @@ export const Vertical: Story = {
   render: () => (
     <Box sx={{ display: 'flex', height: '100vh' }}>
       <Box sx={{ width: 250, borderRight: 1, borderColor: 'divider' }}>
-        <Menubar
-          items={sampleMenuItems}
-          orientation="vertical"
-          variant="minimal"
-          logo={<Logo />}
-        />
+        <Menubar items={sampleMenuItems} orientation="vertical" variant="minimal" logo={<Logo />} />
       </Box>
       <Box sx={{ flex: 1, p: 3 }}>
         <Typography variant="h6">Content Area</Typography>
@@ -239,7 +209,8 @@ export const Sticky: Story = {
         </Typography>
         {[...Array(20)].map((_, i) => (
           <Typography key={i} variant="body2" paragraph>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua.
           </Typography>
         ))}
       </Box>
@@ -310,8 +281,8 @@ export const CustomContent: Story = {
         id: 'dashboard',
         label: 'Dashboard',
         icon: <HomeIcon fontSize="small" />,
-        action: () => console.log('Dashboard clicked'),
-      }
+        action: () => {},
+      },
     ];
 
     return (

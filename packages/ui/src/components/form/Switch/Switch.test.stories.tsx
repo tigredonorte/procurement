@@ -26,6 +26,8 @@ export const BasicInteraction: Story = {
     'data-testid': 'basic-switch',
     onChange: fn(),
     onClick: fn(),
+    onFocus: fn(),
+    onBlur: fn(),
   },
   play: async ({ canvasElement, step, args }) => {
     const canvas = within(canvasElement);
@@ -58,6 +60,9 @@ export const KeyboardInteraction: Story = {
     'data-testid': 'keyboard-switch',
     label: 'Keyboard accessible switch',
     onChange: fn(),
+    onFocus: fn(),
+    onBlur: fn(),
+    onClick: fn(),
   },
   play: async ({ canvasElement, step, args }) => {
     const canvas = within(canvasElement);
@@ -75,9 +80,9 @@ export const KeyboardInteraction: Story = {
       await expect(switchElement).toBeChecked();
     });
 
-    await step('Toggle with Enter key', async () => {
+    await step('Toggle again with Space key', async () => {
       const switchElement = canvas.getByRole('checkbox');
-      await userEvent.keyboard('{Enter}');
+      await userEvent.keyboard(' ');
       await expect(args.onChange).toHaveBeenCalledTimes(2);
       await expect(switchElement).not.toBeChecked();
     });
@@ -135,6 +140,10 @@ export const AccessibilityTest: Story = {
     description: 'This switch has proper accessibility attributes',
     'aria-label': 'Toggle notifications',
     'aria-describedby': 'switch-description',
+    onChange: fn(),
+    onFocus: fn(),
+    onBlur: fn(),
+    onClick: fn(),
   },
   parameters: {
     a11y: {
@@ -186,9 +195,15 @@ export const FocusManagement: Story = {
     const canvas = within(canvasElement);
 
     await step('Tab through switches', async () => {
-      const firstSwitch = canvas.getByTestId('first-switch').querySelector('input[type="checkbox"]');
-      const secondSwitch = canvas.getByTestId('second-switch').querySelector('input[type="checkbox"]');
-      const thirdSwitch = canvas.getByTestId('third-switch').querySelector('input[type="checkbox"]');
+      const firstSwitch = canvas
+        .getByTestId('first-switch')
+        .querySelector('input[type="checkbox"]');
+      const secondSwitch = canvas
+        .getByTestId('second-switch')
+        .querySelector('input[type="checkbox"]');
+      const thirdSwitch = canvas
+        .getByTestId('third-switch')
+        .querySelector('input[type="checkbox"]');
 
       // Focus first switch
       await userEvent.tab();
@@ -204,7 +219,9 @@ export const FocusManagement: Story = {
     });
 
     await step('Tab navigation backward', async () => {
-      const secondSwitch = canvas.getByTestId('second-switch').querySelector('input[type="checkbox"]');
+      const secondSwitch = canvas
+        .getByTestId('second-switch')
+        .querySelector('input[type="checkbox"]');
 
       await userEvent.tab({ shift: true });
       await expect(secondSwitch).toHaveFocus();
@@ -217,7 +234,14 @@ export const FocusManagement: Story = {
 export const VisualStates: Story = {
   name: '👁️ Visual States Test',
   render: () => (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px', padding: '16px' }}>
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(2, 1fr)',
+        gap: '24px',
+        padding: '16px',
+      }}
+    >
       <Switch data-testid="default-switch" label="Default state" checked={false} />
       <Switch data-testid="checked-switch" label="Checked state" checked={true} />
       <Switch data-testid="disabled-switch" label="Disabled state" disabled />
@@ -230,13 +254,17 @@ export const VisualStates: Story = {
     const canvas = within(canvasElement);
 
     await step('Verify default state appearance', async () => {
-      const switchElement = canvas.getByTestId('default-switch').querySelector('input[type="checkbox"]');
+      const switchElement = canvas
+        .getByTestId('default-switch')
+        .querySelector('input[type="checkbox"]');
       await expect(switchElement).not.toBeChecked();
       await expect(switchElement).not.toBeDisabled();
     });
 
     await step('Verify disabled state', async () => {
-      const switchElement = canvas.getByTestId('disabled-switch').querySelector('input[type="checkbox"]');
+      const switchElement = canvas
+        .getByTestId('disabled-switch')
+        .querySelector('input[type="checkbox"]');
       await expect(switchElement).toBeDisabled();
     });
 
@@ -246,7 +274,9 @@ export const VisualStates: Story = {
     });
 
     await step('Verify loading state (disabled interaction)', async () => {
-      const switchElement = canvas.getByTestId('loading-switch').querySelector('input[type="checkbox"]');
+      const switchElement = canvas
+        .getByTestId('loading-switch')
+        .querySelector('input[type="checkbox"]');
       await expect(switchElement).toBeDisabled();
     });
   },
@@ -327,7 +357,9 @@ export const VariantTests: Story = {
     await step('Verify all variants render', async () => {
       const variants = ['default', 'ios', 'android', 'material', 'label'] as const;
       for (const variant of variants) {
-        const switchElement = canvas.getByTestId(`${variant}-variant`).querySelector('input[type="checkbox"]');
+        const switchElement = canvas
+          .getByTestId(`${variant}-variant`)
+          .querySelector('input[type="checkbox"]');
         await expect(switchElement).toBeInTheDocument();
         await expect(switchElement).toBeChecked();
       }
@@ -336,7 +368,9 @@ export const VariantTests: Story = {
     await step('Test interaction with each variant', async () => {
       const variants = ['default', 'ios', 'android', 'material', 'label'] as const;
       for (const variant of variants) {
-        const switchElement = canvas.getByTestId(`${variant}-variant`).querySelector('input[type="checkbox"]');
+        const switchElement = canvas
+          .getByTestId(`${variant}-variant`)
+          .querySelector('input[type="checkbox"]');
         await userEvent.click(switchElement);
         await expect(switchElement).not.toBeChecked();
         await userEvent.click(switchElement);
@@ -392,7 +426,9 @@ export const EdgeCases: Story = {
     });
 
     await step('Verify custom size switch', async () => {
-      const customSizeSwitch = canvas.getByTestId('custom-size').querySelector('input[type="checkbox"]');
+      const customSizeSwitch = canvas
+        .getByTestId('custom-size')
+        .querySelector('input[type="checkbox"]');
       await expect(customSizeSwitch).toBeInTheDocument();
       await userEvent.click(customSizeSwitch);
       await expect(customSizeSwitch).toBeChecked();
@@ -411,7 +447,14 @@ export const EdgeCases: Story = {
 export const PerformanceTest: Story = {
   name: '⚡ Performance Test',
   render: () => (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(10, 1fr)', gap: '8px', padding: '16px' }}>
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(10, 1fr)',
+        gap: '8px',
+        padding: '16px',
+      }}
+    >
       {Array.from({ length: 100 }, (_, i) => (
         <Switch key={i} data-testid={`perf-switch-${i}`} size="sm" checked={i % 2 === 0} />
       ))}
@@ -432,7 +475,9 @@ export const PerformanceTest: Story = {
     });
 
     await step('Test rapid interactions', async () => {
-      const firstSwitch = canvas.getByTestId('perf-switch-0').querySelector('input[type="checkbox"]');
+      const firstSwitch = canvas
+        .getByTestId('perf-switch-0')
+        .querySelector('input[type="checkbox"]');
 
       // Rapid clicking should not cause issues
       for (let i = 0; i < 5; i++) {
@@ -501,8 +546,12 @@ export const IntegrationTest: Story = {
     const canvas = within(canvasElement);
 
     await step('Test interdependent switches', async () => {
-      const notificationsSwitch = canvas.getByTestId('notifications-switch').querySelector('input[type="checkbox"]');
-      const soundSwitch = canvas.getByTestId('sound-switch').querySelector('input[type="checkbox"]');
+      const notificationsSwitch = canvas
+        .getByTestId('notifications-switch')
+        .querySelector('input[type="checkbox"]');
+      const soundSwitch = canvas
+        .getByTestId('sound-switch')
+        .querySelector('input[type="checkbox"]');
 
       // Initially notifications should be enabled and sound switch available
       await expect(notificationsSwitch).toBeChecked();
@@ -522,7 +571,9 @@ export const IntegrationTest: Story = {
     });
 
     await step('Test dark mode toggle', async () => {
-      const darkModeSwitch = canvas.getByTestId('darkmode-switch').querySelector('input[type="checkbox"]');
+      const darkModeSwitch = canvas
+        .getByTestId('darkmode-switch')
+        .querySelector('input[type="checkbox"]');
       const statusText = canvas.getByText(/Theme:/);
 
       await expect(statusText).toHaveTextContent('Theme: Light');

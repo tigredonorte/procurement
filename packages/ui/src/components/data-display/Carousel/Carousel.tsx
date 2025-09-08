@@ -56,22 +56,8 @@ export const Carousel: React.FC<CarouselProps> = ({
   const theme = useTheme();
   const [activeIndex, setActiveIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
-  const intervalRef = useRef<ReturnType<typeof window.setInterval> | null>(null);
+  const intervalRef = useRef<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (autoPlay && !isHovered && !disabled) {
-      intervalRef.current = window.setInterval(() => {
-        handleNext();
-      }, autoPlayInterval);
-    }
-
-    return () => {
-      if (intervalRef.current) {
-        window.clearInterval(intervalRef.current);
-      }
-    };
-  }, [activeIndex, autoPlay, autoPlayInterval, isHovered, disabled, handleNext]);
 
   const handleNext = useCallback(() => {
     setActiveIndex((prev) => {
@@ -93,25 +79,51 @@ export const Carousel: React.FC<CarouselProps> = ({
     });
   }, [items.length, loop]);
 
-  const handleSelect = useCallback((index: number) => {
-    setActiveIndex(index);
-    onChange?.(index);
-  }, [onChange]);
-
-  const handleItemClick = useCallback((item: CarouselItem, index: number) => {
-    if (!disabled) {
-      onClick?.(item, index);
+  useEffect(() => {
+    if (autoPlay && !isHovered && !disabled) {
+      intervalRef.current = window.setInterval(() => {
+        handleNext();
+      }, autoPlayInterval);
     }
-  }, [disabled, onClick]);
+
+    return () => {
+      if (intervalRef.current) {
+        window.clearInterval(intervalRef.current);
+      }
+    };
+  }, [activeIndex, autoPlay, autoPlayInterval, isHovered, disabled, handleNext]);
+
+  const handleSelect = useCallback(
+    (index: number) => {
+      setActiveIndex(index);
+      onChange?.(index);
+    },
+    [onChange],
+  );
+
+  const handleItemClick = useCallback(
+    (item: CarouselItem, index: number) => {
+      if (!disabled) {
+        onClick?.(item, index);
+      }
+    },
+    [disabled, onClick],
+  );
 
   const getSizeStyles = () => {
     switch (size) {
-      case 'xs': return { height: 200, fontSize: '0.75rem' };
-      case 'sm': return { height: 300, fontSize: '0.875rem' };
-      case 'md': return { height: 400, fontSize: '1rem' };
-      case 'lg': return { height: 500, fontSize: '1.125rem' };
-      case 'xl': return { height: 600, fontSize: '1.25rem' };
-      default: return { height: 400, fontSize: '1rem' };
+      case 'xs':
+        return { height: 200, fontSize: '0.75rem' };
+      case 'sm':
+        return { height: 300, fontSize: '0.875rem' };
+      case 'md':
+        return { height: 400, fontSize: '1rem' };
+      case 'lg':
+        return { height: 500, fontSize: '1.125rem' };
+      case 'xl':
+        return { height: 600, fontSize: '1.25rem' };
+      default:
+        return { height: 400, fontSize: '1rem' };
     }
   };
 
@@ -127,18 +139,22 @@ export const Carousel: React.FC<CarouselProps> = ({
       }),
     };
 
-    const glowStyles = glow ? {
-      boxShadow: `0 0 30px ${alpha(theme.palette[color].main, 0.4)}`,
-    } : {};
+    const glowStyles = glow
+      ? {
+          boxShadow: `0 0 30px ${alpha(theme.palette[color].main, 0.4)}`,
+        }
+      : {};
 
-    const pulseStyles = pulse ? {
-      animation: 'pulse 2s infinite',
-      '@keyframes pulse': {
-        '0%': { boxShadow: `0 0 0 0 ${alpha(theme.palette[color].main, 0.4)}` },
-        '70%': { boxShadow: `0 0 0 20px ${alpha(theme.palette[color].main, 0)}` },
-        '100%': { boxShadow: `0 0 0 0 ${alpha(theme.palette[color].main, 0)}` },
-      },
-    } : {};
+    const pulseStyles = pulse
+      ? {
+          animation: 'pulse 2s infinite',
+          '@keyframes pulse': {
+            '0%': { boxShadow: `0 0 0 0 ${alpha(theme.palette[color].main, 0.4)}` },
+            '70%': { boxShadow: `0 0 0 20px ${alpha(theme.palette[color].main, 0)}` },
+            '100%': { boxShadow: `0 0 0 0 ${alpha(theme.palette[color].main, 0)}` },
+          },
+        }
+      : {};
 
     switch (variant) {
       case 'glass':
@@ -197,7 +213,7 @@ export const Carousel: React.FC<CarouselProps> = ({
 
   const renderSlide = (item: CarouselItem, index: number) => {
     const isActive = index === activeIndex;
-    
+
     const slideContent = (
       <Box
         sx={{
@@ -227,7 +243,7 @@ export const Carousel: React.FC<CarouselProps> = ({
             }}
           />
         )}
-        
+
         <Box
           sx={{
             position: 'relative',
@@ -248,7 +264,7 @@ export const Carousel: React.FC<CarouselProps> = ({
               {item.title}
             </Typography>
           )}
-          
+
           {item.description && (
             <Typography
               variant="body1"
@@ -260,7 +276,7 @@ export const Carousel: React.FC<CarouselProps> = ({
               {item.description}
             </Typography>
           )}
-          
+
           {item.content}
         </Box>
       </Box>
@@ -288,10 +304,14 @@ export const Carousel: React.FC<CarouselProps> = ({
 
   const getTransitionComponent = () => {
     switch (animation) {
-      case 'fade': return Fade;
-      case 'zoom': return Zoom;
-      case 'flip': return Slide;
-      default: return Slide;
+      case 'fade':
+        return Fade;
+      case 'zoom':
+        return Zoom;
+      case 'flip':
+        return Slide;
+      default:
+        return Slide;
     }
   };
 
@@ -406,9 +426,19 @@ export const CarouselIndicators: React.FC<CarouselIndicatorsProps> = ({
       case 'bottom':
         return { bottom: theme.spacing(2), left: '50%', transform: 'translateX(-50%)' };
       case 'left':
-        return { left: theme.spacing(2), top: '50%', transform: 'translateY(-50%)', flexDirection: 'column' };
+        return {
+          left: theme.spacing(2),
+          top: '50%',
+          transform: 'translateY(-50%)',
+          flexDirection: 'column',
+        };
       case 'right':
-        return { right: theme.spacing(2), top: '50%', transform: 'translateY(-50%)', flexDirection: 'column' };
+        return {
+          right: theme.spacing(2),
+          top: '50%',
+          transform: 'translateY(-50%)',
+          flexDirection: 'column',
+        };
       default:
         return { bottom: theme.spacing(2), left: '50%', transform: 'translateX(-50%)' };
     }
@@ -445,12 +475,8 @@ export const CarouselIndicators: React.FC<CarouselIndicatorsProps> = ({
               alignItems: 'center',
               justifyContent: 'center',
               borderRadius: '50%',
-              backgroundColor: isActive
-                ? theme.palette[color].main
-                : 'transparent',
-              color: isActive
-                ? theme.palette[color].contrastText
-                : theme.palette[color].main,
+              backgroundColor: isActive ? theme.palette[color].main : 'transparent',
+              color: isActive ? theme.palette[color].contrastText : theme.palette[color].main,
               border: `1px solid ${theme.palette[color].main}`,
               fontSize: '0.75rem',
               fontWeight: isActive ? 'bold' : 'normal',
@@ -470,9 +496,7 @@ export const CarouselIndicators: React.FC<CarouselIndicatorsProps> = ({
             onClick={() => onSelect(index)}
             sx={{
               p: 0.5,
-              color: isActive
-                ? theme.palette[color].main
-                : alpha(theme.palette[color].main, 0.3),
+              color: isActive ? theme.palette[color].main : alpha(theme.palette[color].main, 0.3),
               transform: isActive ? 'scale(1.2)' : 'scale(1)',
               transition: theme.transitions.create(['transform', 'color']),
             }}
@@ -496,9 +520,7 @@ export const CarouselIndicators: React.FC<CarouselIndicatorsProps> = ({
       }}
     >
       {Array.from({ length: count }).map((_, index) => (
-        <React.Fragment key={index}>
-          {renderIndicator(index)}
-        </React.Fragment>
+        <React.Fragment key={index}>{renderIndicator(index)}</React.Fragment>
       ))}
     </Box>
   );
@@ -580,7 +602,7 @@ export const CarouselArrows: React.FC<CarouselArrowsProps> = ({
       >
         <ArrowBackIosIcon />
       </IconButton>
-      
+
       <IconButton
         onClick={onNext}
         disabled={disabled}
@@ -610,12 +632,18 @@ export const CarouselThumbnails: React.FC<CarouselThumbnailsProps> = ({
 
   const getThumbnailSize = () => {
     switch (size) {
-      case 'xs': return 40;
-      case 'sm': return 60;
-      case 'md': return 80;
-      case 'lg': return 100;
-      case 'xl': return 120;
-      default: return 60;
+      case 'xs':
+        return 40;
+      case 'sm':
+        return 60;
+      case 'md':
+        return 80;
+      case 'lg':
+        return 100;
+      case 'xl':
+        return 120;
+      default:
+        return 60;
     }
   };
 
@@ -643,9 +671,7 @@ export const CarouselThumbnails: React.FC<CarouselThumbnailsProps> = ({
             width: getThumbnailSize(),
             height: getThumbnailSize(),
             border: `2px solid ${
-              index === activeIndex
-                ? theme.palette.primary.main
-                : 'transparent'
+              index === activeIndex ? theme.palette.primary.main : 'transparent'
             }`,
             borderRadius: 1,
             overflow: 'hidden',

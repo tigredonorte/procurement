@@ -47,7 +47,11 @@ export const WithCustomTrigger: Story = {
   args: {
     title: 'User Information',
     description: 'Additional details about this user.',
-    trigger: <Button variant="contained" startIcon={<Person />}>User Profile</Button>,
+    trigger: (
+      <Button variant="contained" startIcon={<Person />}>
+        User Profile
+      </Button>
+    ),
   },
 };
 
@@ -91,7 +95,11 @@ export const UserProfile: Story = {
       avatar="https://images.unsplash.com/photo-1494790108755-2616b612b789?w=150&h=150&fit=crop&crop=face"
       maxWidth={300}
     >
-      <Typography variant="body2" color="primary" sx={{ cursor: 'pointer', textDecoration: 'underline' }}>
+      <Typography
+        variant="body2"
+        color="primary"
+        sx={{ cursor: 'pointer', textDecoration: 'underline' }}
+      >
         @sarah_johnson
       </Typography>
       <Box sx={{ mt: 2 }}>
@@ -100,8 +108,8 @@ export const UserProfile: Story = {
           <Chip icon={<Star />} label="Pro" size="small" color="warning" />
         </Stack>
         <Typography variant="body2" sx={{ mt: 2 }}>
-          Building amazing products and leading great teams. 
-          Passionate about user experience and innovation.
+          Building amazing products and leading great teams. Passionate about user experience and
+          innovation.
         </Typography>
         <Box sx={{ mt: 2, display: 'flex', gap: 2 }}>
           <Typography variant="caption">
@@ -126,10 +134,14 @@ export const ProductInfo: Story = {
     >
       <Box sx={{ p: 2, border: 1, borderColor: 'divider', borderRadius: 1, cursor: 'pointer' }}>
         <Typography variant="h6">Pro Plan</Typography>
-        <Typography variant="body2" color="text.secondary">$29/month</Typography>
+        <Typography variant="body2" color="text.secondary">
+          $29/month
+        </Typography>
       </Box>
       <Box sx={{ mt: 2 }}>
-        <Typography variant="body2" sx={{ mb: 1 }}>Features included:</Typography>
+        <Typography variant="body2" sx={{ mb: 1 }}>
+          Features included:
+        </Typography>
         <ul style={{ margin: 0, paddingLeft: 20, fontSize: '0.875rem' }}>
           <li>Unlimited projects</li>
           <li>Advanced analytics</li>
@@ -148,7 +160,11 @@ export const WithGlow: Story = {
     glow: true,
     title: 'Glowing Card',
     description: 'This card has a beautiful glow effect.',
-    children: <Button variant="contained" color="primary">Glow Effect</Button>,
+    children: (
+      <Button variant="contained" color="primary">
+        Glow Effect
+      </Button>
+    ),
   },
 };
 
@@ -158,7 +174,11 @@ export const WithPulse: Story = {
     pulse: true,
     title: 'Pulsing Card',
     description: 'This card pulses to grab attention.',
-    children: <Button variant="contained" color="warning">Pulse Effect</Button>,
+    children: (
+      <Button variant="contained" color="warning">
+        Pulse Effect
+      </Button>
+    ),
   },
 };
 
@@ -169,7 +189,11 @@ export const WithGlowAndPulse: Story = {
     pulse: true,
     title: 'Premium Feature',
     description: 'This card combines both glow and pulse effects.',
-    children: <Button variant="contained" color="secondary">Combined Effects</Button>,
+    children: (
+      <Button variant="contained" color="secondary">
+        Combined Effects
+      </Button>
+    ),
   },
 };
 
@@ -208,27 +232,32 @@ export const CustomDelays: Story = {
 // Complex content
 export const ComplexContent: Story = {
   render: () => (
-    <HoverCard
-      variant="detailed"
-      maxWidth={350}
-    >
+    <HoverCard variant="detailed" maxWidth={350}>
       <Typography variant="body2" color="primary" sx={{ cursor: 'pointer' }}>
         View Analytics Dashboard
       </Typography>
       <Box sx={{ p: 2, bgcolor: 'grey.50', borderRadius: 1, mt: 2 }}>
-        <Typography variant="h6" sx={{ mb: 2 }}>Monthly Stats</Typography>
+        <Typography variant="h6" sx={{ mb: 2 }}>
+          Monthly Stats
+        </Typography>
         <Stack spacing={1}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography variant="body2">Total Views:</Typography>
-            <Typography variant="body2" fontWeight={600}>12,345</Typography>
+            <Typography variant="body2" fontWeight={600}>
+              12,345
+            </Typography>
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography variant="body2">Unique Visitors:</Typography>
-            <Typography variant="body2" fontWeight={600}>8,901</Typography>
+            <Typography variant="body2" fontWeight={600}>
+              8,901
+            </Typography>
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography variant="body2">Conversion Rate:</Typography>
-            <Typography variant="body2" fontWeight={600} color="success.main">4.2%</Typography>
+            <Typography variant="body2" fontWeight={600} color="success.main">
+              4.2%
+            </Typography>
           </Box>
         </Stack>
         <Button fullWidth variant="outlined" size="small" sx={{ mt: 2 }}>
@@ -236,6 +265,140 @@ export const ComplexContent: Story = {
         </Button>
       </Box>
     </HoverCard>
+  ),
+};
+
+// Disabled state
+export const DisabledState: Story = {
+  args: {
+    variant: 'default',
+    disabled: true,
+    title: 'Disabled HoverCard',
+    description: 'This hover card is disabled and will not appear.',
+    children: <Button disabled>Disabled Button</Button>,
+  },
+};
+
+// Loading state
+export const LoadingState: Story = {
+  args: {
+    variant: 'default',
+    loading: true,
+    children: <Button>Loading Content</Button>,
+  },
+};
+
+// Loading with custom component
+export const CustomLoadingState: Story = {
+  args: {
+    variant: 'default',
+    loading: true,
+    loadingComponent: (
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Typography>Custom loading message...</Typography>
+      </Box>
+    ),
+    children: <Button>Custom Loading</Button>,
+  },
+};
+
+// Different placements
+export const Placements: Story = {
+  render: () => (
+    <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 4, p: 8 }}>
+      <HoverCard
+        title="Top Placement"
+        description="Appears above the trigger"
+        placement="top"
+        showArrow={true}
+        enterDelay={100}
+      >
+        <Button variant="outlined">Top</Button>
+      </HoverCard>
+      <HoverCard
+        title="Bottom Placement"
+        description="Appears below the trigger"
+        placement="bottom"
+        showArrow={true}
+        enterDelay={100}
+      >
+        <Button variant="outlined">Bottom</Button>
+      </HoverCard>
+      <HoverCard
+        title="Left Placement"
+        description="Appears to the left"
+        placement="left"
+        showArrow={true}
+        enterDelay={100}
+      >
+        <Button variant="outlined">Left</Button>
+      </HoverCard>
+      <HoverCard
+        title="Right Placement"
+        description="Appears to the right"
+        placement="right"
+        showArrow={true}
+        enterDelay={100}
+      >
+        <Button variant="outlined">Right</Button>
+      </HoverCard>
+    </Box>
+  ),
+};
+
+// Different animations
+export const Animations: Story = {
+  render: () => (
+    <Stack direction="row" spacing={2}>
+      <HoverCard
+        title="Fade Animation"
+        description="Fades in smoothly"
+        animation="fade"
+        enterDelay={100}
+      >
+        <Button variant="outlined">Fade</Button>
+      </HoverCard>
+      <HoverCard
+        title="Scale Animation"
+        description="Scales up from center"
+        animation="scale"
+        enterDelay={100}
+      >
+        <Button variant="outlined">Scale</Button>
+      </HoverCard>
+      <HoverCard
+        title="Slide Up"
+        description="Slides up from below"
+        animation="slide-up"
+        enterDelay={100}
+      >
+        <Button variant="outlined">Slide Up</Button>
+      </HoverCard>
+      <HoverCard
+        title="Slide Down"
+        description="Slides down from above"
+        animation="slide-down"
+        enterDelay={100}
+      >
+        <Button variant="outlined">Slide Down</Button>
+      </HoverCard>
+      <HoverCard
+        title="Slide Left"
+        description="Slides from the right"
+        animation="slide-left"
+        enterDelay={100}
+      >
+        <Button variant="outlined">Slide Left</Button>
+      </HoverCard>
+      <HoverCard
+        title="Slide Right"
+        description="Slides from the left"
+        animation="slide-right"
+        enterDelay={100}
+      >
+        <Button variant="outlined">Slide Right</Button>
+      </HoverCard>
+    </Stack>
   ),
 };
 
@@ -256,8 +419,8 @@ export const InlineText: Story = {
         >
           hover cards
         </Typography>
-      </HoverCard>
-      {' '}to see additional information without navigating away from the current page.
+      </HoverCard>{' '}
+      to see additional information without navigating away from the current page.
     </Typography>
   ),
 };

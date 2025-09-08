@@ -16,5 +16,5 @@ export interface CheckboxProps extends Omit<MuiCheckboxProps, 'variant'> {
   onClick?: MouseEventHandler<HTMLButtonElement>;
   onFocus?: FocusEventHandler<HTMLButtonElement>;
   onBlur?: FocusEventHandler<HTMLButtonElement>;
-  onChange?: (event: ChangeEvent<HTMLInputElement>, checked: boolean) => void;
+  onChange?: (event: ChangeEvent<HTMLElement>, checked: boolean) => void;
 }

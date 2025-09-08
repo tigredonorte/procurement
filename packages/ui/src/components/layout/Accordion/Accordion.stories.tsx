@@ -42,8 +42,8 @@ export const Default: Story = {
       </AccordionSummary>
       <AccordionDetails>
         <Typography>
-          This is the content of the accordion. It can contain any React elements,
-          including text, forms, images, or other components.
+          This is the content of the accordion. It can contain any React elements, including text,
+          forms, images, or other components.
         </Typography>
       </AccordionDetails>
     </Accordion>
@@ -54,7 +54,9 @@ export const AllVariants: Story = {
   render: () => (
     <Stack spacing={3}>
       <Box>
-        <Typography variant="h6" gutterBottom>Default Variant</Typography>
+        <Typography variant="h6" gutterBottom>
+          Default Variant
+        </Typography>
         <Accordion variant="default">
           <AccordionSummary expandIcon={<ExpandMore />}>
             <Typography>Default Accordion</Typography>
@@ -68,7 +70,9 @@ export const AllVariants: Story = {
       </Box>
 
       <Box>
-        <Typography variant="h6" gutterBottom>Glass Variant</Typography>
+        <Typography variant="h6" gutterBottom>
+          Glass Variant
+        </Typography>
         <Accordion variant="glass">
           <AccordionSummary expandIcon={<ExpandMore />}>
             <Typography>Glass Accordion</Typography>
@@ -82,21 +86,23 @@ export const AllVariants: Story = {
       </Box>
 
       <Box>
-        <Typography variant="h6" gutterBottom>Bordered Variant</Typography>
+        <Typography variant="h6" gutterBottom>
+          Bordered Variant
+        </Typography>
         <Accordion variant="bordered">
           <AccordionSummary expandIcon={<ExpandMore />}>
             <Typography>Bordered Accordion</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography>
-              The bordered variant has clean borders and rounded corners.
-            </Typography>
+            <Typography>The bordered variant has clean borders and rounded corners.</Typography>
           </AccordionDetails>
         </Accordion>
       </Box>
 
       <Box>
-        <Typography variant="h6" gutterBottom>Separated Variant</Typography>
+        <Typography variant="h6" gutterBottom>
+          Separated Variant
+        </Typography>
         <Accordion variant="separated">
           <AccordionSummary expandIcon={<ExpandMore />}>
             <Typography>Separated Accordion</Typography>
@@ -122,12 +128,15 @@ export const MultipleAccordions: Story = {
         </AccordionSummary>
         <AccordionDetails>
           <Typography gutterBottom>
-            Configure general application settings including language, timezone, and theme preferences.
+            Configure general application settings including language, timezone, and theme
+            preferences.
           </Typography>
         </AccordionDetails>
         <AccordionActions>
           <Button size="small">Reset</Button>
-          <Button size="small" variant="contained">Save</Button>
+          <Button size="small" variant="contained">
+            Save
+          </Button>
         </AccordionActions>
       </Accordion>
 
@@ -138,13 +147,17 @@ export const MultipleAccordions: Story = {
         </AccordionSummary>
         <AccordionDetails>
           <Typography gutterBottom>
-            Manage your security preferences including two-factor authentication,
-            password requirements, and login alerts.
+            Manage your security preferences including two-factor authentication, password
+            requirements, and login alerts.
           </Typography>
         </AccordionDetails>
         <AccordionActions>
-          <Button size="small" color="error">Disable</Button>
-          <Button size="small" variant="contained">Update</Button>
+          <Button size="small" color="error">
+            Disable
+          </Button>
+          <Button size="small" variant="contained">
+            Update
+          </Button>
         </AccordionActions>
       </Accordion>
 
@@ -160,7 +173,9 @@ export const MultipleAccordions: Story = {
         </AccordionDetails>
         <AccordionActions>
           <Button size="small">Test</Button>
-          <Button size="small" variant="contained">Apply</Button>
+          <Button size="small" variant="contained">
+            Apply
+          </Button>
         </AccordionActions>
       </Accordion>
     </Stack>
@@ -168,63 +183,58 @@ export const MultipleAccordions: Story = {
 };
 
 const ControlledAccordionComponent = () => {
-const [expanded, setExpanded] = useState<string | false>(false);
+  const [expanded, setExpanded] = useState<string | false>(false);
 
-    const handleChange = (panel: string) => (
-      event: React.SyntheticEvent,
-      isExpanded: boolean
-    ) => {
-      setExpanded(isExpanded ? panel : false);
-    };
+  const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    setExpanded(isExpanded ? panel : false);
+  };
 
-    return (
-      <Stack spacing={1}>
-        <Accordion 
-          variant="separated" 
-          expanded={expanded === 'panel1'} 
-          onChange={handleChange('panel1')}
-        >
-          <AccordionSummary expandIcon={<ExpandMore />}>
-            <Typography>Controlled Panel 1</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              This accordion is controlled - only one panel can be open at a time.
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
+  return (
+    <Stack spacing={1}>
+      <Accordion
+        variant="separated"
+        expanded={expanded === 'panel1'}
+        onChange={handleChange('panel1')}
+      >
+        <AccordionSummary expandIcon={<ExpandMore />}>
+          <Typography>Controlled Panel 1</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            This accordion is controlled - only one panel can be open at a time.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
 
-        <Accordion 
-          variant="separated"
-          expanded={expanded === 'panel2'} 
-          onChange={handleChange('panel2')}
-        >
-          <AccordionSummary expandIcon={<ExpandMore />}>
-            <Typography>Controlled Panel 2</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              Opening this panel will close the other one automatically.
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
+      <Accordion
+        variant="separated"
+        expanded={expanded === 'panel2'}
+        onChange={handleChange('panel2')}
+      >
+        <AccordionSummary expandIcon={<ExpandMore />}>
+          <Typography>Controlled Panel 2</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>Opening this panel will close the other one automatically.</Typography>
+        </AccordionDetails>
+      </Accordion>
 
-        <Accordion 
-          variant="separated"
-          expanded={expanded === 'panel3'} 
-          onChange={handleChange('panel3')}
-        >
-          <AccordionSummary expandIcon={<ExpandMore />}>
-            <Typography>Controlled Panel 3</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              This demonstrates controlled accordion behavior with state management.
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
-      </Stack>
-    );
+      <Accordion
+        variant="separated"
+        expanded={expanded === 'panel3'}
+        onChange={handleChange('panel3')}
+      >
+        <AccordionSummary expandIcon={<ExpandMore />}>
+          <Typography>Controlled Panel 3</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            This demonstrates controlled accordion behavior with state management.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+    </Stack>
+  );
 };
 
 export const ControlledAccordion: Story = {
@@ -241,26 +251,34 @@ export const ComplexContent: Story = {
         <Stack spacing={2}>
           <Box display="grid" gridTemplateColumns="1fr 1fr" gap={2}>
             <Box>
-              <Typography variant="subtitle2" gutterBottom>Progress</Typography>
-              <Box sx={{ 
-                height: 8, 
-                backgroundColor: 'grey.200', 
-                borderRadius: 1,
-                position: 'relative'
-              }}>
-                <Box sx={{
-                  width: '75%',
-                  height: '100%',
-                  backgroundColor: 'primary.main',
-                  borderRadius: 1
-                }} />
+              <Typography variant="subtitle2" gutterBottom>
+                Progress
+              </Typography>
+              <Box
+                sx={{
+                  height: 8,
+                  backgroundColor: 'grey.200',
+                  borderRadius: 1,
+                  position: 'relative',
+                }}
+              >
+                <Box
+                  sx={{
+                    width: '75%',
+                    height: '100%',
+                    backgroundColor: 'primary.main',
+                    borderRadius: 1,
+                  }}
+                />
               </Box>
               <Typography variant="body2" color="text.secondary" mt={1}>
                 75% Complete
               </Typography>
             </Box>
             <Box>
-              <Typography variant="subtitle2" gutterBottom>Team Members</Typography>
+              <Typography variant="subtitle2" gutterBottom>
+                Team Members
+              </Typography>
               <Stack direction="row" spacing={1}>
                 {['A', 'B', 'C', 'D'].map((letter) => (
                   <Box
@@ -274,7 +292,7 @@ export const ComplexContent: Story = {
                       alignItems: 'center',
                       justifyContent: 'center',
                       color: 'white',
-                      fontSize: '0.875rem'
+                      fontSize: '0.875rem',
                     }}
                   >
                     {letter}
@@ -284,14 +302,18 @@ export const ComplexContent: Story = {
             </Box>
           </Box>
           <Typography variant="body2" color="text.secondary">
-            This accordion contains complex content including progress indicators,
-            team member avatars, and structured layouts.
+            This accordion contains complex content including progress indicators, team member
+            avatars, and structured layouts.
           </Typography>
         </Stack>
       </AccordionDetails>
       <AccordionActions>
-        <Button startIcon={<Help />} size="small">Help</Button>
-        <Button variant="contained" size="small">View Details</Button>
+        <Button startIcon={<Help />} size="small">
+          Help
+        </Button>
+        <Button variant="contained" size="small">
+          View Details
+        </Button>
       </AccordionActions>
     </Accordion>
   ),
@@ -310,18 +332,119 @@ export const DisabledAccordion: Story = {
           </Typography>
         </AccordionDetails>
       </Accordion>
-      
+
       <Accordion variant="glass">
         <AccordionSummary expandIcon={<ExpandMore />} disabled>
           <Typography>Disabled Summary Only</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Only the summary is disabled, but if opened programmatically, 
-            the content would be accessible.
+            Only the summary is disabled, but if opened programmatically, the content would be
+            accessible.
           </Typography>
         </AccordionDetails>
       </Accordion>
     </Stack>
   ),
+};
+
+export const HoverState: Story = {
+  render: () => (
+    <Stack spacing={2}>
+      <Typography variant="body2" color="text.secondary">
+        Hover over the accordions to see the hover effects for each variant
+      </Typography>
+      <Accordion variant="default">
+        <AccordionSummary expandIcon={<ExpandMore />}>
+          <Typography>Default Hover Effect</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>Standard Material-UI hover state</Typography>
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion variant="glass">
+        <AccordionSummary expandIcon={<ExpandMore />}>
+          <Typography>Glass Hover Effect</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>Enhanced glass effect with elevation on hover</Typography>
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion variant="bordered">
+        <AccordionSummary expandIcon={<ExpandMore />}>
+          <Typography>Bordered Hover Effect</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>Border color and shadow transition on hover</Typography>
+        </AccordionDetails>
+      </Accordion>
+    </Stack>
+  ),
+};
+
+export const EmptyState: Story = {
+  render: () => (
+    <Stack spacing={2}>
+      <Accordion variant="bordered">
+        <AccordionSummary expandIcon={<ExpandMore />}>
+          <Typography>Empty Content Accordion</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          {/* Intentionally empty to test empty state handling */}
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion variant="glass">
+        <AccordionSummary expandIcon={<ExpandMore />}>
+          <Typography>Minimal Content</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Box
+            sx={{ minHeight: 50, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          >
+            <Typography variant="caption" color="text.secondary">
+              No data available
+            </Typography>
+          </Box>
+        </AccordionDetails>
+      </Accordion>
+    </Stack>
+  ),
+};
+
+export const LoadingState: Story = {
+  render: () => {
+    const LoadingComponent = () => {
+      const [loading, setLoading] = useState(true);
+
+      return (
+        <Stack spacing={2}>
+          <Button onClick={() => setLoading(!loading)} variant="outlined" size="small">
+            Toggle Loading State
+          </Button>
+
+          <Accordion variant="separated" defaultExpanded>
+            <AccordionSummary expandIcon={<ExpandMore />}>
+              <Typography>Dynamic Content Accordion</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              {loading ? (
+                <Box sx={{ p: 3, textAlign: 'center' }}>
+                  <Typography variant="body2" color="text.secondary">
+                    Loading content...
+                  </Typography>
+                </Box>
+              ) : (
+                <Typography>Content has been loaded successfully!</Typography>
+              )}
+            </AccordionDetails>
+          </Accordion>
+        </Stack>
+      );
+    };
+
+    return <LoadingComponent />;
+  },
 };

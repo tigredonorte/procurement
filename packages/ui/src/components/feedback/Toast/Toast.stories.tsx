@@ -11,7 +11,8 @@ const meta: Meta<typeof Toast> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'A flexible toast notification system with multiple variants and promise support.',
+        component:
+          'A flexible toast notification system with multiple variants and promise support.',
       },
     },
   },
@@ -62,7 +63,7 @@ const ToastDemo = () => {
 
   const showInfo = () => {
     addToast({
-      message: 'Info: Here\'s some helpful information.',
+      message: "Info: Here's some helpful information.",
       variant: 'info',
     });
   };
@@ -103,7 +104,11 @@ const ToastDemo = () => {
   const showPromise = async () => {
     const mockPromise = new Promise((resolve, reject) => {
       window.setTimeout(() => {
-        Math.random() > 0.5 ? resolve('Success!') : reject(new Error('Failed!'));
+        if (Math.random() > 0.5) {
+          resolve('Success!');
+        } else {
+          reject(new Error('Failed!'));
+        }
       }, 2000);
     });
 
@@ -113,7 +118,7 @@ const ToastDemo = () => {
         success: 'Request completed successfully!',
         error: 'Request failed. Please try again.',
       });
-    } catch (error) {
+    } catch {
       // Error is already handled by the promise function
     }
   };
@@ -123,13 +128,21 @@ const ToastDemo = () => {
       <Typography variant="h6" gutterBottom>
         Toast Notifications Demo
       </Typography>
-      
+
       <ButtonGroup orientation="vertical" variant="outlined" fullWidth>
         <Button onClick={showDefault}>Default Toast</Button>
-        <Button onClick={showSuccess} color="success">Success Toast</Button>
-        <Button onClick={showError} color="error">Error Toast</Button>
-        <Button onClick={showWarning} color="warning">Warning Toast</Button>
-        <Button onClick={showInfo} color="info">Info Toast</Button>
+        <Button onClick={showSuccess} color="success">
+          Success Toast
+        </Button>
+        <Button onClick={showError} color="error">
+          Error Toast
+        </Button>
+        <Button onClick={showWarning} color="warning">
+          Warning Toast
+        </Button>
+        <Button onClick={showInfo} color="info">
+          Info Toast
+        </Button>
       </ButtonGroup>
 
       <ButtonGroup orientation="vertical" variant="contained" fullWidth>
@@ -147,40 +160,51 @@ export const Interactive: Story = {
 };
 
 const BasicTypesComponent = () => {
-const [showToasts, setShowToasts] = useState(false);
-    
-    useEffect(() => {
-      if (!showToasts) return;
-      
-      const { addToast } = useToast();
-      
-      // Show different types with delays
-      window.setTimeout(() => addToast({ message: 'Default notification', variant: 'default' }), 100);
-      window.setTimeout(() => addToast({ message: 'Success! Task completed.', variant: 'success' }), 600);
-      window.setTimeout(() => addToast({ message: 'Error: Something went wrong.', variant: 'error' }), 1100);
-      window.setTimeout(() => addToast({ message: 'Warning: Please check this.', variant: 'warning' }), 1600);
-      window.setTimeout(() => addToast({ message: 'Info: Helpful information.', variant: 'info' }), 2100);
-      
-      setShowToasts(false);
-    }, [showToasts]);
+  const [showToasts, setShowToasts] = useState(false);
+  const { addToast } = useToast();
 
-    return (
-      <Button variant="contained" onClick={() => setShowToasts(true)}>
-        Show All Toast Types
-      </Button>
+  useEffect(() => {
+    if (!showToasts) return;
+
+    // Show different types with delays
+    window.setTimeout(() => addToast({ message: 'Default notification', variant: 'default' }), 100);
+    window.setTimeout(
+      () => addToast({ message: 'Success! Task completed.', variant: 'success' }),
+      600,
     );
+    window.setTimeout(
+      () => addToast({ message: 'Error: Something went wrong.', variant: 'error' }),
+      1100,
+    );
+    window.setTimeout(
+      () => addToast({ message: 'Warning: Please check this.', variant: 'warning' }),
+      1600,
+    );
+    window.setTimeout(
+      () => addToast({ message: 'Info: Helpful information.', variant: 'info' }),
+      2100,
+    );
+
+    setShowToasts(false);
+  }, [showToasts, addToast]);
+
+  return (
+    <Button variant="contained" onClick={() => setShowToasts(true)}>
+      Show All Toast Types
+    </Button>
+  );
 };
 
 export const BasicTypes: Story = {
   render: () => <BasicTypesComponent />,
 };
 
-export const GlassMorphism: Story = {
-  render: () => {
-    const { addToast } = useToast();
+const GlassMorphismComponent = () => {
+  const { addToast } = useToast();
 
-    return (
-      <Box sx={{ 
+  return (
+    <Box
+      sx={{
         minHeight: '300px',
         background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
         p: 4,
@@ -188,82 +212,90 @@ export const GlassMorphism: Story = {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-      }}>
-        <Button 
-          variant="contained" 
-          onClick={() => addToast({
+      }}
+    >
+      <Button
+        variant="contained"
+        onClick={() =>
+          addToast({
             message: 'Glass morphism toast with blur effects',
             variant: 'success',
             glass: true,
             duration: 8000,
-          })}
-          sx={{ 
-            backgroundColor: 'rgba(255,255,255,0.2)',
-            backdropFilter: 'blur(10px)',
-            '&:hover': {
-              backgroundColor: 'rgba(255,255,255,0.3)',
-            }
-          }}
-        >
-          Show Glass Toast
-        </Button>
-      </Box>
-    );
-  },
+          })
+        }
+        sx={{
+          backgroundColor: 'rgba(255,255,255,0.2)',
+          backdropFilter: 'blur(10px)',
+          '&:hover': {
+            backgroundColor: 'rgba(255,255,255,0.3)',
+          },
+        }}
+      >
+        Show Glass Toast
+      </Button>
+    </Box>
+  );
+};
+
+export const GlassMorphism: Story = {
+  render: () => <GlassMorphismComponent />,
+};
+
+const PromiseHandlingComponent = () => {
+  const { promise } = useToast();
+
+  const handleQuickPromise = () => {
+    const quickPromise = new Promise((resolve) => {
+      window.setTimeout(() => resolve('Quick success!'), 1000);
+    });
+
+    promise(quickPromise, {
+      loading: 'Quick loading...',
+      success: 'Done in 1 second!',
+      error: 'Quick failed',
+    });
+  };
+
+  const handleSlowPromise = () => {
+    const slowPromise = new Promise((resolve) => {
+      window.setTimeout(() => resolve('Slow success!'), 3000);
+    });
+
+    promise(slowPromise, {
+      loading: 'This will take 3 seconds...',
+      success: (data) => `Completed: ${data}`,
+      error: 'Slow operation failed',
+    });
+  };
+
+  const handleFailingPromise = () => {
+    const failingPromise = new Promise((_, reject) => {
+      window.setTimeout(() => reject(new Error('Simulated failure')), 1500);
+    });
+
+    promise(failingPromise, {
+      loading: 'Processing (will fail)...',
+      success: "This won't show",
+      error: (error: Error) => `Error: ${error.message}`,
+    });
+  };
+
+  return (
+    <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+      <Button variant="contained" onClick={handleQuickPromise}>
+        Quick Promise (1s)
+      </Button>
+      <Button variant="contained" onClick={handleSlowPromise}>
+        Slow Promise (3s)
+      </Button>
+      <Button variant="outlined" color="error" onClick={handleFailingPromise}>
+        Failing Promise
+      </Button>
+    </Box>
+  );
 };
 
 export const PromiseHandling: Story = {
-  render: () => {
-    const { promise } = useToast();
-
-    const handleQuickPromise = () => {
-      const quickPromise = new Promise(resolve => {
-        window.setTimeout(() => resolve('Quick success!'), 1000);
-      });
-
-      promise(quickPromise, {
-        loading: 'Quick loading...',
-        success: 'Done in 1 second!',
-        error: 'Quick failed',
-      });
-    };
-
-    const handleSlowPromise = () => {
-      const slowPromise = new Promise(resolve => {
-        window.setTimeout(() => resolve('Slow success!'), 3000);
-      });
-
-      promise(slowPromise, {
-        loading: 'This will take 3 seconds...',
-        success: (data) => `Completed: ${data}`,
-        error: 'Slow operation failed',
-      });
-    };
-
-    const handleFailingPromise = () => {
-      const failingPromise = new Promise((_, reject) => {
-        window.setTimeout(() => reject(new Error('Simulated failure')), 1500);
-      });
-
-      promise(failingPromise, {
-        loading: 'Processing (will fail)...',
-        success: 'This won\'t show',
-        error: (error) => `Error: ${error.message}`,
-      });
-    };
-
-    return (
-      <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-        <Button variant="contained" onClick={handleQuickPromise}>
-          Quick Promise (1s)
-        </Button>
-        <Button variant="contained" onClick={handleSlowPromise}>
-          Slow Promise (3s)
-        </Button>
-        <Button variant="outlined" color="error" onClick={handleFailingPromise}>
-          Failing Promise
-        </Button>
-      </Box>
-    );
-  },
+  render: () => <PromiseHandlingComponent />,
 };

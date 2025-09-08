@@ -30,7 +30,8 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'A versatile dropdown menu component with support for icons, shortcuts, dividers, and multiple variants.',
+        component:
+          'A versatile dropdown menu component with support for icons, shortcuts, dividers, and multiple variants.',
       },
     },
   },
@@ -52,7 +53,7 @@ const meta = {
     },
     showIconSpace: {
       control: 'boolean',
-      description: 'Whether to reserve space for icons even when items don\'t have them',
+      description: "Whether to reserve space for icons even when items don't have them",
     },
   },
 } satisfies Meta<typeof DropdownMenu>;
@@ -172,7 +173,11 @@ export const WithHeaders: Story = {
 export const SmallSize: Story = {
   args: {
     items: basicItems,
-    trigger: <Button size="sm" variant="outline">Small Menu</Button>,
+    trigger: (
+      <Button size="sm" variant="outline">
+        Small Menu
+      </Button>
+    ),
     variant: 'default',
     size: 'sm',
   },
@@ -181,7 +186,11 @@ export const SmallSize: Story = {
 export const LargeSize: Story = {
   args: {
     items: basicItems,
-    trigger: <Button size="lg" variant="outline">Large Menu</Button>,
+    trigger: (
+      <Button size="lg" variant="outline">
+        Large Menu
+      </Button>
+    ),
     variant: 'default',
     size: 'lg',
   },
@@ -241,9 +250,9 @@ export const MixedStates: Story = {
 
 export const WithClickHandlers: Story = {
   args: {
-    items: basicItems.map(item => ({
+    items: basicItems.map((item) => ({
       ...item,
-      onClick: item.type !== 'divider' ? () => console.log(`Clicked: ${item.label}`) : undefined,
+      onClick: item.type !== 'divider' ? () => void 0 : undefined,
     })),
     trigger: <Button variant="solid">Interactive Menu</Button>,
     variant: 'default',
@@ -366,7 +375,8 @@ export const GlassShowcase: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Demonstrates the glass morphism effect with enhanced backdrop blur, transparency, and subtle borders against colorful backgrounds.',
+        story:
+          'Demonstrates the glass morphism effect with enhanced backdrop blur, transparency, and subtle borders against colorful backgrounds.',
       },
     },
   },
@@ -438,7 +448,8 @@ export const DarkModeGlass: Story = {
     backgrounds: { default: 'dark' },
     docs: {
       description: {
-        story: 'Glass effect optimized for dark themes with enhanced contrast and subtle lighting effects.',
+        story:
+          'Glass effect optimized for dark themes with enhanced contrast and subtle lighting effects.',
       },
     },
   },

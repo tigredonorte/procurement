@@ -1,11 +1,12 @@
 import React, { forwardRef } from 'react';
-import { 
+import {
   Switch as MuiSwitch,
   Box,
   Typography,
   FormHelperText,
   alpha,
-  keyframes
+  keyframes,
+  Theme,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -22,7 +23,6 @@ const glowAnimation = keyframes`
     box-shadow: 0 0 5px currentColor;
   }
 `;
-
 
 const bounceAnimation = keyframes`
   0%, 100% {
@@ -80,27 +80,16 @@ interface ThemePalette {
   contrastText?: string;
 }
 
-interface Theme {
-  palette: {
-    primary: ThemePalette;
-    secondary: ThemePalette;
-    success: ThemePalette;
-    warning: ThemePalette;
-    error: ThemePalette;
-    grey?: { [key: number]: string };
-  };
-}
-
 const getColorFromTheme = (theme: Theme, color: string) => {
   if (color === 'neutral') {
     return {
       main: theme.palette.grey?.[700] || '#616161',
       dark: theme.palette.grey?.[800] || '#424242',
       light: theme.palette.grey?.[500] || '#9e9e9e',
-      contrastText: '#fff'
+      contrastText: '#fff',
     };
   }
-  
+
   const colorMap: Record<string, ThemePalette> = {
     primary: theme.palette.primary,
     secondary: theme.palette.secondary,
@@ -108,23 +97,36 @@ const getColorFromTheme = (theme: Theme, color: string) => {
     warning: theme.palette.warning,
     danger: theme.palette.error,
   };
-  
+
   const palette = colorMap[color] || theme.palette.primary;
-  
+
   // Ensure palette has required properties
   return {
     main: palette?.main || theme.palette.primary.main,
     dark: palette?.dark || palette?.main || theme.palette.primary.dark,
     light: palette?.light || palette?.main || theme.palette.primary.light,
-    contrastText: palette?.contrastText || '#fff'
+    contrastText: palette?.contrastText || '#fff',
   };
 };
 
 const StyledSwitch = styled(MuiSwitch, {
-  shouldForwardProp: (prop) => 
-    !['customVariant', 'customColor', 'customSize', 'glow', 'glass', 'gradient', 
-      'trackWidth', 'trackHeight', 'onText', 'offText', 'loading', 'ripple', 'pulse'].includes(prop as string),
-})<{ 
+  shouldForwardProp: (prop) =>
+    ![
+      'customVariant',
+      'customColor',
+      'customSize',
+      'glow',
+      'glass',
+      'gradient',
+      'trackWidth',
+      'trackHeight',
+      'onText',
+      'offText',
+      'loading',
+      'ripple',
+      'pulse',
+    ].includes(prop as string),
+})<{
   customVariant?: string;
   customColor?: string;
   customSize?: string;
@@ -138,9 +140,24 @@ const StyledSwitch = styled(MuiSwitch, {
   loading?: boolean;
   ripple?: boolean;
   pulse?: boolean;
-}>(({ theme, customVariant, customColor = 'primary', customSize = 'md', glow, glass, gradient, trackWidth, trackHeight, onText, offText, loading, ripple, pulse }) => {
+}>(({
+  theme,
+  customVariant,
+  customColor = 'primary',
+  customSize = 'md',
+  glow,
+  glass,
+  gradient,
+  trackWidth,
+  trackHeight,
+  onText,
+  offText,
+  loading,
+  ripple,
+  pulse,
+}) => {
   const colorPalette = getColorFromTheme(theme, customColor);
-  
+
   const sizeMap = {
     xs: { width: 34, height: 18, padding: 1, thumbSize: 14 },
     sm: { width: 42, height: 22, padding: 1, thumbSize: 18 },
@@ -200,9 +217,7 @@ const StyledSwitch = styled(MuiSwitch, {
           animation: loading ? 'none' : `${bounceAnimation} 0.3s ease-out`,
         },
         '& + .MuiSwitch-track': {
-          backgroundColor: gradient 
-            ? colorPalette.main 
-            : colorPalette.main,
+          backgroundColor: gradient ? colorPalette.main : colorPalette.main,
           opacity: 1,
           border: 0,
           position: 'relative',
@@ -212,7 +227,7 @@ const StyledSwitch = styled(MuiSwitch, {
             boxShadow: `0 0 10px ${alpha(colorPalette.main, 0.6)}, inset 0 0 10px ${alpha(colorPalette.main, 0.2)}`,
           }),
           ...(gradient && {
-            background: `linear-gradient(90deg, ${colorPalette.light} 0%, ${colorPalette.main} 50%, ${colorPalette.dark} 100%)`,
+            background: `linear-gradient(90deg, ${colorPalette.light || colorPalette.main} 0%, ${colorPalette.main} 50%, ${colorPalette.dark || colorPalette.main} 100%)`,
             backgroundSize: '200% 100%',
             animation: `${shimmerAnimation} 3s ease infinite`,
           }),
@@ -238,13 +253,19 @@ const StyledSwitch = styled(MuiSwitch, {
     '& .MuiSwitch-thumb': {
       width: thumbSize,
       height: thumbSize,
-      borderRadius: iosVariant ? '50%' : androidVariant ? 4 : materialVariant ? thumbSize / 3 : '50%',
+      borderRadius: iosVariant
+        ? '50%'
+        : androidVariant
+          ? 4
+          : materialVariant
+            ? thumbSize / 3
+            : '50%',
       backgroundColor: '#fff',
-      boxShadow: iosVariant 
+      boxShadow: iosVariant
         ? `0 3px 1px 0 ${alpha('#000', 0.04)}, 0 3px 8px 0 ${alpha('#000', 0.12)}, 0 1px 0 0 ${alpha('#000', 0.08)}`
         : androidVariant
-        ? theme.shadows[3]
-        : theme.shadows[2],
+          ? theme.shadows[3]
+          : theme.shadows[2],
       transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
       position: 'relative',
       display: 'flex',
@@ -285,16 +306,22 @@ const StyledSwitch = styled(MuiSwitch, {
       }),
     },
     '& .MuiSwitch-track': {
-      borderRadius: iosVariant ? height / 2 : androidVariant ? height / 3 : materialVariant ? height / 2.5 : height / 2,
+      borderRadius: iosVariant
+        ? height / 2
+        : androidVariant
+          ? height / 3
+          : materialVariant
+            ? height / 2.5
+            : height / 2,
       backgroundColor: iosVariant
         ? alpha(theme.palette.common.black, 0.1)
         : androidVariant
-        ? alpha(theme.palette.action.disabled, 0.2)
-        : alpha(theme.palette.action.disabled, 0.3),
+          ? alpha(theme.palette.action.disabled, 0.2)
+          : alpha(theme.palette.action.disabled, 0.3),
       opacity: 1,
       transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
       position: 'relative',
-      boxShadow: iosVariant 
+      boxShadow: iosVariant
         ? `inset 0 0 0 0.5px ${alpha('#000', 0.1)}, inset 0 2px 3px ${alpha('#000', 0.12)}`
         : 'none',
       ...(glass && {
@@ -302,91 +329,94 @@ const StyledSwitch = styled(MuiSwitch, {
         backdropFilter: 'blur(20px)',
         border: `1px solid ${alpha(theme.palette.divider, 0.2)}`,
       }),
-      ...(gradient && !glass && {
-        background: `linear-gradient(135deg, ${alpha(colorPalette.light, 0.3)}, ${alpha(colorPalette.main, 0.2)})`,
-      }),
-      ...(labelVariant && (onText || offText) && {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingLeft: theme.spacing(1),
-        paddingRight: theme.spacing(1),
-        fontSize: '0.75rem',
-        fontWeight: 500,
-        color: theme.palette.text.secondary,
-        '&::before, &::after': {
-          content: '""',
-          position: 'absolute',
+      ...(gradient &&
+        !glass && {
+          background: `linear-gradient(135deg, ${alpha(colorPalette.light || colorPalette.main, 0.3)}, ${alpha(colorPalette.main, 0.2)})`,
+        }),
+      ...(labelVariant &&
+        (onText || offText) && {
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          paddingLeft: theme.spacing(1),
+          paddingRight: theme.spacing(1),
           fontSize: '0.75rem',
           fontWeight: 500,
-          top: '50%',
-          transform: 'translateY(-50%)',
-          zIndex: 1,
-        },
-        ...(onText && {
-          '&::before': {
-            content: `"${onText}"`,
-            left: theme.spacing(1),
-            color: '#fff',
+          color: theme.palette.text.secondary,
+          '&::before, &::after': {
+            content: '""',
+            position: 'absolute',
+            fontSize: '0.75rem',
+            fontWeight: 500,
+            top: '50%',
+            transform: 'translateY(-50%)',
+            zIndex: 1,
           },
+          ...(onText && {
+            '&::before': {
+              content: `"${onText}"`,
+              left: theme.spacing(1),
+              color: '#fff',
+            },
+          }),
+          ...(offText && {
+            '&::after': {
+              content: `"${offText}"`,
+              right: theme.spacing(1),
+              color: theme.palette.text.secondary,
+            },
+          }),
         }),
-        ...(offText && {
-          '&::after': {
-            content: `"${offText}"`,
-            right: theme.spacing(1),
-            color: theme.palette.text.secondary,
-          },
-        }),
-      }),
     },
   };
 });
 
 const LabelContainer = styled(Box, {
   shouldForwardProp: (prop) => !['labelPosition', 'error'].includes(prop as string),
-})<{ labelPosition?: string; error?: boolean }>(
-  ({ theme, labelPosition, error }) => ({
-    display: 'flex',
-    alignItems: labelPosition === 'top' || labelPosition === 'bottom' ? 'flex-start' : 'center',
-    flexDirection: labelPosition === 'top' ? 'column' : labelPosition === 'bottom' ? 'column-reverse' : 'row',
-    gap: theme.spacing(labelPosition === 'top' || labelPosition === 'bottom' ? 1 : 2),
-    width: '100%',
-    ...(error && {
-      '& .MuiTypography-root': {
-        color: theme.palette.error.main,
-      },
-    }),
-  })
-);
+})<{ labelPosition?: string; error?: boolean }>(({ theme, labelPosition, error }) => ({
+  display: 'flex',
+  alignItems: labelPosition === 'top' || labelPosition === 'bottom' ? 'flex-start' : 'center',
+  flexDirection:
+    labelPosition === 'top' ? 'column' : labelPosition === 'bottom' ? 'column-reverse' : 'row',
+  gap: theme.spacing(labelPosition === 'top' || labelPosition === 'bottom' ? 1 : 2),
+  width: '100%',
+  ...(error && {
+    '& .MuiTypography-root': {
+      color: theme.palette.error.main,
+    },
+  }),
+}));
 
 export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
-  ({
-    variant = 'default',
-    color = 'primary',
-    size = 'md',
-    label,
-    description,
-    glow = false,
-    glass = false,
-    gradient = false,
-    labelPosition = 'end',
-    onIcon,
-    offIcon,
-    onText,
-    offText,
-    error = false,
-    helperText,
-    trackWidth,
-    trackHeight,
-    checked,
-    onChange,
-    animated = true,
-    loading = false,
-    ripple = false,
-    pulse = false,
-    ...props
-  }, ref) => {
-
+  (
+    {
+      variant = 'default',
+      color = 'primary',
+      size = 'md',
+      label,
+      description,
+      glow = false,
+      glass = false,
+      gradient = false,
+      labelPosition = 'end',
+      onIcon,
+      offIcon,
+      onText,
+      offText,
+      error = false,
+      helperText,
+      trackWidth,
+      trackHeight,
+      checked,
+      onChange,
+      animated = true,
+      loading = false,
+      ripple = false,
+      pulse = false,
+      ...props
+    },
+    ref,
+  ) => {
     const switchElement = (
       <Box sx={{ position: 'relative', display: 'inline-flex' }}>
         <StyledSwitch
@@ -409,7 +439,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
           disabled={loading || props.disabled}
           {...props}
         />
-        
+
         {/* Icon overlays */}
         {(onIcon || offIcon) && (
           <>
@@ -421,11 +451,23 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
                   left: checked ? 4 : '50%',
                   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                   opacity: checked ? 1 : 0,
-                  transform: checked && animated ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0.8)',
+                  transform:
+                    checked && animated
+                      ? 'translate(-50%, -50%) scale(1)'
+                      : 'translate(-50%, -50%) scale(0.8)',
                   pointerEvents: 'none',
                   zIndex: 2,
                   color: '#fff',
-                  fontSize: size === 'xs' ? 12 : size === 'sm' ? 14 : size === 'md' ? 16 : size === 'lg' ? 18 : 20,
+                  fontSize:
+                    size === 'xs'
+                      ? 12
+                      : size === 'sm'
+                        ? 14
+                        : size === 'md'
+                          ? 16
+                          : size === 'lg'
+                            ? 18
+                            : 20,
                 }}
               >
                 {onIcon}
@@ -439,11 +481,23 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
                   right: !checked ? 4 : '50%',
                   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                   opacity: !checked ? 1 : 0,
-                  transform: !checked && animated ? 'translate(50%, -50%) scale(1)' : 'translate(50%, -50%) scale(0.8)',
+                  transform:
+                    !checked && animated
+                      ? 'translate(50%, -50%) scale(1)'
+                      : 'translate(50%, -50%) scale(0.8)',
                   pointerEvents: 'none',
                   zIndex: 2,
                   color: 'text.secondary',
-                  fontSize: size === 'xs' ? 12 : size === 'sm' ? 14 : size === 'md' ? 16 : size === 'lg' ? 18 : 20,
+                  fontSize:
+                    size === 'xs'
+                      ? 12
+                      : size === 'sm'
+                        ? 14
+                        : size === 'md'
+                          ? 16
+                          : size === 'lg'
+                            ? 18
+                            : 20,
                 }}
               >
                 {offIcon}
@@ -471,7 +525,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
       <Box>
         <LabelContainer labelPosition={labelPosition} error={error}>
           {labelPosition === 'start' && switchElement}
-          
+
           <Box sx={{ flex: 1 }}>
             <Typography
               variant="body2"
@@ -490,10 +544,10 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
               </Typography>
             )}
           </Box>
-          
+
           {labelPosition !== 'start' && switchElement}
         </LabelContainer>
-        
+
         {helperText && (
           <FormHelperText error={error} sx={{ mt: 1 }}>
             {helperText}
@@ -501,7 +555,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
         )}
       </Box>
     );
-  }
+  },
 );
 
 Switch.displayName = 'Switch';

@@ -56,15 +56,17 @@ export const BasicInteraction: Story = {
       const selectElement = canvas.getByTestId('test-select-select');
       await userEvent.click(selectElement);
 
-      // Wait for dropdown to open
+      // Wait for dropdown to open (options render in portal, not in canvas)
       await waitFor(async () => {
-        const option1 = canvas.getByTestId('test-select-option-option1');
+        const option1 = document.querySelector('[data-testid="test-select-option-option1"]');
         await expect(option1).toBeInTheDocument();
       });
     });
 
     await step('Select an option', async () => {
-      const option2 = canvas.getByTestId('test-select-option-option2');
+      const option2 = document.querySelector(
+        '[data-testid="test-select-option-option2"]',
+      ) as HTMLElement;
       await userEvent.click(option2);
 
       await expect(args.onChange).toHaveBeenCalledWith(
@@ -81,7 +83,7 @@ export const BasicInteraction: Story = {
       const selectElement = canvas.getByTestId('test-select-select');
       await userEvent.click(selectElement);
 
-      const disabledOption = canvas.getByTestId('test-select-option-option4');
+      const disabledOption = document.querySelector('[data-testid="test-select-option-option4"]');
       await expect(disabledOption).toBeInTheDocument();
       await expect(disabledOption).toHaveAttribute('aria-disabled', 'true');
     });
@@ -101,7 +103,7 @@ export const FormInteraction: Story = {
     const canvas = within(canvasElement);
 
     await step('Verify label association', async () => {
-      const label = canvas.getByText('Form Select');
+      const label = canvas.getByRole('label', { name: 'Form Select' });
       await expect(label).toBeInTheDocument();
 
       const selectElement = canvas.getByTestId('form-select-select');
@@ -121,7 +123,9 @@ export const FormInteraction: Story = {
 
       // Select first option
       await userEvent.click(selectElement);
-      const option1 = canvas.getByTestId('form-select-option-option1');
+      const option1 = document.querySelector(
+        '[data-testid="form-select-option-option1"]',
+      ) as HTMLElement;
       await userEvent.click(option1);
       await expect(args.onChange).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -134,7 +138,9 @@ export const FormInteraction: Story = {
 
       // Select second option
       await userEvent.click(selectElement);
-      const option2 = canvas.getByTestId('form-select-option-option2');
+      const option2 = document.querySelector(
+        '[data-testid="form-select-option-option2"]',
+      ) as HTMLElement;
       await userEvent.click(option2);
       await expect(args.onChange).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -185,7 +191,9 @@ export const StateChangeTest: Story = {
 
     await step('Verify initial state', async () => {
       const selectElement = canvas.getByTestId('stateful-select-select');
-      await expect(selectElement).toHaveDisplayValue('');
+      await expect(selectElement).toHaveAttribute('aria-expanded', 'false');
+      // Check placeholder or empty state
+      await expect(selectElement.querySelector('.MuiSelect-select')).toHaveTextContent('');
 
       const helperText = canvas.getByText('Choose your preference');
       await expect(helperText).toBeInTheDocument();
@@ -195,11 +203,16 @@ export const StateChangeTest: Story = {
       const selectElement = canvas.getByTestId('stateful-select-select');
       await userEvent.click(selectElement);
 
-      const option1 = canvas.getByTestId('stateful-select-option-option1');
+      const option1 = document.querySelector(
+        '[data-testid="stateful-select-option-option1"]',
+      ) as HTMLElement;
       await userEvent.click(option1);
 
       await waitFor(async () => {
-        await expect(selectElement).toHaveDisplayValue('Option 1');
+        // Check the selected text content in the select element
+        await expect(selectElement.querySelector('.MuiSelect-select')).toHaveTextContent(
+          'Option 1',
+        );
       });
     });
 
@@ -219,7 +232,8 @@ export const StateChangeTest: Story = {
 
       await waitFor(async () => {
         const selectElement = canvas.getByTestId('stateful-select-select');
-        await expect(selectElement).toHaveDisplayValue('');
+        // Check that the select is empty again
+        await expect(selectElement.querySelector('.MuiSelect-select')).toHaveTextContent('');
       });
     });
   },
@@ -256,17 +270,19 @@ export const KeyboardNavigation: Story = {
 
     await step('Focus select with tab', async () => {
       const selectElement = canvas.getByTestId('keyboard-select-select');
-      selectElement.focus();
-      await expect(selectElement).toHaveFocus();
+      const selectInput = selectElement.querySelector('.MuiSelect-select') as HTMLElement;
+      selectInput.focus();
+      await expect(selectInput).toHaveFocus();
     });
 
     await step('Open dropdown with Enter key', async () => {
       const selectElement = canvas.getByTestId('keyboard-select-select');
-      selectElement.focus();
+      const selectInput = selectElement.querySelector('.MuiSelect-select') as HTMLElement;
+      selectInput.focus();
       await userEvent.keyboard('{Enter}');
 
       await waitFor(async () => {
-        const option1 = canvas.getByTestId('keyboard-select-option-option1');
+        const option1 = document.querySelector('[data-testid="keyboard-select-option-option1"]');
         await expect(option1).toBeInTheDocument();
       });
     });
@@ -281,7 +297,10 @@ export const KeyboardNavigation: Story = {
 
       const selectElement = canvas.getByTestId('keyboard-select-select');
       await waitFor(async () => {
-        await expect(selectElement).toHaveDisplayValue('Option 2');
+        // Check the selected text content
+        await expect(selectElement.querySelector('.MuiSelect-select')).toHaveTextContent(
+          'Option 2',
+        );
       });
     });
 
@@ -293,7 +312,7 @@ export const KeyboardNavigation: Story = {
 
       // Verify dropdown is closed by checking if options are not visible
       await waitFor(async () => {
-        const options = canvas.queryAllByTestId(/keyboard-select-option-/);
+        const options = document.querySelectorAll('[data-testid^="keyboard-select-option-"]');
         expect(options.length).toBe(0);
       });
     });
@@ -620,7 +639,7 @@ export const PerformanceTest: Story = {
       await userEvent.click(selectElement);
 
       await waitFor(async () => {
-        const options = canvas.getAllByTestId(/performance-select-option-/);
+        const options = document.querySelectorAll('[data-testid^="performance-select-option-"]');
         expect(options.length).toBeGreaterThan(0);
       });
 
@@ -643,12 +662,16 @@ export const PerformanceTest: Story = {
 
       // Wait for dropdown to be fully rendered
       await waitFor(async () => {
-        const firstOption = canvas.getByTestId('performance-select-option-option1');
+        const firstOption = document.querySelector(
+          '[data-testid="performance-select-option-option1"]',
+        );
         await expect(firstOption).toBeInTheDocument();
       });
 
       // Test selecting an option from the middle of the list
-      const middleOption = canvas.getByTestId('performance-select-option-option25');
+      const middleOption = document.querySelector(
+        '[data-testid="performance-select-option-option25"]',
+      ) as HTMLElement;
       await userEvent.click(middleOption);
 
       await waitFor(async () => {
@@ -735,7 +758,9 @@ export const EdgeCases: Story = {
       await userEvent.click(edgeValuesSelect);
 
       // Test empty value option
-      const emptyValueOption = canvas.getByTestId('edge-values-option-');
+      const emptyValueOption = document.querySelector(
+        '[data-testid="edge-values-option-"]',
+      ) as HTMLElement;
       await userEvent.click(emptyValueOption);
 
       await waitFor(async () => {
@@ -744,7 +769,9 @@ export const EdgeCases: Story = {
 
       // Test zero value option
       await userEvent.click(edgeValuesSelect);
-      const zeroValueOption = canvas.getByTestId('edge-values-option-0');
+      const zeroValueOption = document.querySelector(
+        '[data-testid="edge-values-option-0"]',
+      ) as HTMLElement;
       await userEvent.click(zeroValueOption);
 
       await waitFor(async () => {
@@ -818,7 +845,9 @@ export const IntegrationTest: Story = {
       const selectElement = canvas.getByTestId('trigger-select-select');
       await userEvent.click(selectElement);
 
-      const option2 = canvas.getByTestId('trigger-select-option-option2');
+      const option2 = document.querySelector(
+        '[data-testid="trigger-select-option-option2"]',
+      ) as HTMLElement;
       await userEvent.click(option2);
 
       await waitFor(async () => {

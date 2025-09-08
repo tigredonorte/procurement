@@ -1,12 +1,12 @@
 import { ReactNode } from 'react';
 
 export type ToastVariant = 'default' | 'success' | 'error' | 'warning' | 'info' | 'promise';
-export type ToastPosition = 
-  | 'top-left' 
-  | 'top-center' 
-  | 'top-right' 
-  | 'bottom-left' 
-  | 'bottom-center' 
+export type ToastPosition =
+  | 'top-left'
+  | 'top-center'
+  | 'top-right'
+  | 'bottom-left'
+  | 'bottom-center'
   | 'bottom-right';
 
 export interface ToastProps {
@@ -22,8 +22,8 @@ export interface ToastProps {
   };
   promise?: {
     loading: string;
-    success: string | ((data: any) => string);
-    error: string | ((error: any) => string);
+    success: string | ((data: unknown) => string);
+    error: string | ((error: unknown) => string);
   };
   glass?: boolean;
   onClose?: (id: string) => void;
@@ -45,7 +45,7 @@ export interface ToastContextType {
     options: {
       loading: string;
       success: string | ((data: T) => string);
-      error: string | ((error: any) => string);
-    }
+      error: string | ((error: unknown) => string);
+    },
   ) => Promise<T>;
 }
