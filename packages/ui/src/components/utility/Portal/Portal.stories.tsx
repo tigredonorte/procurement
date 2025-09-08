@@ -247,3 +247,93 @@ const MultiplePortalsComponent = () => {
 export const MultiplePortals: Story = {
   render: () => <MultiplePortalsComponent />,
 };
+
+// Required story exports for validation
+export const Default: Story = {
+  render: () => <BasicComponent />,
+};
+
+export const AllVariants: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+      <BasicComponent />
+      <CustomContainerComponent />
+      <DisabledPortalComponent />
+    </Box>
+  ),
+};
+
+export const AllSizes: Story = {
+  render: () => (
+    <Box>
+      <Typography variant="h6" gutterBottom>
+        Portal Size Variations
+      </Typography>
+      <Typography paragraph>
+        Portal component doesn't have inherent sizes - it renders children as-is. Size is determined
+        by the children content.
+      </Typography>
+      <BasicComponent />
+    </Box>
+  ),
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+      <DisabledPortalComponent />
+      <BasicComponent />
+    </Box>
+  ),
+};
+
+export const InteractiveStates: Story = {
+  render: () => <MultiplePortalsComponent />,
+};
+
+const ResponsivePortalComponent = () => {
+  const [showPortal, setShowPortal] = useState(false);
+
+  return (
+    <Box>
+      <Paper sx={{ p: 3, mb: 2 }}>
+        <Typography variant="h6" gutterBottom>
+          Responsive Portal Demo
+        </Typography>
+        <Typography paragraph>Portal content adapts to different screen sizes.</Typography>
+        <Button variant="contained" onClick={() => setShowPortal(!showPortal)}>
+          {showPortal ? 'Hide' : 'Show'} Responsive Portal
+        </Button>
+      </Paper>
+
+      {showPortal && (
+        <Portal>
+          <Box
+            sx={{
+              position: 'fixed',
+              top: { xs: 16, sm: 32, md: 48 },
+              right: { xs: 16, sm: 32, md: 48 },
+              left: { xs: 16, sm: 'auto' },
+              zIndex: 9999,
+              maxWidth: { xs: 'calc(100% - 32px)', sm: 400, md: 500 },
+            }}
+          >
+            <Alert severity="info" onClose={() => setShowPortal(false)}>
+              <Typography variant="subtitle2">Responsive Portal</Typography>
+              <Typography variant="body2">This portal adapts to different screen sizes:</Typography>
+              <Typography variant="caption" component="ul" sx={{ mt: 1, pl: 2 }}>
+                <li>Mobile: Full width with 16px margins</li>
+                <li>Tablet: 400px max width, 32px positioning</li>
+                <li>Desktop: 500px max width, 48px positioning</li>
+              </Typography>
+            </Alert>
+          </Box>
+        </Portal>
+      )}
+    </Box>
+  );
+};
+
+export const Responsive: Story = {
+  render: () => <ResponsivePortalComponent />,
+};

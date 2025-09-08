@@ -55,24 +55,24 @@ console.log(`Checking ${component} in ${category} ...`);
 
 try {
   // 1) Docs & tasks
-  console.log('\n[1/14] Docs catalog check');
+  console.log('\n[1/17] Docs catalog check');
   assertComponentListedInDocs(component);
 
-  console.log('\n[2/14] components.tasks.md entry check');
+  console.log('\n[2/17] components.tasks.md entry check');
   assertTasksEntry(component, /*expectFreshIfWorking*/ true);
 
   // 2) Guards
-  console.log('\n[3/14] Change-scope guard');
+  console.log('\n[3/17] Change-scope guard');
   // assertAllowedChangeScope({ componentDir, extraAllowed });
 
-  console.log('\n[4/14] Test-bypass pattern scan');
+  console.log('\n[4/17] Test-bypass pattern scan');
   scanForBypassPatterns();
 
-  console.log('\n[5/14] Storybook reachability');
+  console.log('\n[5/17] Storybook reachability');
   pingStorybook(STORYBOOK_URL);
 
   // 3) TypeScript / ESLint / Build / ESLint verify (scoped)
-  console.log('\n[6/14] TypeScript check (scoped)');
+  console.log('\n[6/17] TypeScript check (scoped)');
   {
     if (!fileExists(componentDir)) {
       console.error(`Component directory not found: ${componentDir}`);
@@ -96,52 +96,49 @@ try {
     }
   }
 
-  console.log('\n[7/14] ESLint fix (scoped)');
+  console.log('\n[7/17] ESLint fix (scoped)');
   run(`npx eslint "src/components/${category}/${component}/**/*.{ts,tsx}" --fix`);
 
-  console.log('\n[8/14] tsup build (scoped)');
-  const entry =
-    ['index.tsx', 'index.ts'].map((f) => path.join(componentDir, f)).find((p) => fileExists(p)) ||
-    null;
+  console.log('\n[8/17] tsup build (scoped)');
+  const entry = ['index.tsx', 'index.ts'].map((f) => path.join(componentDir, f)).find((p) => fileExists(p)) || null;
   if (!entry) {
     console.error('Missing entry: expected index.tsx or index.ts in component folder.');
     process.exit(1);
   }
   run(`npx tsup "${entry}" --config tsup.config.ts`);
 
-  console.log('\n[9/14] ESLint verify (scoped)');
+  console.log('\n[9/17] ESLint verify (scoped)');
   run(`npx eslint "src/components/${category}/${component}/**/*.{ts,tsx}" --max-warnings 0`);
 
   // 4) Folder/doc validators
-  console.log('\n[10/14] Folder structure');
+  console.log('\n[10/17] Folder structure');
   assertFolderStructure(componentDir, component);
 
-  console.log('\n[11/14] Barrel export');
+  console.log('\n[11/17] Barrel export');
   assertFolderBarrelExport(componentDir, component, {
     // centralExportPath: path.join(PKG_UI, '..', 'index.ts'),
   });
 
-  console.log('\n[12/14] Stories coverage');
+  console.log('\n[12/17] Stories coverage');
   assertStoriesCoverage(componentDir, category, component);
 
-  console.log('\n[13/14] Design tokens usage');
+  console.log('\n[13/17] Design tokens usage');
   assertDesignTokensUsage(componentDir);
 
-  console.log('\n[14/14] Responsive story present');
+  console.log('\n[14/17] Responsive story present');
   assertResponsiveStories(componentDir);
 
-  console.log('\n[14/14] Accessibility coverage');
+  console.log('\n[15/17] Accessibility coverage');
   assertA11yCoverage(componentDir);
 
-  // 5) track.md validations
-  console.log('\n[track] track.md validation');
+  console.log('\n[16/17] Storybook tests');
+  runStorybookTestsFailFast(STORYBOOK_URL, STORY_GLOB);
+
+  console.log('\n[17/17] track.md validation');
   const track = loadTrack(componentDir);
   assertTrackFreshness(track.current);
   checkStoriesDeclaredExist(componentDir, track.stories);
 
-  // 6) Storybook tests (fail-fast)
-  console.log('\n[storybook] Interaction tests');
-  runStorybookTestsFailFast(STORYBOOK_URL, STORY_GLOB);
 
   console.log(`\n✅ ${component} component check complete.`);
 } catch (e) {

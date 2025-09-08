@@ -6,7 +6,7 @@ import { Chart } from './Chart';
 import { ChartDataPoint } from './Chart.types';
 
 const meta: Meta<typeof Chart> = {
-  title: 'Data Display/Chart',
+  title: 'DataDisplay/Chart',
   component: Chart,
   parameters: {
     layout: 'padded',
@@ -76,6 +76,154 @@ const scatterData: ChartDataPoint[] = [
   { x: 150, y: 400, z: 500 },
   { x: 110, y: 280, z: 200 },
 ];
+
+export const Default: Story = {
+  args: {
+    type: 'line',
+    data: lineData,
+    title: 'Default Chart',
+    subtitle: 'Basic line chart with default settings',
+    showGrid: true,
+    showLegend: true,
+  },
+};
+
+export const AllVariants: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      {(['default', 'glass', 'gradient', 'elevated', 'minimal', 'neon'] as const).map((variant) => (
+        <Box key={variant}>
+          <Typography variant="h6" gutterBottom>
+            Variant: {variant}
+          </Typography>
+          <Chart
+            type="line"
+            data={lineData}
+            variant={variant}
+            title={`${variant} Variant`}
+            size="sm"
+            curved
+          />
+        </Box>
+      ))}
+    </Box>
+  ),
+};
+
+export const AllSizes: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
+        <Box key={size}>
+          <Typography variant="h6" gutterBottom>
+            Size: {size.toUpperCase()}
+          </Typography>
+          <Chart type="line" data={lineData} size={size} title={`Chart Size: ${size}`} />
+        </Box>
+      ))}
+    </Box>
+  ),
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 3 }}>
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Loading State
+        </Typography>
+        <Chart loading size="md" />
+      </Box>
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Error State
+        </Typography>
+        <Chart type="line" data={[]} title="No Data" subtitle="Chart with no data" />
+      </Box>
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Disabled State
+        </Typography>
+        <Chart type="line" data={lineData} disabled title="Disabled Chart" />
+      </Box>
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Normal State
+        </Typography>
+        <Chart type="line" data={lineData} title="Normal Chart" />
+      </Box>
+    </Box>
+  ),
+};
+
+const InteractiveStatesComponent = () => {
+  const [clickedData, setClickedData] = React.useState<string>('');
+  const [hoveredData, setHoveredData] = React.useState<string>('');
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+      <Chart
+        type="bar"
+        data={barData}
+        xAxisKey="category"
+        title="Interactive Chart"
+        subtitle="Click and hover to see interactions"
+        onClick={(data) => {
+          setClickedData(JSON.stringify(data, null, 2));
+        }}
+        onHover={(data) => {
+          setHoveredData(data ? JSON.stringify(data, null, 2) : '');
+        }}
+      />
+      {clickedData && (
+        <Box sx={{ p: 2, bgcolor: 'action.hover', borderRadius: 1 }}>
+          <Typography variant="subtitle2">Clicked Data:</Typography>
+          <Typography variant="body2" component="pre" sx={{ fontSize: '0.75rem' }}>
+            {clickedData}
+          </Typography>
+        </Box>
+      )}
+      {hoveredData && (
+        <Box sx={{ p: 2, bgcolor: 'info.light', borderRadius: 1 }}>
+          <Typography variant="subtitle2">Hovered Data:</Typography>
+          <Typography variant="body2" component="pre" sx={{ fontSize: '0.75rem' }}>
+            {hoveredData}
+          </Typography>
+        </Box>
+      )}
+    </Box>
+  );
+};
+
+export const InteractiveStates: Story = {
+  render: () => <InteractiveStatesComponent />,
+};
+
+export const Responsive: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+      <Typography variant="h6">Responsive Charts (resize window to see changes)</Typography>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: '1fr 1fr 1fr' },
+          gap: 2,
+        }}
+      >
+        <Chart type="line" data={lineData} title="Line Chart" responsive size="sm" />
+        <Chart
+          type="bar"
+          data={barData}
+          xAxisKey="category"
+          title="Bar Chart"
+          responsive
+          size="sm"
+        />
+        <Chart type="pie" data={pieData} title="Pie Chart" responsive size="sm" showValues />
+      </Box>
+    </Box>
+  ),
+};
 
 export const LineChart: Story = {
   args: {
@@ -219,12 +367,7 @@ export const Sizes: Story = {
           <Typography variant="h6" gutterBottom>
             Size: {size.toUpperCase()}
           </Typography>
-          <Chart
-            type="line"
-            data={lineData}
-            size={size}
-            title={`Chart Size: ${size}`}
-          />
+          <Chart type="line" data={lineData} size={size} title={`Chart Size: ${size}`} />
         </Box>
       ))}
     </Box>
@@ -264,29 +407,29 @@ export const WithEffects: Story = {
 };
 
 const InteractiveComponent = () => {
-const [clickedData, setClickedData] = React.useState<string>('');
-    
-    return (
-      <Box>
-        <Chart
-          type="bar"
-          data={barData}
-          xAxisKey="category"
-          title="Interactive Chart"
-          subtitle="Click on bars to see data"
-          onClick={(data) => {
-            setClickedData(JSON.stringify(data, null, 2));
-          }}
-        />
-        {clickedData && (
-          <Box sx={{ mt: 2, p: 2, bgcolor: 'grey.100', borderRadius: 1 }}>
-            <Typography variant="body2" component="pre">
-              {clickedData}
-            </Typography>
-          </Box>
-        )}
-      </Box>
-    );
+  const [clickedData, setClickedData] = React.useState<string>('');
+
+  return (
+    <Box>
+      <Chart
+        type="bar"
+        data={barData}
+        xAxisKey="category"
+        title="Interactive Chart"
+        subtitle="Click on bars to see data"
+        onClick={(data) => {
+          setClickedData(JSON.stringify(data, null, 2));
+        }}
+      />
+      {clickedData && (
+        <Box sx={{ mt: 2, p: 2, bgcolor: 'grey.100', borderRadius: 1 }}>
+          <Typography variant="body2" component="pre">
+            {clickedData}
+          </Typography>
+        </Box>
+      )}
+    </Box>
+  );
 };
 
 export const Interactive: Story = {
@@ -333,51 +476,51 @@ export const NoAnimation: Story = {
 };
 
 const RealTimeDataComponent = () => {
-const [data, setData] = React.useState<ChartDataPoint[]>([
-      { time: '00:00', cpu: 45, memory: 60 },
-    ]);
+  const [data, setData] = React.useState<ChartDataPoint[]>([
+    { time: '00:00', cpu: 45, memory: 60 },
+  ]);
 
-    React.useEffect(() => {
-      const interval = window.setInterval(() => {
-        setData((prev) => {
-          const newData = [...prev];
-          const time = new Date().toLocaleTimeString('en-US', { 
-            hour12: false, 
-            hour: '2-digit', 
-            minute: '2-digit', 
-            second: '2-digit' 
-          });
-          
-          newData.push({
-            time,
-            cpu: Math.floor(Math.random() * 40) + 30,
-            memory: Math.floor(Math.random() * 30) + 50,
-          });
-          
-          if (newData.length > 10) {
-            newData.shift();
-          }
-          
-          return newData;
+  React.useEffect(() => {
+    const interval = window.setInterval(() => {
+      setData((prev) => {
+        const newData = [...prev];
+        const time = new Date().toLocaleTimeString('en-US', {
+          hour12: false,
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
         });
-      }, 2000);
 
-      return () => window.clearInterval(interval);
-    }, []);
+        newData.push({
+          time,
+          cpu: Math.floor(Math.random() * 40) + 30,
+          memory: Math.floor(Math.random() * 30) + 50,
+        });
 
-    return (
-      <Chart
-        type="line"
-        data={data}
-        xAxisKey="time"
-        title="Real-Time Monitoring"
-        subtitle="CPU and Memory usage"
-        variant="neon"
-        curved
-        animate
-        animationDuration={500}
-      />
-    );
+        if (newData.length > 10) {
+          newData.shift();
+        }
+
+        return newData;
+      });
+    }, 2000);
+
+    return () => window.clearInterval(interval);
+  }, []);
+
+  return (
+    <Chart
+      type="line"
+      data={data}
+      xAxisKey="time"
+      title="Real-Time Monitoring"
+      subtitle="CPU and Memory usage"
+      variant="neon"
+      curved
+      animate
+      animationDuration={500}
+    />
+  );
 };
 
 export const RealTimeData: Story = {

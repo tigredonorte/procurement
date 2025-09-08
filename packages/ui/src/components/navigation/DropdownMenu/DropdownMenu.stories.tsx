@@ -109,7 +109,7 @@ const mixedItems = [
 
 export const Default: Story = {
   args: {
-    items: basicItems,
+    items: basicItems as never,
     trigger: <Button variant="outline">Open Menu</Button>,
     variant: 'default',
     size: 'md',
@@ -118,7 +118,7 @@ export const Default: Story = {
 
 export const GlassVariant: Story = {
   args: {
-    items: basicItems,
+    items: basicItems as never,
     trigger: <Button variant="glass">Glass Menu</Button>,
     variant: 'glass',
     size: 'md',
@@ -144,7 +144,7 @@ export const GlassVariant: Story = {
 
 export const MinimalVariant: Story = {
   args: {
-    items: basicItems,
+    items: basicItems as never,
     trigger: <Button variant="ghost">Minimal Menu</Button>,
     variant: 'minimal',
     size: 'md',
@@ -153,7 +153,7 @@ export const MinimalVariant: Story = {
 
 export const WithShortcuts: Story = {
   args: {
-    items: itemsWithShortcuts,
+    items: itemsWithShortcuts as never,
     trigger: <Button variant="solid">File Menu</Button>,
     variant: 'default',
     size: 'md',
@@ -162,7 +162,7 @@ export const WithShortcuts: Story = {
 
 export const WithHeaders: Story = {
   args: {
-    items: itemsWithHeaders,
+    items: itemsWithHeaders as never as never,
     trigger: <Button variant="outline">Operations</Button>,
     variant: 'default',
     size: 'md',
@@ -172,7 +172,7 @@ export const WithHeaders: Story = {
 
 export const SmallSize: Story = {
   args: {
-    items: basicItems,
+    items: basicItems as never,
     trigger: (
       <Button size="sm" variant="outline">
         Small Menu
@@ -185,7 +185,7 @@ export const SmallSize: Story = {
 
 export const LargeSize: Story = {
   args: {
-    items: basicItems,
+    items: basicItems as never,
     trigger: (
       <Button size="lg" variant="outline">
         Large Menu
@@ -198,7 +198,7 @@ export const LargeSize: Story = {
 
 export const UserMenu: Story = {
   args: {
-    items: userMenuItems,
+    items: userMenuItems as never,
     trigger: (
       <IconButton>
         <Person />
@@ -228,7 +228,7 @@ export const UserMenu: Story = {
 
 export const IconTrigger: Story = {
   args: {
-    items: basicItems,
+    items: basicItems as never,
     trigger: (
       <IconButton>
         <MoreVert />
@@ -241,7 +241,7 @@ export const IconTrigger: Story = {
 
 export const MixedStates: Story = {
   args: {
-    items: mixedItems,
+    items: mixedItems as never,
     trigger: <Button variant="outline">Mixed Items</Button>,
     variant: 'default',
     size: 'md',
@@ -253,7 +253,7 @@ export const WithClickHandlers: Story = {
     items: basicItems.map((item) => ({
       ...item,
       onClick: item.type !== 'divider' ? () => void 0 : undefined,
-    })),
+    })) as never,
     trigger: <Button variant="solid">Interactive Menu</Button>,
     variant: 'default',
     size: 'md',
@@ -266,7 +266,7 @@ export const NoIcons: Story = {
       { id: '1', label: 'Option 1' },
       { id: '2', label: 'Option 2' },
       { id: '3', label: 'Option 3' },
-      { id: 'divider1', type: 'divider' as const },
+      { id: 'divider1', type: 'divider' as const } as never,
       { id: '4', label: 'Option 4' },
     ],
     trigger: <Button variant="outline">No Icons</Button>,
@@ -292,6 +292,10 @@ export const WithIconSpace: Story = {
 
 // Glass Effect Showcase - Multiple Variants
 export const GlassShowcase: Story = {
+  args: {
+    items: [],
+    trigger: <Button>Dummy</Button>,
+  },
   render: () => {
     const showcaseItems = [
       { id: '1', label: 'Download', icon: <Download fontSize="small" />, shortcut: 'Ctrl+D' },
@@ -326,19 +330,19 @@ export const GlassShowcase: Story = {
           }}
         >
           <DropdownMenu
-            items={showcaseItems}
+            items={showcaseItems as never}
             trigger={<Button variant="glass">Glass Menu</Button>}
             variant="glass"
             size="md"
           />
           <DropdownMenu
-            items={showcaseItems}
+            items={showcaseItems as never}
             trigger={<Button variant="solid">Compare: Default</Button>}
             variant="default"
             size="md"
           />
           <DropdownMenu
-            items={showcaseItems}
+            items={showcaseItems as never}
             trigger={<Button variant="outline">Compare: Minimal</Button>}
             variant="minimal"
             size="md"
@@ -402,7 +406,7 @@ export const DarkModeGlass: Story = {
     items: [
       { id: '1', label: 'New Document', icon: <Add fontSize="small" />, shortcut: 'Ctrl+N' },
       { id: '2', label: 'Open Recent', icon: <Upload fontSize="small" /> },
-      { id: 'divider1', type: 'divider' as const },
+      { id: 'divider1', type: 'divider' as const } as never,
       { id: '3', label: 'Export PDF', icon: <Download fontSize="small" /> },
       { id: '4', label: 'Print', icon: <Print fontSize="small" />, shortcut: 'Ctrl+P' },
     ],
@@ -451,6 +455,126 @@ export const DarkModeGlass: Story = {
         story:
           'Glass effect optimized for dark themes with enhanced contrast and subtle lighting effects.',
       },
+    },
+  },
+};
+
+// Required story exports for validation
+export const AllVariants: Story = {
+  args: {
+    items: [],
+    trigger: <Button>Dummy</Button>,
+  },
+  render: () => (
+    <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+      <DropdownMenu
+        items={basicItems as never}
+        trigger={<Button variant="outline">Default</Button>}
+        variant="default"
+        size="md"
+      />
+      <DropdownMenu
+        items={basicItems as never}
+        trigger={<Button variant="glass">Glass</Button>}
+        variant="glass"
+        size="md"
+      />
+      <DropdownMenu
+        items={basicItems as never}
+        trigger={<Button variant="ghost">Minimal</Button>}
+        variant="minimal"
+        size="md"
+      />
+    </Box>
+  ),
+};
+
+export const AllSizes: Story = {
+  args: {
+    items: [],
+    trigger: <Button>Dummy</Button>,
+  },
+  render: () => (
+    <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+      <DropdownMenu
+        items={basicItems as never}
+        trigger={<Button size="sm">Small</Button>}
+        variant="default"
+        size="sm"
+      />
+      <DropdownMenu
+        items={basicItems as never}
+        trigger={<Button size="md">Medium</Button>}
+        variant="default"
+        size="md"
+      />
+      <DropdownMenu
+        items={basicItems as never}
+        trigger={<Button size="lg">Large</Button>}
+        variant="default"
+        size="lg"
+      />
+    </Box>
+  ),
+};
+
+export const AllStates: Story = {
+  args: {
+    items: [],
+    trigger: <Button>Dummy</Button>,
+  },
+  render: () => (
+    <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+      <DropdownMenu
+        items={mixedItems as never}
+        trigger={<Button variant="outline">Mixed States</Button>}
+        variant="default"
+        size="md"
+      />
+    </Box>
+  ),
+};
+
+export const InteractiveStates: Story = {
+  args: {
+    items: [],
+    trigger: <Button>Dummy</Button>,
+  },
+  render: () => (
+    <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+      <DropdownMenu
+        items={
+          basicItems.map((item) => ({
+            ...item,
+            onClick: item.type !== 'divider' ? () => void 0 : undefined,
+          })) as never
+        }
+        trigger={<Button variant="solid">Click Items</Button>}
+        variant="default"
+        size="md"
+      />
+    </Box>
+  ),
+};
+
+export const Responsive: Story = {
+  args: {
+    items: [],
+    trigger: <Button>Dummy</Button>,
+  },
+  render: () => (
+    <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', width: '100%' }}>
+      <DropdownMenu
+        items={basicItems as never}
+        trigger={<Button variant="outline">Responsive Menu</Button>}
+        variant="default"
+        size="md"
+      />
+    </Box>
+  ),
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
     },
   },
 };

@@ -3,7 +3,6 @@ import { Stack, Paper, Box } from '@mui/material';
 import React from 'react';
 
 import { Paragraph } from './Paragraph';
-import { Heading } from '../Heading';
 
 const meta = {
   title: 'Typography/Paragraph',
@@ -12,7 +11,8 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component: 'A paragraph component optimized for readability with features like first-letter styling, drop caps, and proper spacing.',
+        component:
+          'A semantic paragraph component with multiple visual variants for different content contexts. Features lead text styling, muted text, small text, and configurable sizing options.',
       },
     },
   },
@@ -20,30 +20,18 @@ const meta = {
   argTypes: {
     variant: {
       control: { type: 'select' },
-      options: ['default', 'lead', 'small', 'quote'],
+      options: ['default', 'lead', 'muted', 'small'],
       description: 'Paragraph style variant',
     },
-    indent: {
-      control: 'boolean',
-      description: 'Indent first line',
-    },
-    dropCap: {
-      control: 'boolean',
-      description: 'Large decorative first letter',
-    },
-    columns: {
-      control: { type: 'number', min: 1, max: 4 },
-      description: 'Number of text columns',
-    },
-    spacing: {
+    color: {
       control: { type: 'select' },
-      options: ['tight', 'normal', 'relaxed', 'loose'],
-      description: 'Line spacing',
+      options: ['primary', 'secondary', 'success', 'warning', 'danger', 'neutral'],
+      description: 'Theme color',
     },
-    align: {
+    size: {
       control: { type: 'select' },
-      options: ['left', 'center', 'right', 'justify'],
-      description: 'Text alignment',
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
+      description: 'Size variant',
     },
   },
 } satisfies Meta<typeof Paragraph>;
@@ -61,227 +49,232 @@ export const Default: Story = {
   },
 };
 
-export const Variants: Story = {
+export const AllVariants: Story = {
   render: () => (
     <Stack spacing={3}>
       <Box>
-        <Heading level={4}>Default Paragraph</Heading>
-        <Paragraph variant="default">
-          {sampleText}
-        </Paragraph>
+        <Paper sx={{ p: 2 }}>
+          <h4>Default Paragraph</h4>
+          <Paragraph variant="default">{sampleText}</Paragraph>
+        </Paper>
       </Box>
-      
+
       <Box>
-        <Heading level={4}>Lead Paragraph</Heading>
-        <Paragraph variant="lead">
-          {sampleText}
-        </Paragraph>
+        <Paper sx={{ p: 2 }}>
+          <h4>Lead Paragraph</h4>
+          <Paragraph variant="lead">{sampleText}</Paragraph>
+        </Paper>
       </Box>
-      
+
       <Box>
-        <Heading level={4}>Small Paragraph</Heading>
-        <Paragraph variant="small">
-          {sampleText}
-        </Paragraph>
+        <Paper sx={{ p: 2 }}>
+          <h4>Small Paragraph</h4>
+          <Paragraph variant="small">{sampleText}</Paragraph>
+        </Paper>
       </Box>
-      
+
       <Box>
-        <Heading level={4}>Quote Paragraph</Heading>
-        <Paragraph variant="quote">
-          {sampleText}
-        </Paragraph>
+        <Paper sx={{ p: 2 }}>
+          <h4>Muted Paragraph</h4>
+          <Paragraph variant="muted">{sampleText}</Paragraph>
+        </Paper>
       </Box>
     </Stack>
   ),
 };
 
-export const WithDropCap: Story = {
+export const AllSizes: Story = {
   render: () => (
     <Stack spacing={3}>
-      <Paper sx={{ p: 3 }}>
-        <Paragraph dropCap>
-          Once upon a time, in a land far, far away, there lived a wise old developer who knew all the secrets of creating beautiful user interfaces. This developer spent years perfecting the art of typography, understanding that good design is not just about making things look pretty, but about creating experiences that delight and inform users. The journey was long and filled with challenges, but the rewards were worth every moment of struggle.
-        </Paragraph>
-      </Paper>
-      
-      <Paper sx={{ p: 3, bgcolor: 'primary.light', color: 'primary.contrastText' }}>
-        <Paragraph dropCap>
-          Typography is the art and technique of arranging type to make written language legible, readable, and appealing when displayed. The arrangement of type involves selecting typefaces, point sizes, line lengths, line-spacing, and letter-spacing, and adjusting the space between pairs of letters.
-        </Paragraph>
-      </Paper>
-    </Stack>
-  ),
-};
+      <Box>
+        <Paper sx={{ p: 2 }}>
+          <h4>Extra Small (xs)</h4>
+          <Paragraph size="xs">{sampleText}</Paragraph>
+        </Paper>
+      </Box>
 
-export const Indentation: Story = {
-  render: () => (
-    <Stack spacing={3}>
       <Box>
-        <Heading level={4}>With Indentation</Heading>
-        <Paragraph indent>
-          {longText}
-        </Paragraph>
+        <Paper sx={{ p: 2 }}>
+          <h4>Small (sm)</h4>
+          <Paragraph size="sm">{sampleText}</Paragraph>
+        </Paper>
       </Box>
-      
-      <Box>
-        <Heading level={4}>Without Indentation</Heading>
-        <Paragraph>
-          {longText}
-        </Paragraph>
-      </Box>
-    </Stack>
-  ),
-};
 
-export const MultiColumn: Story = {
-  render: () => (
-    <Stack spacing={3}>
       <Box>
-        <Heading level={4}>Two Columns</Heading>
-        <Paragraph columns={2}>
-          {longText}
-        </Paragraph>
+        <Paper sx={{ p: 2 }}>
+          <h4>Medium (md) - Default</h4>
+          <Paragraph size="md">{sampleText}</Paragraph>
+        </Paper>
       </Box>
-      
+
       <Box>
-        <Heading level={4}>Three Columns</Heading>
-        <Paragraph columns={3} variant="small">
-          {longText}
-        </Paragraph>
+        <Paper sx={{ p: 2 }}>
+          <h4>Large (lg)</h4>
+          <Paragraph size="lg">{sampleText}</Paragraph>
+        </Paper>
+      </Box>
+
+      <Box>
+        <Paper sx={{ p: 2 }}>
+          <h4>Extra Large (xl)</h4>
+          <Paragraph size="xl">{sampleText}</Paragraph>
+        </Paper>
       </Box>
     </Stack>
   ),
 };
 
-export const LineSpacing: Story = {
+export const AllStates: Story = {
   render: () => (
     <Stack spacing={3}>
-      <Paper sx={{ p: 2 }}>
-        <Heading level={5}>Tight Spacing</Heading>
-        <Paragraph spacing="tight">
-          {sampleText}
-        </Paragraph>
-      </Paper>
-      
-      <Paper sx={{ p: 2 }}>
-        <Heading level={5}>Normal Spacing</Heading>
-        <Paragraph spacing="normal">
-          {sampleText}
-        </Paragraph>
-      </Paper>
-      
-      <Paper sx={{ p: 2 }}>
-        <Heading level={5}>Relaxed Spacing</Heading>
-        <Paragraph spacing="relaxed">
-          {sampleText}
-        </Paragraph>
-      </Paper>
-      
-      <Paper sx={{ p: 2 }}>
-        <Heading level={5}>Loose Spacing</Heading>
-        <Paragraph spacing="loose">
-          {sampleText}
-        </Paragraph>
-      </Paper>
+      <Box>
+        <Paper sx={{ p: 2 }}>
+          <h4>Neutral (default)</h4>
+          <Paragraph color="neutral">{sampleText}</Paragraph>
+        </Paper>
+      </Box>
+
+      <Box>
+        <Paper sx={{ p: 2 }}>
+          <h4>Primary Color</h4>
+          <Paragraph color="primary">{sampleText}</Paragraph>
+        </Paper>
+      </Box>
+
+      <Box>
+        <Paper sx={{ p: 2 }}>
+          <h4>Secondary Color</h4>
+          <Paragraph color="secondary">{sampleText}</Paragraph>
+        </Paper>
+      </Box>
+
+      <Box>
+        <Paper sx={{ p: 2 }}>
+          <h4>Success Color</h4>
+          <Paragraph color="success">{sampleText}</Paragraph>
+        </Paper>
+      </Box>
+
+      <Box>
+        <Paper sx={{ p: 2 }}>
+          <h4>Warning Color</h4>
+          <Paragraph color="warning">{sampleText}</Paragraph>
+        </Paper>
+      </Box>
+
+      <Box>
+        <Paper sx={{ p: 2 }}>
+          <h4>Danger Color</h4>
+          <Paragraph color="danger">{sampleText}</Paragraph>
+        </Paper>
+      </Box>
     </Stack>
   ),
 };
 
-export const ArticleLayout: Story = {
-  render: () => (
-    <Paper sx={{ p: 4, maxWidth: 800, mx: 'auto' }}>
-      <Heading level={1} decorated>
-        The Art of Typography in Web Design
-      </Heading>
-      
-      <Paragraph variant="lead" spacing="relaxed">
-        Typography is more than just choosing beautiful fonts. It&apos;s about creating a reading experience that guides users through content effortlessly.
-      </Paragraph>
-      
-      <Heading level={2}>Introduction</Heading>
-      
-      <Paragraph dropCap indent>
-        Good typography is invisible. When done well, readers don&apos;t notice the typeface, spacing, or layout – they simply enjoy reading the content. This invisible art requires careful attention to detail and a deep understanding of how people read and process information.
-      </Paragraph>
-      
-      <Paragraph indent>
-        In the digital age, typography has evolved beyond traditional print constraints. Web designers now have access to thousands of fonts, variable spacing options, and responsive design techniques that adapt to different screen sizes and reading contexts.
-      </Paragraph>
-      
-      <Heading level={3}>Key Principles</Heading>
-      
-      <Paragraph>
-        There are several fundamental principles that guide good typographic design:
-      </Paragraph>
-      
-      <Paragraph variant="small" indent>
-        • Hierarchy: Creating clear visual distinctions between different levels of content
-      </Paragraph>
-      <Paragraph variant="small" indent>
-        • Readability: Ensuring text is easy to read and understand
-      </Paragraph>
-      <Paragraph variant="small" indent>
-        • Consistency: Maintaining uniform styles throughout the design
-      </Paragraph>
-      <Paragraph variant="small" indent>
-        • White space: Using empty space to improve comprehension and visual appeal
-      </Paragraph>
-      
-      <Heading level={3}>Conclusion</Heading>
-      
-      <Paragraph>
-        Mastering typography is a journey, not a destination. As design trends evolve and new technologies emerge, the fundamental goal remains the same: to communicate ideas clearly and beautifully.
-      </Paragraph>
-    </Paper>
-  ),
-};
-
-export const BlogPost: Story = {
-  render: () => (
-    <Box sx={{ maxWidth: 700, mx: 'auto' }}>
-      <Paragraph variant="lead">
-        In today&apos;s fast-paced digital world, the importance of good typography cannot be overstated. It&apos;s the foundation of effective communication in web design.
-      </Paragraph>
-      
-      <Paragraph>
-        When users visit a website, they&apos;re looking for information. The way that information is presented can make the difference between a positive experience and a frustrating one. Typography plays a crucial role in this presentation.
-      </Paragraph>
-      
-      <Paragraph>
-        Consider the last time you struggled to read something online. Perhaps the text was too small, the lines too long, or the contrast too low. These seemingly minor issues can significantly impact user experience and engagement.
-      </Paragraph>
-      
-      <Paragraph variant="quote">
-        &ldquo;Typography is the craft of endowing human language with a durable visual form.&rdquo; — Robert Bringhurst
-      </Paragraph>
-      
-      <Paragraph>
-        This quote perfectly encapsulates the essence of typography. It&apos;s not just about making text visible; it&apos;s about giving it a form that enhances its meaning and makes it memorable.
-      </Paragraph>
-    </Box>
-  ),
-};
-
-export const ResponsiveParagraphs: Story = {
+export const InteractiveStates: Story = {
   render: () => (
     <Stack spacing={3}>
-      <Paragraph
-        sx={{
-          fontSize: { xs: '14px', sm: '16px', md: '18px' },
-          lineHeight: { xs: 1.5, md: 1.7 },
-        }}
-      >
-        This paragraph adjusts its font size and line height based on screen size for optimal readability across devices.
-      </Paragraph>
-      
-      <Paragraph
-        columns={1}
-        sx={{
-          columnCount: { xs: 1, md: 2, lg: 3 },
-        }}
-      >
-        {longText}
-      </Paragraph>
+      <Box>
+        <Paper sx={{ p: 3 }}>
+          <h3>Article Example</h3>
+          <Paragraph variant="lead" size="lg" color="primary">
+            This is a lead paragraph with large size and primary color. It's designed to grab
+            attention and introduce the main content.
+          </Paragraph>
+
+          <Paragraph>
+            This is a regular paragraph that follows the lead paragraph. It uses default styling for
+            comfortable reading.
+          </Paragraph>
+
+          <Paragraph variant="small" color="secondary">
+            This is a small paragraph with secondary color, often used for additional information or
+            footnotes.
+          </Paragraph>
+
+          <Paragraph variant="muted">
+            This is a muted paragraph that provides supplementary information without competing for
+            attention.
+          </Paragraph>
+        </Paper>
+      </Box>
+    </Stack>
+  ),
+};
+
+export const Responsive: Story = {
+  render: () => (
+    <Stack spacing={3}>
+      <Box>
+        <Paper sx={{ p: 2 }}>
+          <h4>Responsive Behavior</h4>
+          <Paragraph
+            sx={{
+              fontSize: { xs: '14px', sm: '16px', md: '18px' },
+              lineHeight: { xs: 1.5, md: 1.7 },
+            }}
+          >
+            This paragraph adjusts its font size and line height based on screen size for optimal
+            readability across devices.
+          </Paragraph>
+        </Paper>
+      </Box>
+    </Stack>
+  ),
+};
+
+// Additional helpful stories
+export const LongContent: Story = {
+  render: () => (
+    <Stack spacing={3}>
+      <Box>
+        <Paper sx={{ p: 3 }}>
+          <h4>Long Content Handling</h4>
+          <Paragraph variant="lead">{longText}</Paragraph>
+
+          <Paragraph>{longText}</Paragraph>
+
+          <Paragraph variant="small">{longText}</Paragraph>
+        </Paper>
+      </Box>
+    </Stack>
+  ),
+};
+
+export const WithCustomStyling: Story = {
+  render: () => (
+    <Stack spacing={3}>
+      <Box>
+        <Paper sx={{ p: 3 }}>
+          <h4>Custom Styling Examples</h4>
+          <Paragraph
+            variant="lead"
+            sx={{
+              textAlign: 'center',
+              background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+          >
+            This paragraph demonstrates custom styling with gradient text and center alignment.
+          </Paragraph>
+
+          <Paragraph
+            sx={{
+              border: '1px solid',
+              borderColor: 'divider',
+              borderRadius: 2,
+              p: 2,
+              backgroundColor: 'grey.50',
+            }}
+          >
+            This paragraph has a custom border and background, making it stand out from the rest of
+            the content.
+          </Paragraph>
+        </Paper>
+      </Box>
     </Stack>
   ),
 };

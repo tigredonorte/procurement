@@ -6,7 +6,7 @@ import React from 'react';
 import { Progress } from './Progress';
 
 const meta: Meta<typeof Progress> = {
-  title: 'Data Display/Progress/Tests',
+  title: 'Data Display/Progress 🥇/Tests',
   component: Progress,
   parameters: {
     layout: 'centered',

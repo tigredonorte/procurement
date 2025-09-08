@@ -11,14 +11,10 @@ import {
   alpha,
   keyframes,
   styled,
-  useTheme,
   Collapse,
   Fade,
 } from '@mui/material';
-import {
-  ExpandMore as ExpandIcon,
-  Circle as DotIcon,
-} from '@mui/icons-material';
+import { ExpandMore as ExpandIcon, Circle as DotIcon } from '@mui/icons-material';
 
 // Types
 export interface TimelineItem {
@@ -95,7 +91,7 @@ const TimelineContainer = styled(Box)<{ orientation: 'vertical' | 'horizontal' }
         },
       },
     }),
-  })
+  }),
 );
 
 const TimelineItemContainer = styled(Box)<{
@@ -110,10 +106,11 @@ const TimelineItemContainer = styled(Box)<{
   ...(animated && {
     animation: `${slideInAnimation} 0.5s ease ${index * 0.1}s both`,
   }),
-  ...(orientation === 'vertical' && alternating && {
-    flexDirection: index % 2 === 0 ? 'row' : 'row-reverse',
-    textAlign: index % 2 === 0 ? 'left' : 'right',
-  }),
+  ...(orientation === 'vertical' &&
+    alternating && {
+      flexDirection: index % 2 === 0 ? 'row' : 'row-reverse',
+      textAlign: index % 2 === 0 ? 'left' : 'right',
+    }),
   ...(orientation === 'horizontal' && {
     flexDirection: 'column',
     alignItems: 'center',
@@ -127,17 +124,19 @@ const TimelineConnector = styled(Box)<{
 }>(({ theme, orientation, isLast }) => ({
   position: 'absolute',
   background: `linear-gradient(180deg, ${theme.palette.primary.main} 0%, ${alpha(theme.palette.primary.main, 0.3)} 100%)`,
-  ...(orientation === 'vertical' ? {
-    width: 2,
-    height: isLast ? 0 : 'calc(100% + 16px)',
-    left: 19,
-    top: 40,
-  } : {
-    height: 2,
-    width: isLast ? 0 : 'calc(100% + 16px)',
-    top: 19,
-    left: 40,
-  }),
+  ...(orientation === 'vertical'
+    ? {
+        width: 2,
+        height: isLast ? 0 : 'calc(100% + 16px)',
+        left: 19,
+        top: 40,
+      }
+    : {
+        height: 2,
+        width: isLast ? 0 : 'calc(100% + 16px)',
+        top: 19,
+        left: 40,
+      }),
 }));
 
 const TimelineDot = styled(Box)<{ dotColor?: string; hasIcon: boolean }>(
@@ -160,31 +159,33 @@ const TimelineDot = styled(Box)<{ dotColor?: string; hasIcon: boolean }>(
       fontSize: hasIcon ? '1.2rem' : '0.8rem',
       color: theme.palette.background.paper,
     },
-  })
+  }),
 );
 
-const TimelineCard = styled(Card)<{ variant: string }>(({ theme, variant }) => ({
-  flex: 1,
-  background: `linear-gradient(135deg, ${alpha(theme.palette.background.paper, 0.9)} 0%, ${alpha(theme.palette.background.paper, 0.8)} 100%)`,
-  backdropFilter: 'blur(10px)',
-  WebkitBackdropFilter: 'blur(10px)',
-  border: `1px solid ${alpha(theme.palette.divider, 0.18)}`,
-  transition: theme.transitions.create(['transform', 'box-shadow']),
-  cursor: 'pointer',
-  '&:hover': {
-    transform: 'translateY(-2px)',
-    boxShadow: theme.shadows[8],
-  },
-  ...(variant === 'compact' && {
-    padding: theme.spacing(1.5),
-    '& .MuiCardContent-root': {
-      padding: 0,
-      '&:last-child': {
-        paddingBottom: 0,
-      },
+const TimelineCard = styled(Card)<{ timelineVariant: 'default' | 'compact' | 'detailed' }>(
+  ({ theme, timelineVariant }) => ({
+    flex: 1,
+    background: `linear-gradient(135deg, ${alpha(theme.palette.background.paper, 0.9)} 0%, ${alpha(theme.palette.background.paper, 0.8)} 100%)`,
+    backdropFilter: 'blur(10px)',
+    WebkitBackdropFilter: 'blur(10px)',
+    border: `1px solid ${alpha(theme.palette.divider, 0.18)}`,
+    transition: theme.transitions.create(['transform', 'box-shadow']),
+    cursor: 'pointer',
+    '&:hover': {
+      transform: 'translateY(-2px)',
+      boxShadow: theme.shadows[8],
     },
+    ...(timelineVariant === 'compact' && {
+      padding: theme.spacing(1.5),
+      '& .MuiCardContent-root': {
+        padding: 0,
+        '&:last-child': {
+          paddingBottom: 0,
+        },
+      },
+    }),
   }),
-}));
+);
 
 const TimelineTimestamp = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.secondary,
@@ -211,7 +212,6 @@ export const Timeline: FC<TimelineProps> = ({
   alternating = false,
   onItemClick,
 }) => {
-  const theme = useTheme();
   const [expandedItems, setExpandedItems] = React.useState<Set<string>>(new Set());
 
   const handleExpandClick = (itemId: string, event: React.MouseEvent) => {
@@ -254,13 +254,12 @@ export const Timeline: FC<TimelineProps> = ({
           )}
         </Box>
 
-        <TimelineCard
-          variant={variant}
-          onClick={() => handleItemClick(item)}
-        >
+        <TimelineCard timelineVariant={variant} onClick={() => handleItemClick(item)}>
           <CardContent>
             <Stack spacing={1}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              <Box
+                sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}
+              >
                 <Box sx={{ flex: 1 }}>
                   <TimelineTimestamp>{item.timestamp}</TimelineTimestamp>
                   <Typography
@@ -300,19 +299,15 @@ export const Timeline: FC<TimelineProps> = ({
                           {item.description}
                         </Typography>
                       )}
-                      
+
                       {item.metadata && (
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                           {Object.entries(item.metadata).map(([key, value]) => (
-                            <MetadataChip
-                              key={key}
-                              label={`${key}: ${value}`}
-                              size="small"
-                            />
+                            <MetadataChip key={key} label={`${key}: ${value}`} size="small" />
                           ))}
                         </Box>
                       )}
-                      
+
                       {item.action && (
                         <Box>
                           <Button

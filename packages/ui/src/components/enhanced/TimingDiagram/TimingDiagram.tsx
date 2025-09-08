@@ -1,40 +1,14 @@
 import React, { FC, useMemo } from 'react';
-import {
-  Box,
-  Paper,
-  Typography,
-  Tooltip,
-  alpha,
-  styled,
-  useTheme,
-} from '@mui/material';
+import { Box, Paper, Typography, Tooltip, alpha, styled, useTheme } from '@mui/material';
 
-// Types
-export interface TimingData {
-  dns?: number;
-  connect?: number;
-  ssl?: number;
-  request?: number;
-  response?: number;
-  total: number;
-}
-
-export interface TimingDiagramProps {
-  data: TimingData;
-  showLabels?: boolean;
-  color?: string;
-  height?: number;
-  animated?: boolean;
-  showTooltips?: boolean;
-  variant?: 'waterfall' | 'stacked' | 'horizontal';
-}
+import type { TimingData, TimingDiagramProps } from './TimingDiagram.types';
 
 // Color configurations
 const phaseColors = {
-  dns: '#9C27B0',      // Purple
-  connect: '#2196F3',  // Blue
-  ssl: '#00BCD4',      // Cyan
-  request: '#4CAF50',  // Green
+  dns: '#9C27B0', // Purple
+  connect: '#2196F3', // Blue
+  ssl: '#00BCD4', // Cyan
+  request: '#4CAF50', // Green
   response: '#FF9800', // Orange
 };
 
@@ -126,7 +100,7 @@ const StackedSegment = styled(Box)<{ phaseColor: string; width: number }>(
       filter: 'brightness(1.1)',
       zIndex: 1,
     },
-  })
+  }),
 );
 
 const HorizontalBar = styled(Box)(({ theme }) => ({
@@ -140,7 +114,7 @@ const HorizontalSegment = styled(Box)<{
   phaseColor: string;
   width: number;
   animated: boolean;
-}>(({ theme, phaseColor, width, animated }) => ({
+}>(({ theme, phaseColor, animated }) => ({
   display: 'flex',
   alignItems: 'center',
   gap: theme.spacing(2),
@@ -243,7 +217,6 @@ const formatTime = (ms: number): string => {
 export const TimingDiagram: FC<TimingDiagramProps> = ({
   data,
   showLabels = true,
-  color,
   height = 40,
   animated = true,
   showTooltips = true,
@@ -258,7 +231,7 @@ export const TimingDiagram: FC<TimingDiagramProps> = ({
     { key: 'ssl', label: 'SSL/TLS', value: data.ssl },
     { key: 'request', label: 'Request', value: data.request },
     { key: 'response', label: 'Response', value: data.response },
-  ].filter(phase => phase.value !== undefined && phase.value > 0);
+  ].filter((phase) => phase.value !== undefined && phase.value > 0);
 
   const renderWaterfall = () => {
     let offset = 0;
@@ -290,7 +263,9 @@ export const TimingDiagram: FC<TimingDiagramProps> = ({
             >
               {bar}
             </Tooltip>
-          ) : bar;
+          ) : (
+            bar
+          );
         })}
         <TimelineAxis style={{ marginTop: height }}>
           <TimeLabel>0ms</TimeLabel>
@@ -311,7 +286,8 @@ export const TimingDiagram: FC<TimingDiagramProps> = ({
               phaseColor={phaseColors[phase.key as keyof typeof phaseColors]}
               width={percentages[phase.key as keyof typeof percentages] ?? 0}
             >
-              {showLabels && (percentages[phase.key as keyof typeof percentages] ?? 0) > 10 && 
+              {showLabels &&
+                (percentages[phase.key as keyof typeof percentages] ?? 0) > 10 &&
                 formatTime(phase.value!)}
             </StackedSegment>
           );
@@ -324,7 +300,9 @@ export const TimingDiagram: FC<TimingDiagramProps> = ({
             >
               {segment}
             </Tooltip>
-          ) : segment;
+          ) : (
+            segment
+          );
         })}
       </StackedBar>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
@@ -348,7 +326,10 @@ export const TimingDiagram: FC<TimingDiagramProps> = ({
           animated={animated}
         >
           <Typography className="label">{phase.label}</Typography>
-          <Box className="bar" style={{ width: `${percentages[phase.key as keyof typeof percentages]}%` }} />
+          <Box
+            className="bar"
+            style={{ width: `${percentages[phase.key as keyof typeof percentages]}%` }}
+          />
           <Typography className="value">{formatTime(phase.value!)}</Typography>
         </HorizontalSegment>
       ))}
@@ -365,7 +346,7 @@ export const TimingDiagram: FC<TimingDiagramProps> = ({
       <Typography variant="h6" fontWeight="bold" gutterBottom>
         Request Timing
       </Typography>
-      
+
       {variant === 'waterfall' && renderWaterfall()}
       {variant === 'stacked' && renderStacked()}
       {variant === 'horizontal' && renderHorizontal()}

@@ -21,7 +21,7 @@ import { Breadcrumbs } from './Breadcrumbs';
 import { BreadcrumbItem } from './Breadcrumbs.types';
 
 const meta = {
-  title: 'Navigation/Breadcrumbs',
+  title: 'Navigation/Breadcrumbs 🥇',
   component: Breadcrumbs,
   parameters: {
     layout: 'padded',
@@ -214,23 +214,33 @@ export const SeparatorTypes: Story = {
   render: () => (
     <Stack spacing={3}>
       <Box>
-        <Typography variant="caption" color="text.secondary" gutterBottom>Arrow Separator</Typography>
+        <Typography variant="caption" color="text.secondary" gutterBottom>
+          Arrow Separator
+        </Typography>
         <Breadcrumbs items={basicItems} separatorType="arrow" />
       </Box>
       <Box>
-        <Typography variant="caption" color="text.secondary" gutterBottom>Chevron Separator</Typography>
+        <Typography variant="caption" color="text.secondary" gutterBottom>
+          Chevron Separator
+        </Typography>
         <Breadcrumbs items={basicItems} separatorType="chevron" />
       </Box>
       <Box>
-        <Typography variant="caption" color="text.secondary" gutterBottom>Slash Separator</Typography>
+        <Typography variant="caption" color="text.secondary" gutterBottom>
+          Slash Separator
+        </Typography>
         <Breadcrumbs items={basicItems} separatorType="slash" />
       </Box>
       <Box>
-        <Typography variant="caption" color="text.secondary" gutterBottom>Dot Separator</Typography>
+        <Typography variant="caption" color="text.secondary" gutterBottom>
+          Dot Separator
+        </Typography>
         <Breadcrumbs items={basicItems} separatorType="dot" />
       </Box>
       <Box>
-        <Typography variant="caption" color="text.secondary" gutterBottom>Pipe Separator</Typography>
+        <Typography variant="caption" color="text.secondary" gutterBottom>
+          Pipe Separator
+        </Typography>
         <Breadcrumbs items={basicItems} separatorType="pipe" />
       </Box>
     </Stack>
@@ -242,15 +252,21 @@ export const SizeVariations: Story = {
   render: () => (
     <Stack spacing={3}>
       <Box>
-        <Typography variant="caption" color="text.secondary" gutterBottom>Small Size</Typography>
+        <Typography variant="caption" color="text.secondary" gutterBottom>
+          Small Size
+        </Typography>
         <Breadcrumbs items={basicItems} size="sm" variant="glass" />
       </Box>
       <Box>
-        <Typography variant="caption" color="text.secondary" gutterBottom>Medium Size (Default)</Typography>
+        <Typography variant="caption" color="text.secondary" gutterBottom>
+          Medium Size (Default)
+        </Typography>
         <Breadcrumbs items={basicItems} size="md" variant="glass" />
       </Box>
       <Box>
-        <Typography variant="caption" color="text.secondary" gutterBottom>Large Size</Typography>
+        <Typography variant="caption" color="text.secondary" gutterBottom>
+          Large Size
+        </Typography>
         <Breadcrumbs items={basicItems} size="lg" variant="glass" />
       </Box>
     </Stack>
@@ -262,15 +278,21 @@ export const ColorVariations: Story = {
   render: () => (
     <Stack spacing={3}>
       <Box>
-        <Typography variant="caption" color="text.secondary" gutterBottom>Default Color</Typography>
+        <Typography variant="caption" color="text.secondary" gutterBottom>
+          Default Color
+        </Typography>
         <Breadcrumbs items={basicItems} color="default" variant="elevated" />
       </Box>
       <Box>
-        <Typography variant="caption" color="text.secondary" gutterBottom>Primary Color</Typography>
+        <Typography variant="caption" color="text.secondary" gutterBottom>
+          Primary Color
+        </Typography>
         <Breadcrumbs items={basicItems} color="primary" variant="elevated" />
       </Box>
       <Box>
-        <Typography variant="caption" color="text.secondary" gutterBottom>Secondary Color</Typography>
+        <Typography variant="caption" color="text.secondary" gutterBottom>
+          Secondary Color
+        </Typography>
         <Breadcrumbs items={basicItems} color="secondary" variant="elevated" />
       </Box>
     </Stack>
@@ -284,7 +306,7 @@ export const Interactive: Story = {
   render: () => {
     const InteractiveBreadcrumbs = () => {
       const [path, setPath] = useState(['Home', 'Products', 'Electronics', 'Laptops']);
-      
+
       const items: BreadcrumbItem[] = path.map((label, index) => ({
         label,
         href: '#',
@@ -296,34 +318,29 @@ export const Interactive: Story = {
         },
         tooltip: index < path.length - 1 ? `Navigate to ${label}` : undefined,
       }));
-      
+
       return (
         <Stack spacing={3}>
-          <Breadcrumbs 
-            items={items} 
-            variant="glass" 
-            separatorType="chevron"
-            showHomeIcon 
-          />
+          <Breadcrumbs items={items} variant="glass" separatorType="chevron" showHomeIcon />
           <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-            <Button 
-              size="small" 
+            <Button
+              size="small"
               variant="outlined"
-              onClick={() => setPath([...path, 'Gaming'])} 
+              onClick={() => setPath([...path, 'Gaming'])}
               disabled={path.length >= 6}
             >
               Add Level
             </Button>
-            <Button 
-              size="small" 
+            <Button
+              size="small"
               variant="outlined"
-              onClick={() => setPath(path.slice(0, -1))} 
+              onClick={() => setPath(path.slice(0, -1))}
               disabled={path.length <= 1}
             >
               Remove Level
             </Button>
-            <Button 
-              size="small" 
+            <Button
+              size="small"
               variant="outlined"
               onClick={() => setPath(['Home', 'Products', 'Electronics', 'Laptops'])}
             >
@@ -333,7 +350,7 @@ export const Interactive: Story = {
         </Stack>
       );
     };
-    
+
     return <InteractiveBreadcrumbs />;
   },
 };
@@ -354,7 +371,7 @@ export const DarkMode: Story = {
           mode: 'dark',
         },
       });
-      
+
       return (
         <ThemeProvider theme={darkTheme}>
           <CssBaseline />
@@ -399,7 +416,10 @@ export const Accessibility: Story = {
     items: basicItems.map((item, index) => ({
       ...item,
       ariaLabel: `Navigate to ${item.label}`,
-      tooltip: index < basicItems.length - 1 ? `Go to ${item.label} section` : `Currently viewing ${item.label}`,
+      tooltip:
+        index < basicItems.length - 1
+          ? `Go to ${item.label} section`
+          : `Currently viewing ${item.label}`,
     })),
     variant: 'elevated',
     separatorType: 'arrow',
@@ -434,14 +454,16 @@ export const AllVariants: Story = {
   render: () => (
     <Stack spacing={4}>
       <Paper sx={{ p: 2 }}>
-        <Typography variant="subtitle2" gutterBottom>Default Variant</Typography>
+        <Typography variant="subtitle2" gutterBottom>
+          Default Variant
+        </Typography>
         <Breadcrumbs items={basicItems} variant="default" />
       </Paper>
-      
-      <Paper 
-        sx={{ 
-          p: 2, 
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' 
+
+      <Paper
+        sx={{
+          p: 2,
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
         }}
       >
         <Typography variant="subtitle2" gutterBottom sx={{ color: 'white' }}>
@@ -449,14 +471,18 @@ export const AllVariants: Story = {
         </Typography>
         <Breadcrumbs items={itemsWithIcons} variant="glass" elevation={2} />
       </Paper>
-      
+
       <Paper sx={{ p: 2 }}>
-        <Typography variant="subtitle2" gutterBottom>Elevated Variant</Typography>
+        <Typography variant="subtitle2" gutterBottom>
+          Elevated Variant
+        </Typography>
         <Breadcrumbs items={basicItems} variant="elevated" elevation={3} />
       </Paper>
-      
+
       <Paper sx={{ p: 2 }}>
-        <Typography variant="subtitle2" gutterBottom>Outlined Variant</Typography>
+        <Typography variant="subtitle2" gutterBottom>
+          Outlined Variant
+        </Typography>
         <Breadcrumbs items={basicItems} variant="outlined" />
       </Paper>
     </Stack>

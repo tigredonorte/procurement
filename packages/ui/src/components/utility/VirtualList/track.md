@@ -71,7 +71,7 @@ A high-performance virtualization component that efficiently renders large datas
 - [ ] Container resizing and layout updates
 - [ ] Performance testing with large datasets (10k+ items)
 
-## Storybook Tests Status
+## 5) Storybook Tests
 
 - [ ] Basic Interaction (planned)
 - [ ] Keyboard Navigation (planned)
@@ -84,18 +84,37 @@ A high-performance virtualization component that efficiently renders large datas
 - [ ] Edge Cases (planned)
 - [ ] Integration (planned)
 
-## Current Section - 2025-01-13 21:30 (BRT)
+**Stories**:
 
-### Current Task: Initial track.md file creation
+- Default - Basic VirtualList with fixed height items
+- AllVariants - Shows Fixed, Variable, and Grid layouts
+- AllSizes - Different container sizes (Small, Medium, Large)
+- AllStates - Normal, Empty, Loading, Error states
+- InteractiveStates - Hover effects and disabled states
+- Responsive - Responsive design and mobile/desktop layouts
+- FixedHeightList - Detailed fixed height example with 10k items
+- VariableHeightList - Variable height with dynamic content
+- GridLayout - Virtual grid with column layout
+- LargeDataset - Performance test with 100k items
+- CustomStyles - Styled example with glass morphism
+- EmptyState - Empty list handling
+- LoadingState - Loading skeleton animation
+- HoverState - Interactive hover effects
+- DisabledState - Disabled list overlay
+- ErrorState - Error handling UI
+
+**Current (BRT)**: 2025-09-08 16:09
+
+### Current Task: Component validation completion
 
 - Track.md file structure created
 - Component overview documented
 - Parameters identified
-- Testing scenarios outlined
+- Required stories added to Storybook
+- Validating component completion
 
 ### Next Steps:
 
-- Read existing component implementation
-- Verify current lint/type status
-- Update status based on actual component state
-- Begin systematic verification process
+- Complete final validation checks
+- Verify Storybook functionality
+- Update component status to completed
