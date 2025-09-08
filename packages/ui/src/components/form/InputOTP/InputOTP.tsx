@@ -1,53 +1,52 @@
 import React, { forwardRef, useState, useRef, useEffect } from 'react';
-import { 
-  Box,
-  TextField,
-  alpha
-} from '@mui/material';
+import { Box, TextField, alpha, Theme } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 import { InputOTPProps } from './InputOTP.types';
 
-const getColorFromTheme = (theme: { palette: { primary: { main: string; dark?: string; light?: string; contrastText?: string }; secondary: { main: string; dark?: string; light?: string; contrastText?: string }; success: { main: string; dark?: string; light?: string; contrastText?: string }; warning: { main: string; dark?: string; light?: string; contrastText?: string }; error: { main: string; dark?: string; light?: string; contrastText?: string }; grey?: { [key: number]: string } } }, color: string) => {
+const getColorFromTheme = (theme: Theme, color: string) => {
   if (color === 'neutral') {
     return {
-      main: theme.palette.grey?.[700] || '#616161',
-      dark: theme.palette.grey?.[800] || '#424242',
-      light: theme.palette.grey?.[500] || '#9e9e9e',
-      contrastText: '#fff'
+      main: theme.palette.grey[700],
+      dark: theme.palette.grey[800],
+      light: theme.palette.grey[500],
+      contrastText: '#fff',
     };
   }
-  
-  const colorMap: Record<string, { main: string; dark?: string; light?: string; contrastText?: string }> = {
+
+  const colorMap: Record<
+    string,
+    { main: string; dark?: string; light?: string; contrastText?: string }
+  > = {
     primary: theme.palette.primary,
     secondary: theme.palette.secondary,
     success: theme.palette.success,
     warning: theme.palette.warning,
     danger: theme.palette.error,
   };
-  
+
   const palette = colorMap[color] || theme.palette.primary;
-  
+
   // Ensure palette has required properties
   return {
     main: palette?.main || theme.palette.primary.main,
     dark: palette?.dark || palette?.main || theme.palette.primary.dark,
     light: palette?.light || palette?.main || theme.palette.primary.light,
-    contrastText: palette?.contrastText || '#fff'
+    contrastText: palette?.contrastText || '#fff',
   };
 };
 
 const StyledOTPInput = styled(TextField, {
-  shouldForwardProp: (prop) => 
+  shouldForwardProp: (prop) =>
     !['customColor', 'customSize', 'glass', 'gradient'].includes(prop as string),
-})<{ 
+})<{
   customColor?: string;
   customSize?: string;
   glass?: boolean;
   gradient?: boolean;
 }>(({ theme, customColor = 'primary', customSize = 'md', glass, gradient }) => {
   const colorPalette = getColorFromTheme(theme, customColor);
-  
+
   const sizeMap = {
     xs: { width: '32px', height: '32px', fontSize: '0.75rem' },
     sm: { width: '40px', height: '40px', fontSize: '0.875rem' },
@@ -61,7 +60,7 @@ const StyledOTPInput = styled(TextField, {
   return {
     width: currentSize.width,
     height: currentSize.height,
-    
+
     '& .MuiOutlinedInput-root': {
       width: currentSize.width,
       height: currentSize.height,
@@ -69,7 +68,7 @@ const StyledOTPInput = styled(TextField, {
       fontWeight: 600,
       textAlign: 'center',
       borderRadius: theme.spacing(1),
-      
+
       ...(glass && {
         backgroundColor: alpha(theme.palette.background.paper, 0.1),
         backdropFilter: 'blur(20px)',
@@ -77,7 +76,7 @@ const StyledOTPInput = styled(TextField, {
           border: `1px solid ${alpha(theme.palette.divider, 0.2)}`,
         },
       }),
-      
+
       ...(gradient && {
         '&.Mui-focused fieldset': {
           background: `linear-gradient(135deg, ${colorPalette.main}, ${colorPalette.light})`,
@@ -104,21 +103,24 @@ const StyledOTPInput = styled(TextField, {
 });
 
 export const InputOTP = forwardRef<HTMLDivElement, InputOTPProps>(
-  ({
-    variant = 'numeric',
-    color = 'primary',
-    size = 'md',
-    length = 6,
-    value = '',
-    onChange,
-    onComplete,
-    glass = false,
-    gradient = false,
-    autoFocus = false,
-    error = false,
-    disabled = false,
-    ...props
-  }, ref) => {
+  (
+    {
+      variant = 'numeric',
+      color = 'primary',
+      size = 'md',
+      length = 6,
+      value = '',
+      onChange,
+      onComplete,
+      glass = false,
+      gradient = false,
+      autoFocus = false,
+      error = false,
+      disabled = false,
+      ...props
+    },
+    ref,
+  ) => {
     const [digits, setDigits] = useState<string[]>(Array(length).fill(''));
     const inputRefs = useRef<(globalThis.HTMLInputElement | null)[]>([]);
 
@@ -154,11 +156,11 @@ export const InputOTP = forwardRef<HTMLDivElement, InputOTPProps>(
       if (e.key === 'Backspace' && !digits[index] && index > 0) {
         inputRefs.current[index - 1]?.focus();
       }
-      
+
       if (e.key === 'ArrowLeft' && index > 0) {
         inputRefs.current[index - 1]?.focus();
       }
-      
+
       if (e.key === 'ArrowRight' && index < length - 1) {
         inputRefs.current[index + 1]?.focus();
       }
@@ -167,7 +169,7 @@ export const InputOTP = forwardRef<HTMLDivElement, InputOTPProps>(
     const handlePaste = (e: React.ClipboardEvent) => {
       e.preventDefault();
       const pastedData = e.clipboardData.getData('text').slice(0, length);
-      
+
       if (variant === 'numeric' && !/^\d+$/.test(pastedData)) return;
       if (variant === 'alphanumeric' && !/^[a-zA-Z0-9]+$/.test(pastedData)) return;
 
@@ -184,14 +186,14 @@ export const InputOTP = forwardRef<HTMLDivElement, InputOTPProps>(
     };
 
     return (
-      <Box 
-        ref={ref} 
-        sx={{ 
-          display: 'flex', 
+      <Box
+        ref={ref}
+        sx={{
+          display: 'flex',
           gap: 1,
           justifyContent: 'center',
-          alignItems: 'center'
-        }} 
+          alignItems: 'center',
+        }}
         {...props}
       >
         {digits.map((digit, index) => (
@@ -211,13 +213,13 @@ export const InputOTP = forwardRef<HTMLDivElement, InputOTPProps>(
             disabled={disabled}
             inputProps={{
               maxLength: 1,
-              style: { textAlign: 'center' }
+              style: { textAlign: 'center' },
             }}
           />
         ))}
       </Box>
     );
-  }
+  },
 );
 
 InputOTP.displayName = 'InputOTP';
