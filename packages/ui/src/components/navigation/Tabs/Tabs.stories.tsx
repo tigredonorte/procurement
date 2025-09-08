@@ -62,7 +62,7 @@ const meta = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Tabs'],
   argTypes: {
     variant: {
       control: 'select',

@@ -17,7 +17,7 @@ const meta: Meta<typeof Lightbox> = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Lightbox'],
 };
 
 export default meta;

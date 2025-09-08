@@ -38,7 +38,7 @@ const meta: Meta<typeof Sheet> = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Sheet'],
   argTypes: {
     position: {
       control: 'select',

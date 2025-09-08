@@ -12,7 +12,7 @@ const meta: Meta<typeof Alert> = {
     layout: 'padded',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Alert'],
   argTypes: {
     variant: {
       control: { type: 'select' },

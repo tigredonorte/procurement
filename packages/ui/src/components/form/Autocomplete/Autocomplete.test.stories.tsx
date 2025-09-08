@@ -25,6 +25,7 @@ const stringSuggestions = ['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry', 'F
 const meta: Meta<typeof Autocomplete> = {
   title: 'Form/Autocomplete/Tests',
   component: Autocomplete,
+  tags: ['autodocs', 'component:Autocomplete'],
   parameters: {
     docs: {
       description: {

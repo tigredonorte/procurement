@@ -28,7 +28,7 @@ const meta: Meta<typeof Collapsible> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false }
   },
-  tags: ['autodocs', 'test']
+  tags: ['autodocs', 'test', 'component:Collapsible']
 };
 
 export default meta;

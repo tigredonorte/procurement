@@ -14,7 +14,7 @@ const meta: Meta<typeof Menubar> = {
   parameters: {
     layout: 'fullscreen',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Menubar'],
   argTypes: {
     variant: {
       control: 'select',

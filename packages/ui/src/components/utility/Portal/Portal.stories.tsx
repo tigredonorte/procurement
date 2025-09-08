@@ -7,6 +7,7 @@ import { Portal } from './Portal';
 const meta: Meta<typeof Portal> = {
   title: 'Utility/Portal',
   component: Portal,
+  tags: ['autodocs', 'component:Portal'],
   parameters: {
     layout: 'centered',
     docs: {

@@ -12,7 +12,7 @@ const meta: Meta<typeof Switch> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Switch'],
 };
 
 export default meta;

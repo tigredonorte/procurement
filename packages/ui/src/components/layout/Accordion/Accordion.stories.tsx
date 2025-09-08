@@ -11,7 +11,7 @@ const meta = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Accordion'],
   argTypes: {
     variant: {
       control: { type: 'select' },

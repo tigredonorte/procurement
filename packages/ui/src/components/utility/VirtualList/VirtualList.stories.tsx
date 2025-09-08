@@ -15,6 +15,7 @@ import type { VirtualListItem } from './VirtualList.types';
 const meta: Meta<typeof VirtualList> = {
   title: 'Utility/VirtualList',
   component: VirtualList,
+  tags: ['autodocs', 'component:VirtualList'],
   parameters: {
     layout: 'centered',
     docs: {

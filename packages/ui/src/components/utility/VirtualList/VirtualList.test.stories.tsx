@@ -22,7 +22,7 @@ const meta: Meta<typeof VirtualList> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:VirtualList'],
 };
 
 export default meta;

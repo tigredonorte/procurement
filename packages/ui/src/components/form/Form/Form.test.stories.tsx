@@ -124,7 +124,7 @@ const meta: Meta<typeof Form> = {
       },
     },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Form'],
 };
 
 export default meta;

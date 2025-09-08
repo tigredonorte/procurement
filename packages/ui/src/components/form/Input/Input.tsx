@@ -184,6 +184,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     onClick,
     onFocus,
     onBlur,
+    'data-testid': dataTestId,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     color, // Extract color to prevent passing to MUI
     ...props
@@ -221,6 +222,9 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         onClick={!loading ? onClick : undefined}
         onFocus={handleFocus}
         onBlur={handleBlur}
+        inputProps={{
+          'data-testid': dataTestId,
+        }}
         InputProps={{
           startAdornment: startAdornment && (
             <InputAdornment position="start">{startAdornment}</InputAdornment>

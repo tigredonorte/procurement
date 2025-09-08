@@ -16,7 +16,7 @@ const meta = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Sonner'],
 } satisfies Meta<typeof SonnerProvider>;
 
 export default meta;

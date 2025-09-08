@@ -11,7 +11,7 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Input'],
   argTypes: {
     variant: {
       control: { type: 'select' },
@@ -44,7 +44,8 @@ export const WithLabel: Story = {
   },
 };
 
-export const Variants: Story = {
+// Required story export: AllVariants
+export const AllVariants: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '300px' }}>
       <Input variant="outlined" label="Outlined" placeholder="Outlined input" />
@@ -56,7 +57,11 @@ export const Variants: Story = {
   ),
 };
 
-export const Sizes: Story = {
+// Backward compatibility alias
+export const Variants = AllVariants;
+
+// Required story export: AllSizes
+export const AllSizes: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '300px' }}>
       <Input size="sm" label="Small" placeholder="Small input" />
@@ -65,6 +70,9 @@ export const Sizes: Story = {
     </div>
   ),
 };
+
+// Backward compatibility alias
+export const Sizes = AllSizes;
 
 export const WithAdornments: Story = {
   render: () => (
@@ -145,17 +153,24 @@ export const VisualEffects: Story = {
   ),
 };
 
-// Interactive States
-export const InteractiveStates: Story = {
+// Required story export: AllStates
+export const AllStates: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '300px' }}>
       <Input label="Default State" placeholder="Type here..." />
+      <Input label="Focused State" placeholder="Focus me" autoFocus />
+      <Input label="Hover State" placeholder="Hover over me" />
       <Input label="Disabled State" placeholder="Cannot type" disabled />
       <Input label="Readonly State" placeholder="Read only" value="Cannot change this" readOnly />
+      <Input label="Error State" placeholder="Has error" error helperText="This field has an error" />
       <Input label="Required Field" placeholder="This is required" required />
+      <Input label="Loading State" placeholder="Loading..." loading />
     </div>
   ),
 };
+
+// Backward compatibility alias 
+export const InteractiveStates = AllStates;
 
 // Different Input Types
 export const InputTypes: Story = {
@@ -187,8 +202,8 @@ export const EdgeCases: Story = {
   ),
 };
 
-// Responsive Design Test
-export const ResponsiveDemo: Story = {
+// Required story export: Responsive
+export const Responsive: Story = {
   render: () => (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '16px' }}>
       <Input variant="outlined" label="Responsive 1" placeholder="Resize window" />
@@ -206,6 +221,9 @@ export const ResponsiveDemo: Story = {
     }
   },
 };
+
+// Backward compatibility alias
+export const ResponsiveDemo = Responsive;
 
 export const Playground: Story = {
   args: {

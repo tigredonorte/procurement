@@ -23,7 +23,7 @@ const meta: Meta<typeof NavigationMenu> = {
     layout: 'fullscreen',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:NavigationMenu'],
 };
 
 export default meta;

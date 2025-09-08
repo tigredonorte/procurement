@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { userEvent, within, expect, waitFor, fn } from '@storybook/test';
 import { Stack, Box } from '@mui/material';
+import { Person } from '@mui/icons-material';
+import React from 'react';
 
 import { Avatar, AvatarGroup } from './Avatar';
 
@@ -11,7 +13,7 @@ const meta: Meta<typeof Avatar> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Avatar'],
 };
 
 export default meta;
@@ -542,24 +544,8 @@ export const FocusManagement: Story = {
 // Theme Integration Tests
 export const ThemeIntegration: Story = {
   name: '🎨 Theme Integration Test',
-  render: () => {
+  render: function ThemeIntegrationRender() {
     const [theme, setTheme] = React.useState<'light' | 'dark'>('light');
-    const darkTheme = {
-      palette: {
-        mode: 'dark' as const,
-        primary: { main: '#90caf9' },
-        background: { paper: '#424242' },
-        text: { primary: '#ffffff' }
-      }
-    };
-    const lightTheme = {
-      palette: {
-        mode: 'light' as const,
-        primary: { main: '#1976d2' },
-        background: { paper: '#ffffff' },
-        text: { primary: '#000000' }
-      }
-    };
     
     return (
       <Box sx={{ p: 2, backgroundColor: theme === 'dark' ? '#303030' : '#f5f5f5' }}>
@@ -727,9 +713,6 @@ export const AccessibilityCompliance: Story = {
       await expect(busyAvatar).toHaveAttribute('aria-label', 'User is busy');
       
       // Verify status badges are present
-      const onlineParent = onlineAvatar.closest('[data-testid="status-online"]')?.parentElement;
-      const busyParent = busyAvatar.closest('[data-testid="status-busy"]')?.parentElement;
-      
       // Look for MUI Badge elements using document.querySelector for portal elements
       await waitFor(() => {
         const badges = document.querySelectorAll('.MuiBadge-badge');

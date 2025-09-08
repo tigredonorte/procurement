@@ -12,7 +12,7 @@ const meta: Meta<typeof Resizable> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Resizable'],
 };
 
 export default meta;

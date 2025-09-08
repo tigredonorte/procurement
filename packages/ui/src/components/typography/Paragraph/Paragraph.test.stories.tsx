@@ -7,7 +7,7 @@ const meta: Meta<typeof Paragraph> = {
   title: 'Typography/Paragraph/Tests',
   component: Paragraph,
   parameters: { layout: 'centered', chromatic: { disableSnapshot: false } },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Paragraph'],
 };
 export default meta;
 export type Story = StoryObj<typeof meta>;

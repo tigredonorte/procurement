@@ -10,7 +10,7 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Tooltip'],
   argTypes: {
     variant: {
       control: { type: 'select' },

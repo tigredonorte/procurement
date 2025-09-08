@@ -10,7 +10,7 @@ const meta: Meta<typeof InputOTP> = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:InputOTP'],
   argTypes: {
     variant: {
       control: { type: 'select' },

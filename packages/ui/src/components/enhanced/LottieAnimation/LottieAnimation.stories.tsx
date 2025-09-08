@@ -92,7 +92,7 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:LottieAnimation'],
   argTypes: {
     size: {
       control: 'select',

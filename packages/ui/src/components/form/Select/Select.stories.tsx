@@ -9,7 +9,7 @@ const meta: Meta<typeof Select> = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Select'],
   argTypes: {
     variant: {
       control: { type: 'select' },

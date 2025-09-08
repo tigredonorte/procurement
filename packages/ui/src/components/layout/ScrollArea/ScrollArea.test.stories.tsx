@@ -12,7 +12,7 @@ const meta: Meta<typeof ScrollArea> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:ScrollArea'],
 };
 
 export default meta;

@@ -24,7 +24,7 @@ const meta: Meta<typeof DropdownMenu> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:DropdownMenu'],
 };
 
 export default meta;

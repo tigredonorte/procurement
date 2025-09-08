@@ -11,7 +11,7 @@ const meta: Meta<typeof Skeleton> = {
     layout: 'padded',
     chromatic: { disableSnapshot: false }
   },
-  tags: ['autodocs', 'test']
+  tags: ['autodocs', 'test', 'component:Skeleton']
 };
 
 export default meta;

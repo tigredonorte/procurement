@@ -14,7 +14,7 @@ const meta: Meta<typeof Label> = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Label'],
   argTypes: {
     variant: {
       control: 'select',

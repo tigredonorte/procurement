@@ -16,7 +16,7 @@ const meta = {
       }
     }
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Badge'],
   argTypes: {
     variant: {
       control: { type: 'select' },

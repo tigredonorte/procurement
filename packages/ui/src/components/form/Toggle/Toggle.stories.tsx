@@ -29,7 +29,7 @@ const meta: Meta<typeof Toggle> = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Toggle'],
   argTypes: {
     variant: {
       control: { type: 'select' },

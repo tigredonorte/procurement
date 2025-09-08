@@ -7,6 +7,7 @@ import { InfiniteScroll } from './InfiniteScroll';
 const meta: Meta<typeof InfiniteScroll> = {
   title: 'Utility/InfiniteScroll',
   component: InfiniteScroll,
+  tags: ['autodocs', 'component:InfiniteScroll'],
   parameters: {
     layout: 'centered',
     docs: {

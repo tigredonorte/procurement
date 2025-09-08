@@ -28,7 +28,7 @@ const meta = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Timeline'],
   argTypes: {
     variant: {
       control: { type: 'select' },

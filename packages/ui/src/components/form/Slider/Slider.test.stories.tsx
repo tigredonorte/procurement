@@ -12,7 +12,7 @@ const meta: Meta<typeof Slider> = {
     layout: 'padded',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Slider'],
 };
 
 export default meta;

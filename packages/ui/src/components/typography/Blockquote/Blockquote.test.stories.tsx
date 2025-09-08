@@ -12,7 +12,7 @@ const meta: Meta<typeof Blockquote> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Blockquote'],
 };
 
 export default meta;

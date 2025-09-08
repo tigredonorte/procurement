@@ -22,7 +22,7 @@ const meta: Meta<typeof Tabs> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Tabs'],
 };
 
 export default meta;

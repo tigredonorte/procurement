@@ -12,7 +12,7 @@ const meta: Meta<typeof RadioGroup> = {
     layout: 'padded',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:RadioGroup'],
 };
 
 export default meta;

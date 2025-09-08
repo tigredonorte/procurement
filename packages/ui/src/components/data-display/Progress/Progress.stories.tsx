@@ -10,7 +10,7 @@ const meta = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Progress'],
   argTypes: {
     variant: {
       control: { type: 'select' },

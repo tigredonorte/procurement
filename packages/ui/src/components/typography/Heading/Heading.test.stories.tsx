@@ -17,7 +17,7 @@ const meta: Meta<typeof Heading> = {
       },
     },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Heading'],
 };
 
 export default meta;

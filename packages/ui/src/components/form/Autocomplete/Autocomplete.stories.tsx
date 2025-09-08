@@ -52,6 +52,7 @@ const countries = [
 const meta: Meta<typeof Autocomplete> = {
   title: 'Form/Autocomplete',
   component: Autocomplete,
+  tags: ['autodocs', 'component:Autocomplete'],
   parameters: {
     docs: {
       description: {

@@ -32,7 +32,7 @@ const meta = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:NavigationMenu'],
   argTypes: {
     variant: {
       control: 'select',
@@ -184,6 +184,146 @@ const userProfile = (
     </Box>
   </Box>
 );
+
+// Required default story export
+export const Default: Story = {
+  args: {
+    variant: 'vertical',
+    items: basicVerticalItems,
+    size: 'md',
+  },
+};
+
+// Required AllVariants story export
+export const AllVariants: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <Box>
+        <Typography variant="h6" sx={{ mb: 2 }}>Vertical Variant</Typography>
+        <Box sx={{ height: 300, border: '1px solid', borderColor: 'divider', borderRadius: 1 }}>
+          <NavigationMenu variant="vertical" items={basicVerticalItems} logo={logo} />
+        </Box>
+      </Box>
+      <Box>
+        <Typography variant="h6" sx={{ mb: 2 }}>Horizontal Variant</Typography>
+        <NavigationMenu variant="horizontal" items={horizontalItems} />
+      </Box>
+      <Box>
+        <Typography variant="h6" sx={{ mb: 2 }}>Mega Menu Variant</Typography>
+        <NavigationMenu variant="mega" items={megaMenuItems} logo={logo} />
+      </Box>
+    </Box>
+  ),
+};
+
+// Required AllSizes story export
+export const AllSizes: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', gap: 4 }}>
+      <Box>
+        <Typography variant="subtitle2" sx={{ mb: 1 }}>Small</Typography>
+        <Box sx={{ height: 400, width: 250, border: '1px solid', borderColor: 'divider' }}>
+          <NavigationMenu variant="vertical" items={basicVerticalItems} size="sm" />
+        </Box>
+      </Box>
+      <Box>
+        <Typography variant="subtitle2" sx={{ mb: 1 }}>Medium</Typography>
+        <Box sx={{ height: 400, width: 280, border: '1px solid', borderColor: 'divider' }}>
+          <NavigationMenu variant="vertical" items={basicVerticalItems} size="md" />
+        </Box>
+      </Box>
+      <Box>
+        <Typography variant="subtitle2" sx={{ mb: 1 }}>Large</Typography>
+        <Box sx={{ height: 400, width: 320, border: '1px solid', borderColor: 'divider' }}>
+          <NavigationMenu variant="vertical" items={basicVerticalItems} size="lg" />
+        </Box>
+      </Box>
+    </Box>
+  ),
+};
+
+// Required AllStates story export
+export const AllStates: Story = {
+  render: () => {
+    const stateItems = [
+      { id: '1', label: 'Active Item', icon: <Dashboard />, active: true, href: '#' },
+      { id: '2', label: 'Normal Item', icon: <ShoppingCart />, href: '#' },
+      { id: '3', label: 'Disabled Item', icon: <People />, disabled: true, href: '#' },
+      { id: '4', label: 'Item with Badge', icon: <Notifications />, badge: 5, href: '#' },
+      { id: '5', label: 'Item with Description', icon: <Settings />, description: 'Additional info', href: '#' },
+    ];
+    
+    return (
+      <Box sx={{ display: 'flex', gap: 4 }}>
+        <Box>
+          <Typography variant="subtitle2" sx={{ mb: 1 }}>Vertical States</Typography>
+          <Box sx={{ height: 400, width: 280, border: '1px solid', borderColor: 'divider' }}>
+            <NavigationMenu variant="vertical" items={stateItems} />
+          </Box>
+        </Box>
+        <Box>
+          <Typography variant="subtitle2" sx={{ mb: 1 }}>Collapsed State</Typography>
+          <Box sx={{ height: 400, border: '1px solid', borderColor: 'divider' }}>
+            <NavigationMenu variant="vertical" items={stateItems} collapsed={true} collapsible={true} />
+          </Box>
+        </Box>
+      </Box>
+    );
+  },
+};
+
+// Required InteractiveStates story export
+export const InteractiveStates: Story = {
+  args: {
+    variant: 'vertical',
+    items: [
+      { id: '1', label: 'Hover Me', icon: <Dashboard />, href: '#' },
+      { id: '2', label: 'Focus Me', icon: <ShoppingCart />, href: '#' },
+      { id: '3', label: 'Active', icon: <People />, active: true, href: '#' },
+      { id: '4', label: 'Disabled', icon: <Settings />, disabled: true, href: '#' },
+    ],
+    size: 'md',
+  },
+  parameters: {
+    pseudo: {
+      hover: ['[role="button"]:nth-of-type(1)'],
+      focus: ['[role="button"]:nth-of-type(2)'],
+    },
+  },
+};
+
+// Required Responsive story export
+export const Responsive: Story = {
+  render: () => (
+    <Box>
+      <Typography variant="h6" sx={{ mb: 2 }}>Responsive Navigation</Typography>
+      <Box sx={{ 
+        display: 'flex', 
+        flexDirection: { xs: 'column', md: 'row' },
+        gap: 2,
+        p: 2,
+        border: '1px solid',
+        borderColor: 'divider',
+        borderRadius: 1,
+      }}>
+        <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+          <NavigationMenu variant="horizontal" items={horizontalItems} size="sm" />
+        </Box>
+        <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+          <NavigationMenu variant="vertical" items={basicVerticalItems} size="md" logo={logo} />
+        </Box>
+        <Box sx={{ flex: 1, p: 2, bgcolor: 'grey.50', minHeight: 200 }}>
+          <Typography variant="body1">Content Area (resize viewport to see responsive behavior)</Typography>
+        </Box>
+      </Box>
+    </Box>
+  ),
+  parameters: {
+    viewport: {
+      defaultViewport: 'responsive',
+    },
+  },
+};
 
 export const VerticalDefault: Story = {
   args: {

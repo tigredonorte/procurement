@@ -35,7 +35,7 @@ const meta = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Collapsible'],
   argTypes: {
     variant: {
       control: { type: 'select' },

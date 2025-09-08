@@ -12,7 +12,7 @@ const meta: Meta<typeof Portal> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Portal'],
 };
 
 export default meta;

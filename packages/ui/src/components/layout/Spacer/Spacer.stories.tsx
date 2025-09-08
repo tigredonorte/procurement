@@ -15,7 +15,7 @@ const meta: Meta<typeof Spacer> = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Spacer'],
   argTypes: {
     size: {
       control: { type: 'select' },

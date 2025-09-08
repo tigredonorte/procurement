@@ -11,7 +11,7 @@ const meta: Meta<typeof RadioGroup> = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:RadioGroup'],
   argTypes: {
     variant: {
       control: { type: 'select' },

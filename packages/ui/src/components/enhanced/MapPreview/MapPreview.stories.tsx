@@ -16,7 +16,7 @@ const meta: Meta<typeof MapPreview> = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:MapPreview'],
   argTypes: {
     coordinates: {
       control: 'object',

@@ -17,7 +17,7 @@ const meta: Meta<typeof Modal> = {
       },
     },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Modal'],
 };
 
 export default meta;

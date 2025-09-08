@@ -19,4 +19,5 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
   onClick?: React.MouseEventHandler<HTMLInputElement>;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
+  'data-testid'?: string;
 }

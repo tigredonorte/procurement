@@ -7,6 +7,7 @@ import type { AspectRatioVariant } from './AspectRatio.types';
 const meta: Meta<typeof AspectRatio> = {
   title: 'Utility/AspectRatio',
   component: AspectRatio,
+  tags: ['autodocs', 'component:AspectRatio'],
   parameters: {
     layout: 'centered',
     docs: {

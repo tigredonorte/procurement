@@ -12,7 +12,7 @@ const meta: Meta<typeof Progress> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Progress'],
 };
 
 export default meta;

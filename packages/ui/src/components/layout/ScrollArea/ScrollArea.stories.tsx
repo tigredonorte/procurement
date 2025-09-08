@@ -15,7 +15,7 @@ const meta: Meta<typeof ScrollArea> = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:ScrollArea'],
   argTypes: {
     width: {
       control: 'text',

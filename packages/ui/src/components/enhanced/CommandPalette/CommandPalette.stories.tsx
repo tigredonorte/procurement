@@ -17,7 +17,7 @@ const meta = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:CommandPalette'],
   argTypes: {
     open: {
       control: 'boolean',

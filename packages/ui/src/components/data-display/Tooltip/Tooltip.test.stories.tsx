@@ -13,7 +13,7 @@ const meta: Meta<typeof Tooltip> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false }
   },
-  tags: ['autodocs', 'test']
+  tags: ['autodocs', 'test', 'component:Tooltip']
 };
 
 export default meta;

@@ -11,7 +11,7 @@ const meta: Meta<typeof Textarea> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Textarea'],
 };
 
 export default meta;

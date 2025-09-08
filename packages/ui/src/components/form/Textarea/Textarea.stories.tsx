@@ -10,7 +10,7 @@ const meta: Meta<typeof Textarea> = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:Textarea'],
   argTypes: {
     variant: {
       control: { type: 'select' },

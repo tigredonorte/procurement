@@ -11,7 +11,7 @@ const meta: Meta<typeof AspectRatio> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:AspectRatio'],
 };
 
 export default meta;

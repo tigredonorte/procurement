@@ -35,7 +35,7 @@ const meta = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:DropdownMenu'],
   argTypes: {
     variant: {
       control: 'select',

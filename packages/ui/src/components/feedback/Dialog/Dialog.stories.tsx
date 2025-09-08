@@ -7,6 +7,7 @@ import { Dialog, DialogHeader, DialogContent, DialogActions } from './Dialog';
 const meta: Meta<typeof Dialog> = {
   title: 'Feedback/Dialog',
   component: Dialog,
+  tags: ['autodocs', 'component:Dialog'],
   parameters: {
     layout: 'centered',
     docs: {
