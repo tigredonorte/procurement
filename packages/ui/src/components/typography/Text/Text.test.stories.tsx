@@ -12,7 +12,7 @@ const meta: Meta<typeof Text> = {
     layout: 'centered', 
     chromatic: { disableSnapshot: false } 
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Text'],
 };
 
 export default meta;

@@ -20,7 +20,7 @@ const meta: Meta<typeof Command> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false }
   },
-  tags: ['autodocs', 'test']
+  tags: ['autodocs', 'test', 'component:Command']
 };
 
 export default meta;

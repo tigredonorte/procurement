@@ -352,3 +352,174 @@ export const WithChips: Story = {
     ),
   },
 };
+
+// Required story exports for validation
+export const AllVariants: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+      <Typography variant="h6">All ScrollArea Variants</Typography>
+      
+      <Box sx={{ display: 'flex', gap: 2 }}>
+        <Box>
+          <Typography variant="caption" color="text.secondary">Default</Typography>
+          <ScrollArea width={300} height={200} variant="default">
+            <ScrollableContent lines={20} />
+          </ScrollArea>
+        </Box>
+        
+        <Box>
+          <Typography variant="caption" color="text.secondary">Overlay</Typography>
+          <ScrollArea width={300} height={200} variant="overlay">
+            <ScrollableContent lines={20} />
+          </ScrollArea>
+        </Box>
+        
+        <Box>
+          <Typography variant="caption" color="text.secondary">Glass</Typography>
+          <Box sx={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', p: 2, borderRadius: 1 }}>
+            <ScrollArea width={300} height={200} variant="glass">
+              <ScrollableContent lines={20} />
+            </ScrollArea>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
+  ),
+};
+
+export const AllSizes: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+      <Typography variant="h6">All ScrollArea Sizes</Typography>
+      
+      <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start' }}>
+        <Box>
+          <Typography variant="caption" color="text.secondary">Small (200x150)</Typography>
+          <ScrollArea width={200} height={150}>
+            <ScrollableContent lines={15} />
+          </ScrollArea>
+        </Box>
+        
+        <Box>
+          <Typography variant="caption" color="text.secondary">Medium (400x300)</Typography>
+          <ScrollArea width={400} height={300}>
+            <ScrollableContent lines={25} />
+          </ScrollArea>
+        </Box>
+        
+        <Box>
+          <Typography variant="caption" color="text.secondary">Large (600x400)</Typography>
+          <ScrollArea width={600} height={400}>
+            <ScrollableContent lines={35} />
+          </ScrollArea>
+        </Box>
+      </Box>
+    </Box>
+  ),
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+      <Typography variant="h6">All ScrollArea States</Typography>
+      
+      <Box sx={{ display: 'flex', gap: 2 }}>
+        <Box>
+          <Typography variant="caption" color="text.secondary">Normal</Typography>
+          <ScrollArea width={300} height={200}>
+            <ScrollableContent lines={20} />
+          </ScrollArea>
+        </Box>
+        
+        <Box>
+          <Typography variant="caption" color="text.secondary">Disabled</Typography>
+          <ScrollArea width={300} height={200} disabled>
+            <ScrollableContent lines={20} />
+          </ScrollArea>
+        </Box>
+        
+        <Box>
+          <Typography variant="caption" color="text.secondary">Loading</Typography>
+          <ScrollArea width={300} height={200} loading>
+            <ScrollableContent lines={20} />
+          </ScrollArea>
+        </Box>
+        
+        <Box>
+          <Typography variant="caption" color="text.secondary">Empty</Typography>
+          <ScrollArea 
+            width={300} 
+            height={200}
+            emptyContent={
+              <Box sx={{ textAlign: 'center', p: 3 }}>
+                <Typography color="text.secondary">No content</Typography>
+              </Box>
+            }
+          />
+        </Box>
+      </Box>
+    </Box>
+  ),
+};
+
+export const InteractiveStates: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+      <Typography variant="h6">Interactive ScrollArea States</Typography>
+      
+      <Box sx={{ display: 'flex', gap: 2 }}>
+        <Box>
+          <Typography variant="caption" color="text.secondary">Hover (Auto-hide scrollbar)</Typography>
+          <ScrollArea width={300} height={200} autoHide>
+            <ScrollableContent lines={20} />
+          </ScrollArea>
+        </Box>
+        
+        <Box>
+          <Typography variant="caption" color="text.secondary">Active (Scrolling)</Typography>
+          <ScrollArea width={300} height={200} smoothScroll>
+            <ScrollableContent lines={20} />
+          </ScrollArea>
+        </Box>
+        
+        <Box>
+          <Typography variant="caption" color="text.secondary">With Scroll-to-Top</Typography>
+          <ScrollArea width={300} height={200} scrollToTopButton scrollToTopThreshold={50}>
+            <ScrollableContent lines={30} />
+          </ScrollArea>
+        </Box>
+      </Box>
+    </Box>
+  ),
+};
+
+export const Responsive: Story = {
+  parameters: {
+    viewport: { defaultViewport: 'responsive' },
+  },
+  render: () => (
+    <Box sx={{ width: '100%', p: 2 }}>
+      <Typography variant="h6" gutterBottom>Responsive ScrollArea</Typography>
+      
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2 }}>
+        <Box sx={{ flex: 1 }}>
+          <Typography variant="caption" color="text.secondary">100% width, max 500px</Typography>
+          <ScrollArea width="100%" maxWidth={500} height={300}>
+            <ScrollableContent lines={25} />
+          </ScrollArea>
+        </Box>
+        
+        <Box sx={{ flex: 1 }}>
+          <Typography variant="caption" color="text.secondary">Responsive height</Typography>
+          <ScrollArea 
+            width="100%" 
+            height={{ xs: 200, sm: 300, md: 400 }}
+            sx={{ bgcolor: 'background.paper' }}
+          >
+            <ScrollableContent lines={30} />
+          </ScrollArea>
+        </Box>
+      </Box>
+    </Box>
+  ),
+};

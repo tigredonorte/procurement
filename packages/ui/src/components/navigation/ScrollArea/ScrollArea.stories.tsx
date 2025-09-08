@@ -36,7 +36,7 @@ const meta = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['autodocs', 'component:ScrollArea'],
   argTypes: {
     variant: {
       control: 'select',
