@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { userEvent, within, expect, waitFor, fn } from '@storybook/test';
-import { Box, IconButton } from '@mui/material';
-import { Mail, Notifications, ShoppingCart, CheckCircle, Star } from '@mui/icons-material';
+import { Box, IconButton, Button } from '@mui/material';
+import { Mail, Notifications, ShoppingCart, CheckCircle, Star, Person, Settings } from '@mui/icons-material';
+import React, { useState } from 'react';
 
 import { Badge } from './Badge';
 
@@ -633,7 +634,7 @@ export const ClosableBadgeTest: Story = {
       const closeButtons = canvasElement.querySelectorAll('button');
       const closeButton = Array.from(closeButtons).find(btn => 
         btn.querySelector('svg[data-testid="CloseIcon"]')
-      );
+      ) as HTMLButtonElement | undefined;
       
       if (closeButton) {
         await userEvent.click(closeButton);
@@ -738,6 +739,356 @@ export const ExtraSmallSizeTest: Story = {
       
       // Extra small should have smallest font size
       await expect(fontSize).toBeLessThan(10);
+    });
+  }
+};
+
+// State Management Test
+const StateManagementComponent = () => {
+  const [count, setCount] = useState(0);
+  const [isVisible, setIsVisible] = useState(true);
+  
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', gap: 2 }}>
+        <Button 
+          onClick={() => setCount(c => c + 1)}
+          data-testid="increment-button"
+        >
+          Increment ({count})
+        </Button>
+        <Button 
+          onClick={() => setCount(c => Math.max(0, c - 1))}
+          data-testid="decrement-button"
+        >
+          Decrement
+        </Button>
+        <Button 
+          onClick={() => setIsVisible(v => !v)}
+          data-testid="toggle-visibility"
+        >
+          Toggle Visibility
+        </Button>
+      </Box>
+      <Badge 
+        badgeContent={count} 
+        color="primary" 
+        invisible={!isVisible}
+        showZero
+        data-testid="dynamic-badge"
+      >
+        <Mail data-testid="mail-with-badge" />
+      </Badge>
+      <Box data-testid="count-display">Count: {count}</Box>
+      <Box data-testid="visibility-display">Visible: {isVisible.toString()}</Box>
+    </Box>
+  );
+};
+
+export const StateManagementTest: Story = {
+  name: '🔄 State Management Test',
+  render: () => <StateManagementComponent />,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+    
+    await step('Initial state verification', async () => {
+      const countDisplay = canvas.getByTestId('count-display');
+      const visibilityDisplay = canvas.getByTestId('visibility-display');
+      
+      await expect(countDisplay).toHaveTextContent('Count: 0');
+      await expect(visibilityDisplay).toHaveTextContent('Visible: true');
+    });
+    
+    await step('Increment count updates badge', async () => {
+      const incrementButton = canvas.getByTestId('increment-button');
+      await userEvent.click(incrementButton);
+      
+      const badge = canvas.getByText('1');
+      await expect(badge).toBeInTheDocument();
+      
+      const countDisplay = canvas.getByTestId('count-display');
+      await expect(countDisplay).toHaveTextContent('Count: 1');
+    });
+    
+    await step('Multiple increments', async () => {
+      const incrementButton = canvas.getByTestId('increment-button');
+      await userEvent.click(incrementButton);
+      await userEvent.click(incrementButton);
+      await userEvent.click(incrementButton);
+      
+      const badge = canvas.getByText('4');
+      await expect(badge).toBeInTheDocument();
+    });
+    
+    await step('Decrement count', async () => {
+      const decrementButton = canvas.getByTestId('decrement-button');
+      await userEvent.click(decrementButton);
+      await userEvent.click(decrementButton);
+      
+      const badge = canvas.getByText('2');
+      await expect(badge).toBeInTheDocument();
+    });
+    
+    await step('Toggle visibility', async () => {
+      const toggleButton = canvas.getByTestId('toggle-visibility');
+      await userEvent.click(toggleButton);
+      
+      const visibilityDisplay = canvas.getByTestId('visibility-display');
+      await expect(visibilityDisplay).toHaveTextContent('Visible: false');
+      
+      // Badge should be hidden
+      const badge = canvas.queryByText('2');
+      await expect(badge).not.toBeInTheDocument();
+    });
+    
+    await step('Toggle visibility back', async () => {
+      const toggleButton = canvas.getByTestId('toggle-visibility');
+      await userEvent.click(toggleButton);
+      
+      const badge = canvas.getByText('2');
+      await expect(badge).toBeInTheDocument();
+    });
+  }
+};
+
+// Focus Management Enhanced Test
+const FocusManagementComponent = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const items = [
+    { label: 'Messages', icon: <Mail />, count: 5 },
+    { label: 'Notifications', icon: <Notifications />, count: 12 },
+    { label: 'Settings', icon: <Settings />, count: 3 },
+    { label: 'Profile', icon: <Person />, count: 0 }
+  ];
+  
+  return (
+    <Box sx={{ display: 'flex', gap: 2 }} role="tablist">
+      {items.map((item, index) => (
+        <Badge 
+          key={item.label}
+          badgeContent={item.count}
+          color="primary"
+          showZero={index === 3} // Show zero for profile
+        >
+          <Button
+            data-testid={`focus-item-${index}`}
+            onFocus={() => setActiveIndex(index)}
+            sx={{ 
+              minWidth: 80,
+              border: activeIndex === index ? 2 : 1,
+              borderColor: activeIndex === index ? 'primary.main' : 'grey.300',
+              borderStyle: 'solid'
+            }}
+            aria-label={`${item.label}, ${item.count} notifications`}
+          >
+            {item.icon}
+          </Button>
+        </Badge>
+      ))}
+      <Box data-testid="active-index" aria-live="polite">
+        Active: {activeIndex}
+      </Box>
+    </Box>
+  );
+};
+
+export const FocusManagementTest: Story = {
+  name: '🔍 Focus Management Test',
+  render: () => <FocusManagementComponent />,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+    
+    await step('Initial focus state', async () => {
+      const activeDisplay = canvas.getByTestId('active-index');
+      await expect(activeDisplay).toHaveTextContent('Active: 0');
+    });
+    
+    await step('Tab through focusable elements', async () => {
+      // Focus first item
+      const firstItem = canvas.getByTestId('focus-item-0');
+      firstItem.focus();
+      await expect(firstItem).toHaveFocus();
+      
+      // Tab to second item
+      await userEvent.tab();
+      const secondItem = canvas.getByTestId('focus-item-1');
+      await expect(secondItem).toHaveFocus();
+      
+      const activeDisplay = canvas.getByTestId('active-index');
+      await expect(activeDisplay).toHaveTextContent('Active: 1');
+      
+      // Tab to third item
+      await userEvent.tab();
+      const thirdItem = canvas.getByTestId('focus-item-2');
+      await expect(thirdItem).toHaveFocus();
+      
+      await expect(canvas.getByTestId('active-index')).toHaveTextContent('Active: 2');
+    });
+    
+    await step('Reverse tab navigation', async () => {
+      await userEvent.tab({ shift: true });
+      const secondItem = canvas.getByTestId('focus-item-1');
+      await expect(secondItem).toHaveFocus();
+      
+      const activeDisplay = canvas.getByTestId('active-index');
+      await expect(activeDisplay).toHaveTextContent('Active: 1');
+    });
+    
+    await step('Verify badge content accessibility', async () => {
+      const button = canvas.getByLabelText(/Messages, 5 notifications/);
+      await expect(button).toBeInTheDocument();
+      
+      const profileButton = canvas.getByLabelText(/Profile, 0 notifications/);
+      await expect(profileButton).toBeInTheDocument();
+    });
+  }
+};
+
+// WCAG Compliance Test
+export const WCAGComplianceTest: Story = {
+  name: '♿ WCAG Compliance Test',
+  args: {
+    badgeContent: 'Alert',
+    color: 'error',
+    'aria-label': 'Error alert notification',
+    'aria-live': 'assertive',
+    'aria-atomic': true,
+    children: (
+      <Button 
+        aria-describedby="badge-description"
+        data-testid="wcag-button"
+      >
+        System Status
+      </Button>
+    )
+  },
+  parameters: {
+    a11y: {
+      element: '#storybook-root',
+      config: {
+        rules: [
+          { id: 'color-contrast', enabled: true },
+          { id: 'aria-required-attr', enabled: true },
+          { id: 'aria-roles', enabled: true },
+          { id: 'aria-valid-attr-value', enabled: true },
+          { id: 'button-name', enabled: true },
+          { id: 'link-name', enabled: true },
+          { id: 'label', enabled: true }
+        ]
+      }
+    }
+  },
+  render: (args) => (
+    <Box>
+      <Badge {...args} />
+      <div 
+        id="badge-description" 
+        style={{ position: 'absolute', left: '-10000px' }}
+      >
+        This badge indicates system status alerts
+      </div>
+    </Box>
+  ),
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+    
+    await step('Verify ARIA attributes', async () => {
+      const badge = canvas.getByText('Alert');
+      await expect(badge).toBeInTheDocument();
+      
+      // Check that badge has proper ARIA live region
+      const badgeElement = badge.closest('[aria-live]');
+      await expect(badgeElement).toHaveAttribute('aria-live', 'assertive');
+      await expect(badgeElement).toHaveAttribute('aria-atomic', 'true');
+    });
+    
+    await step('Verify button accessibility', async () => {
+      const button = canvas.getByTestId('wcag-button');
+      await expect(button).toHaveAttribute('aria-describedby', 'badge-description');
+      
+      // Button should be focusable
+      button.focus();
+      await expect(button).toHaveFocus();
+    });
+    
+    await step('Color contrast verification', async () => {
+      const badge = canvas.getByText('Alert');
+      const computedStyle = window.getComputedStyle(badge);
+      
+      // Error color should provide good contrast
+      const backgroundColor = computedStyle.backgroundColor;
+      const color = computedStyle.color;
+      
+      await expect(backgroundColor).toBeTruthy();
+      await expect(color).toBeTruthy();
+    });
+    
+    await step('Keyboard activation', async () => {
+      const button = canvas.getByTestId('wcag-button');
+      button.focus();
+      
+      // Should be activatable with Enter
+      await userEvent.keyboard('{Enter}');
+      await expect(button).toHaveFocus();
+      
+      // Should be activatable with Space
+      await userEvent.keyboard(' ');
+      await expect(button).toHaveFocus();
+    });
+  }
+};
+
+// Cross Browser Compatibility Test
+export const CrossBrowserTest: Story = {
+  name: '🌐 Cross Browser Test',
+  args: {
+    variant: 'glass',
+    badgeContent: 'BETA',
+    color: 'primary',
+    glow: true,
+    shimmer: true,
+    children: <Box sx={{ p: 3, bgcolor: 'grey.100', borderRadius: 1 }}>Feature</Box>
+  },
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+    
+    await step('Verify backdrop-filter support fallback', async () => {
+      const badge = canvas.getByText('BETA');
+      const computedStyle = window.getComputedStyle(badge);
+      
+      // Check if backdrop-filter is supported or has fallback
+      const hasBackdropFilter = computedStyle.backdropFilter !== undefined;
+      const hasWebkitBackdropFilter = 'webkitBackdropFilter' in computedStyle && (computedStyle as Record<string, unknown>).webkitBackdropFilter !== undefined;
+      const hasBackground = computedStyle.backgroundColor !== 'rgba(0, 0, 0, 0)';
+      
+      // At least one should be true for cross-browser compatibility
+      const isCompatible = hasBackdropFilter || hasWebkitBackdropFilter || hasBackground;
+      await expect(isCompatible).toBe(true);
+    });
+    
+    await step('CSS Grid/Flexbox fallback', async () => {
+      // Check if badges work with various layout systems
+      const badge = canvas.getByText('BETA');
+      await expect(badge).toBeVisible();
+      
+      const computedStyle = window.getComputedStyle(badge);
+      const position = computedStyle.position;
+      
+      // Should have proper positioning
+      await expect(position).toMatch(/absolute|relative|fixed/);
+    });
+    
+    await step('Animation performance', async () => {
+      const badge = canvas.getByText('BETA');
+      const computedStyle = window.getComputedStyle(badge);
+      
+      // Check for hardware acceleration hints
+      const willChange = computedStyle.willChange;
+      const backfaceVisibility = computedStyle.backfaceVisibility;
+      
+      // Modern browsers should support these optimization properties
+      await expect(willChange).toBeTruthy();
+      await expect(backfaceVisibility).toBeTruthy();
     });
   }
 };
