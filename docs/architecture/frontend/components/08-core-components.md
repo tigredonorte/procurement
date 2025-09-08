@@ -37,41 +37,46 @@ Our UI library provides a comprehensive set of components, fully wrapping Materi
 
 ### Form Components
 
-| Component       | Description          | Variants                                         |
-| --------------- | -------------------- | ------------------------------------------------ |
-| **Button**      | Interactive button   | `solid`, `outline`, `ghost`, `glass`, `gradient` |
-| **Calendar**    | Date picker calendar | `default`, `range`, `multi`, `year`              |
-| **Checkbox**    | Checkbox input       | `default`, `rounded`, `toggle`, `indeterminate`  |
-| **Command**     | Command palette      | `default`, `floating`, `inline`                  |
-| **Form**        | Form wrapper         | `vertical`, `horizontal`, `inline`, `stepped`    |
-| **Input**       | Text input           | `outlined`, `filled`, `glass`, `underline`       |
-| **InputOTP**    | OTP input field      | `numeric`, `alphanumeric`, `masked`              |
-| **Label**       | Form label           | `default`, `floating`, `required`, `optional`    |
-| **Menubar**     | Application menubar  | `default`, `glass`, `minimal`                    |
-| **RadioGroup**  | Radio button group   | `default`, `cards`, `buttons`, `segments`        |
-| **Select**      | Dropdown select      | `default`, `searchable`, `multi`, `creatable`    |
-| **Slider**      | Range slider         | `default`, `range`, `marks`, `gradient`          |
-| **Switch**      | Toggle switch        | `default`, `ios`, `android`, `label`             |
-| **Textarea**    | Multi-line input     | `default`, `autosize`, `resizable`, `rich`       |
-| **Toggle**      | Toggle button        | `default`, `outline`, `soft`                     |
-| **ToggleGroup** | Toggle button group  | `single`, `multiple`, `exclusive`                |
+| Component        | Description          | Variants                                         |
+| ---------------- | -------------------- | ------------------------------------------------ |
+| **Button**       | Interactive button   | `solid`, `outline`, `ghost`, `glass`, `gradient` |
+| **Calendar**     | Date picker calendar | `default`, `range`, `multi`, `year`              |
+| **Checkbox**     | Checkbox input       | `default`, `rounded`, `toggle`, `indeterminate`  |
+| **Command**      | Command palette      | `default`, `floating`, `inline`                  |
+| **Form**         | Form wrapper         | `vertical`, `horizontal`, `inline`, `stepped`    |
+| **Input**        | Text input           | `outlined`, `filled`, `glass`, `underline`       |
+| **InputOTP**     | OTP input field      | `numeric`, `alphanumeric`, `masked`              |
+| **Label**        | Form label           | `default`, `floating`, `required`, `optional`    |
+| **Menubar**      | Application menubar  | `default`, `glass`, `minimal`                    |
+| **RadioGroup**   | Radio button group   | `default`, `cards`, `buttons`, `segments`        |
+| **Select**       | Dropdown select      | `default`, `searchable`, `multi`, `creatable`    |
+| **Slider**       | Range slider         | `default`, `range`, `marks`, `gradient`          |
+| **Switch**       | Toggle switch        | `default`, `ios`, `android`, `label`             |
+| **Textarea**     | Multi-line input     | `default`, `autosize`, `resizable`, `rich`       |
+| **Toggle**       | Toggle button        | `default`, `outline`, `soft`                     |
+| **ToggleGroup**  | Toggle button group  | `single`, `multiple`, `exclusive`                |
+| **UploadButton** | Single file upload   | `default`, `outline`, `ghost`, `dropzone`        |
 
 ### Data Display Components
 
-| Component       | Description            | Variants                                        |
-| --------------- | ---------------------- | ----------------------------------------------- |
-| **Alert**       | Alert message          | `info`, `success`, `warning`, `danger`, `glass` |
-| **AlertDialog** | Confirmation dialog    | `default`, `destructive`, `glass`               |
-| **Avatar**      | User avatar            | `circle`, `square`, `rounded`, `status`         |
-| **Badge**       | Status indicator       | `default`, `dot`, `count`, `gradient`           |
-| **Carousel**    | Image/content carousel | `default`, `cards`, `fade`, `3d`                |
-| **Chart**       | Data visualization     | `line`, `bar`, `pie`, `area`, `scatter`         |
-| **HoverCard**   | Hover tooltip card     | `default`, `glass`, `detailed`                  |
-| **Popover**     | Popover container      | `default`, `glass`, `arrow`                     |
-| **Progress**    | Progress indicator     | `linear`, `circular`, `segmented`, `gradient`   |
-| **Sheet**       | Bottom sheet           | `default`, `glass`, `draggable`                 |
-| **Table**       | Data table             | `default`, `striped`, `glass`, `minimal`        |
-| **Tooltip**     | Tooltip overlay        | `default`, `dark`, `light`, `glass`             |
+| Component       | Description             | Variants                                         |
+| --------------- | ----------------------- | ------------------------------------------------ |
+| **Alert**       | Alert message           | `info`, `success`, `warning`, `danger`, `glass`  |
+| **AlertDialog** | Confirmation dialog     | `default`, `destructive`, `glass`                |
+| **Avatar**      | User avatar             | `circle`, `square`, `rounded`, `status`          |
+| **Badge**       | Status indicator        | `default`, `dot`, `count`, `gradient`            |
+| **Banner**      | Page-level notification | `info`, `success`, `warning`, `critical`         |
+| **Carousel**    | Image/content carousel  | `default`, `cards`, `fade`, `3d`                 |
+| **Chart**       | Data visualization      | `line`, `bar`, `pie`, `area`, `scatter`          |
+| **Chip**        | Tag/label component     | `filled`, `outlined`, `deletable`, `avatar`      |
+| **EmptyState**  | No data placeholder     | `default`, `illustrated`, `minimal`, `action`    |
+| **HoverCard**   | Hover tooltip card      | `default`, `glass`, `detailed`                   |
+| **Popover**     | Popover container       | `default`, `glass`, `arrow`                      |
+| **Progress**    | Progress indicator      | `linear`, `circular`, `segmented`, `gradient`    |
+| **Sheet**       | Bottom sheet            | `default`, `glass`, `draggable`                  |
+| **Stepper**     | Step progress indicator | `linear`, `non-linear`, `vertical`, `horizontal` |
+| **Table**       | Data table              | `default`, `striped`, `glass`, `minimal`         |
+| **Tooltip**     | Tooltip overlay         | `default`, `dark`, `light`, `glass`              |
 
 ### Feedback Components
 
