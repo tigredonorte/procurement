@@ -2,7 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Box, Stack, Typography, Paper, Button, Alert } from '@mui/material';
 import React from 'react';
 
-import { CodeEditor, EditorLanguage } from './CodeEditor';
+import { CodeEditor } from './CodeEditor';
+import type { EditorLanguage } from './CodeEditor.types';
 
 const meta = {
   title: 'Enhanced/CodeEditor',
@@ -602,7 +603,7 @@ const LiveEditorComponent = () => {
   const [saved, setSaved] = React.useState(false);
     
     const handleSave = (value: string) => {
-      
+      setCode(value);
       setSaved(true);
       window.setTimeout(() => setSaved(false), 2000);
     };
@@ -774,4 +775,90 @@ export const ComparisonView: Story = {
       </Stack>
     );
   },
+};
+
+// Required story exports for validation
+export const AllVariants: Story = {
+  render: () => (
+    <Stack spacing={4}>
+      <CodeEditor language="javascript" value="console.log('Default variant');" />
+      <CodeEditor language="typescript" value="const message: string = 'TypeScript variant';" theme="dark" />
+      <CodeEditor language="json" value='{"variant": "JSON with minimap"}' minimap />
+    </Stack>
+  ),
+};
+
+export const AllSizes: Story = {
+  render: () => (
+    <Stack spacing={4}>
+      <CodeEditor language="javascript" value="// Small size" height="200px" fontSize={12} />
+      <CodeEditor language="javascript" value="// Medium size (default)" height="400px" fontSize={14} />
+      <CodeEditor language="javascript" value="// Large size" height="600px" fontSize={16} />
+    </Stack>
+  ),
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <Stack spacing={4}>
+      <CodeEditor language="javascript" value="// Normal state" />
+      <CodeEditor language="javascript" value="// Read-only state" readOnly />
+      <CodeEditor language="javascript" value="" placeholder="Empty state with placeholder" />
+    </Stack>
+  ),
+};
+
+const InteractiveComponent = () => {
+  const [code1, setCode1] = React.useState('// Interactive editor 1');
+  const [code2, setCode2] = React.useState('// Interactive editor 2');
+  
+  const handleSave = (value: string) => {
+    // Handle save action
+    setCode1(value);
+  };
+  
+  return (
+    <Stack spacing={4}>
+      <CodeEditor 
+        language="javascript" 
+        value={code1} 
+        onChange={setCode1}
+        onSave={handleSave}
+      />
+      <CodeEditor 
+        language="typescript" 
+        value={code2} 
+        onChange={setCode2}
+        wordWrap
+        autoFormat
+      />
+    </Stack>
+  );
+};
+
+export const InteractiveStates: Story = {
+  render: () => <InteractiveComponent />,
+};
+
+export const Responsive: Story = {
+  parameters: {
+    viewport: {
+      viewports: {
+        mobile: { name: 'Mobile', styles: { width: '375px', height: '667px' } },
+        tablet: { name: 'Tablet', styles: { width: '768px', height: '1024px' } },
+        desktop: { name: 'Desktop', styles: { width: '1200px', height: '800px' } },
+      },
+    },
+  },
+  render: () => (
+    <CodeEditor 
+      language="javascript" 
+      value={`// Responsive code editor
+// This editor adapts to different screen sizes
+function responsiveFunction() {
+  return 'Works on mobile, tablet, and desktop';
+}`}
+      height="300px"
+    />
+  ),
 };

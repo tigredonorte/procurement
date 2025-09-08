@@ -1,31 +1,12 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import {
   Box,
   alpha,
   keyframes,
   styled,
-  useTheme,
 } from '@mui/material';
-import {
-  CheckCircle,
-  Cancel,
-  Settings,
-  FiberManualRecord,
-  Refresh,
-} from '@mui/icons-material';
 
-// Types
-export type AnimationVariant = 'processing' | 'success' | 'error' | 'loading' | 'pulse';
-export type AnimationSize = 'sm' | 'md' | 'lg' | 'xl';
-
-export interface AnimatedIconProps {
-  variant: AnimationVariant;
-  size?: AnimationSize;
-  color?: string;
-  duration?: number;
-  className?: string;
-  style?: React.CSSProperties;
-}
+import type { AnimatedIconProps, AnimationVariant, AnimationSize } from './AnimatedIcon.types';
 
 // Animation keyframes
 const rotateAnimation = keyframes`
@@ -37,58 +18,14 @@ const rotateAnimation = keyframes`
   }
 `;
 
-const successAnimation = keyframes`
-  0% {
-    transform: scale(0) rotate(45deg);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.1) rotate(-5deg);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1) rotate(0deg);
-    opacity: 1;
-  }
-`;
-
-const errorAnimation = keyframes`
-  0% {
-    transform: scale(0) rotate(-45deg);
-    opacity: 0;
-  }
-  25% {
-    transform: scale(1.1) rotate(5deg);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1) rotate(0deg) translateX(0);
-  }
-  60% {
-    transform: scale(1) rotate(0deg) translateX(-5px);
-  }
-  70% {
-    transform: scale(1) rotate(0deg) translateX(5px);
-  }
-  80% {
-    transform: scale(1) rotate(0deg) translateX(-3px);
-  }
-  90% {
-    transform: scale(1) rotate(0deg) translateX(3px);
-  }
-  100% {
-    transform: scale(1) rotate(0deg) translateX(0);
-  }
-`;
-
 const pulseAnimation = keyframes`
   0% {
     transform: scale(1);
     opacity: 1;
   }
   50% {
-    transform: scale(0.95);
-    opacity: 0.7;
+    transform: scale(1.1);
+    opacity: 0.8;
   }
   100% {
     transform: scale(1);
@@ -96,186 +33,181 @@ const pulseAnimation = keyframes`
   }
 `;
 
-const loadingAnimation = keyframes`
+const translateAnimation = keyframes`
   0% {
-    transform: rotate(0deg);
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
   }
   100% {
-    transform: rotate(360deg);
+    transform: translateY(0px);
   }
 `;
 
-const glowAnimation = keyframes`
+const glowPulseAnimation = keyframes`
   0% {
-    box-shadow: 0 0 5px currentColor, 0 0 10px currentColor;
+    box-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor;
   }
   50% {
     box-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
   }
   100% {
-    box-shadow: 0 0 5px currentColor, 0 0 10px currentColor;
+    box-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor;
   }
 `;
 
 // Size configurations
-const sizeConfigs: Record<AnimationSize, { size: number; strokeWidth: number }> = {
-  sm: { size: 24, strokeWidth: 2 },
-  md: { size: 32, strokeWidth: 2.5 },
-  lg: { size: 48, strokeWidth: 3 },
-  xl: { size: 64, strokeWidth: 3.5 },
+const sizeConfigs: Record<AnimationSize, { size: number; fontSize: number }> = {
+  sm: { size: 24, fontSize: 20 },
+  md: { size: 32, fontSize: 28 },
+  lg: { size: 48, fontSize: 44 },
+  xl: { size: 64, fontSize: 60 },
 };
 
 // Styled components
 const AnimationContainer = styled(Box)<{
-  size: number;
-  animationVariant: AnimationVariant;
-  duration: number;
-  customColor?: string;
-}>(({ theme, size, animationVariant, duration, customColor }) => {
+  $size: number;
+  $fontSize: number;
+  $animationVariant: AnimationVariant;
+  $duration: number;
+  $delay: number;
+  $loop: boolean;
+  $glow: boolean;
+  $glass: boolean;
+  $glowColor?: string;
+  $customColor?: string;
+}>(({ 
+  theme, 
+  $size, 
+  $fontSize, 
+  $animationVariant, 
+  $duration, 
+  $delay, 
+  $loop, 
+  $glow, 
+  $glass, 
+  $glowColor, 
+  $customColor 
+}) => {
   const getAnimation = () => {
-    switch (animationVariant) {
-      case 'processing':
-        return `${rotateAnimation} ${duration}s linear infinite`;
-      case 'success':
-        return `${successAnimation} 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards`;
-      case 'error':
-        return `${errorAnimation} 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards`;
-      case 'loading':
-        return `${loadingAnimation} ${duration}s cubic-bezier(0.4, 0.0, 0.2, 1) infinite`;
+    const iterationCount = $loop ? 'infinite' : '1';
+    const animationDelay = $delay > 0 ? `${$delay}s` : '0s';
+    
+    switch ($animationVariant) {
+      case 'rotate':
+        return `${rotateAnimation} ${$duration}s linear ${iterationCount} ${animationDelay}`;
       case 'pulse':
-        return `${pulseAnimation} ${duration}s ease-in-out infinite`;
+        return `${pulseAnimation} ${$duration}s ease-in-out ${iterationCount} ${animationDelay}`;
+      case 'translate':
+        return `${translateAnimation} ${$duration}s ease-in-out ${iterationCount} ${animationDelay}`;
       default:
         return 'none';
     }
   };
 
   const getColor = () => {
-    if (customColor) return customColor;
-    switch (animationVariant) {
-      case 'success':
-        return theme.palette.success.main;
-      case 'error':
-        return theme.palette.error.main;
-      case 'processing':
-      case 'loading':
-        return theme.palette.primary.main;
-      case 'pulse':
-        return theme.palette.info.main;
-      default:
-        return theme.palette.primary.main;
-    }
+    if ($customColor) return $customColor;
+    return theme.palette.primary.main;
   };
 
-  return {
+  const getGlowColor = () => {
+    if ($glowColor) return $glowColor;
+    return getColor();
+  };
+
+  const baseStyles = {
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: size,
-    height: size,
+    width: $size,
+    height: $size,
     color: getColor(),
     animation: getAnimation(),
-    position: 'relative',
-    '&::before': animationVariant === 'pulse' ? {
+    position: 'relative' as const,
+    cursor: 'default',
+    borderRadius: '50%',
+    transition: 'all 0.3s ease',
+  };
+
+  const glowStyles = $glow ? {
+    '&::before': {
       content: '""',
-      position: 'absolute',
-      inset: -4,
+      position: 'absolute' as const,
+      inset: -8,
       borderRadius: '50%',
-      background: `radial-gradient(circle, ${alpha(getColor(), 0.2)} 0%, transparent 70%)`,
-      animation: `${pulseAnimation} ${duration}s ease-in-out infinite`,
-    } : {},
+      background: `radial-gradient(circle, ${alpha(getGlowColor(), 0.3)} 0%, transparent 70%)`,
+      animation: `${glowPulseAnimation} ${$duration * 1.2}s ease-in-out infinite`,
+      zIndex: -1,
+    },
+    filter: `drop-shadow(0 0 8px ${alpha(getGlowColor(), 0.5)})`,
+  } : {};
+
+  const glassStyles = $glass ? {
+    background: `linear-gradient(135deg, ${alpha(theme.palette.background.paper, 0.2)}, ${alpha(theme.palette.background.paper, 0.1)})`,
+    backdropFilter: 'blur(10px)',
+    border: `1px solid ${alpha(theme.palette.divider, 0.2)}`,
+    boxShadow: `0 8px 32px ${alpha(theme.palette.common.black, 0.1)}`,
+  } : {};
+
+  return {
+    ...baseStyles,
+    ...glowStyles,
+    ...glassStyles,
     '& .MuiSvgIcon-root': {
-      fontSize: size,
-      width: size,
-      height: size,
+      fontSize: $fontSize,
+      width: $fontSize,
+      height: $fontSize,
+    },
+    '& svg': {
+      fontSize: $fontSize,
+      width: $fontSize,
+      height: $fontSize,
+    },
+    '&:hover': {
+      transform: 'scale(1.05)',
     },
   };
-});
-
-const LoadingSpinner = styled('svg')<{ size: number; strokeWidth: number }>(
-  ({ size, strokeWidth }) => ({
-    width: size,
-    height: size,
-    '& circle': {
-      fill: 'none',
-      stroke: 'currentColor',
-      strokeWidth,
-      strokeLinecap: 'round',
-      strokeDasharray: `${(size - strokeWidth) * Math.PI * 0.75}`,
-      strokeDashoffset: `${(size - strokeWidth) * Math.PI * 0.25}`,
-      transformOrigin: 'center',
-    },
-  })
-);
-
-const ProcessingGear = styled(Settings)({
-  filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))',
-});
-
-const SuccessIcon = styled(CheckCircle)({
-  filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))',
-});
-
-const ErrorIcon = styled(Cancel)({
-  filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))',
-});
-
-const PulseIcon = styled(FiberManualRecord)({
-  filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))',
 });
 
 // Main component
 export const AnimatedIcon: FC<AnimatedIconProps> = ({
-  variant,
+  children,
+  variant = 'none',
   size = 'md',
   color,
   duration = 2,
+  delay = 0,
+  loop = true,
+  glow = false,
+  glass = false,
+  glowColor,
   className,
   style,
+  'aria-label': ariaLabel,
+  onClick,
 }) => {
-  const theme = useTheme();
   const config = sizeConfigs[size];
-
-  const renderIcon = () => {
-    switch (variant) {
-      case 'processing':
-        return <ProcessingGear />;
-      case 'success':
-        return <SuccessIcon />;
-      case 'error':
-        return <ErrorIcon />;
-      case 'loading':
-        return (
-          <LoadingSpinner
-            size={config.size}
-            strokeWidth={config.strokeWidth}
-            viewBox={`0 0 ${config.size} ${config.size}`}
-          >
-            <circle
-              cx={config.size / 2}
-              cy={config.size / 2}
-              r={(config.size - config.strokeWidth) / 2}
-            />
-          </LoadingSpinner>
-        );
-      case 'pulse':
-        return <PulseIcon />;
-      default:
-        return null;
-    }
-  };
 
   return (
     <AnimationContainer
-      size={config.size}
-      animationVariant={variant}
-      duration={duration}
-      customColor={color}
+      $size={config.size}
+      $fontSize={config.fontSize}
+      $animationVariant={variant}
+      $duration={duration}
+      $delay={delay}
+      $loop={loop}
+      $glow={glow}
+      $glass={glass}
+      $glowColor={glowColor}
+      $customColor={color}
       className={className}
       style={style}
       role="img"
-      aria-label={`${variant} animation`}
+      aria-label={ariaLabel || `Animated ${variant} icon`}
+      onClick={onClick}
     >
-      {renderIcon()}
+      {children}
     </AnimationContainer>
   );
 };

@@ -245,3 +245,101 @@ export const ResponsiveText: Story = {
     </Stack>
   ),
 };
+
+// Required exports for validation
+export const AllSizes: Story = {
+  render: () => (
+    <Stack spacing={2}>
+      <Text sx={{ fontSize: '0.75rem' }}>Extra Small (12px)</Text>
+      <Text sx={{ fontSize: '0.875rem' }}>Small (14px)</Text>
+      <Text sx={{ fontSize: '1rem' }}>Medium (16px)</Text>
+      <Text sx={{ fontSize: '1.125rem' }}>Large (18px)</Text>
+      <Text sx={{ fontSize: '1.25rem' }}>Extra Large (20px)</Text>
+      <Text sx={{ fontSize: '1.5rem' }}>XXL (24px)</Text>
+    </Stack>
+  ),
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <Stack spacing={2}>
+      <Text>Default state</Text>
+      <Text color="primary">Primary state</Text>
+      <Text color="secondary">Secondary state</Text>
+      <Text color="error">Error state</Text>
+      <Text color="warning">Warning state</Text>
+      <Text color="success">Success state</Text>
+      <Text color="textDisabled">Disabled state</Text>
+      <Text italic>Italic state</Text>
+      <Text underline>Underline state</Text>
+      <Text strikethrough>Strikethrough state</Text>
+    </Stack>
+  ),
+};
+
+export const InteractiveStates: Story = {
+  render: () => (
+    <Stack spacing={2}>
+      <Text 
+        sx={{ 
+          cursor: 'pointer',
+          '&:hover': { color: 'primary.main' },
+          '&:focus': { outline: '2px solid', outlineColor: 'primary.main' },
+        }}
+        tabIndex={0}
+      >
+        Hoverable and focusable text
+      </Text>
+      <Text 
+        sx={{ 
+          cursor: 'pointer',
+          transition: 'all 0.2s',
+          '&:hover': { transform: 'scale(1.05)', color: 'secondary.main' },
+        }}
+      >
+        Text with hover effects
+      </Text>
+      <Text 
+        sx={{ 
+          cursor: 'pointer',
+          '&:active': { color: 'success.main' },
+        }}
+      >
+        Text with active state
+      </Text>
+    </Stack>
+  ),
+};
+
+export const Responsive: Story = {
+  parameters: {
+    viewport: { defaultViewport: 'mobile1' },
+  },
+  render: () => (
+    <Stack spacing={2}>
+      <Text
+        sx={{
+          fontSize: { xs: '0.875rem', sm: '1rem', md: '1.125rem' },
+          fontWeight: { xs: 400, md: 500 },
+          textAlign: { xs: 'center', md: 'left' },
+        }}
+      >
+        Responsive text sizing and alignment
+      </Text>
+      <Text
+        sx={{
+          display: { xs: 'block', md: 'none' },
+        }}
+      >
+        Mobile-only text
+      </Text>
+      <Text
+        sx={{
+          display: { xs: 'none', md: 'block' },
+        }}
+      >
+        Desktop-only text
+      </Text>
+    </Stack>
+  ),
+};

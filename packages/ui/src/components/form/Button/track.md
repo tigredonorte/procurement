@@ -59,6 +59,24 @@ The Button component provides clickable interface elements with various visual s
 - [x] Performance with 50 buttons
 - [x] Edge cases (empty content, long text)
 
+## 5) Storybook Tests
+
+**Stories**:
+* Form/Button/Tests/BasicInteraction
+* Form/Button/Tests/VariantSwitching
+* Form/Button/Tests/LoadingStateTest
+* Form/Button/Tests/KeyboardNavigation
+* Form/Button/Tests/ScreenReaderTest
+* Form/Button/Tests/DisabledAccessibility
+* Form/Button/Tests/VisualStates
+* Form/Button/Tests/SpecialEffectsTest
+* Form/Button/Tests/ResponsiveDesign
+* Form/Button/Tests/EdgeCases
+* Form/Button/Tests/PerformanceTest
+* Form/Button/Tests/IconIntegration
+* Form/Button/Tests/LoadingWithIcon
+* Form/Button/Tests/ComplexVariantTest
+
 ## Storybook Tests Status
 
 - [x] Basic Interaction (completed)
@@ -91,7 +109,9 @@ The Button component provides clickable interface elements with various visual s
 - [x] InteractiveStates story (required)
 - [x] Responsive story (required)
 
-## Current Section - 2025-09-09 08:50 (BRT) [omega-52]
+**Current (BRT)**: 2025-09-09 12:15
+
+## Current Section - 2025-09-09 12:15 (BRT) [omega-63]
 
 ### Current Task: Button Component Validation
 
