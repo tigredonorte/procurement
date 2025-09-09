@@ -1,4 +1,3 @@
-// validators/track.js
 // ESM
 import fs from 'fs';
 import path from 'path';
@@ -66,30 +65,47 @@ export function loadTrack(componentDirAbs) {
 
 export function assertTrackFreshness(currentStr) {
   if (!currentStr) {
-    console.error('track.md: missing "Current (BRT)".');
+    console.error('track.md: The "**Current (BRT)**" line is missing or empty.');
     process.exit(1);
   }
-  const m = currentStr.match(/(\d{4})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2})/);
-  if (!m) {
-    console.error(`track.md: "Current (BRT)" must be "YYYY-MM-DD HH:MM". Found: ${currentStr}`);
+
+  const match = currentStr.match(/\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}/);
+
+  if (!match) {
+    console.error(`track.md: Could not find a "YYYY-MM-DD HH:MM" timestamp on the "Current (BRT)" line.`);
+    console.error(`  > Line content: "${currentStr}"`);
     process.exit(1);
   }
-  const [_, Y, M, D, h, min] = m.map(Number);
-  const updated = new Date(Y, M - 1, D, h, min, 0, 0);
+
+  const timestamp = match[0];
+  const isoStringWithOffset = `${timestamp.replace(' ', 'T')}:00-03:00`;
+  const updated = new Date(isoStringWithOffset);
+
+  if (isNaN(updated.getTime())) {
+    console.error(`track.md: Failed to parse the timestamp found on the "Current (BRT)" line.`);
+    console.error(`  > Found timestamp: "${timestamp}"`);
+    console.error(`  > Full line content: "${currentStr}"`);
+    process.exit(1);
+  }
+
   const now = new Date();
-  const diffH = (now - updated) / (1000 * 60 * 60);
+  const diffH = (now.getTime() - updated.getTime()) / (1000 * 60 * 60);
+
   if (diffH > TRACK_FRESHNESS_HOURS) {
     console.error(
-      `track.md: "Current (BRT)" older than ${TRACK_FRESHNESS_HOURS}h. Found: ${currentStr}`,
+      `track.md: Timestamp is older than ${TRACK_FRESHNESS_HOURS}h (stale).`
     );
+    console.error(`  > Stale timestamp: "${timestamp}"`);
+    console.error(`  > Full line content: "${currentStr}"`);
     process.exit(1);
   }
 }
 
+
 function listStoryFiles(componentDirAbs) {
   // Convert absolute path to relative path from cwd for git ls-files
   const relativePath = path.relative(process.cwd(), componentDirAbs);
-  
+
   try {
     // Try with single-level glob first (git doesn't support ** properly)
     const out = execSync(`git ls-files -z "${relativePath.replace(/\\/g, '/')}/*.stories.*"`, {

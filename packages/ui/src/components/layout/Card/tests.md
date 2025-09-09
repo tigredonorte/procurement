@@ -57,16 +57,19 @@ Legend: Pending | Running | PASS | FAIL
 
 ## Static Stories Status
 
-- [ ] Default story
-- [ ] All variants covered (elevated, outlined, glass, gradient, neumorphic)
-- [ ] Glass effect variant
-- [ ] Hover state story
-- [ ] Disabled state story
-- [ ] Loading state story
-- [ ] Glow effect story
-- [ ] Pulse effect story
-- [ ] Interactive state story
-- [ ] Different border radius options
+- [x] Default story
+- [x] All variants covered (elevated, outlined, glass, gradient, neumorphic) - AllVariants story
+- [x] Glass effect variant - included in AllVariants
+- [x] Hover state story - included in InteractiveStates
+- [x] Disabled state story - included in AllStates
+- [x] Loading state story - included in AllStates
+- [x] Glow effect story - included in InteractiveStates
+- [x] Pulse effect story - tested in test stories
+- [x] Interactive state story - InteractiveStates
+- [x] Different border radius options - BorderRadiusVariations
+- [x] AllSizes story - multiple card sizes
+- [x] AllStates story - all visual states
+- [x] Responsive story - responsive layout demonstration
 
 ## Lint Status
 

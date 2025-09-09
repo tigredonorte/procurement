@@ -62,16 +62,16 @@ None - component has proper TypeScript types with separate types file.
 - Enhanced/TimingDiagram/DetailedBreakdown
 - Enhanced/TimingDiagram/MultipleRequests
 
-* [x] Basic Interaction (AllVariants story)
-* [x] State Changes (AllStates story)
-* [x] Interactive Controls (InteractiveStates story)
-* [x] Responsive Design (Responsive story)
-* [x] Visual States (AllSizes story)
-* [x] Performance Comparison (PerformanceComparison story)
-* [x] Edge Cases (MinimalData story)
-* [x] Multiple Instances (MultipleRequests story)
-* [x] Detailed Breakdown (DetailedBreakdown story)
-* [x] Default Configuration (Default story)
+- [x] Basic Interaction (AllVariants story)
+- [x] State Changes (AllStates story)
+- [x] Interactive Controls (InteractiveStates story)
+- [x] Responsive Design (Responsive story)
+- [x] Visual States (AllSizes story)
+- [x] Performance Comparison (PerformanceComparison story)
+- [x] Edge Cases (MinimalData story)
+- [x] Multiple Instances (MultipleRequests story)
+- [x] Detailed Breakdown (DetailedBreakdown story)
+- [x] Default Configuration (Default story)
 
 **Current (BRT)**: 2025-09-09 03:00 - Component validation and comprehensive story implementation completed
 

@@ -236,7 +236,7 @@ export const TimingDiagram: FC<TimingDiagramProps> = ({
   const renderWaterfall = () => {
     let offset = 0;
     return (
-      <WaterfallContainer style={{ height: height + 40 }}>
+      <WaterfallContainer style={{ height: height + 40 }} data-variant="waterfall">
         {phases.map((phase, index) => {
           const width = percentages[phase.key as keyof typeof percentages] ?? 0;
           const currentOffset = offset;
@@ -245,13 +245,17 @@ export const TimingDiagram: FC<TimingDiagramProps> = ({
           const bar = (
             <WaterfallBar
               key={phase.key}
+              data-testid={`timing-segment-${phase.key}`}
               phaseColor={phaseColors[phase.key as keyof typeof phaseColors]}
               offset={currentOffset}
               width={width}
               animated={animated}
+              data-animated={animated.toString()}
               style={{ top: index * 8 }}
             >
-              {showLabels && width > 10 && formatTime(phase.value!)}
+              {showLabels && width > 10 && (
+                <span data-testid="timing-label">{formatTime(phase.value!)}</span>
+              )}
             </WaterfallBar>
           );
 
@@ -260,6 +264,8 @@ export const TimingDiagram: FC<TimingDiagramProps> = ({
               key={phase.key}
               title={`${phase.label}: ${formatTime(phase.value!)}`}
               placement="top"
+              role="tooltip"
+              aria-describedby={`tooltip-${phase.key}`}
             >
               {bar}
             </Tooltip>
@@ -277,18 +283,19 @@ export const TimingDiagram: FC<TimingDiagramProps> = ({
   };
 
   const renderStacked = () => (
-    <>
-      <StackedBar animated={animated}>
+    <Box data-variant="stacked">
+      <StackedBar animated={animated} data-animated={animated.toString()}>
         {phases.map((phase) => {
           const segment = (
             <StackedSegment
               key={phase.key}
+              data-testid={`timing-segment-${phase.key}`}
               phaseColor={phaseColors[phase.key as keyof typeof phaseColors]}
               width={percentages[phase.key as keyof typeof percentages] ?? 0}
             >
-              {showLabels &&
-                (percentages[phase.key as keyof typeof percentages] ?? 0) > 10 &&
-                formatTime(phase.value!)}
+              {showLabels && (percentages[phase.key as keyof typeof percentages] ?? 0) > 10 && (
+                <span data-testid="timing-label">{formatTime(phase.value!)}</span>
+              )}
             </StackedSegment>
           );
 
@@ -297,6 +304,8 @@ export const TimingDiagram: FC<TimingDiagramProps> = ({
               key={phase.key}
               title={`${phase.label}: ${formatTime(phase.value!)}`}
               placement="top"
+              role="tooltip"
+              aria-describedby={`tooltip-${phase.key}`}
             >
               {segment}
             </Tooltip>
@@ -313,24 +322,28 @@ export const TimingDiagram: FC<TimingDiagramProps> = ({
           Total: {formatTime(data.total)}
         </Typography>
       </Box>
-    </>
+    </Box>
   );
 
   const renderHorizontal = () => (
-    <HorizontalBar>
+    <HorizontalBar data-variant="horizontal">
       {phases.map((phase) => (
         <HorizontalSegment
           key={phase.key}
+          data-testid={`timing-segment-${phase.key}`}
           phaseColor={phaseColors[phase.key as keyof typeof phaseColors]}
           width={percentages[phase.key as keyof typeof percentages] ?? 0}
           animated={animated}
+          data-animated={animated.toString()}
         >
           <Typography className="label">{phase.label}</Typography>
           <Box
             className="bar"
             style={{ width: `${percentages[phase.key as keyof typeof percentages]}%` }}
           />
-          <Typography className="value">{formatTime(phase.value!)}</Typography>
+          <Typography className="value" data-testid="timing-label">
+            {formatTime(phase.value!)}
+          </Typography>
         </HorizontalSegment>
       ))}
       <Box sx={{ mt: 2, pt: 2, borderTop: `1px solid ${alpha(theme.palette.divider, 0.2)}` }}>
@@ -342,7 +355,7 @@ export const TimingDiagram: FC<TimingDiagramProps> = ({
   );
 
   return (
-    <DiagramContainer elevation={2}>
+    <DiagramContainer elevation={2} role="region" aria-label="Timing diagram">
       <Typography variant="h6" fontWeight="bold" gutterBottom>
         Request Timing
       </Typography>
