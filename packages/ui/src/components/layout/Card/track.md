@@ -59,19 +59,39 @@ The Card component provides a flexible container for organizing content with con
 - [ ] Edge Cases (planned)
 - [ ] Integration (planned)
 
-## Current Section - 2025-09-07 05:00 (BRT) [omega-1]
+## 5) Storybook Tests
 
-### Current Task: Component verification and comprehensive testing
+**Stories**
 
-- Starting verification process
-- Will implement comprehensive test stories
-- Will verify all tests pass in Storybook
-- Will ensure lint and type checks pass
+- Layout/Card/Default
+- Layout/Card/AllVariants
+- Layout/Card/AllSizes
+- Layout/Card/AllStates
+- Layout/Card/InteractiveStates
+- Layout/Card/Responsive
+- Layout/Card/BorderRadiusVariations
+- Layout/Card/ProductCard
+- Layout/Card/ProfileCard
+- Layout/Card/DashboardCard
+- Layout/Card/ComplexLayoutCard
+- Layout/Card/Tests/BasicInteraction
+- Layout/Card/Tests/VariantStates
+- Layout/Card/Tests/BorderRadius
+- Layout/Card/Tests/LoadingState
+- Layout/Card/Tests/GlowEffect
+- Layout/Card/Tests/PulseAnimation
+- Layout/Card/Tests/CardHeader
+- Layout/Card/Tests/CardContent
+- Layout/Card/Tests/CardActions
+- Layout/Card/Tests/CardMedia
+- Layout/Card/Tests/KeyboardNavigation
+- Layout/Card/Tests/VisualStates
+- Layout/Card/Tests/ResponsiveDesign
+- Layout/Card/Tests/EdgeCases
+- Layout/Card/Tests/ScreenReader
+- Layout/Card/Tests/FocusManagement
+- Layout/Card/Tests/ThemeVariations
+- Layout/Card/Tests/Performance
+- Layout/Card/Tests/IntegrationWithOtherComponents
 
-### Next Steps:
-
-- Read existing component implementation
-- Create tests.md file
-- Implement comprehensive test stories in Card.test.stories.tsx
-- Verify all tests pass in Storybook
-- Run lint and type checks
+**Current (BRT)**: 2025-09-09 19:10 - Fixed Stories coverage validation issues

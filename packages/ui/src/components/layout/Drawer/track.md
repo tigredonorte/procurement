@@ -60,6 +60,28 @@ A slide-out drawer component that can be positioned from any side of the screen.
 - [ ] Swipe gestures (mobile)
 - [ ] Z-index layering
 
+## 5) Storybook Tests
+
+**Stories**
+
+- Layout/Drawer/Default
+- Layout/Drawer/AllVariants
+- Layout/Drawer/NavigationDrawer
+- Layout/Drawer/AllSizes
+- Layout/Drawer/AllStates
+- Layout/Drawer/InteractiveStates
+- Layout/Drawer/Responsive
+- Layout/Drawer/Tests/BasicInteraction
+- Layout/Drawer/Tests/KeyboardNavigation
+- Layout/Drawer/Tests/ScreenReader
+- Layout/Drawer/Tests/FocusManagement
+- Layout/Drawer/Tests/ResponsiveDesign
+- Layout/Drawer/Tests/ThemeVariations
+- Layout/Drawer/Tests/VisualStates
+- Layout/Drawer/Tests/Performance
+- Layout/Drawer/Tests/EdgeCases
+- Layout/Drawer/Tests/Integration
+
 ## Storybook Tests Status
 
 - [ ] Basic Interaction (planned)
@@ -73,18 +95,4 @@ A slide-out drawer component that can be positioned from any side of the screen.
 - [ ] Edge Cases (planned)
 - [ ] Integration (planned)
 
-## Current Section - 2025-01-13 21:30 (BRT)
-
-### Current Task: Initial track.md file creation
-
-- Track.md file structure created
-- Component overview documented
-- Parameters identified
-- Testing scenarios outlined
-
-### Next Steps:
-
-- Read existing component implementation
-- Verify current lint/type status
-- Update status based on actual component state
-- Begin systematic verification process
+**Current (BRT)**: 2025-09-09 19:10 - Fixed Stories coverage validation issue by adding required story exports

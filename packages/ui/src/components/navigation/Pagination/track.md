@@ -69,41 +69,42 @@ None - all clean!
 
 **Stories**
 
-* Navigation/Pagination/Default
-* Navigation/Pagination/Rounded
-* Navigation/Pagination/Dots
-* Navigation/Pagination/Minimal
-* Navigation/Pagination/SmallSize
-* Navigation/Pagination/LargeSize
-* Navigation/Pagination/WithFirstLast
-* Navigation/Pagination/WithPageInfo
-* Navigation/Pagination/WithItemsPerPage
-* Navigation/Pagination/CustomIcons
-* Navigation/Pagination/SecondaryColor
-* Navigation/Pagination/Disabled
-* Navigation/Pagination/CustomBoundaries
-* Navigation/Pagination/LongPagination
-* Navigation/Pagination/AllVariantsComparison
-* Navigation/Pagination/SizeComparison
-* Navigation/Pagination/TablePagination
-* Navigation/Pagination/AllVariants
-* Navigation/Pagination/AllSizes
-* Navigation/Pagination/AllStates
-* Navigation/Pagination/InteractiveStates
-* Navigation/Pagination/Responsive
-* Navigation/Pagination/Tests/BasicInteraction
-* Navigation/Pagination/Tests/FormInteraction
-* Navigation/Pagination/Tests/KeyboardNavigation
-* Navigation/Pagination/Tests/ScreenReader
-* Navigation/Pagination/Tests/FocusManagement
-* Navigation/Pagination/Tests/ResponsiveDesign
-* Navigation/Pagination/Tests/ThemeVariations
-* Navigation/Pagination/Tests/VisualStates
-* Navigation/Pagination/Tests/Performance
-* Navigation/Pagination/Tests/EdgeCases
-* Navigation/Pagination/Tests/Integration
+- Navigation/Pagination/Default
+- Navigation/Pagination/Rounded
+- Navigation/Pagination/Dots
+- Navigation/Pagination/Minimal
+- Navigation/Pagination/SmallSize
+- Navigation/Pagination/LargeSize
+- Navigation/Pagination/WithFirstLast
+- Navigation/Pagination/WithPageInfo
+- Navigation/Pagination/WithItemsPerPage
+- Navigation/Pagination/CustomIcons
+- Navigation/Pagination/SecondaryColor
+- Navigation/Pagination/Disabled
+- Navigation/Pagination/CustomBoundaries
+- Navigation/Pagination/LongPagination
+- Navigation/Pagination/AllVariantsComparison
+- Navigation/Pagination/SizeComparison
+- Navigation/Pagination/TablePagination
+- Navigation/Pagination/AllVariants
+- Navigation/Pagination/AllSizes
+- Navigation/Pagination/AllStates
+- Navigation/Pagination/InteractiveStates
+- Navigation/Pagination/Responsive
+- Navigation/Pagination/Tests/BasicInteraction
+- Navigation/Pagination/Tests/FormInteraction
+- Navigation/Pagination/Tests/KeyboardNavigation
+- Navigation/Pagination/Tests/ScreenReader
+- Navigation/Pagination/Tests/FocusManagement
+- Navigation/Pagination/Tests/ResponsiveDesign
+- Navigation/Pagination/Tests/ThemeVariations
+- Navigation/Pagination/Tests/VisualStates
+- Navigation/Pagination/Tests/Performance
+- Navigation/Pagination/Tests/EdgeCases
+- Navigation/Pagination/Tests/Integration
 
 ### Test Stories Progress
+
 - [x] Basic Interaction (PASS)
 - [x] Form Interaction (PASS)
 - [x] Keyboard Navigation (PASS)

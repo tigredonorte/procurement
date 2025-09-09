@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Box, Typography, Paper, Button, Card, CardContent } from '@mui/material';
 
@@ -10,7 +11,8 @@ const meta: Meta<typeof Container> = {
     layout: 'fullscreen',
     docs: {
       description: {
-        component: 'A responsive container component that constrains content width and provides consistent padding. Built on MUI Container with enhanced variants and responsive behavior.',
+        component:
+          'A responsive container component that constrains content width and provides consistent padding. Built on MUI Container with enhanced variants and responsive behavior.',
       },
     },
   },
@@ -47,10 +49,12 @@ const DemoContent = () => (
       Container Content
     </Typography>
     <Typography variant="body1" paragraph>
-      This is a demo content inside the container. The container helps to center content and limit its maximum width for better readability on larger screens.
+      This is a demo content inside the container. The container helps to center content and limit
+      its maximum width for better readability on larger screens.
     </Typography>
     <Typography variant="body2" color="text.secondary">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
+      labore et dolore magna aliqua.
     </Typography>
   </Paper>
 );
@@ -116,7 +120,9 @@ export const ExtraSmallContainer: Story = {
     children: (
       <Card>
         <CardContent>
-          <Typography variant="h6" gutterBottom>XS Container</Typography>
+          <Typography variant="h6" gutterBottom>
+            XS Container
+          </Typography>
           <Typography variant="body2">Maximum width: 444px</Typography>
         </CardContent>
       </Card>
@@ -131,7 +137,9 @@ export const SmallContainer: Story = {
     children: (
       <Card>
         <CardContent>
-          <Typography variant="h6" gutterBottom>SM Container</Typography>
+          <Typography variant="h6" gutterBottom>
+            SM Container
+          </Typography>
           <Typography variant="body2">Maximum width: 600px</Typography>
         </CardContent>
       </Card>
@@ -146,7 +154,9 @@ export const MediumContainer: Story = {
     children: (
       <Card>
         <CardContent>
-          <Typography variant="h6" gutterBottom>MD Container</Typography>
+          <Typography variant="h6" gutterBottom>
+            MD Container
+          </Typography>
           <Typography variant="body2">Maximum width: 900px</Typography>
         </CardContent>
       </Card>
@@ -161,7 +171,9 @@ export const LargeContainer: Story = {
     children: (
       <Card>
         <CardContent>
-          <Typography variant="h6" gutterBottom>LG Container</Typography>
+          <Typography variant="h6" gutterBottom>
+            LG Container
+          </Typography>
           <Typography variant="body2">Maximum width: 1200px</Typography>
         </CardContent>
       </Card>
@@ -176,7 +188,9 @@ export const ExtraLargeContainer: Story = {
     children: (
       <Card>
         <CardContent>
-          <Typography variant="h6" gutterBottom>XL Container</Typography>
+          <Typography variant="h6" gutterBottom>
+            XL Container
+          </Typography>
           <Typography variant="body2">Maximum width: 1536px</Typography>
         </CardContent>
       </Card>
@@ -186,11 +200,12 @@ export const ExtraLargeContainer: Story = {
 
 // Padding Variations
 export const NoPadding: Story = {
-  name: 'No Padding',
   args: {
     padding: 'none',
     children: (
-      <Paper sx={{ p: 2, bgcolor: 'warning.50', border: '2px dashed', borderColor: 'warning.main' }}>
+      <Paper
+        sx={{ p: 2, bgcolor: 'warning.50', border: '2px dashed', borderColor: 'warning.main' }}
+      >
         <Typography>Content with no container padding</Typography>
       </Paper>
     ),
@@ -198,7 +213,6 @@ export const NoPadding: Story = {
 };
 
 export const ExtraSmallPadding: Story = {
-  name: 'Extra Small Padding',
   args: {
     padding: 'xs',
     children: (
@@ -210,7 +224,6 @@ export const ExtraSmallPadding: Story = {
 };
 
 export const SmallPadding: Story = {
-  name: 'Small Padding',
   args: {
     padding: 'sm',
     children: (
@@ -222,7 +235,6 @@ export const SmallPadding: Story = {
 };
 
 export const LargePadding: Story = {
-  name: 'Large Padding',
   args: {
     padding: 'lg',
     children: (
@@ -234,7 +246,6 @@ export const LargePadding: Story = {
 };
 
 export const ExtraLargePadding: Story = {
-  name: 'Extra Large Padding',
   args: {
     padding: 'xl',
     children: (
@@ -247,7 +258,6 @@ export const ExtraLargePadding: Story = {
 
 // Content Variations
 export const EmptyContainer: Story = {
-  name: 'Empty Container',
   args: {
     children: null,
     sx: { minHeight: 200, border: '2px dashed #ccc' },
@@ -255,14 +265,12 @@ export const EmptyContainer: Story = {
 };
 
 export const MinimalContent: Story = {
-  name: 'Minimal Content',
   args: {
     children: <Typography>Short text</Typography>,
   },
 };
 
 export const RichContent: Story = {
-  name: 'Rich Content',
   args: {
     children: (
       <Box>
@@ -270,18 +278,19 @@ export const RichContent: Story = {
           Rich Content Container
         </Typography>
         <Typography variant="subtitle1" paragraph>
-          This container demonstrates how it handles various types of rich content including multiple paragraphs, buttons, and cards.
+          This container demonstrates how it handles various types of rich content including
+          multiple paragraphs, buttons, and cards.
         </Typography>
-        
+
         {[1, 2, 3].map((num) => (
           <Paper key={num} sx={{ p: 3, mb: 2, bgcolor: `primary.${50 + num * 50}` }}>
             <Typography variant="h6" gutterBottom>
               Section {num}
             </Typography>
             <Typography paragraph>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor 
-              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis 
-              nostrud exercitation ullamco laboris.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+              exercitation ullamco laboris.
             </Typography>
             <Button variant="outlined" size="small">
               Action {num}
@@ -295,7 +304,6 @@ export const RichContent: Story = {
 
 // Edge Cases
 export const LongTextOverflow: Story = {
-  name: 'Long Text Handling',
   args: {
     children: (
       <Box>
@@ -306,7 +314,8 @@ export const LongTextOverflow: Story = {
           ThisIsAVeryLongWordThatShouldTestHowTheContainerHandlesOverflowingContentAndWordBreaking
         </Typography>
         <Typography paragraph>
-          {"Very ".repeat(100)}long repeated text to test how the container handles extremely long content that might cause layout issues.
+          {'Very '.repeat(100)}long repeated text to test how the container handles extremely long
+          content that might cause layout issues.
         </Typography>
       </Box>
     ),
@@ -315,7 +324,6 @@ export const LongTextOverflow: Story = {
 
 // Responsive Behavior
 export const NonResponsive: Story = {
-  name: 'Non-Responsive',
   args: {
     responsive: false,
     padding: 'lg',
@@ -324,9 +332,7 @@ export const NonResponsive: Story = {
         <Typography variant="h6" gutterBottom>
           Non-Responsive Container
         </Typography>
-        <Typography>
-          This container maintains the same padding across all screen sizes.
-        </Typography>
+        <Typography>This container maintains the same padding across all screen sizes.</Typography>
       </Paper>
     ),
   },
@@ -339,7 +345,6 @@ export const NonResponsive: Story = {
 
 // Custom Styling
 export const CustomStyling: Story = {
-  name: 'Custom Styling',
   args: {
     sx: {
       backgroundColor: 'secondary.light',
@@ -358,10 +363,195 @@ export const CustomStyling: Story = {
         <Typography variant="h5" gutterBottom>
           Custom Styled Container
         </Typography>
-        <Typography>
-          Hover to see the styling change
-        </Typography>
+        <Typography>Hover to see the styling change</Typography>
       </Box>
     ),
+  },
+};
+
+// Required exports for validation
+export const AllVariants: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <Container variant="default">
+        <Paper sx={{ p: 2 }}>
+          <Typography variant="h6">Default Variant</Typography>
+          <Typography>Standard container with default constraints</Typography>
+        </Paper>
+      </Container>
+
+      <Container variant="fluid">
+        <Paper sx={{ p: 2, bgcolor: 'info.50' }}>
+          <Typography variant="h6">Fluid Variant</Typography>
+          <Typography>Full width container</Typography>
+        </Paper>
+      </Container>
+
+      <Container variant="centered">
+        <Paper sx={{ p: 2, bgcolor: 'success.50' }}>
+          <Typography variant="h6">Centered Variant</Typography>
+          <Typography>Centered content in viewport</Typography>
+        </Paper>
+      </Container>
+
+      <Container variant="padded">
+        <Paper sx={{ p: 2, bgcolor: 'warning.50' }}>
+          <Typography variant="h6">Padded Variant</Typography>
+          <Typography>Extra vertical padding</Typography>
+        </Paper>
+      </Container>
+    </Box>
+  ),
+};
+
+export const AllSizes: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <Container maxWidth="xs">
+        <Paper sx={{ p: 2, bgcolor: 'primary.50' }}>
+          <Typography variant="subtitle2">XS - Max 444px</Typography>
+        </Paper>
+      </Container>
+
+      <Container maxWidth="sm">
+        <Paper sx={{ p: 2, bgcolor: 'primary.100' }}>
+          <Typography variant="subtitle2">SM - Max 600px</Typography>
+        </Paper>
+      </Container>
+
+      <Container maxWidth="md">
+        <Paper sx={{ p: 2, bgcolor: 'primary.200' }}>
+          <Typography variant="subtitle2">MD - Max 900px</Typography>
+        </Paper>
+      </Container>
+
+      <Container maxWidth="lg">
+        <Paper sx={{ p: 2, bgcolor: 'primary.300' }}>
+          <Typography variant="subtitle2">LG - Max 1200px</Typography>
+        </Paper>
+      </Container>
+
+      <Container maxWidth="xl">
+        <Paper sx={{ p: 2, bgcolor: 'primary.400' }}>
+          <Typography variant="subtitle2">XL - Max 1536px</Typography>
+        </Paper>
+      </Container>
+    </Box>
+  ),
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <Container>
+        <Paper sx={{ p: 2 }}>
+          <Typography variant="h6">Default State</Typography>
+          <Typography>Normal container state</Typography>
+        </Paper>
+      </Container>
+
+      <Container sx={{ opacity: 0.5 }}>
+        <Paper sx={{ p: 2 }}>
+          <Typography variant="h6">Disabled State</Typography>
+          <Typography>Container with reduced opacity</Typography>
+        </Paper>
+      </Container>
+
+      <Container sx={{ border: '2px solid', borderColor: 'primary.main' }}>
+        <Paper sx={{ p: 2 }}>
+          <Typography variant="h6">Focused State</Typography>
+          <Typography>Container with focus indicator</Typography>
+        </Paper>
+      </Container>
+
+      <Container sx={{ bgcolor: 'action.hover' }}>
+        <Paper sx={{ p: 2 }}>
+          <Typography variant="h6">Hover State</Typography>
+          <Typography>Container with hover background</Typography>
+        </Paper>
+      </Container>
+    </Box>
+  ),
+};
+
+export const InteractiveStates: Story = {
+  render: () => {
+    const [hovered, setHovered] = React.useState(false);
+    const [clicked, setClicked] = React.useState(false);
+
+    return (
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+        <Container
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+          onClick={() => setClicked(!clicked)}
+          sx={{
+            transition: 'all 0.3s ease',
+            transform: hovered ? 'scale(1.02)' : 'scale(1)',
+            boxShadow: clicked ? 4 : 0,
+            cursor: 'pointer',
+          }}
+        >
+          <Paper sx={{ p: 3 }}>
+            <Typography variant="h6">Interactive Container</Typography>
+            <Typography>
+              Hover: {hovered ? 'Yes' : 'No'} | Clicked: {clicked ? 'Yes' : 'No'}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Hover to scale, click to toggle shadow
+            </Typography>
+          </Paper>
+        </Container>
+
+        <Container>
+          <Box sx={{ display: 'flex', gap: 2 }}>
+            <Button variant="contained">Action 1</Button>
+            <Button variant="outlined">Action 2</Button>
+            <Button variant="text">Action 3</Button>
+          </Box>
+        </Container>
+      </Box>
+    );
+  },
+};
+
+export const Responsive: Story = {
+  render: () => (
+    <Container responsive padding="lg">
+      <Paper sx={{ p: 3 }}>
+        <Typography variant="h5" gutterBottom>
+          Responsive Container
+        </Typography>
+        <Typography paragraph>
+          This container adjusts its padding based on screen size. Resize your browser to see the
+          responsive behavior.
+        </Typography>
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: 'repeat(3, 1fr)' },
+            gap: 2,
+          }}
+        >
+          <Paper sx={{ p: 2, bgcolor: 'primary.50' }}>
+            <Typography variant="subtitle2">Mobile</Typography>
+            <Typography variant="body2">1 column</Typography>
+          </Paper>
+          <Paper sx={{ p: 2, bgcolor: 'primary.100' }}>
+            <Typography variant="subtitle2">Tablet</Typography>
+            <Typography variant="body2">2 columns</Typography>
+          </Paper>
+          <Paper sx={{ p: 2, bgcolor: 'primary.200' }}>
+            <Typography variant="subtitle2">Desktop</Typography>
+            <Typography variant="body2">3 columns</Typography>
+          </Paper>
+        </Box>
+      </Paper>
+    </Container>
+  ),
+  parameters: {
+    viewport: {
+      defaultViewport: 'responsive',
+    },
   },
 };

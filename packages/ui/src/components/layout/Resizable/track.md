@@ -68,18 +68,29 @@ A resizable container component that allows users to dynamically resize content 
 - [ ] Edge Cases (planned)
 - [ ] Integration (planned)
 
-## Current Section - 2025-01-13 21:30 (BRT)
+## Stories
 
-### Current Task: Initial track.md file creation
+- Layout/Resizable/Default
+- Layout/Resizable/HorizontalOnly
+- Layout/Resizable/VerticalOnly
+- Layout/Resizable/BothDirections
+- Layout/Resizable/WithConstraints
+- Layout/Resizable/WithCallback
+- Layout/Resizable/CustomHandles
+- Layout/Resizable/AllHandles
+- Layout/Resizable/MinimalSize
+- Layout/Resizable/LargeSize
+- Layout/Resizable/ResponsiveContent
+- Layout/Resizable/NestedResizable
+- Layout/Resizable/AccessibilityEnhanced
+- Layout/Resizable/DisabledState
+- Layout/Resizable/SidePanel
+- Layout/Resizable/TextEditor
+- Layout/Resizable/GridLayout
+- Layout/Resizable/AllVariants
+- Layout/Resizable/AllSizes
+- Layout/Resizable/AllStates
+- Layout/Resizable/InteractiveStates
+- Layout/Resizable/Responsive
 
-- Track.md file structure created
-- Component overview documented
-- Parameters identified
-- Testing scenarios outlined
-
-### Next Steps:
-
-- Read existing component implementation
-- Verify current lint/type status
-- Update status based on actual component state
-- Begin systematic verification process
+**Current (BRT)**: 2025-09-09 19:15 - Fixed Stories coverage issue by adding required exports

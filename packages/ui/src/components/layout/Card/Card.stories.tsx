@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button, Typography, Avatar, IconButton, Chip, Stack, Box, Grid } from '@mui/material';
-import { 
-  Favorite, 
-  Share, 
-  MoreVert, 
-  ShoppingCart, 
+import {
+  Favorite,
+  Share,
+  MoreVert,
+  ShoppingCart,
   Star,
   LocationOn,
   Phone,
   Email,
-  Edit
+  Edit,
 } from '@mui/icons-material';
 
 import { Card, CardHeader, CardContent, CardActions, CardMedia } from './Card';
@@ -56,8 +56,8 @@ export const Default: Story = {
           Default Card
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          This is a basic card with default styling. It can contain any content
-          and serves as a container for related information.
+          This is a basic card with default styling. It can contain any content and serves as a
+          container for related information.
         </Typography>
       </CardContent>
       <CardActions>
@@ -128,13 +128,15 @@ export const AllVariants: Story = {
   ),
 };
 
-export const InteractiveCards: Story = {
+export const InteractiveStates: Story = {
   render: () => (
     <Grid container spacing={3}>
       <Grid item xs={12} sm={6} md={4}>
         <Card variant="elevated" interactive>
           <CardContent>
-            <Typography variant="h6" gutterBottom>Interactive Card</Typography>
+            <Typography variant="h6" gutterBottom>
+              Interactive Card
+            </Typography>
             <Typography variant="body2" color="text.secondary">
               Hover over this card to see the interactive effects.
             </Typography>
@@ -145,7 +147,9 @@ export const InteractiveCards: Story = {
       <Grid item xs={12} sm={6} md={4}>
         <Card variant="glass" interactive glow>
           <CardContent>
-            <Typography variant="h6" gutterBottom>Glowing Glass Card</Typography>
+            <Typography variant="h6" gutterBottom>
+              Glowing Glass Card
+            </Typography>
             <Typography variant="body2" color="text.secondary">
               This card combines glass effect with glow and interactivity.
             </Typography>
@@ -156,7 +160,9 @@ export const InteractiveCards: Story = {
       <Grid item xs={12} sm={6} md={4}>
         <Card variant="neumorphic" interactive>
           <CardContent>
-            <Typography variant="h6" gutterBottom>Interactive Neumorphic</Typography>
+            <Typography variant="h6" gutterBottom>
+              Interactive Neumorphic
+            </Typography>
             <Typography variant="body2" color="text.secondary">
               Neumorphic design that responds to hover interactions.
             </Typography>
@@ -235,11 +241,7 @@ export const ProfileCard: Story = {
   render: () => (
     <Card variant="glass" sx={{ maxWidth: 400 }}>
       <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: 'primary.main', width: 64, height: 64 }}>
-            JS
-          </Avatar>
-        }
+        avatar={<Avatar sx={{ bgcolor: 'primary.main', width: 64, height: 64 }}>JS</Avatar>}
         action={
           <IconButton>
             <MoreVert />
@@ -273,9 +275,7 @@ export const ProfileCard: Story = {
         <Button variant="outlined" startIcon={<Edit />}>
           Edit
         </Button>
-        <Button variant="contained">
-          Contact
-        </Button>
+        <Button variant="contained">Contact</Button>
       </CardActions>
     </Card>
   ),
@@ -295,24 +295,219 @@ export const DashboardCard: Story = {
         <Typography variant="body2" color="text.secondary" mb={2}>
           Total revenue this month
         </Typography>
-        <Box sx={{ 
-          height: 4, 
-          backgroundColor: 'grey.200', 
-          borderRadius: 2,
-          position: 'relative'
-        }}>
-          <Box sx={{
-            width: '68%',
-            height: '100%',
-            backgroundColor: 'primary.main',
-            borderRadius: 2
-          }} />
+        <Box
+          sx={{
+            height: 4,
+            backgroundColor: 'grey.200',
+            borderRadius: 2,
+            position: 'relative',
+          }}
+        >
+          <Box
+            sx={{
+              width: '68%',
+              height: '100%',
+              backgroundColor: 'primary.main',
+              borderRadius: 2,
+            }}
+          />
         </Box>
         <Typography variant="caption" color="text.secondary" mt={1}>
           68% of monthly goal
         </Typography>
       </CardContent>
     </Card>
+  ),
+};
+
+export const AllSizes: Story = {
+  render: () => (
+    <Grid container spacing={3}>
+      <Grid item xs={12} sm={6} md={4}>
+        <Card variant="elevated" sx={{ padding: 0 }}>
+          <CardContent>
+            <Typography variant="h6" gutterBottom>
+              Small Card
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Compact size with minimal padding for tight spaces.
+            </Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+
+      <Grid item xs={12} sm={6} md={4}>
+        <Card variant="elevated" sx={{ padding: 2 }}>
+          <CardContent>
+            <Typography variant="h6" gutterBottom>
+              Medium Card
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Standard size with balanced padding for most use cases.
+            </Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+
+      <Grid item xs={12} sm={6} md={4}>
+        <Card variant="elevated" sx={{ padding: 4 }}>
+          <CardContent>
+            <Typography variant="h6" gutterBottom>
+              Large Card
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Spacious card with extra padding for important content.
+            </Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+    </Grid>
+  ),
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <Grid container spacing={3}>
+      <Grid item xs={12} sm={6} md={3}>
+        <Card variant="elevated">
+          <CardContent>
+            <Typography variant="h6" gutterBottom>
+              Default
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Normal state card
+            </Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+
+      <Grid item xs={12} sm={6} md={3}>
+        <Card variant="elevated" sx={{ '&:hover': { boxShadow: 6 } }}>
+          <CardContent>
+            <Typography variant="h6" gutterBottom>
+              Hover
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Hover over this card
+            </Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+
+      <Grid item xs={12} sm={6} md={3}>
+        <Card variant="elevated" sx={{ opacity: 0.6, pointerEvents: 'none' }}>
+          <CardContent>
+            <Typography variant="h6" gutterBottom>
+              Disabled
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Disabled state card
+            </Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+
+      <Grid item xs={12} sm={6} md={3}>
+        <Card variant="elevated" loading>
+          <CardContent>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <Typography variant="h6">Loading</Typography>
+              <Box sx={{ display: 'flex', gap: 0.5 }}>
+                <Box
+                  sx={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: '50%',
+                    backgroundColor: 'primary.main',
+                    animation: 'pulse 1.4s infinite',
+                  }}
+                />
+                <Box
+                  sx={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: '50%',
+                    backgroundColor: 'primary.main',
+                    animation: 'pulse 1.4s infinite 0.2s',
+                  }}
+                />
+                <Box
+                  sx={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: '50%',
+                    backgroundColor: 'primary.main',
+                    animation: 'pulse 1.4s infinite 0.4s',
+                  }}
+                />
+              </Box>
+            </Box>
+            <Typography variant="body2" color="text.secondary">
+              Loading content...
+            </Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+    </Grid>
+  ),
+};
+
+export const Responsive: Story = {
+  render: () => (
+    <Box>
+      <Typography variant="h6" gutterBottom>
+        Responsive Card Layout
+      </Typography>
+      <Typography variant="body2" color="text.secondary" paragraph>
+        Resize your browser to see how cards adapt to different screen sizes
+      </Typography>
+
+      <Grid container spacing={{ xs: 1, sm: 2, md: 3 }}>
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Card variant="elevated">
+            <CardContent>
+              <Typography variant="h6">Mobile First</Typography>
+              <Typography variant="body2" color="text.secondary">
+                Full width on mobile, adapts to grid on larger screens
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Card variant="outlined">
+            <CardContent>
+              <Typography variant="h6">Flexible Grid</Typography>
+              <Typography variant="body2" color="text.secondary">
+                12 cols on xs, 6 on sm, 4 on md, 3 on lg
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Card variant="glass">
+            <CardContent>
+              <Typography variant="h6">Responsive Spacing</Typography>
+              <Typography variant="body2" color="text.secondary">
+                Spacing adjusts based on screen size
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Card variant="gradient">
+            <CardContent>
+              <Typography variant="h6">Adaptive Content</Typography>
+              <Typography variant="body2">
+                Content flows naturally within responsive containers
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+    </Box>
   ),
 };
 
@@ -337,30 +532,34 @@ export const ComplexLayoutCard: Story = {
           </Box>
           <Chip label="Premium Event" color="primary" />
         </Stack>
-        
+
         <Stack direction="row" alignItems="center" spacing={1} mb={2}>
           <LocationOn fontSize="small" color="action" />
-          <Typography variant="body2">
-            Convention Center, San Francisco
-          </Typography>
+          <Typography variant="body2">Convention Center, San Francisco</Typography>
         </Stack>
 
         <Typography variant="body1" mb={2}>
-          Join industry leaders for three days of cutting-edge technology discussions, 
-          networking opportunities, and hands-on workshops.
+          Join industry leaders for three days of cutting-edge technology discussions, networking
+          opportunities, and hands-on workshops.
         </Typography>
 
         <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" gap={2} mb={2}>
           <Box textAlign="center">
-            <Typography variant="h6" color="primary">50+</Typography>
+            <Typography variant="h6" color="primary">
+              50+
+            </Typography>
             <Typography variant="caption">Speakers</Typography>
           </Box>
           <Box textAlign="center">
-            <Typography variant="h6" color="primary">200+</Typography>
+            <Typography variant="h6" color="primary">
+              200+
+            </Typography>
             <Typography variant="caption">Attendees</Typography>
           </Box>
           <Box textAlign="center">
-            <Typography variant="h6" color="primary">3</Typography>
+            <Typography variant="h6" color="primary">
+              3
+            </Typography>
             <Typography variant="caption">Days</Typography>
           </Box>
         </Box>
@@ -374,8 +573,14 @@ export const ComplexLayoutCard: Story = {
       </CardContent>
       <CardActions alignment="space-between">
         <Stack direction="row" spacing={1}>
-          <Typography variant="h6" color="primary">$299</Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ textDecoration: 'line-through' }}>
+          <Typography variant="h6" color="primary">
+            $299
+          </Typography>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ textDecoration: 'line-through' }}
+          >
             $399
           </Typography>
         </Stack>

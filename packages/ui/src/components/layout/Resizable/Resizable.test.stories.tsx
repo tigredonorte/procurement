@@ -344,29 +344,24 @@ const VisualStatesComponent: React.FC = () => {
         </button>
       </Box>
 
-      <Resizable
-        variant="both"
-        width={300}
-        height={200}
-        data-testid="visual-states-resizable"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        <Box
-          sx={{
-            p: 2,
-            bgcolor: isActive ? 'success.50' : isHovered ? 'warning.50' : 'primary.50',
-            height: '100%',
-            transition: 'background-color 0.2s',
-          }}
-          data-testid="visual-states-content"
-        >
-          <Typography variant="h6">Visual States</Typography>
-          <Typography variant="body2">
-            State: {isActive ? 'Active' : isHovered ? 'Hovered' : 'Default'}
-          </Typography>
-        </Box>
-      </Resizable>
+      <Box onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+        <Resizable variant="both" width={300} height={200} data-testid="visual-states-resizable">
+          <Box
+            sx={{
+              p: 2,
+              bgcolor: isActive ? 'success.50' : isHovered ? 'warning.50' : 'primary.50',
+              height: '100%',
+              transition: 'background-color 0.2s',
+            }}
+            data-testid="visual-states-content"
+          >
+            <Typography variant="h6">Visual States</Typography>
+            <Typography variant="body2">
+              State: {isActive ? 'Active' : isHovered ? 'Hovered' : 'Default'}
+            </Typography>
+          </Box>
+        </Resizable>
+      </Box>
     </Box>
   );
 };

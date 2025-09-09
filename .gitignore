@@ -7,3 +7,4 @@ coverage
 .vscode
 .playwright-mcp
 storybook-static
+tsconfig.temp.*.json
