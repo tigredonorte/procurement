@@ -1,4 +1,3 @@
-// guards/storybook.js
 import { spawnSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
@@ -33,14 +32,17 @@ function run(command, args, env = {}) {
   return res.status ?? 1;
 }
 
-export function runStorybookTestsFailFast(url, glob) {
+export function runStorybookTestsFailFast(url, tag, watchMode = false) {
   const testStorybookBin = binPath('test-storybook');
   const storybookBin = binPath('storybook');
 
   const filterArgs = [];
-  if (glob && String(glob).trim()) {
-    filterArgs.push('--stories-filter', String(glob));
+  if (tag && String(tag).trim()) {
+    // Use the --includeTags flag, which is supported by your version
+    filterArgs.push('--includeTags', String(tag));
   }
+
+  const watchArgs = watchMode ? ['--watch'] : [];
 
   // Prefer @storybook/test-runner’s CLI
   if (exists(testStorybookBin)) {

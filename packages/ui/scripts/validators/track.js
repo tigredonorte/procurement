@@ -87,17 +87,20 @@ export function assertTrackFreshness(currentStr) {
 }
 
 function listStoryFiles(componentDirAbs) {
-  const exts = ALLOWED_STORY_FILE_EXT.map((e) => e.replace('.', '\\.')).join('|');
-  const glob = `${componentDirAbs.replace(/\\/g, '/')}/**/*.stories@(${exts})`;
+  // Convert absolute path to relative path from cwd for git ls-files
+  const relativePath = path.relative(process.cwd(), componentDirAbs);
+  
   try {
-    const out = execSync(`git ls-files -z "${glob}"`, {
+    // Try with single-level glob first (git doesn't support ** properly)
+    const out = execSync(`git ls-files -z "${relativePath.replace(/\\/g, '/')}/*.stories.*"`, {
       stdio: ['ignore', 'pipe', 'pipe'],
     }).toString();
     return out ? out.split('\0').filter(Boolean) : [];
   } catch {
     try {
+      // Fallback: try with double-star (may work in some git versions)
       const out2 = execSync(
-        `git ls-files -z "${componentDirAbs.replace(/\\/g, '/')}/**/*.stories.*"`,
+        `git ls-files -z "${relativePath.replace(/\\/g, '/')}/**/*.stories.*"`,
         { stdio: ['ignore', 'pipe', 'pipe'] },
       ).toString();
       return out2 ? out2.split('\0').filter(Boolean) : [];
