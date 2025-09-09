@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button, Typography, Stack, List, ListItem, ListItemText } from '@mui/material';
 import React from 'react';
 
 import { Popover } from './Popover';
 
 const meta = {
-  title: 'Data Display/Popover',
+  title: 'DataDisplay/Popover',
   component: Popover,
   parameters: {
     layout: 'centered',
@@ -184,6 +184,113 @@ export const ErrorState: Story = {
     <PopoverDemo>
       <div style={{ padding: 24, textAlign: 'center' }}>
         <Typography color="error">Error loading content</Typography>
+      </div>
+    </PopoverDemo>
+  ),
+};
+
+// Required story exports for validation
+export const AllVariants: Story = {
+  render: () => (
+    <Stack direction="column" spacing={4} alignItems="center">
+      <PopoverDemo variant="default">
+        <Typography sx={{ p: 2 }}>Default variant</Typography>
+      </PopoverDemo>
+      <PopoverDemo variant="glass">
+        <Typography sx={{ p: 2 }}>Glass variant with translucent effect</Typography>
+      </PopoverDemo>
+      <PopoverDemo variant="arrow">
+        <Typography sx={{ p: 2 }}>Arrow variant pointing to anchor</Typography>
+      </PopoverDemo>
+    </Stack>
+  ),
+};
+
+export const AllSizes: Story = {
+  render: () => (
+    <Stack direction="column" spacing={4} alignItems="center">
+      <PopoverDemo maxWidth={150}>
+        <Typography sx={{ p: 2 }}>Extra small (150px)</Typography>
+      </PopoverDemo>
+      <PopoverDemo maxWidth={250}>
+        <Typography sx={{ p: 2 }}>Small (250px)</Typography>
+      </PopoverDemo>
+      <PopoverDemo maxWidth={400}>
+        <Typography sx={{ p: 2 }}>Medium (400px)</Typography>
+      </PopoverDemo>
+      <PopoverDemo maxWidth={600}>
+        <Typography sx={{ p: 3 }}>Large (600px)</Typography>
+      </PopoverDemo>
+      <PopoverDemo maxWidth={800}>
+        <Typography sx={{ p: 4 }}>Extra large (800px)</Typography>
+      </PopoverDemo>
+    </Stack>
+  ),
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <Stack direction="column" spacing={4} alignItems="center">
+      <PopoverDemo>
+        <Typography sx={{ p: 2 }}>Normal state</Typography>
+      </PopoverDemo>
+      <PopoverDemo>
+        <div style={{ padding: 24, textAlign: 'center' }}>
+          <Typography>Loading...</Typography>
+        </div>
+      </PopoverDemo>
+      <PopoverDemo>
+        <div style={{ padding: 24, textAlign: 'center' }}>
+          <Typography color="error">Error state</Typography>
+        </div>
+      </PopoverDemo>
+      <PopoverDemo>
+        <div style={{ padding: 24, textAlign: 'center' }}>
+          <Typography color="text.secondary">Empty state</Typography>
+        </div>
+      </PopoverDemo>
+    </Stack>
+  ),
+};
+
+export const InteractiveStates: Story = {
+  render: () => (
+    <Stack direction="row" spacing={4} alignItems="center">
+      <PopoverDemo>
+        <Typography sx={{ p: 2 }}>Hover over me</Typography>
+      </PopoverDemo>
+      <PopoverDemo variant="glass" glow>
+        <Typography sx={{ p: 2 }}>Glass with glow on hover</Typography>
+      </PopoverDemo>
+      <PopoverDemo variant="arrow" pulse>
+        <Typography sx={{ p: 2 }}>Arrow with pulse effect</Typography>
+      </PopoverDemo>
+    </Stack>
+  ),
+};
+
+export const Responsive: Story = {
+  parameters: {
+    viewport: {
+      viewports: {
+        mobile: { name: 'Mobile', styles: { width: '375px', height: '667px' } },
+        tablet: { name: 'Tablet', styles: { width: '768px', height: '1024px' } },
+        desktop: { name: 'Desktop', styles: { width: '1280px', height: '720px' } },
+      },
+    },
+  },
+  render: () => (
+    <PopoverDemo variant="glass" glow>
+      <div style={{ padding: 24 }}>
+        <Typography variant="h6" gutterBottom>
+          Responsive Popover
+        </Typography>
+        <Typography paragraph>
+          This popover adapts to different screen sizes.
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Try switching viewport sizes to see responsive behavior.
+        </Typography>
       </div>
     </PopoverDemo>
   ),

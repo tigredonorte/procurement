@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { 
   Typography, 
@@ -542,4 +542,210 @@ const CallbackExampleComponent = () => {
 
 export const CallbackExample: Story = {
   render: () => <CallbackExampleComponent />,
+};
+
+// Required story exports for validation
+export const AllSizes: Story = {
+  render: () => (
+    <Stack spacing={2}>
+      <Typography variant="h6">Size Variations</Typography>
+      <Card>
+        <CollapsibleTrigger expanded={true}>
+          <Typography variant="body2">Small Content</Typography>
+        </CollapsibleTrigger>
+        <Collapsible open={true} variant="smooth">
+          <CollapsibleContent>
+            <Typography variant="body2">Small</Typography>
+          </CollapsibleContent>
+        </Collapsible>
+      </Card>
+      
+      <Card>
+        <CollapsibleTrigger expanded={true}>
+          <Typography variant="h6">Medium Content</Typography>
+        </CollapsibleTrigger>
+        <Collapsible open={true} variant="smooth">
+          <CollapsibleContent>
+            <Typography variant="body1" paragraph>
+              This is medium-sized content that demonstrates how the Collapsible component
+              handles different content lengths. It includes multiple paragraphs and more text.
+            </Typography>
+            <Typography variant="body2">
+              Additional content to show the component scales appropriately.
+            </Typography>
+          </CollapsibleContent>
+        </Collapsible>
+      </Card>
+      
+      <Card>
+        <CollapsibleTrigger expanded={true}>
+          <Typography variant="h6">Large Content</Typography>
+        </CollapsibleTrigger>
+        <Collapsible open={true} variant="smooth">
+          <CollapsibleContent>
+            <Typography variant="h6" gutterBottom>Large Content Section</Typography>
+            <Typography variant="body1" paragraph>
+              This demonstrates the Collapsible component with substantial content.
+              The component should handle large amounts of content gracefully without
+              performance degradation or animation issues.
+            </Typography>
+            <Typography variant="body1" paragraph>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+              tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+              veniam, quis nostrud exercitation ullamco laboris.
+            </Typography>
+            <List>
+              <ListItem><ListItemText primary="Feature 1" secondary="Description of feature" /></ListItem>
+              <ListItem><ListItemText primary="Feature 2" secondary="Description of feature" /></ListItem>
+              <ListItem><ListItemText primary="Feature 3" secondary="Description of feature" /></ListItem>
+            </List>
+            <Typography variant="body1" paragraph>
+              More content to demonstrate the component's ability to handle large content
+              areas while maintaining smooth animations and good performance.
+            </Typography>
+          </CollapsibleContent>
+        </Collapsible>
+      </Card>
+    </Stack>
+  ),
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <Stack spacing={2}>
+      <Typography variant="h6">All Component States</Typography>
+      
+      <Card>
+        <CollapsibleTrigger expanded={false} disabled={false}>
+          <Typography variant="body1">Closed State</Typography>
+          <ExpandMore />
+        </CollapsibleTrigger>
+        <Collapsible open={false} variant="smooth">
+          <CollapsibleContent>
+            <Typography>This content is collapsed</Typography>
+          </CollapsibleContent>
+        </Collapsible>
+      </Card>
+      
+      <Card>
+        <CollapsibleTrigger expanded={true} disabled={false}>
+          <Typography variant="body1">Open State</Typography>
+          <ExpandLess />
+        </CollapsibleTrigger>
+        <Collapsible open={true} variant="smooth">
+          <CollapsibleContent>
+            <Typography>This content is expanded and visible</Typography>
+          </CollapsibleContent>
+        </Collapsible>
+      </Card>
+      
+      <Card>
+        <CollapsibleTrigger expanded={false} disabled={true}>
+          <Typography variant="body1" color="text.disabled">Disabled State</Typography>
+          <ExpandMore />
+        </CollapsibleTrigger>
+        <Collapsible open={false} disabled={true} variant="smooth">
+          <CollapsibleContent>
+            <Typography>This content is disabled</Typography>
+          </CollapsibleContent>
+        </Collapsible>
+      </Card>
+      
+      <Card>
+        <CollapsibleTrigger expanded={true}>
+          <Typography variant="body1">Keep Mounted</Typography>
+          <ExpandLess />
+        </CollapsibleTrigger>
+        <Collapsible open={true} keepMounted={true} variant="smooth">
+          <CollapsibleContent>
+            <Typography>This content stays in DOM when collapsed (keepMounted=true)</Typography>
+          </CollapsibleContent>
+        </Collapsible>
+      </Card>
+    </Stack>
+  ),
+};
+
+export const InteractiveStates: Story = {
+  render: () => <InteractiveExampleComponent />,
+};
+
+export const Responsive: Story = {
+  parameters: {
+    viewport: {
+      viewports: {
+        mobile: { name: 'Mobile', styles: { width: '375px', height: '667px' } },
+        tablet: { name: 'Tablet', styles: { width: '768px', height: '1024px' } },
+        desktop: { name: 'Desktop', styles: { width: '1200px', height: '800px' } },
+      },
+    },
+  },
+  render: () => (
+    <Box sx={{ width: '100%', maxWidth: '100vw', padding: { xs: 1, sm: 2, md: 3 } }}>
+      <Typography variant="h6" gutterBottom>
+        Responsive Collapsible
+      </Typography>
+      <Card sx={{ width: '100%' }}>
+        <CollapsibleTrigger expanded={true}>
+          <Box sx={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center',
+            flexWrap: { xs: 'wrap', sm: 'nowrap' },
+            gap: 1
+          }}>
+            <Typography 
+              variant="h6" 
+              sx={{ 
+                fontSize: { xs: '0.875rem', sm: '1rem', md: '1.25rem' },
+                wordBreak: 'break-word'
+              }}
+            >
+              Responsive Content Section
+            </Typography>
+            <ExpandLess />
+          </Box>
+        </CollapsibleTrigger>
+        <Collapsible open={true} variant="smooth">
+          <CollapsibleContent>
+            <Box sx={{ 
+              display: 'grid',
+              gridTemplateColumns: { 
+                xs: '1fr',
+                sm: '1fr 1fr',
+                md: '1fr 1fr 1fr'
+              },
+              gap: { xs: 1, sm: 2, md: 3 }
+            }}>
+              <Box sx={{ p: 2, bgcolor: 'primary.50', borderRadius: 1 }}>
+                <Typography variant="body2" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
+                  Mobile: Single column layout for optimal readability on small screens.
+                </Typography>
+              </Box>
+              <Box sx={{ p: 2, bgcolor: 'secondary.50', borderRadius: 1 }}>
+                <Typography variant="body2" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
+                  Tablet: Two-column layout provides good balance between content and space.
+                </Typography>
+              </Box>
+              <Box sx={{ p: 2, bgcolor: 'success.50', borderRadius: 1 }}>
+                <Typography variant="body2" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
+                  Desktop: Three-column layout maximizes the available screen real estate.
+                </Typography>
+              </Box>
+            </Box>
+            <Typography 
+              variant="body2" 
+              sx={{ 
+                mt: 2,
+                fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                textAlign: { xs: 'left', md: 'center' }
+              }}
+            >
+              This content adapts to different screen sizes using responsive design patterns.
+            </Typography>
+          </CollapsibleContent>
+        </Collapsible>
+      </Card>
+    </Box>
+  ),
 };

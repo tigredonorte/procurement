@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { Box, Paper, Typography, Divider } from '@mui/material';
 import {
@@ -502,4 +502,103 @@ const TablePaginationComponent = () => {
 
 export const TablePagination: Story = {
   render: () => <TablePaginationComponent />,
+};
+
+// Required exports for validation
+export const AllVariants = AllVariantsComparison;
+export const AllSizes = SizeComparison;
+export const AllStates: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, alignItems: 'center' }}>
+      <Box>
+        <Typography variant="caption" color="text.secondary">
+          Default State
+        </Typography>
+        <PaginationWrapper page={3} count={8} />
+      </Box>
+      
+      <Box>
+        <Typography variant="caption" color="text.secondary">
+          Disabled State
+        </Typography>
+        <PaginationWrapper page={3} count={8} disabled />
+      </Box>
+      
+      <Box>
+        <Typography variant="caption" color="text.secondary">
+          With Page Info
+        </Typography>
+        <PaginationWrapper page={3} count={8} showPageInfo />
+      </Box>
+      
+      <Box>
+        <Typography variant="caption" color="text.secondary">
+          With First/Last Buttons
+        </Typography>
+        <PaginationWrapper page={5} count={10} showFirstButton showLastButton />
+      </Box>
+    </Box>
+  ),
+};
+
+export const InteractiveStates: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, alignItems: 'center' }}>
+      <Box>
+        <Typography variant="caption" color="text.secondary">
+          Interactive Pagination (Click to navigate)
+        </Typography>
+        <PaginationWrapper page={5} count={10} showFirstButton showLastButton />
+      </Box>
+      
+      <Box>
+        <Typography variant="caption" color="text.secondary">
+          With Items Per Page Selection
+        </Typography>
+        <WithItemsPerPageComponent />
+      </Box>
+    </Box>
+  ),
+};
+
+export const Responsive: Story = {
+  render: () => (
+    <Box sx={{ width: '100%', maxWidth: 800 }}>
+      <Typography variant="h6" gutterBottom>
+        Responsive Pagination
+      </Typography>
+      <Typography variant="caption" color="text.secondary" gutterBottom>
+        Pagination adapts to container width
+      </Typography>
+      
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, mt: 2 }}>
+        <Paper sx={{ p: 2, width: '100%' }}>
+          <Typography variant="caption" color="text.secondary">
+            Full Width
+          </Typography>
+          <PaginationWrapper page={10} count={20} showFirstButton showLastButton showPageInfo />
+        </Paper>
+        
+        <Paper sx={{ p: 2, maxWidth: 400 }}>
+          <Typography variant="caption" color="text.secondary">
+            Constrained Width
+          </Typography>
+          <PaginationWrapper page={10} count={20} boundaryCount={1} siblingCount={0} />
+        </Paper>
+        
+        <Paper sx={{ p: 2, maxWidth: 250 }}>
+          <Typography variant="caption" color="text.secondary">
+            Minimal Width
+          </Typography>
+          <PaginationWrapper 
+            variant="minimal" 
+            page={5} 
+            count={10} 
+            boundaryCount={0} 
+            siblingCount={0}
+          />
+        </Paper>
+      </Box>
+    </Box>
+  ),
 };

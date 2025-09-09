@@ -3,7 +3,7 @@ import { Skeleton as MuiSkeleton, Box, Stack, useTheme, alpha } from '@mui/mater
 
 import { SkeletonProps } from './Skeleton.types';
 
-/* eslint-disable react/prop-types */
+ 
 
 export const Skeleton: React.FC<SkeletonProps> = React.memo(({
   variant = 'text',
@@ -116,8 +116,10 @@ export const Skeleton: React.FC<SkeletonProps> = React.memo(({
         : theme.palette.text.primary, 
       getIntensityOpacity()
     ),
-    position: shimmer ? 'relative' : undefined,
-    overflow: shimmer ? 'hidden' : undefined,
+    ...(shimmer && {
+      position: 'relative' as const,
+      overflow: 'hidden' as const,
+    }),
     ...getGlassmorphismStyles(),
     ...getShimmerStyles(),
     ...style,

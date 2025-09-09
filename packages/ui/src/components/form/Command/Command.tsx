@@ -67,7 +67,7 @@ export const Command: React.FC<CommandProps> = ({
   const theme = useTheme();
   const [internalValue, setInternalValue] = useState(value);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setInternalValue(value);

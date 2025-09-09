@@ -1,6 +1,6 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within, expect, waitFor } from '@storybook/test';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { userEvent, within, expect, waitFor } from 'storybook/test';
 import { Button, Stack, Box, IconButton, Typography } from '@mui/material';
 import { Help, Delete, Info } from '@mui/icons-material';
 

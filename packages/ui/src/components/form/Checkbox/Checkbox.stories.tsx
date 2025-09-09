@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Stack, FormGroup } from '@mui/material';
 
 import { Checkbox } from './Checkbox';
@@ -188,4 +188,91 @@ export const Playground: Story = {
     glow: false,
     pulse: false,
   },
+};
+
+// Required story exports for validation
+export const AllVariants: Story = {
+  name: 'All Variants',
+  render: () => (
+    <Stack spacing={3}>
+      <Stack direction="row" spacing={2} alignItems="center">
+        <Checkbox variant="default" label="Default variant" defaultChecked />
+        <Checkbox variant="rounded" label="Rounded variant" defaultChecked />
+        <Checkbox variant="toggle" label="Toggle variant" defaultChecked />
+      </Stack>
+    </Stack>
+  ),
+};
+
+export const AllSizes: Story = {
+  name: 'All Sizes',
+  render: () => (
+    <Stack direction="row" spacing={2} alignItems="center">
+      <Checkbox size="small" label="Small" defaultChecked />
+      <Checkbox size="medium" label="Medium" defaultChecked />
+      <Checkbox size="large" label="Large" defaultChecked />
+    </Stack>
+  ),
+};
+
+export const AllStates: Story = {
+  name: 'All States',
+  render: () => (
+    <Stack spacing={2}>
+      <Stack direction="row" spacing={2}>
+        <Checkbox label="Default" />
+        <Checkbox label="Checked" defaultChecked />
+        <Checkbox label="Indeterminate" indeterminate />
+      </Stack>
+      <Stack direction="row" spacing={2}>
+        <Checkbox label="Disabled" disabled />
+        <Checkbox label="Disabled Checked" disabled defaultChecked />
+        <Checkbox label="Loading" loading />
+      </Stack>
+      <Stack direction="row" spacing={2}>
+        <Checkbox label="Error" error helperText="Error message" />
+        <Checkbox label="With Helper" helperText="Helper text" />
+      </Stack>
+    </Stack>
+  ),
+};
+
+export const InteractiveStates: Story = {
+  name: 'Interactive States',
+  render: () => (
+    <Stack spacing={3}>
+      <Stack direction="row" spacing={2}>
+        <Checkbox label="Hover me" glow />
+        <Checkbox label="Focus me" pulse />
+        <Checkbox label="Click me" defaultChecked />
+      </Stack>
+      <Stack direction="row" spacing={2}>
+        <Checkbox label="With ripple" ripple defaultChecked />
+        <Checkbox label="No ripple" ripple={false} defaultChecked />
+      </Stack>
+    </Stack>
+  ),
+};
+
+export const Responsive: Story = {
+  name: 'Responsive',
+  parameters: {
+    viewport: {
+      viewports: {
+        mobile: { name: 'Mobile', styles: { width: '360px', height: '640px' } },
+        tablet: { name: 'Tablet', styles: { width: '768px', height: '1024px' } },
+        desktop: { name: 'Desktop', styles: { width: '1440px', height: '900px' } },
+      },
+    },
+  },
+  render: () => (
+    <Stack spacing={2} sx={{ width: '100%', p: 2 }}>
+      <FormGroup>
+        <Checkbox label="Responsive checkbox 1" defaultChecked />
+        <Checkbox label="Responsive checkbox 2" />
+        <Checkbox label="Responsive checkbox 3" defaultChecked />
+        <Checkbox label="Responsive checkbox 4" disabled />
+      </FormGroup>
+    </Stack>
+  ),
 };

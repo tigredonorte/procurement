@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { 
   TableBody, 
@@ -25,7 +25,7 @@ import { Table } from './Table';
 import { ColumnConfig, SortConfig } from './Table.types';
 
 const meta = {
-  title: 'Data Display/Table',
+  title: 'DataDisplay/Table',
   component: Table,
   parameters: {
     layout: 'padded',
@@ -520,6 +520,179 @@ export const BackwardCompatibility: Story = {
             </TableBody>
           </Table>
         </TableContainer>
+      </Box>
+    </Stack>
+  ),
+};
+
+// Required story exports for validation
+export const AllVariants: Story = {
+  render: () => (
+    <Stack spacing={4}>
+      <Box>
+        <Typography variant="h6" gutterBottom>All Table Variants</Typography>
+        <Typography variant="body2" color="text.secondary" gutterBottom>Default</Typography>
+        <Table columns={basicColumns} data={sampleData.slice(0, 2)} variant="default" />
+      </Box>
+      
+      <Box>
+        <Typography variant="body2" color="text.secondary" gutterBottom>Striped</Typography>
+        <Table columns={basicColumns} data={sampleData.slice(0, 2)} variant="striped" />
+      </Box>
+      
+      <Box>
+        <Typography variant="body2" color="text.secondary" gutterBottom>Glass</Typography>
+        <Table columns={basicColumns} data={sampleData.slice(0, 2)} variant="glass" />
+      </Box>
+      
+      <Box>
+        <Typography variant="body2" color="text.secondary" gutterBottom>Minimal</Typography>
+        <Table columns={basicColumns} data={sampleData.slice(0, 2)} variant="minimal" />
+      </Box>
+      
+      <Box>
+        <Typography variant="body2" color="text.secondary" gutterBottom>Gradient</Typography>
+        <Table columns={basicColumns} data={sampleData.slice(0, 2)} variant="gradient" />
+      </Box>
+    </Stack>
+  ),
+};
+
+export const AllSizes: Story = {
+  render: () => (
+    <Stack spacing={4}>
+      <Box>
+        <Typography variant="h6" gutterBottom>All Table Sizes</Typography>
+        <Typography variant="body2" color="text.secondary" gutterBottom>Compact</Typography>
+        <Table columns={basicColumns} data={sampleData.slice(0, 2)} density="compact" />
+      </Box>
+      
+      <Box>
+        <Typography variant="body2" color="text.secondary" gutterBottom>Normal</Typography>
+        <Table columns={basicColumns} data={sampleData.slice(0, 2)} density="normal" />
+      </Box>
+      
+      <Box>
+        <Typography variant="body2" color="text.secondary" gutterBottom>Comfortable</Typography>
+        <Table columns={basicColumns} data={sampleData.slice(0, 2)} density="comfortable" />
+      </Box>
+    </Stack>
+  ),
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <Stack spacing={4}>
+      <Box>
+        <Typography variant="h6" gutterBottom>All Table States</Typography>
+        <Typography variant="body2" color="text.secondary" gutterBottom>Default State</Typography>
+        <Table columns={basicColumns} data={sampleData.slice(0, 2)} />
+      </Box>
+      
+      <Box>
+        <Typography variant="body2" color="text.secondary" gutterBottom>Loading State</Typography>
+        <Table columns={basicColumns} data={[]} loading />
+      </Box>
+      
+      <Box>
+        <Typography variant="body2" color="text.secondary" gutterBottom>Empty State</Typography>
+        <Table columns={basicColumns} data={[]} />
+      </Box>
+      
+      <Box>
+        <Typography variant="body2" color="text.secondary" gutterBottom>With Selection</Typography>
+        <Table columns={basicColumns} data={sampleData.slice(0, 2)} selectable selectedRows={[1]} />
+      </Box>
+      
+      <Box>
+        <Typography variant="body2" color="text.secondary" gutterBottom>With Sorting</Typography>
+        <Table columns={basicColumns} data={sampleData.slice(0, 2)} sortable sortConfig={{ key: 'name', direction: 'asc' }} />
+      </Box>
+    </Stack>
+  ),
+};
+
+export const InteractiveStates: Story = {
+  render: function InteractiveTable() {
+    const [selectedRows, setSelectedRows] = useState<(string | number)[]>([]);
+    const [sortConfig, setSortConfig] = useState<SortConfig>({ key: 'name', direction: 'asc' });
+    
+    const sortedData = [...sampleData.slice(0, 4)].sort((a, b) => {
+      if (sortConfig.direction === 'asc') {
+        return a[sortConfig.key as keyof typeof a] > b[sortConfig.key as keyof typeof b] ? 1 : -1;
+      } else {
+        return a[sortConfig.key as keyof typeof a] < b[sortConfig.key as keyof typeof b] ? 1 : -1;
+      }
+    });
+    
+    return (
+      <Box>
+        <Typography variant="h6" gutterBottom>Interactive Table States</Typography>
+        <Typography variant="body2" color="text.secondary" gutterBottom>
+          Click rows to select, click column headers to sort
+        </Typography>
+        <Table
+          columns={basicColumns}
+          data={sortedData}
+          hoverable
+          selectable
+          selectedRows={selectedRows}
+          onSelectionChange={setSelectedRows}
+          sortable
+          sortConfig={sortConfig}
+          onSortChange={(key, direction) => setSortConfig({ key, direction })}
+          variant="striped"
+        />
+      </Box>
+    );
+  },
+};
+
+export const Responsive: Story = {
+  render: () => (
+    <Stack spacing={4}>
+      <Box>
+        <Typography variant="h6" gutterBottom>Responsive Table</Typography>
+        <Typography variant="body2" color="text.secondary" gutterBottom>
+          Mobile View (360px)
+        </Typography>
+        <Box sx={{ width: 360, overflow: 'auto', border: '1px solid', borderColor: 'divider', borderRadius: 1 }}>
+          <Table
+            columns={extendedColumns}
+            data={sampleData.slice(0, 3)}
+            responsive
+            columnPriorities={[1, 2, 3, 4, 5, 6, 7, 8]}
+            variant="default"
+          />
+        </Box>
+      </Box>
+      
+      <Box>
+        <Typography variant="body2" color="text.secondary" gutterBottom>
+          Tablet View (768px)
+        </Typography>
+        <Box sx={{ width: 768, overflow: 'auto', border: '1px solid', borderColor: 'divider', borderRadius: 1 }}>
+          <Table
+            columns={extendedColumns}
+            data={sampleData.slice(0, 3)}
+            responsive
+            columnPriorities={[1, 2, 3, 4, 5, 6, 7, 8]}
+            variant="default"
+          />
+        </Box>
+      </Box>
+      
+      <Box>
+        <Typography variant="body2" color="text.secondary" gutterBottom>
+          Desktop View (Full Width)
+        </Typography>
+        <Table
+          columns={extendedColumns}
+          data={sampleData.slice(0, 3)}
+          responsive
+          columnPriorities={[1, 2, 3, 4, 5, 6, 7, 8]}
+          variant="default"
+        />
       </Box>
     </Stack>
   ),

@@ -47,20 +47,20 @@ None - TypeScript compilation successful
 ## 5) Storybook Tests
 
 **Stories**
-* `DataDisplay/Avatar/Tests/BasicInteraction`
-* `DataDisplay/Avatar/Tests/ImageLoadingTest`
-* `DataDisplay/Avatar/Tests/StatusIndicatorTest`
-* `DataDisplay/Avatar/Tests/KeyboardNavigation`
-* `DataDisplay/Avatar/Tests/ScreenReaderTest`
-* `DataDisplay/Avatar/Tests/ResponsiveDesign`
-* `DataDisplay/Avatar/Tests/VisualStates`
-* `DataDisplay/Avatar/Tests/PerformanceTest`
-* `DataDisplay/Avatar/Tests/EdgeCases`
-* `DataDisplay/Avatar/Tests/AvatarGroupTest`
-* `DataDisplay/Avatar/Tests/AnimationTest`
-* `DataDisplay/Avatar/Tests/FocusManagement`
-* `DataDisplay/Avatar/Tests/ThemeIntegration`
-* `DataDisplay/Avatar/Tests/AccessibilityCompliance`
+* `Data Display/Avatar/Tests/BasicInteraction`
+* `Data Display/Avatar/Tests/ImageLoadingTest`
+* `Data Display/Avatar/Tests/StatusIndicatorTest`
+* `Data Display/Avatar/Tests/KeyboardNavigation`
+* `Data Display/Avatar/Tests/ScreenReaderTest`
+* `Data Display/Avatar/Tests/ResponsiveDesign`
+* `Data Display/Avatar/Tests/VisualStates`
+* `Data Display/Avatar/Tests/PerformanceTest`
+* `Data Display/Avatar/Tests/EdgeCases`
+* `Data Display/Avatar/Tests/AvatarGroupTest`
+* `Data Display/Avatar/Tests/AnimationTest`
+* `Data Display/Avatar/Tests/FocusManagement`
+* `Data Display/Avatar/Tests/ThemeIntegration`
+* `Data Display/Avatar/Tests/AccessibilityCompliance`
 
 **Current (BRT)**: 2025-09-09 12:30
 

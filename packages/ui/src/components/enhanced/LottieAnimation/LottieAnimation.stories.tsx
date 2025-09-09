@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Box, Paper, Stack, Typography, Grid } from '@mui/material';
 
 import { LottieAnimation } from './LottieAnimation';

@@ -1,82 +1,105 @@
-# Checkbox Component - Track.md
+# Checkbox Component
 
-## Component Overview
+A customizable checkbox component with support for indeterminate state, multiple variants, sizes, colors, loading states, and visual effects.
 
-The Checkbox component provides binary selection functionality with support for intermediate states, form integration, and comprehensive accessibility features. It handles checked, unchecked, and indeterminate states with proper visual feedback.
+## Props
 
-## Component Parameters
+- `checked` - Controls the checked state when used as a controlled component
+- `defaultChecked` - Sets the initial checked state for uncontrolled usage
+- `indeterminate` - Shows indeterminate state (partially checked)
+- `onChange` - Callback fired when the checkbox state changes
+- `onClick` - Callback fired on click events
+- `disabled` - Disables the checkbox
+- `label` - Text label displayed next to the checkbox
+- `helperText` - Additional helper text shown below the label
+- `error` - Shows error state with error styling
+- `required` - Marks the checkbox as required
+- `variant` - Visual variant: 'default' | 'rounded' | 'toggle'
+- `color` - Theme color: 'primary' | 'secondary' | 'success' | 'warning' | 'error'
+- `size` - Checkbox size: 'small' | 'medium' | 'large'
+- `loading` - Shows loading state with spinner
+- `ripple` - Enables/disables ripple effect on click
+- `glow` - Adds glow effect when checked
+- `pulse` - Adds pulse animation when checked
+- `name` - Form field name
+- `value` - Form field value
+- `id` - HTML id attribute
+- `className` - Additional CSS classes
+- `sx` - MUI sx prop for custom styling
+- `data-testid` - Test identifier
 
-- `checked`: Current checked state (boolean or "indeterminate")
-- `defaultChecked`: Initial uncontrolled checked state
-- `onCheckedChange`: Callback when checked state changes
-- `disabled`: Disables checkbox interaction
-- `required`: Marks checkbox as required for forms
-- `name`: Form field name
-- `value`: Form field value
-- `id`: Unique identifier
-- `size`: Checkbox size (small, medium, large)
-- `variant`: Visual style variant
-- `className`: Additional CSS classes
+## 1) Lint
 
-## Lint Status
+- ESLint clean with auto-fix applied
+- No warnings or errors
 
-- [ ] No lint errors
-- [ ] No warnings
+## 2) Type Errors
 
-### Lint Errors to Fix:
+- TypeScript compilation successful
+- All props properly typed with CheckboxProps interface
+- Correct event handler types
 
-(Will be populated during verification)
+## 3) Testing Scenarios
 
-## Type Check Status
+- Basic check/uncheck functionality
+- Indeterminate state behavior
+- Keyboard interaction (Space key)
+- Form integration and submission
+- Disabled state behavior
+- Label association and click handling
+- Different sizes and variants
+- Color variations
+- Loading state
+- Animation effects (glow, pulse, ripple)
+- Error state with helper text
+- Required field validation
+- Group checkbox behavior
+- Accessibility attributes (aria-checked, role)
+- Screen reader compatibility
+- Focus management and visual indicators
+- Edge cases (long text, special characters)
 
-- [ ] No type errors
-- [ ] All props properly typed
+## 4) Static Stories
 
-### Type Errors to Fix:
+- Default - Basic checkbox with label
+- Variants - All three variants (default, rounded, toggle)
+- States - All checkbox states (unchecked, checked, indeterminate, disabled)
+- Colors - All color options
+- Sizes - All size variations
+- WithHelperText - Helper text examples
+- CheckboxGroup - Multiple checkboxes in a group
+- ErrorState - Error state with helper text
+- LoadingState - Loading spinner variations
+- AnimationEffects - Glow, pulse, and ripple effects
+- Accessibility - Proper ARIA attributes
+- Playground - Interactive prop controls
+- AllVariants - All variants in one view
+- AllSizes - All sizes comparison
+- AllStates - All states overview
+- InteractiveStates - Interactive visual effects
+- Responsive - Responsive layout testing
 
-(Will be populated during verification)
+## 5) Storybook Tests
 
-## Testing Scenarios Coverage
+**Stories**:
+* Form/Checkbox/Tests/BasicInteraction
+* Form/Checkbox/Tests/FormInteraction
+* Form/Checkbox/Tests/KeyboardNavigation
+* Form/Checkbox/Tests/ScreenReaderTest
+* Form/Checkbox/Tests/FocusManagement
+* Form/Checkbox/Tests/ResponsiveDesign
+* Form/Checkbox/Tests/ThemeVariations
+* Form/Checkbox/Tests/VisualStates
+* Form/Checkbox/Tests/PerformanceTest
+* Form/Checkbox/Tests/EdgeCases
+* Form/Checkbox/Tests/IntegrationTest
+* Form/Checkbox/Tests/StateChangeTest
 
-- [ ] Basic check/uncheck functionality
-- [ ] Indeterminate state behavior
-- [ ] Keyboard interaction (Space key)
-- [ ] Form integration and submission
-- [ ] Disabled state behavior
-- [ ] Label association and click handling
-- [ ] Different sizes
-- [ ] Required field validation
-- [ ] Group checkbox behavior
-- [ ] Accessibility attributes (aria-checked, role)
-- [ ] Screen reader compatibility
-- [ ] Focus management and visual indicators
+## **Current (BRT)**: 2025-09-09 17:45
 
-## Storybook Tests Status
-
-- [ ] Basic Interaction (planned)
-- [ ] Form Interaction (planned)
-- [ ] Keyboard Navigation (planned)
-- [ ] Screen Reader (planned)
-- [ ] Focus Management (planned)
-- [ ] Responsive Design (planned)
-- [ ] Theme Variations (planned)
-- [ ] Visual States (planned)
-- [ ] Performance (planned)
-- [ ] Edge Cases (planned)
-- [ ] Integration (planned)
-
-## Current Section - 2025-01-13 21:30 (BRT)
-
-### Current Task: Initial track.md file creation
-
-- Track.md file structure created
-- Component overview documented
-- Parameters identified
-- Testing scenarios outlined
-
-### Next Steps:
-
-- Read existing component implementation
-- Verify current lint/type status
-- Update status based on actual component state
-- Begin systematic verification process
+omega-108
+- Added required story exports (AllVariants, AllSizes, AllStates, InteractiveStates, Responsive)
+- Fixed Stories coverage validation issue
+- Updated track.md with proper format and sections
+- All test stories already implemented
+- Component ready for validation

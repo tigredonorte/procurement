@@ -51,14 +51,19 @@ A flexible timeline component with vertical and horizontal orientations, animate
 
 ## 5) Storybook Tests
 
-**Stories**:
-
-- Enhanced/Timeline/Default
-- Enhanced/Timeline/AllVariants
-- Enhanced/Timeline/AllSizes
-- Enhanced/Timeline/AllStates
-- Enhanced/Timeline/InteractiveStates
-- Enhanced/Timeline/Responsive
+**Stories**
+* Enhanced/Timeline/Default
+* Enhanced/Timeline/Compact
+* Enhanced/Timeline/Detailed
+* Enhanced/Timeline/Alternating
+* Enhanced/Timeline/Horizontal
+* Enhanced/Timeline/WithMetadata
+* Enhanced/Timeline/WithActions
+* Enhanced/Timeline/AllVariants
+* Enhanced/Timeline/AllSizes
+* Enhanced/Timeline/AllStates
+* Enhanced/Timeline/InteractiveStates
+* Enhanced/Timeline/Responsive
 
 ## Storybook Tests Status
 
@@ -73,7 +78,7 @@ A flexible timeline component with vertical and horizontal orientations, animate
 - [ ] Edge Cases (planned)
 - [ ] Integration (planned)
 
-**Current (BRT)**: 2025-09-09 05:45 [omega-27]
+**Current (BRT)**: 2025-09-09 18:55 [omega-123]
 
 ### COMPLETED: Timeline component validation fixes
 

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Save, Delete, Add, ArrowForward } from '@mui/icons-material';
 import { Stack } from '@mui/material';
 

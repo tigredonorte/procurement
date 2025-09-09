@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { 
   Card, 
   CardContent, 
@@ -573,6 +573,67 @@ export const CustomShapes: Story = {
     docs: {
       description: {
         story: 'Showcase different border radius options and custom dimensions for creating unique skeleton shapes.',
+      }
+    }
+  }
+};
+
+// Required story exports for validation
+export const AllSizes = CustomShapes;
+export const AllStates = IntensityLevels;
+export const InteractiveStates = ShimmerAnimation;
+export const Responsive: Story = {
+  render: () => (
+    <Box>
+      {/* Mobile View */}
+      <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+        <Typography variant="h6" gutterBottom>Mobile Layout</Typography>
+        <Stack spacing={2}>
+          <Skeleton variant="rectangular" height={50} />
+          <Skeleton variant="text" />
+          <Skeleton variant="text" width="80%" />
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <Skeleton variant="circular" width={32} height={32} />
+            <Skeleton variant="text" sx={{ flex: 1 }} />
+          </Box>
+        </Stack>
+      </Box>
+
+      {/* Desktop View */}
+      <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+        <Typography variant="h6" gutterBottom>Desktop Layout</Typography>
+        <Grid container spacing={3}>
+          <Grid item xs={8}>
+            <Skeleton variant="rectangular" height={200} />
+            <Box sx={{ mt: 2 }}>
+              <Skeleton variant="text" />
+              <Skeleton variant="text" width="90%" />
+              <Skeleton variant="text" width="70%" />
+            </Box>
+          </Grid>
+          <Grid item xs={4}>
+            <Stack spacing={2}>
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Box key={i} sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                  <Skeleton variant="circular" width={40} height={40} />
+                  <Box sx={{ flex: 1 }}>
+                    <Skeleton variant="text" width="80%" />
+                    <Skeleton variant="text" width="60%" />
+                  </Box>
+                </Box>
+              ))}
+            </Stack>
+          </Grid>
+        </Grid>
+      </Box>
+    </Box>
+  ),
+  parameters: {
+    viewport: {
+      viewports: {
+        mobile: { name: 'Mobile', styles: { width: '375px', height: '667px' } },
+        tablet: { name: 'Tablet', styles: { width: '768px', height: '1024px' } },
+        desktop: { name: 'Desktop', styles: { width: '1200px', height: '800px' } },
       }
     }
   }

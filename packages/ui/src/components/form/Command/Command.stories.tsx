@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button, Box, Typography } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -398,6 +398,55 @@ export const HighContrast: Story = {
       description: {
         story: 'Test component visibility in high contrast and dark themes.',
       },
+    },
+  },
+};
+
+// Required exports for validation
+export const AllSizes = Sizes;
+export const AllStates: Story = {
+  render: function AllStatesComponent() {
+    const [openState, setOpenState] = useState<string | null>(null);
+    const states = ['default', 'loading', 'empty', 'disabled'] as const;
+    
+    return (
+      <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+        {states.map((state) => (
+          <React.Fragment key={state}>
+            <Button
+              variant="outlined"
+              onClick={() => setOpenState(state)}
+            >
+              State: {state}
+            </Button>
+            <Command
+              open={openState === state}
+              onOpenChange={(open) => !open && setOpenState(null)}
+              items={state === 'empty' ? [] : sampleItems}
+              loading={state === 'loading'}
+              disabled={state === 'disabled'}
+              placeholder={`Command palette (${state})`}
+            />
+          </React.Fragment>
+        ))}
+      </Box>
+    );
+  },
+};
+
+export const InteractiveStates = Interactive;
+export const Responsive: Story = {
+  render: (args) => <CommandWrapper {...args} items={sampleItems} />,
+  args: {
+    placeholder: 'Responsive command palette...',
+  },
+  parameters: {
+    viewport: {
+      viewports: {
+        mobile: { name: 'Mobile', styles: { width: '375px', height: '667px' } },
+        tablet: { name: 'Tablet', styles: { width: '768px', height: '1024px' } },
+        desktop: { name: 'Desktop', styles: { width: '1920px', height: '1080px' } }
+      }
     },
   },
 };

@@ -1,6 +1,6 @@
 /* eslint-env browser */
-import type { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within, expect, waitFor, fn } from '@storybook/test';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { userEvent, within, expect, waitFor, fn } from 'storybook/test';
 import React, { useState } from 'react';
 import { Button, Typography, Box } from '@mui/material';
 

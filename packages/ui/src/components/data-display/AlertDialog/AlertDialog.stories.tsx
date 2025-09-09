@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button, Stack } from '@mui/material';
 import { Delete, Warning, Logout } from '@mui/icons-material';
 import React from 'react';
@@ -6,7 +6,7 @@ import React from 'react';
 import { AlertDialog } from './AlertDialog';
 
 const meta = {
-  title: 'Data Display/AlertDialog',
+  title: 'DataDisplay/AlertDialog',
   component: AlertDialog,
   parameters: {
     layout: 'centered',
@@ -243,5 +243,134 @@ export const WithCustomContent: Story = {
     description: 'Please review the following before proceeding:',
     confirmText: 'I Understand, Delete Account',
     cancelText: 'Cancel',
+  },
+};
+
+// Required story exports for validation
+export const AllSizes: Story = {
+  render: () => (
+    <Stack spacing={3} alignItems="center">
+      <DialogWrapper
+        title="Default Size Dialog"
+        description="This is the standard dialog size that fits content automatically."
+        confirmText="Confirm"
+      />
+      <DialogWrapper
+        title="Dialog with Long Content"
+        description="This dialog has a longer description to demonstrate how the dialog adjusts its size based on content. The dialog will expand to accommodate longer text while maintaining proper spacing and readability. It ensures that all content is visible without requiring scrolling for reasonable amounts of text."
+        confirmText="Confirm"
+      />
+      <DialogWrapper
+        title="Compact"
+        description="Short message."
+        confirmText="OK"
+        showCancel={false}
+      />
+    </Stack>
+  ),
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <Stack spacing={2} direction="row">
+      <DialogWrapper
+        title="Normal State"
+        description="Dialog in normal interactive state."
+        confirmText="Confirm"
+      />
+      <DialogWrapper
+        title="Loading State"
+        description="Dialog with loading confirmation."
+        loading={true}
+        confirmText="Processing..."
+      />
+      <DialogWrapper
+        title="Disabled Confirm"
+        description="Dialog with disabled confirm button."
+        confirmDisabled={true}
+        confirmText="Cannot Confirm"
+      />
+      <DialogWrapper
+        title="No Cancel Button"
+        description="Information only dialog."
+        showCancel={false}
+        confirmText="OK"
+      />
+    </Stack>
+  ),
+};
+
+// Component for interactive states demo
+const InteractiveStatesDemo = () => {
+  const [loadingDialog, setLoadingDialog] = React.useState(false);
+  
+  return (
+    <Stack spacing={2} direction="row">
+      <DialogWrapper
+        title="Hover Effects"
+        description="Hover over the buttons to see their hover states."
+        glow={true}
+        confirmText="Hover Me"
+      />
+      <DialogWrapper
+        title="Focus States"
+        description="Tab through the dialog to see focus indicators."
+        confirmText="Focus Me"
+      />
+      <div>
+        <Button variant="contained" onClick={() => setLoadingDialog(true)}>
+          Open Loading Dialog
+        </Button>
+        <AlertDialog
+          open={loadingDialog}
+          title="Processing"
+          description="Simulating a loading state..."
+          loading={true}
+          confirmText="Processing..."
+          onClose={() => setLoadingDialog(false)}
+          onCancel={() => setLoadingDialog(false)}
+          onConfirm={() => {
+            window.setTimeout(() => setLoadingDialog(false), 2000);
+          }}
+        />
+      </div>
+      <DialogWrapper
+        variant="destructive"
+        pulse={true}
+        title="Animated State"
+        description="This dialog has pulse animation."
+        confirmText="Animated"
+      />
+    </Stack>
+  );
+};
+
+export const InteractiveStates: Story = {
+  render: () => <InteractiveStatesDemo />,
+};
+
+export const Responsive: Story = {
+  render: () => (
+    <Stack spacing={2}>
+      <DialogWrapper
+        title="Responsive Dialog"
+        description="This dialog adapts to different screen sizes. On mobile devices, it takes up more of the viewport width, while on desktop it maintains a comfortable centered layout."
+        confirmText="Confirm"
+      />
+      <DialogWrapper
+        variant="glass"
+        title="Mobile-Optimized"
+        description="The touch targets are optimized for mobile interaction with appropriate spacing."
+        confirmText="Continue"
+      />
+    </Stack>
+  ),
+  parameters: {
+    viewport: {
+      defaultViewport: 'responsive',
+    },
+    chromatic: {
+      viewports: [320, 768, 1200],
+    },
   },
 };

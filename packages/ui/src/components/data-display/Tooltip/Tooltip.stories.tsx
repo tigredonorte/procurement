@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button, Stack, Box, IconButton, Avatar, Typography } from '@mui/material';
 import { Help, Info, Settings, Delete } from '@mui/icons-material';
 
 import { Tooltip } from './Tooltip';
 
 const meta = {
-  title: 'Data Display/Tooltip',
+  title: 'DataDisplay/Tooltip',
   component: Tooltip,
   parameters: {
     layout: 'centered',
@@ -295,4 +295,126 @@ export const LongText: Story = {
     title: 'This is a very long tooltip text that should wrap nicely within the maximum width constraints. It demonstrates how the tooltip handles longer content.',
     children: <Button variant="outlined">Long Tooltip</Button>,
   },
+};
+
+// Required comprehensive stories
+export const AllVariants: Story = {
+  render: () => (
+    <Stack spacing={3}>
+      <Typography variant="h6">All Tooltip Variants</Typography>
+      <Stack direction="row" spacing={3} flexWrap="wrap">
+        <Tooltip variant="default" title="Default variant tooltip">
+          <Button variant="outlined">Default</Button>
+        </Tooltip>
+        <Tooltip variant="dark" title="Dark variant tooltip">
+          <Button variant="outlined">Dark</Button>
+        </Tooltip>
+        <Tooltip variant="light" title="Light variant tooltip">
+          <Button variant="outlined">Light</Button>
+        </Tooltip>
+        <Tooltip variant="glass" title="Glass variant tooltip">
+          <Button variant="outlined">Glass</Button>
+        </Tooltip>
+      </Stack>
+    </Stack>
+  ),
+};
+
+export const AllSizes: Story = {
+  render: () => (
+    <Stack spacing={3}>
+      <Typography variant="h6">All Tooltip Sizes</Typography>
+      <Stack direction="row" spacing={3}>
+        <Tooltip size="sm" title="Small size tooltip">
+          <Button variant="outlined" size="small">Small</Button>
+        </Tooltip>
+        <Tooltip size="md" title="Medium size tooltip">
+          <Button variant="outlined">Medium</Button>
+        </Tooltip>
+        <Tooltip size="lg" title="Large size tooltip">
+          <Button variant="outlined" size="large">Large</Button>
+        </Tooltip>
+      </Stack>
+    </Stack>
+  ),
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <Stack spacing={3}>
+      <Typography variant="h6">All Tooltip States</Typography>
+      <Stack direction="row" spacing={3} flexWrap="wrap">
+        <Tooltip title="Normal state tooltip">
+          <Button variant="outlined">Normal</Button>
+        </Tooltip>
+        <Tooltip title="Tooltip with glow effect" glow>
+          <Button variant="outlined">With Glow</Button>
+        </Tooltip>
+        <Tooltip title="Tooltip with pulse effect" pulse>
+          <Button variant="outlined">With Pulse</Button>
+        </Tooltip>
+        <Tooltip title="Tooltip with both effects" glow pulse>
+          <Button variant="outlined">Glow + Pulse</Button>
+        </Tooltip>
+        <Tooltip title="Disabled element" disabled>
+          <span>
+            <Button variant="outlined" disabled>Disabled</Button>
+          </span>
+        </Tooltip>
+      </Stack>
+    </Stack>
+  ),
+};
+
+export const InteractiveStates: Story = {
+  render: () => (
+    <Stack spacing={3}>
+      <Typography variant="h6">Interactive Tooltip States</Typography>
+      <Stack direction="row" spacing={3} flexWrap="wrap">
+        <Tooltip title="Hover to see tooltip" enterDelay={0} leaveDelay={0}>
+          <Button variant="outlined">Instant</Button>
+        </Tooltip>
+        <Tooltip title="Delayed tooltip" enterDelay={500} leaveDelay={200}>
+          <Button variant="outlined">Delayed</Button>
+        </Tooltip>
+        <Tooltip title="Click to toggle" enterTouchDelay={0}>
+          <Button variant="outlined">Touch/Click</Button>
+        </Tooltip>
+        <Tooltip title="Focus to see tooltip" enterDelay={0}>
+          <Button variant="outlined">Focus</Button>
+        </Tooltip>
+      </Stack>
+    </Stack>
+  ),
+};
+
+export const Responsive: Story = {
+  parameters: {
+    viewport: {
+      viewports: {
+        mobile: { name: 'Mobile', styles: { width: '360px', height: '640px' } },
+        tablet: { name: 'Tablet', styles: { width: '768px', height: '1024px' } },
+        desktop: { name: 'Desktop', styles: { width: '1920px', height: '1080px' } },
+      },
+    },
+  },
+  render: () => (
+    <Stack spacing={3} sx={{ p: 2 }}>
+      <Typography variant="h6">Responsive Tooltips</Typography>
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: 'repeat(4, 1fr)' }, gap: 2 }}>
+        <Tooltip title="Responsive tooltip on mobile" placement="bottom">
+          <Button variant="outlined" fullWidth>Mobile</Button>
+        </Tooltip>
+        <Tooltip title="Responsive tooltip on tablet" placement="top">
+          <Button variant="outlined" fullWidth>Tablet</Button>
+        </Tooltip>
+        <Tooltip title="Responsive tooltip on desktop" placement="right">
+          <Button variant="outlined" fullWidth>Desktop</Button>
+        </Tooltip>
+        <Tooltip title="Adaptive placement" placement="auto">
+          <Button variant="outlined" fullWidth>Adaptive</Button>
+        </Tooltip>
+      </Box>
+    </Stack>
+  ),
 };

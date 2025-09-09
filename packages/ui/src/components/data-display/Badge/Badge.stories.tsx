@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { Box, Stack, IconButton, Avatar, Typography, Paper, ThemeProvider, createTheme, Button } from '@mui/material';
 import { Mail, Notifications, ShoppingCart, Star, Favorite, FiberManualRecord, CheckCircle, Error as ErrorIcon, Warning, Info, NewReleases, TrendingUp, Verified, Schedule } from '@mui/icons-material';
@@ -6,7 +6,7 @@ import { Mail, Notifications, ShoppingCart, Star, Favorite, FiberManualRecord, C
 import { Badge } from './Badge';
 
 const meta = {
-  title: 'Data Display/Badge',
+  title: 'DataDisplay/Badge',
   component: Badge,
   parameters: {
     layout: 'centered',
@@ -782,6 +782,215 @@ export const AccessibilityExample: Story = {
       </Paper>
     </Stack>
   ),
+};
+
+// Required story exports for validation
+export const AllVariants: Story = {
+  render: () => (
+    <Stack spacing={4}>
+      <Typography variant="h6">All Badge Variants</Typography>
+      <Stack direction="row" spacing={3} flexWrap="wrap" alignItems="center">
+        <Badge variant="default" badgeContent={4}>
+          <Mail />
+        </Badge>
+        <Badge variant="dot" color="success">
+          <Notifications />
+        </Badge>
+        <Badge variant="count" badgeContent={99} color="error">
+          <ShoppingCart />
+        </Badge>
+        <Badge variant="gradient" badgeContent="PRO" color="warning">
+          <Star />
+        </Badge>
+        <Badge variant="glass" badgeContent="5" color="primary">
+          <Favorite />
+        </Badge>
+        <Badge variant="outline" badgeContent="NEW" color="primary">
+          <NewReleases />
+        </Badge>
+        <Badge variant="secondary" badgeContent="12" color="secondary">
+          <TrendingUp />
+        </Badge>
+        <Badge variant="destructive" badgeContent="!" color="error">
+          <ErrorIcon />
+        </Badge>
+        <Badge variant="success" badgeContent="✓" color="success">
+          <Verified />
+        </Badge>
+        <Badge variant="warning" badgeContent="⚠" color="warning">
+          <Warning />
+        </Badge>
+      </Stack>
+    </Stack>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Showcases all available badge variants in one view.',
+      },
+    },
+  },
+};
+
+export const AllSizes: Story = {
+  render: () => (
+    <Stack spacing={4}>
+      <Typography variant="h6">All Badge Sizes</Typography>
+      <Stack direction="row" spacing={3} alignItems="center">
+        <Badge size="xs" badgeContent="XS" color="primary">
+          <Mail />
+        </Badge>
+        <Badge size="sm" badgeContent="SM" color="primary">
+          <Mail />
+        </Badge>
+        <Badge size="md" badgeContent="MD" color="primary">
+          <Mail />
+        </Badge>
+        <Badge size="lg" badgeContent="LG" color="primary">
+          <Mail />
+        </Badge>
+      </Stack>
+    </Stack>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Demonstrates all available badge sizes.',
+      },
+    },
+  },
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <Stack spacing={4}>
+      <Typography variant="h6">All Badge States</Typography>
+      <Stack spacing={2}>
+        <Stack direction="row" spacing={3} alignItems="center">
+          <Badge badgeContent="Default" color="primary">
+            <Box sx={{ p: 2, bgcolor: 'grey.100', borderRadius: 1 }}>Default State</Box>
+          </Badge>
+          <Badge badgeContent="Hover" color="primary" sx={{ '&:hover': { transform: 'scale(1.05)' } }}>
+            <Box sx={{ p: 2, bgcolor: 'grey.100', borderRadius: 1 }}>Hover State</Box>
+          </Badge>
+        </Stack>
+        <Stack direction="row" spacing={3} alignItems="center">
+          <Badge variant="dot" color="success" pulse>
+            <Box sx={{ p: 2, bgcolor: 'grey.100', borderRadius: 1 }}>Active (Pulse)</Box>
+          </Badge>
+          <Badge badgeContent="Glow" color="error" glow>
+            <Box sx={{ p: 2, bgcolor: 'grey.100', borderRadius: 1 }}>Glow Effect</Box>
+          </Badge>
+        </Stack>
+        <Stack direction="row" spacing={3} alignItems="center">
+          <Badge badgeContent={0} showZero={false}>
+            <Box sx={{ p: 2, bgcolor: 'grey.100', borderRadius: 1 }}>Hidden (Zero)</Box>
+          </Badge>
+          <Badge badgeContent={0} showZero={true}>
+            <Box sx={{ p: 2, bgcolor: 'grey.100', borderRadius: 1 }}>Visible (Zero)</Box>
+          </Badge>
+        </Stack>
+      </Stack>
+    </Stack>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Shows all possible badge states including hover, active, and hidden states.',
+      },
+    },
+  },
+};
+
+export const InteractiveStates: Story = {
+  render: () => {
+    const InteractiveExample = () => {
+      const [count, setCount] = useState(0);
+      const [showBadge, setShowBadge] = useState(true);
+
+      return (
+        <Stack spacing={4}>
+          <Typography variant="h6">Interactive Badge States</Typography>
+          <Stack direction="row" spacing={3} alignItems="center">
+            <Badge badgeContent={count} color="primary" invisible={!showBadge}>
+              <Mail />
+            </Badge>
+            <Button onClick={() => setCount(count + 1)} variant="outlined" size="small">
+              Increment
+            </Button>
+            <Button onClick={() => setCount(Math.max(0, count - 1))} variant="outlined" size="small">
+              Decrement
+            </Button>
+            <Button onClick={() => setShowBadge(!showBadge)} variant="outlined" size="small">
+              {showBadge ? 'Hide' : 'Show'} Badge
+            </Button>
+          </Stack>
+        </Stack>
+      );
+    };
+
+    return <InteractiveExample />;
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Interactive demonstration of badge state changes.',
+      },
+    },
+  },
+};
+
+export const Responsive: Story = {
+  render: () => (
+    <Stack spacing={4}>
+      <Typography variant="h6">Responsive Badge Layout</Typography>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: {
+            xs: 'repeat(2, 1fr)',
+            sm: 'repeat(3, 1fr)',
+            md: 'repeat(4, 1fr)',
+            lg: 'repeat(6, 1fr)',
+          },
+          gap: 2,
+        }}
+      >
+        <Badge badgeContent="1" color="primary">
+          <Paper sx={{ p: 2, textAlign: 'center' }}>Item 1</Paper>
+        </Badge>
+        <Badge badgeContent="2" color="secondary">
+          <Paper sx={{ p: 2, textAlign: 'center' }}>Item 2</Paper>
+        </Badge>
+        <Badge badgeContent="3" color="success">
+          <Paper sx={{ p: 2, textAlign: 'center' }}>Item 3</Paper>
+        </Badge>
+        <Badge badgeContent="4" color="warning">
+          <Paper sx={{ p: 2, textAlign: 'center' }}>Item 4</Paper>
+        </Badge>
+        <Badge badgeContent="5" color="error">
+          <Paper sx={{ p: 2, textAlign: 'center' }}>Item 5</Paper>
+        </Badge>
+        <Badge badgeContent="6" color="neutral">
+          <Paper sx={{ p: 2, textAlign: 'center' }}>Item 6</Paper>
+        </Badge>
+      </Box>
+      <Paper sx={{ p: 2, bgcolor: 'grey.100' }}>
+        <Typography variant="body2">
+          <Info sx={{ fontSize: 16, verticalAlign: 'middle', mr: 1 }} />
+          This grid adjusts from 2 columns on mobile to 6 columns on large screens.
+        </Typography>
+      </Paper>
+    </Stack>
+  ),
+  parameters: {
+    viewport: { defaultViewport: 'responsive' },
+    docs: {
+      description: {
+        story: 'Responsive grid layout that adapts to different screen sizes.',
+      },
+    },
+  },
 };
 
 // Edge Cases

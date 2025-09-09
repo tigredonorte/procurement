@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within, expect, waitFor, fn } from '@storybook/test';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { userEvent, within, expect, waitFor, fn } from 'storybook/test';
 import { useState } from 'react';
 import { 
   Typography, 
@@ -951,6 +951,347 @@ export const EdgeCases: Story = {
 };
 
 // Integration Test
+// Responsive Design Test
+export const ResponsiveDesign: Story = {
+  name: '📱 Responsive Design Test',
+  args: {
+    open: true,
+    variant: 'smooth'
+  },
+  parameters: {
+    viewport: {
+      viewports: {
+        mobile: { name: 'Mobile', styles: { width: '375px', height: '667px' } },
+        tablet: { name: 'Tablet', styles: { width: '768px', height: '1024px' } },
+        desktop: { name: 'Desktop', styles: { width: '1200px', height: '800px' } },
+      },
+    },
+  },
+  render: () => {
+    const ResponsiveExample = () => {
+      const [isOpen, setIsOpen] = useState(true);
+      
+      return (
+        <Box sx={{ width: '100%', maxWidth: '100vw', padding: { xs: 1, sm: 2, md: 3 } }}>
+          <Typography variant="h6" gutterBottom data-testid="responsive-title">
+            Responsive Collapsible Test
+          </Typography>
+          <Card sx={{ width: '100%' }}>
+            <CollapsibleTrigger 
+              onClick={() => setIsOpen(!isOpen)}
+              expanded={isOpen}
+              data-testid="responsive-trigger"
+            >
+              <Box sx={{ 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center',
+                flexWrap: { xs: 'wrap', sm: 'nowrap' },
+                gap: 1
+              }}>
+                <Typography 
+                  variant="h6" 
+                  sx={{ 
+                    fontSize: { xs: '0.875rem', sm: '1rem', md: '1.25rem' },
+                    wordBreak: 'break-word'
+                  }}
+                  data-testid="responsive-trigger-text"
+                >
+                  Responsive Content Section
+                </Typography>
+                {isOpen ? <ExpandLess /> : <ExpandMore />}
+              </Box>
+            </CollapsibleTrigger>
+            <Collapsible open={isOpen} variant="smooth" data-testid="responsive-collapsible">
+              <CollapsibleContent>
+                <Box sx={{ 
+                  display: 'grid',
+                  gridTemplateColumns: { 
+                    xs: '1fr',
+                    sm: '1fr 1fr',
+                    md: '1fr 1fr 1fr'
+                  },
+                  gap: { xs: 1, sm: 2, md: 3 }
+                }} data-testid="responsive-grid">
+                  <Box sx={{ p: 2, bgcolor: 'primary.50', borderRadius: 1 }} data-testid="mobile-content">
+                    <Typography variant="body2" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
+                      Mobile: Single column layout for optimal readability on small screens.
+                    </Typography>
+                  </Box>
+                  <Box sx={{ p: 2, bgcolor: 'secondary.50', borderRadius: 1 }} data-testid="tablet-content">
+                    <Typography variant="body2" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
+                      Tablet: Two-column layout provides good balance between content and space.
+                    </Typography>
+                  </Box>
+                  <Box sx={{ p: 2, bgcolor: 'success.50', borderRadius: 1 }} data-testid="desktop-content">
+                    <Typography variant="body2" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
+                      Desktop: Three-column layout maximizes the available screen real estate.
+                    </Typography>
+                  </Box>
+                </Box>
+                <Typography 
+                  variant="body2" 
+                  sx={{ 
+                    mt: 2,
+                    fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                    textAlign: { xs: 'left', md: 'center' }
+                  }}
+                  data-testid="responsive-description"
+                >
+                  This content adapts to different screen sizes using responsive design patterns.
+                </Typography>
+              </CollapsibleContent>
+            </Collapsible>
+          </Card>
+        </Box>
+      );
+    };
+
+    return <ResponsiveExample />;
+  },
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+    
+    await step('Verify responsive layout structure', async () => {
+      const title = canvas.getByTestId('responsive-title');
+      const trigger = canvas.getByTestId('responsive-trigger');
+      const grid = canvas.getByTestId('responsive-grid');
+      
+      await expect(title).toBeInTheDocument();
+      await expect(trigger).toBeInTheDocument();
+      await expect(grid).toBeInTheDocument();
+    });
+    
+    await step('Check responsive text sizing', async () => {
+      const triggerText = canvas.getByTestId('responsive-trigger-text');
+      const computedStyle = window.getComputedStyle(triggerText);
+      
+      // Text should have responsive font size
+      await expect(computedStyle.wordBreak).toBe('break-word');
+    });
+    
+    await step('Toggle collapsible functionality', async () => {
+      const trigger = canvas.getByTestId('responsive-trigger');
+      await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+      
+      await userEvent.click(trigger);
+      await waitFor(() => {
+        expect(trigger).toHaveAttribute('aria-expanded', 'false');
+      });
+      
+      await userEvent.click(trigger);
+      await waitFor(() => {
+        expect(trigger).toHaveAttribute('aria-expanded', 'true');
+      });
+    });
+    
+    await step('Verify content areas are present', async () => {
+      const mobileContent = canvas.getByTestId('mobile-content');
+      const tabletContent = canvas.getByTestId('tablet-content');
+      const desktopContent = canvas.getByTestId('desktop-content');
+      const description = canvas.getByTestId('responsive-description');
+      
+      await expect(mobileContent).toBeInTheDocument();
+      await expect(tabletContent).toBeInTheDocument();
+      await expect(desktopContent).toBeInTheDocument();
+      await expect(description).toBeInTheDocument();
+    });
+  }
+};
+
+// Theme Variations Test
+export const ThemeVariations: Story = {
+  name: '🎨 Theme Variations Test',
+  args: {
+    open: true,
+    variant: 'smooth'
+  },
+  render: () => {
+    const ThemeExample = () => {
+      const [openStates, setOpenStates] = useState({
+        primary: true,
+        secondary: true,
+        success: false,
+        error: false,
+        warning: false
+      });
+      
+      const toggleState = (key: keyof typeof openStates) => {
+        setOpenStates(prev => ({
+          ...prev,
+          [key]: !prev[key]
+        }));
+      };
+      
+      return (
+        <Stack spacing={2}>
+          <Typography variant="h6" data-testid="theme-title">
+            Theme Variations Test
+          </Typography>
+          
+          <Card sx={{ bgcolor: 'primary.50' }}>
+            <CollapsibleTrigger
+              onClick={() => toggleState('primary')}
+              expanded={openStates.primary}
+              data-testid="primary-trigger"
+            >
+              <Typography variant="h6" sx={{ color: 'primary.main' }}>
+                Primary Theme
+              </Typography>
+              {openStates.primary ? <ExpandLess sx={{ color: 'primary.main' }} /> : <ExpandMore sx={{ color: 'primary.main' }} />}
+            </CollapsibleTrigger>
+            <Collapsible open={openStates.primary} variant="smooth" data-testid="primary-collapsible">
+              <CollapsibleContent>
+                <Typography variant="body2" sx={{ color: 'primary.dark' }} data-testid="primary-content">
+                  Primary theme content with primary color scheme
+                </Typography>
+              </CollapsibleContent>
+            </Collapsible>
+          </Card>
+          
+          <Card sx={{ bgcolor: 'secondary.50' }}>
+            <CollapsibleTrigger
+              onClick={() => toggleState('secondary')}
+              expanded={openStates.secondary}
+              data-testid="secondary-trigger"
+            >
+              <Typography variant="h6" sx={{ color: 'secondary.main' }}>
+                Secondary Theme
+              </Typography>
+              {openStates.secondary ? <ExpandLess sx={{ color: 'secondary.main' }} /> : <ExpandMore sx={{ color: 'secondary.main' }} />}
+            </CollapsibleTrigger>
+            <Collapsible open={openStates.secondary} variant="smooth" data-testid="secondary-collapsible">
+              <CollapsibleContent>
+                <Typography variant="body2" sx={{ color: 'secondary.dark' }} data-testid="secondary-content">
+                  Secondary theme content with secondary color scheme
+                </Typography>
+              </CollapsibleContent>
+            </Collapsible>
+          </Card>
+          
+          <Card sx={{ bgcolor: 'success.50' }}>
+            <CollapsibleTrigger
+              onClick={() => toggleState('success')}
+              expanded={openStates.success}
+              data-testid="success-trigger"
+            >
+              <Typography variant="h6" sx={{ color: 'success.main' }}>
+                Success Theme
+              </Typography>
+              {openStates.success ? <ExpandLess sx={{ color: 'success.main' }} /> : <ExpandMore sx={{ color: 'success.main' }} />}
+            </CollapsibleTrigger>
+            <Collapsible open={openStates.success} variant="smooth" data-testid="success-collapsible">
+              <CollapsibleContent>
+                <Typography variant="body2" sx={{ color: 'success.dark' }} data-testid="success-content">
+                  Success theme content with success color scheme
+                </Typography>
+              </CollapsibleContent>
+            </Collapsible>
+          </Card>
+          
+          <Card sx={{ bgcolor: 'error.50' }}>
+            <CollapsibleTrigger
+              onClick={() => toggleState('error')}
+              expanded={openStates.error}
+              data-testid="error-trigger"
+            >
+              <Typography variant="h6" sx={{ color: 'error.main' }}>
+                Error Theme
+              </Typography>
+              {openStates.error ? <ExpandLess sx={{ color: 'error.main' }} /> : <ExpandMore sx={{ color: 'error.main' }} />}
+            </CollapsibleTrigger>
+            <Collapsible open={openStates.error} variant="smooth" data-testid="error-collapsible">
+              <CollapsibleContent>
+                <Typography variant="body2" sx={{ color: 'error.dark' }} data-testid="error-content">
+                  Error theme content with error color scheme
+                </Typography>
+              </CollapsibleContent>
+            </Collapsible>
+          </Card>
+          
+          <Card sx={{ bgcolor: 'warning.50' }}>
+            <CollapsibleTrigger
+              onClick={() => toggleState('warning')}
+              expanded={openStates.warning}
+              data-testid="warning-trigger"
+            >
+              <Typography variant="h6" sx={{ color: 'warning.main' }}>
+                Warning Theme
+              </Typography>
+              {openStates.warning ? <ExpandLess sx={{ color: 'warning.main' }} /> : <ExpandMore sx={{ color: 'warning.main' }} />}
+            </CollapsibleTrigger>
+            <Collapsible open={openStates.warning} variant="smooth" data-testid="warning-collapsible">
+              <CollapsibleContent>
+                <Typography variant="body2" sx={{ color: 'warning.dark' }} data-testid="warning-content">
+                  Warning theme content with warning color scheme
+                </Typography>
+              </CollapsibleContent>
+            </Collapsible>
+          </Card>
+        </Stack>
+      );
+    };
+
+    return <ThemeExample />;
+  },
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+    
+    await step('Verify all theme variants are present', async () => {
+      const primaryTrigger = canvas.getByTestId('primary-trigger');
+      const secondaryTrigger = canvas.getByTestId('secondary-trigger');
+      const successTrigger = canvas.getByTestId('success-trigger');
+      const errorTrigger = canvas.getByTestId('error-trigger');
+      const warningTrigger = canvas.getByTestId('warning-trigger');
+      
+      await expect(primaryTrigger).toBeInTheDocument();
+      await expect(secondaryTrigger).toBeInTheDocument();
+      await expect(successTrigger).toBeInTheDocument();
+      await expect(errorTrigger).toBeInTheDocument();
+      await expect(warningTrigger).toBeInTheDocument();
+    });
+    
+    await step('Test theme color applications', async () => {
+      // Primary and secondary should be expanded by default
+      const primaryContent = canvas.getByTestId('primary-content');
+      const secondaryContent = canvas.getByTestId('secondary-content');
+      
+      await expect(primaryContent).toBeInTheDocument();
+      await expect(secondaryContent).toBeInTheDocument();
+    });
+    
+    await step('Toggle success theme', async () => {
+      const successTrigger = canvas.getByTestId('success-trigger');
+      await userEvent.click(successTrigger);
+      
+      await waitFor(() => {
+        const successContent = canvas.getByTestId('success-content');
+        expect(successContent).toBeInTheDocument();
+      });
+    });
+    
+    await step('Toggle error theme', async () => {
+      const errorTrigger = canvas.getByTestId('error-trigger');
+      await userEvent.click(errorTrigger);
+      
+      await waitFor(() => {
+        const errorContent = canvas.getByTestId('error-content');
+        expect(errorContent).toBeInTheDocument();
+      });
+    });
+    
+    await step('Toggle warning theme', async () => {
+      const warningTrigger = canvas.getByTestId('warning-trigger');
+      await userEvent.click(warningTrigger);
+      
+      await waitFor(() => {
+        const warningContent = canvas.getByTestId('warning-content');
+        expect(warningContent).toBeInTheDocument();
+      });
+    });
+  }
+};
+
 export const IntegrationTest: Story = {
   name: '🔗 Integration Test',
   args: {

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { Button, Typography, Box, Stack } from '@mui/material';
 import { ExpandMore, Settings, Info, Security, Help } from '@mui/icons-material';
@@ -447,4 +447,243 @@ export const LoadingState: Story = {
 
     return <LoadingComponent />;
   },
+};
+
+// Required story exports for validation
+export const AllSizes: Story = {
+  render: () => (
+    <Stack spacing={3}>
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Small Size
+        </Typography>
+        <Accordion sx={{ '& .MuiAccordionSummary-root': { minHeight: 40 } }}>
+          <AccordionSummary expandIcon={<ExpandMore sx={{ fontSize: '1rem' }} />}>
+            <Typography variant="body2">Small Accordion</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography variant="body2">Compact content for small size accordion.</Typography>
+          </AccordionDetails>
+        </Accordion>
+      </Box>
+
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Medium Size (Default)
+        </Typography>
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMore />}>
+            <Typography>Medium Accordion</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>Standard content for medium size accordion.</Typography>
+          </AccordionDetails>
+        </Accordion>
+      </Box>
+
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Large Size
+        </Typography>
+        <Accordion sx={{ '& .MuiAccordionSummary-root': { minHeight: 64 } }}>
+          <AccordionSummary expandIcon={<ExpandMore sx={{ fontSize: '1.5rem' }} />}>
+            <Typography variant="h6">Large Accordion</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography variant="body1">
+              Extended content area for large size accordion with more space.
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+      </Box>
+    </Stack>
+  ),
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <Stack spacing={2}>
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMore />}>
+          <Typography>Default State</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>Normal accordion in default state.</Typography>
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion defaultExpanded>
+        <AccordionSummary expandIcon={<ExpandMore />}>
+          <Typography>Expanded State</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>This accordion is expanded by default.</Typography>
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion disabled>
+        <AccordionSummary expandIcon={<ExpandMore />}>
+          <Typography>Disabled State</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>This accordion is disabled.</Typography>
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion sx={{ '&:hover': { backgroundColor: 'action.hover' } }}>
+        <AccordionSummary expandIcon={<ExpandMore />}>
+          <Typography>Hover State (hover to see)</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>Hover over the summary to see the hover effect.</Typography>
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion sx={{ '&:focus-within': { outline: '2px solid', outlineColor: 'primary.main' } }}>
+        <AccordionSummary expandIcon={<ExpandMore />}>
+          <Typography>Focus State (tab to focus)</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>Tab navigation will show focus outline.</Typography>
+        </AccordionDetails>
+      </Accordion>
+    </Stack>
+  ),
+};
+
+export const InteractiveStates: Story = {
+  render: () => {
+    const InteractiveComponent = () => {
+      const [expanded, setExpanded] = useState<string | false>('panel1');
+      const [clickCount, setClickCount] = useState(0);
+
+      const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+        setExpanded(isExpanded ? panel : false);
+        setClickCount(clickCount + 1);
+      };
+
+      return (
+        <Stack spacing={2}>
+          <Typography variant="body2" color="text.secondary">
+            Click count: {clickCount} | Currently expanded: {expanded || 'none'}
+          </Typography>
+
+          <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+            <AccordionSummary expandIcon={<ExpandMore />}>
+              <Typography>Interactive Panel 1</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>Click to toggle expansion state.</Typography>
+            </AccordionDetails>
+          </Accordion>
+
+          <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
+            <AccordionSummary expandIcon={<ExpandMore />}>
+              <Typography>Interactive Panel 2</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>Only one panel can be expanded at a time.</Typography>
+            </AccordionDetails>
+          </Accordion>
+
+          <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
+            <AccordionSummary expandIcon={<ExpandMore />}>
+              <Typography>Interactive Panel 3</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>State is tracked and displayed above.</Typography>
+            </AccordionDetails>
+          </Accordion>
+        </Stack>
+      );
+    };
+
+    return <InteractiveComponent />;
+  },
+};
+
+export const Responsive: Story = {
+  render: () => (
+    <Box>
+      <Typography variant="h6" gutterBottom>
+        Responsive Accordion (resize window to test)
+      </Typography>
+      <Stack spacing={2}>
+        <Accordion
+          sx={{
+            width: '100%',
+            maxWidth: { xs: '100%', sm: 600, md: 800 },
+            mx: 'auto',
+          }}
+        >
+          <AccordionSummary expandIcon={<ExpandMore />}>
+            <Typography sx={{ fontSize: { xs: '0.875rem', sm: '1rem', md: '1.125rem' } }}>
+              Responsive Typography
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem', md: '1rem' } }}>
+              This accordion adapts to different screen sizes. On mobile it uses smaller text,
+              on tablet medium text, and on desktop larger text.
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+
+        <Accordion
+          sx={{
+            display: { xs: 'block', md: 'flex' },
+            flexDirection: { md: 'column' },
+          }}
+        >
+          <AccordionSummary 
+            expandIcon={<ExpandMore />}
+            sx={{
+              flexDirection: { xs: 'row', md: 'row-reverse' },
+              '& .MuiAccordionSummary-expandIconWrapper': {
+                transform: { xs: 'none', md: 'rotate(90deg)' },
+              },
+            }}
+          >
+            <Typography>Layout Changes</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: 'repeat(3, 1fr)' },
+                gap: 2,
+              }}
+            >
+              <Box sx={{ p: 2, bgcolor: 'grey.100', borderRadius: 1 }}>
+                <Typography variant="caption">Item 1</Typography>
+              </Box>
+              <Box sx={{ p: 2, bgcolor: 'grey.100', borderRadius: 1 }}>
+                <Typography variant="caption">Item 2</Typography>
+              </Box>
+              <Box sx={{ p: 2, bgcolor: 'grey.100', borderRadius: 1 }}>
+                <Typography variant="caption">Item 3</Typography>
+              </Box>
+            </Box>
+          </AccordionDetails>
+        </Accordion>
+
+        <Accordion
+          variant="glass"
+          sx={{
+            backdropFilter: { xs: 'blur(8px)', md: 'blur(12px)' },
+            backgroundColor: { xs: 'rgba(255,255,255,0.7)', md: 'rgba(255,255,255,0.9)' },
+          }}
+        >
+          <AccordionSummary expandIcon={<ExpandMore />}>
+            <Typography>Responsive Styling</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              Glass effect intensity changes based on screen size for optimal performance.
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+      </Stack>
+    </Box>
+  ),
 };

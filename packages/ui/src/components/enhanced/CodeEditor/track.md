@@ -56,6 +56,28 @@ A comprehensive code editor built on Monaco Editor with syntax highlighting, mul
 - [ ] Line numbers toggle
 - [ ] Minimap functionality
 
+## 5) Storybook Tests
+
+**Stories**:
+* Enhanced/CodeEditor/Default
+* Enhanced/CodeEditor/AllLanguages
+* Enhanced/CodeEditor/DarkTheme
+* Enhanced/CodeEditor/LightTheme
+* Enhanced/CodeEditor/ReadOnlyMode
+* Enhanced/CodeEditor/LiveEditor
+* Enhanced/CodeEditor/WithMinimap
+* Enhanced/CodeEditor/CustomFontSize
+* Enhanced/CodeEditor/WithWordWrap
+* Enhanced/CodeEditor/NoToolbar
+* Enhanced/CodeEditor/WithPlaceholder
+* Enhanced/CodeEditor/AutoFormat
+* Enhanced/CodeEditor/ComparisonView
+* Enhanced/CodeEditor/AllVariants
+* Enhanced/CodeEditor/AllSizes
+* Enhanced/CodeEditor/AllStates
+* Enhanced/CodeEditor/InteractiveStates
+* Enhanced/CodeEditor/Responsive
+
 ## Storybook Tests Status
 
 - [ ] Basic Interaction (planned)
@@ -69,7 +91,7 @@ A comprehensive code editor built on Monaco Editor with syntax highlighting, mul
 - [ ] Edge Cases (planned)
 - [ ] Integration (planned)
 
-**Current (BRT)**: 2025-09-08 23:45 [omega-62]
+**Current (BRT)**: 2025-09-09 17:05 [omega-105]
 
 Fixed TypeScript Compilation Errors:
 

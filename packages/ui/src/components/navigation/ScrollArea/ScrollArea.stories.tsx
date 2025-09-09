@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { 
   Box, 
   Typography, 
@@ -444,8 +444,9 @@ export const ChatInterface: Story = {
           showScrollIndicator 
           fadeEdges
           onScrollEnd={(direction) => {
+            // Handle scroll end event
             if (direction === 'top') {
-              
+              // Action when reaching top
             }
           }}
         >
@@ -496,17 +497,17 @@ export const VariantsComparison: Story = {
   render: () => (
     <Grid container spacing={3} sx={{ width: 800 }}>
       {[
-        { title: 'Auto', variant: 'auto' },
-        { title: 'Always', variant: 'always' },
-        { title: 'Hover', variant: 'hover' },
-        { title: 'Hidden', variant: 'hidden' },
+        { title: 'Auto', variant: 'auto' as const },
+        { title: 'Always', variant: 'always' as const },
+        { title: 'Hover', variant: 'hover' as const },
+        { title: 'Hidden', variant: 'hidden' as const },
       ].map(({ title, variant }) => (
         <Grid item xs={6} key={variant}>
           <Paper elevation={2}>
             <Typography variant="subtitle2" sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
               {title}
             </Typography>
-            <ScrollArea variant={variant as any} height={200}>
+            <ScrollArea variant={variant} height={200}>
               <Box sx={{ p: 2 }}>
                 {Array.from({ length: 20 }, (_, i) => (
                   <Typography key={i} variant="body2" sx={{ mb: 1 }}>
@@ -519,5 +520,129 @@ export const VariantsComparison: Story = {
         </Grid>
       ))}
     </Grid>
+  ),
+};
+
+// Required story exports
+export const Default = Auto;
+export const AllVariants = VariantsComparison;
+export const AllSizes: Story = {
+  render: () => (
+    <Grid container spacing={3} sx={{ width: 800 }}>
+      {[
+        { title: 'Thin', scrollbarSize: 'thin' as const },
+        { title: 'Medium', scrollbarSize: 'medium' as const },
+        { title: 'Thick', scrollbarSize: 'thick' as const },
+      ].map(({ title, scrollbarSize }) => (
+        <Grid item xs={4} key={scrollbarSize}>
+          <Paper elevation={2}>
+            <Typography variant="subtitle2" sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
+              {title} Scrollbar
+            </Typography>
+            <ScrollArea scrollbarSize={scrollbarSize} height={200}>
+              <Box sx={{ p: 2 }}>
+                {Array.from({ length: 15 }, (_, i) => (
+                  <Typography key={i} variant="body2" sx={{ mb: 1 }}>
+                    Line {i + 1}: {title} scrollbar size
+                  </Typography>
+                ))}
+              </Box>
+            </ScrollArea>
+          </Paper>
+        </Grid>
+      ))}
+    </Grid>
+  ),
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <Grid container spacing={3} sx={{ width: 800 }}>
+      {[
+        { title: 'Normal', disabled: false },
+        { title: 'Disabled', disabled: true },
+      ].map(({ title, disabled }) => (
+        <Grid item xs={6} key={title}>
+          <Paper elevation={2}>
+            <Typography variant="subtitle2" sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
+              {title} State
+            </Typography>
+            <ScrollArea disabled={disabled} height={200}>
+              <Box sx={{ p: 2 }}>
+                {Array.from({ length: 15 }, (_, i) => (
+                  <Typography key={i} variant="body2" sx={{ mb: 1 }}>
+                    Line {i + 1}: {title} state
+                  </Typography>
+                ))}
+              </Box>
+            </ScrollArea>
+          </Paper>
+        </Grid>
+      ))}
+    </Grid>
+  ),
+};
+
+export const InteractiveStates: Story = {
+  render: () => (
+    <Grid container spacing={3} sx={{ width: 800 }}>
+      {[
+        { title: 'Hover Effect', variant: 'hover' as const },
+        { title: 'With Glassmorphism', variant: 'auto' as const, glassmorphism: true },
+        { title: 'With Shadows', variant: 'auto' as const, showShadows: true },
+        { title: 'With Fade Edges', variant: 'auto' as const, fadeEdges: true },
+      ].map(({ title, variant, glassmorphism, showShadows, fadeEdges }) => (
+        <Grid item xs={6} key={title}>
+          <Paper elevation={2}>
+            <Typography variant="subtitle2" sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
+              {title}
+            </Typography>
+            <ScrollArea
+              variant={variant}
+              glassmorphism={glassmorphism}
+              showShadows={showShadows}
+              fadeEdges={fadeEdges}
+              height={200}
+            >
+              <Box sx={{ p: 2 }}>
+                {Array.from({ length: 15 }, (_, i) => (
+                  <Typography key={i} variant="body2" sx={{ mb: 1 }}>
+                    Line {i + 1}: {title}
+                  </Typography>
+                ))}
+              </Box>
+            </ScrollArea>
+          </Paper>
+        </Grid>
+      ))}
+    </Grid>
+  ),
+};
+
+export const Responsive: Story = {
+  render: () => (
+    <Box>
+      <Typography variant="h6" sx={{ mb: 2 }}>
+        Responsive ScrollArea (resize viewport to test)
+      </Typography>
+      <ScrollArea
+        variant="auto"
+        maxHeight="50vh"
+        width="100%"
+        sx={{
+          border: 1,
+          borderColor: 'divider',
+          borderRadius: 1,
+        }}
+      >
+        <Box sx={{ p: 2, minWidth: 600 }}>
+          {Array.from({ length: 25 }, (_, i) => (
+            <Typography key={i} variant="body2" sx={{ mb: 1 }}>
+              Responsive content line {i + 1} - This content adapts to different viewport sizes
+            </Typography>
+          ))}
+        </Box>
+      </ScrollArea>
+    </Box>
   ),
 };

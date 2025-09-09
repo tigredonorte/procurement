@@ -2,8 +2,8 @@
 
 ## Test Files Status
 
-- [ ] Stepper.test.stories.tsx created
-- [ ] All test categories implemented
+- [x] Stepper.test.stories.tsx created
+- [x] All test categories implemented
 
 ## Storybook Tests Status
 

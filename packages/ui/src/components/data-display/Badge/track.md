@@ -50,8 +50,41 @@ The Badge component displays small status indicators, counts, or labels that can
 - [ ] Screen reader compatibility
 - [ ] Responsive sizing
 
-## Storybook Tests Status
+## 5) Storybook Tests
 
+**Stories**
+* DataDisplay/Badge/Default
+* DataDisplay/Badge/AllVariants
+* DataDisplay/Badge/AllSizes
+* DataDisplay/Badge/AllStates
+* DataDisplay/Badge/InteractiveStates
+* DataDisplay/Badge/Responsive
+* DataDisplay/Badge/Playground
+* DataDisplay/Badge/WithIcon
+* DataDisplay/Badge/WithText
+* DataDisplay/Badge/Variants
+* DataDisplay/Badge/Sizes
+* DataDisplay/Badge/Colors
+* DataDisplay/Badge/Positions
+* DataDisplay/Badge/CountFormatting
+* DataDisplay/Badge/WithGlow
+* DataDisplay/Badge/WithPulse
+* DataDisplay/Badge/WithGlowAndPulse
+* DataDisplay/Badge/NotificationBadges
+* DataDisplay/Badge/UserProfileWithBadge
+* DataDisplay/Badge/ProductBadges
+* DataDisplay/Badge/ZeroHandling
+* DataDisplay/Badge/GlassMorphism
+* DataDisplay/Badge/ThemeVariations
+* DataDisplay/Badge/StatusIndicators
+* DataDisplay/Badge/AnimatedBadges
+* DataDisplay/Badge/ClosableBadges
+* DataDisplay/Badge/BadgesWithIcons
+* DataDisplay/Badge/AnimationShowcase
+* DataDisplay/Badge/AccessibilityExample
+* DataDisplay/Badge/EdgeCases
+
+### Test Stories Progress
 - [ ] Basic Interaction (planned)
 - [ ] Keyboard Navigation (planned)
 - [ ] Screen Reader (planned)
@@ -63,18 +96,22 @@ The Badge component displays small status indicators, counts, or labels that can
 - [ ] Edge Cases (planned)
 - [ ] Integration (planned)
 
-## Current Section - 2025-01-13 21:30 (BRT)
+## Current (BRT)
 
-### Current Task: Initial track.md file creation
+**Current (BRT)**: 2025-09-09 14:42
 
-- Track.md file structure created
-- Component overview documented
-- Parameters identified
-- Testing scenarios outlined
+### Current Task: Fix Badge Stories Coverage
 
-### Next Steps:
+**Completed:**
+- Fixed story title format from "Data Display/Badge" to "DataDisplay/Badge"
+- Added required story export: AllVariants
+- Added required story export: AllSizes
+- Added required story export: AllStates
+- Added required story export: InteractiveStates
+- Added required story export: Responsive
+- Fixed track.md format to use "Current (BRT)" heading
 
-- Read existing component implementation
-- Verify current lint/type status
-- Update status based on actual component state
-- Begin systematic verification process
+**Status:**
+- Stories coverage check now passes (Step 12/16)
+- All required story exports implemented
+- Component ready for full validation

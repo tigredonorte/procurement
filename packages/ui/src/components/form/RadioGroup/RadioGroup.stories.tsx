@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Box, Typography } from '@mui/material';
 import { CreditCard, Banknote, Smartphone, Globe, Star, Heart, Zap, Shield } from 'lucide-react';
 import { useState } from 'react';
