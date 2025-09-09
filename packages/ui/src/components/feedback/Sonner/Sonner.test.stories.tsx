@@ -5,7 +5,7 @@ import { Button, Stack, TextField, Box } from '@mui/material';
 
 import { SonnerProvider, useSonner } from './Sonner';
 
-const meta = {
+const meta: Meta<typeof SonnerProvider> = {
   title: 'Feedback/Sonner/Tests',
   component: SonnerProvider,
   parameters: {
@@ -17,7 +17,7 @@ const meta = {
     },
   },
   tags: ['autodocs', 'component:Sonner'],
-} satisfies Meta<typeof SonnerProvider>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

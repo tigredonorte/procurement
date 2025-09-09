@@ -26,7 +26,7 @@ const meta: Meta<typeof Select> = {
       description: 'Whether to show a glow effect',
     },
     pulse: {
-      control: 'boolean', 
+      control: 'boolean',
       description: 'Whether to show a pulse animation',
     },
   },
@@ -69,16 +69,11 @@ export const WithLabel: Story = {
   },
 };
 
-export const Sizes: Story = {
+export const AllSizes: Story = {
   render: () => (
     <Stack spacing={3} sx={{ width: 300 }}>
-      <Select 
-        options={defaultOptions}
-        label="Small Select"
-        size="small"
-        placeholder="Small size"
-      />
-      <Select 
+      <Select options={defaultOptions} label="Small Select" size="small" placeholder="Small size" />
+      <Select
         options={defaultOptions}
         label="Medium Select"
         size="medium"
@@ -170,7 +165,7 @@ export const GradientVariant: Story = {
   args: {
     options: defaultOptions,
     label: 'Gradient Select',
-    variant: 'gradient', 
+    variant: 'gradient',
     placeholder: 'Choose an option',
     helperText: 'Gradient variant with colorful border',
   },
@@ -256,6 +251,60 @@ export const CombinedEffects: Story = {
   ),
 };
 
+export const AllStates: Story = {
+  render: () => (
+    <Stack spacing={3} sx={{ width: 400 }}>
+      <Select
+        options={defaultOptions}
+        label="Normal State"
+        placeholder="Select an option"
+        helperText="Normal state select"
+      />
+      <Select
+        options={defaultOptions}
+        label="Error State"
+        placeholder="Required field"
+        error={true}
+        helperText="This field is required"
+      />
+      <Select
+        options={defaultOptions}
+        label="Disabled State"
+        placeholder="Cannot interact"
+        disabled={true}
+        helperText="This select is disabled"
+      />
+    </Stack>
+  ),
+};
+
+export const InteractiveStates: Story = {
+  render: () => (
+    <Stack spacing={3} sx={{ width: 400 }}>
+      <Select
+        options={defaultOptions}
+        label="Default Interaction"
+        placeholder="Click to open"
+        helperText="Hover and click to interact"
+      />
+      <Select
+        options={defaultOptions}
+        label="With Glow Effect"
+        placeholder="Hover for glow"
+        glow={true}
+        helperText="Hover to see glow effect"
+      />
+      <Select
+        options={defaultOptions}
+        label="With Pulse Animation"
+        placeholder="Watch the pulse"
+        pulse={true}
+        helperText="Pulse animation on focus"
+      />
+    </Stack>
+  ),
+};
+
 export const DisabledState: Story = {
   args: {
     options: defaultOptions,
@@ -264,6 +313,39 @@ export const DisabledState: Story = {
     disabled: true,
     helperText: 'This select is disabled',
   },
+};
+
+export const Responsive: Story = {
+  render: () => (
+    <Stack spacing={3}>
+      <div style={{ width: '100%', maxWidth: '480px' }}>
+        <Select
+          options={countryOptions}
+          label="Mobile View (480px)"
+          placeholder="Select country"
+          fullWidth={true}
+          helperText="Full width on mobile"
+        />
+      </div>
+      <div style={{ width: '300px' }}>
+        <Select
+          options={defaultOptions}
+          label="Tablet View (300px)"
+          placeholder="Fixed width"
+          helperText="Fixed width for tablets"
+        />
+      </div>
+      <div style={{ width: '200px' }}>
+        <Select
+          options={defaultOptions}
+          label="Compact View (200px)"
+          placeholder="Compact"
+          size="small"
+          helperText="Compact for small screens"
+        />
+      </div>
+    </Stack>
+  ),
 };
 
 export const Playground: Story = {

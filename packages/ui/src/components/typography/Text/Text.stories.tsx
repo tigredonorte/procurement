@@ -4,14 +4,15 @@ import React from 'react';
 
 import { Text } from './Text';
 
-const meta = {
+const meta: Meta<typeof Text> = {
   title: 'Typography/Text',
   component: Text,
   parameters: {
     layout: 'padded',
     docs: {
       description: {
-        component: 'A versatile text component with multiple variants, sizes, and styling options for consistent typography across your application.',
+        component:
+          'A versatile text component with multiple variants, sizes, and styling options for consistent typography across your application.',
       },
     },
   },
@@ -24,7 +25,17 @@ const meta = {
     },
     color: {
       control: { type: 'select' },
-      options: ['primary', 'secondary', 'error', 'warning', 'info', 'success', 'textPrimary', 'textSecondary', 'textDisabled'],
+      options: [
+        'primary',
+        'secondary',
+        'error',
+        'warning',
+        'info',
+        'success',
+        'textPrimary',
+        'textSecondary',
+        'textDisabled',
+      ],
       description: 'Text color',
     },
     align: {
@@ -59,7 +70,7 @@ const meta = {
       description: 'Strikethrough text',
     },
   },
-} satisfies Meta<typeof Text>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -126,8 +137,8 @@ export const TextAlignment: Story = {
       </Paper>
       <Paper sx={{ p: 2 }}>
         <Text align="justify">
-          Justified text content that spans multiple lines to demonstrate the justify alignment. 
-          This text will be evenly distributed across the full width of the container, creating 
+          Justified text content that spans multiple lines to demonstrate the justify alignment.
+          This text will be evenly distributed across the full width of the container, creating
           uniform edges on both the left and right sides.
         </Text>
       </Paper>
@@ -141,8 +152,12 @@ export const TextDecorations: Story = {
       <Text italic>Italic text for emphasis</Text>
       <Text underline>Underlined text for links or emphasis</Text>
       <Text strikethrough>Strikethrough text for deleted content</Text>
-      <Text italic underline>Combined italic and underline</Text>
-      <Text weight="bold" underline>Bold and underlined text</Text>
+      <Text italic underline>
+        Combined italic and underline
+      </Text>
+      <Text weight="bold" underline>
+        Bold and underlined text
+      </Text>
     </Stack>
   ),
 };
@@ -163,14 +178,15 @@ export const TruncatedText: Story = {
     <Stack spacing={2}>
       <Box sx={{ width: 300 }}>
         <Text truncate>
-          This is a very long text that will be truncated with an ellipsis when it exceeds the container width
+          This is a very long text that will be truncated with an ellipsis when it exceeds the
+          container width
         </Text>
       </Box>
       <Box sx={{ width: 300 }}>
         <Text truncate lines={2}>
-          This is a multi-line text that will be truncated after two lines. 
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-          Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          This is a multi-line text that will be truncated after two lines. Lorem ipsum dolor sit
+          amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore
+          magna aliqua.
         </Text>
       </Box>
     </Stack>
@@ -188,8 +204,8 @@ export const RealWorldExamples: Story = {
           Introducing Advanced Analytics
         </Text>
         <Text variant="body2" color="textSecondary">
-          Get deeper insights into your data with our new analytics dashboard. 
-          Track metrics, visualize trends, and make data-driven decisions.
+          Get deeper insights into your data with our new analytics dashboard. Track metrics,
+          visualize trends, and make data-driven decisions.
         </Text>
       </Paper>
 
@@ -209,9 +225,7 @@ export const RealWorldExamples: Story = {
         <Text variant="subtitle2" color="error" weight="bold">
           ⚠️ Important Notice
         </Text>
-        <Text variant="body2">
-          System maintenance scheduled for tonight at 10 PM EST.
-        </Text>
+        <Text variant="body2">System maintenance scheduled for tonight at 10 PM EST.</Text>
       </Paper>
     </Stack>
   ),
@@ -280,8 +294,8 @@ export const AllStates: Story = {
 export const InteractiveStates: Story = {
   render: () => (
     <Stack spacing={2}>
-      <Text 
-        sx={{ 
+      <Text
+        sx={{
           cursor: 'pointer',
           '&:hover': { color: 'primary.main' },
           '&:focus': { outline: '2px solid', outlineColor: 'primary.main' },
@@ -290,8 +304,8 @@ export const InteractiveStates: Story = {
       >
         Hoverable and focusable text
       </Text>
-      <Text 
-        sx={{ 
+      <Text
+        sx={{
           cursor: 'pointer',
           transition: 'all 0.2s',
           '&:hover': { transform: 'scale(1.05)', color: 'secondary.main' },
@@ -299,8 +313,8 @@ export const InteractiveStates: Story = {
       >
         Text with hover effects
       </Text>
-      <Text 
-        sx={{ 
+      <Text
+        sx={{
           cursor: 'pointer',
           '&:active': { color: 'success.main' },
         }}

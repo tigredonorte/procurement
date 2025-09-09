@@ -59,7 +59,26 @@ A flexible radio button group component that allows users to select a single opt
 - [ ] Form integration
 - [ ] Controlled/uncontrolled behavior
 
-## Storybook Tests Status
+## 5) Storybook Tests
+
+**Stories**
+
+- Form/RadioGroup/Default
+- Form/RadioGroup/Variants
+- Form/RadioGroup/Colors
+- Form/RadioGroup/Sizes
+- Form/RadioGroup/CardVariant
+- Form/RadioGroup/SpecialEffects
+- Form/RadioGroup/WithDirections
+- Form/RadioGroup/ErrorState
+- Form/RadioGroup/Playground
+- Form/RadioGroup/AllVariants
+- Form/RadioGroup/AllSizes
+- Form/RadioGroup/AllStates
+- Form/RadioGroup/InteractiveStates
+- Form/RadioGroup/Responsive
+
+**Test Status**
 
 - [ ] Basic Interaction (planned)
 - [ ] Form Interaction (planned)
@@ -73,18 +92,4 @@ A flexible radio button group component that allows users to select a single opt
 - [ ] Edge Cases (planned)
 - [ ] Integration (planned)
 
-## Current Section - 2025-01-13 21:30 (BRT)
-
-### Current Task: Initial track.md file creation
-
-- Track.md file structure created
-- Component overview documented
-- Parameters identified
-- Testing scenarios outlined
-
-### Next Steps:
-
-- Read existing component implementation
-- Verify current lint/type status
-- Update status based on actual component state
-- Begin systematic verification process
+**Current (BRT)**: 2025-09-09 22:48 - Fixed Stories coverage validation issue by adding required exports (AllVariants, AllSizes, AllStates, InteractiveStates, Responsive)

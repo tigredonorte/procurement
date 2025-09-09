@@ -1,23 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Stack, Box, Typography, Paper, Badge } from '@mui/material';
-import { 
-  Settings, 
-  Notifications,
-  Email,
-  Phone
-} from '@mui/icons-material';
+import { Settings, Notifications, Email, Phone } from '@mui/icons-material';
 import React, { useState } from 'react';
 
 import { Avatar, AvatarGroup } from './Avatar';
 
-const meta = {
+const meta: Meta<typeof Avatar> = {
   title: 'DataDisplay/Avatar',
   component: Avatar,
   parameters: {
     layout: 'centered',
     docs: {
       description: {
-        component: 'A beautiful, animated avatar component with support for images, initials, icons, status indicators, and various visual effects.',
+        component:
+          'A beautiful, animated avatar component with support for images, initials, icons, status indicators, and various visual effects.',
       },
     },
   },
@@ -64,7 +60,7 @@ const meta = {
       description: 'Make the avatar interactive with hover effects',
     },
   },
-} satisfies Meta<typeof Avatar>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -143,19 +139,27 @@ export const StatusIndicators: Story = {
     <Stack direction="row" spacing={3} alignItems="center">
       <Box textAlign="center">
         <Avatar variant="status" status="online" fallback="ON" size="lg" />
-        <Typography variant="caption" display="block" mt={1}>Online</Typography>
+        <Typography variant="caption" display="block" mt={1}>
+          Online
+        </Typography>
       </Box>
       <Box textAlign="center">
         <Avatar variant="status" status="offline" fallback="OF" size="lg" />
-        <Typography variant="caption" display="block" mt={1}>Offline</Typography>
+        <Typography variant="caption" display="block" mt={1}>
+          Offline
+        </Typography>
       </Box>
       <Box textAlign="center">
         <Avatar variant="status" status="away" fallback="AW" size="lg" />
-        <Typography variant="caption" display="block" mt={1}>Away</Typography>
+        <Typography variant="caption" display="block" mt={1}>
+          Away
+        </Typography>
       </Box>
       <Box textAlign="center">
         <Avatar variant="status" status="busy" fallback="BS" size="lg" />
-        <Typography variant="caption" display="block" mt={1}>Busy</Typography>
+        <Typography variant="caption" display="block" mt={1}>
+          Busy
+        </Typography>
       </Box>
     </Stack>
   ),
@@ -168,11 +172,11 @@ export const Bordered: Story = {
       <Avatar bordered fallback="B1" />
       <Avatar bordered variant="square" fallback="B2" color="secondary" />
       <Avatar bordered variant="rounded" fallback="B3" color="success" />
-      <Avatar 
-        bordered 
-        variant="status" 
-        status="online" 
-        src="https://images.unsplash.com/photo-1494790108755-2616b612b789?w=150&h=150&fit=crop&crop=face" 
+      <Avatar
+        bordered
+        variant="status"
+        status="online"
+        src="https://images.unsplash.com/photo-1494790108755-2616b612b789?w=150&h=150&fit=crop&crop=face"
       />
     </Stack>
   ),
@@ -240,11 +244,9 @@ export const Interactive: Story = {
             fallback="CL"
             size="lg"
             color="primary"
-            onClick={() => setClicked(c => c + 1)}
+            onClick={() => setClicked((c) => c + 1)}
           />
-          <Typography variant="caption">
-            Clicked: {clicked} times
-          </Typography>
+          <Typography variant="caption">Clicked: {clicked} times</Typography>
         </Stack>
       );
     };
@@ -288,7 +290,9 @@ export const GroupedAvatars: Story = {
   render: () => (
     <Stack spacing={3}>
       <Box>
-        <Typography variant="subtitle2" gutterBottom>Small Group</Typography>
+        <Typography variant="subtitle2" gutterBottom>
+          Small Group
+        </Typography>
         <AvatarGroup max={4}>
           <Avatar src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face" />
           <Avatar src="https://images.unsplash.com/photo-1494790108755-2616b612b789?w=150&h=150&fit=crop&crop=face" />
@@ -297,7 +301,9 @@ export const GroupedAvatars: Story = {
         </AvatarGroup>
       </Box>
       <Box>
-        <Typography variant="subtitle2" gutterBottom>Large Group with Overflow</Typography>
+        <Typography variant="subtitle2" gutterBottom>
+          Large Group with Overflow
+        </Typography>
         <AvatarGroup max={3}>
           <Avatar src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face" />
           <Avatar src="https://images.unsplash.com/photo-1494790108755-2616b612b789?w=150&h=150&fit=crop&crop=face" />
@@ -340,8 +346,12 @@ export const UserProfile: Story = {
         />
         <Box>
           <Typography variant="h6">Sarah Johnson</Typography>
-          <Typography variant="body2" color="text.secondary">Product Manager</Typography>
-          <Typography variant="caption" sx={{ color: 'success.main' }}>● Online</Typography>
+          <Typography variant="body2" color="text.secondary">
+            Product Manager
+          </Typography>
+          <Typography variant="caption" sx={{ color: 'success.main' }}>
+            ● Online
+          </Typography>
         </Box>
       </Stack>
     </Paper>
@@ -351,7 +361,9 @@ export const UserProfile: Story = {
 export const TeamMembers: Story = {
   render: () => (
     <Paper sx={{ p: 3, maxWidth: 500 }}>
-      <Typography variant="h6" gutterBottom>Team Members</Typography>
+      <Typography variant="h6" gutterBottom>
+        Team Members
+      </Typography>
       <Stack spacing={2}>
         {[
           { name: 'John Smith', role: 'Designer', status: 'online' as const, initials: 'JS' },
@@ -368,7 +380,9 @@ export const TeamMembers: Story = {
             />
             <Box flex={1}>
               <Typography variant="body1">{member.name}</Typography>
-              <Typography variant="caption" color="text.secondary">{member.role}</Typography>
+              <Typography variant="caption" color="text.secondary">
+                {member.role}
+              </Typography>
             </Box>
           </Stack>
         ))}
@@ -432,7 +446,12 @@ export const AllVariants: Story = {
         <Avatar variant="circle" src="https://i.pravatar.cc/150?img=1" alt="Circle avatar" />
         <Avatar variant="square" src="https://i.pravatar.cc/150?img=2" alt="Square avatar" />
         <Avatar variant="rounded" src="https://i.pravatar.cc/150?img=3" alt="Rounded avatar" />
-        <Avatar variant="status" status="online" src="https://i.pravatar.cc/150?img=4" alt="Status avatar" />
+        <Avatar
+          variant="status"
+          status="online"
+          src="https://i.pravatar.cc/150?img=4"
+          alt="Status avatar"
+        />
       </Stack>
     </Stack>
   ),
@@ -512,7 +531,9 @@ export const AllSizesWithEffects: Story = {
   render: () => (
     <Stack spacing={3}>
       <Stack direction="row" spacing={2} alignItems="center">
-        <Typography variant="caption" sx={{ width: 80 }}>Normal:</Typography>
+        <Typography variant="caption" sx={{ width: 80 }}>
+          Normal:
+        </Typography>
         <Avatar size="xs" fallback="XS" />
         <Avatar size="sm" fallback="SM" />
         <Avatar size="md" fallback="MD" />
@@ -521,7 +542,9 @@ export const AllSizesWithEffects: Story = {
         <Avatar size="xxl" fallback="XXL" />
       </Stack>
       <Stack direction="row" spacing={2} alignItems="center">
-        <Typography variant="caption" sx={{ width: 80 }}>Glow:</Typography>
+        <Typography variant="caption" sx={{ width: 80 }}>
+          Glow:
+        </Typography>
         <Avatar size="xs" fallback="XS" glow color="primary" />
         <Avatar size="sm" fallback="SM" glow color="secondary" />
         <Avatar size="md" fallback="MD" glow color="success" />
@@ -530,7 +553,9 @@ export const AllSizesWithEffects: Story = {
         <Avatar size="xxl" fallback="XXL" glow color="neutral" />
       </Stack>
       <Stack direction="row" spacing={2} alignItems="center">
-        <Typography variant="caption" sx={{ width: 80 }}>Pulse:</Typography>
+        <Typography variant="caption" sx={{ width: 80 }}>
+          Pulse:
+        </Typography>
         <Avatar size="xs" fallback="XS" pulse color="primary" />
         <Avatar size="sm" fallback="SM" pulse color="secondary" />
         <Avatar size="md" fallback="MD" pulse color="success" />
@@ -539,7 +564,9 @@ export const AllSizesWithEffects: Story = {
         <Avatar size="xxl" fallback="XXL" pulse color="neutral" />
       </Stack>
       <Stack direction="row" spacing={2} alignItems="center">
-        <Typography variant="caption" sx={{ width: 80 }}>Interactive:</Typography>
+        <Typography variant="caption" sx={{ width: 80 }}>
+          Interactive:
+        </Typography>
         <Avatar size="xs" fallback="XS" interactive />
         <Avatar size="sm" fallback="SM" interactive />
         <Avatar size="md" fallback="MD" interactive />
@@ -570,7 +597,15 @@ export const ResponsiveGrid: Story = {
           <Avatar
             key={i}
             fallback={`U${i + 1}`}
-            color={['primary', 'secondary', 'success', 'warning', 'error', 'neutral'][i % 6] as 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'neutral'}
+            color={
+              ['primary', 'secondary', 'success', 'warning', 'error', 'neutral'][i % 6] as
+                | 'primary'
+                | 'secondary'
+                | 'success'
+                | 'warning'
+                | 'error'
+                | 'neutral'
+            }
             interactive
           />
         ))}
@@ -643,31 +678,39 @@ export const PerformanceDemo: Story = {
       return (
         <Stack spacing={2}>
           <Stack direction="row" spacing={2}>
-            <button onClick={() => setCount(c => Math.max(0, c - 10))}>-10</button>
+            <button onClick={() => setCount((c) => Math.max(0, c - 10))}>-10</button>
             <Typography>Count: {count}</Typography>
-            <button onClick={() => setCount(c => c + 10)}>+10</button>
+            <button onClick={() => setCount((c) => c + 10)}>+10</button>
           </Stack>
-        <Box
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: 1,
-            maxWidth: 600,
-            maxHeight: 400,
-            overflow: 'auto',
-          }}
-        >
-          {Array.from({ length: count }, (_, i) => (
-            <Avatar
-              key={i}
-              fallback={`${i}`}
-              size="sm"
-              color={['primary', 'secondary', 'success', 'warning', 'error', 'neutral'][i % 6] as 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'neutral'}
-              animationDelay={i * 10}
-            />
-          ))}
-        </Box>
-      </Stack>
+          <Box
+            sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 1,
+              maxWidth: 600,
+              maxHeight: 400,
+              overflow: 'auto',
+            }}
+          >
+            {Array.from({ length: count }, (_, i) => (
+              <Avatar
+                key={i}
+                fallback={`${i}`}
+                size="sm"
+                color={
+                  ['primary', 'secondary', 'success', 'warning', 'error', 'neutral'][i % 6] as
+                    | 'primary'
+                    | 'secondary'
+                    | 'success'
+                    | 'warning'
+                    | 'error'
+                    | 'neutral'
+                }
+                animationDelay={i * 10}
+              />
+            ))}
+          </Box>
+        </Stack>
       );
     };
     return <PerformanceTest />;

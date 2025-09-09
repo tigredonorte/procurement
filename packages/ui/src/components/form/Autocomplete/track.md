@@ -3,7 +3,7 @@
 **Component**: `Autocomplete`
 **Category**: `form` (text input with suggestions)
 **Status**: completed
-**Current (BRT)**: 2025-09-09 18:00
+**Current (BRT)**: 2025-09-09 23:13
 
 ---
 
@@ -112,32 +112,32 @@ Zero TS errors. Public types for props exported via `index.ts`.
 
 **Stories**
 
-* Form/Autocomplete/Default
-* Form/Autocomplete/AllVariants
-* Form/Autocomplete/AllSizes
-* Form/Autocomplete/AllStates
-* Form/Autocomplete/InteractiveStates
-* Form/Autocomplete/Responsive
-* Form/Autocomplete/BasicUsage
-* Form/Autocomplete/WithInitialValue
-* Form/Autocomplete/ObjectData
-* Form/Autocomplete/Disabled
-* Form/Autocomplete/Loading
-* Form/Autocomplete/EmptyState
-* Form/Autocomplete/WithGhostText
-* Form/Autocomplete/MultipleSelectionMode
-* Form/Autocomplete/AsyncMode
-* Form/Autocomplete/CustomRenderer
-* Form/Autocomplete/StartsWithMatching
-* Form/Autocomplete/ContainsMatching
-* Form/Autocomplete/FuzzyMatching
-* Form/Autocomplete/NoFreeText
-* Form/Autocomplete/CustomDebounce
-* Form/Autocomplete/LimitedVisibleItems
-* Form/Autocomplete/DarkTheme
-* Form/Autocomplete/ResponsiveWidth
-* Form/Autocomplete/FormIntegration
-* Form/Autocomplete/LargeDatasetPerformance
+- Form/Autocomplete/Default
+- Form/Autocomplete/AllVariants
+- Form/Autocomplete/AllSizes
+- Form/Autocomplete/AllStates
+- Form/Autocomplete/InteractiveStates
+- Form/Autocomplete/Responsive
+- Form/Autocomplete/BasicUsage
+- Form/Autocomplete/WithInitialValue
+- Form/Autocomplete/ObjectData
+- Form/Autocomplete/Disabled
+- Form/Autocomplete/Loading
+- Form/Autocomplete/EmptyState
+- Form/Autocomplete/WithGhostText
+- Form/Autocomplete/MultipleSelectionMode
+- Form/Autocomplete/AsyncMode
+- Form/Autocomplete/CustomRenderer
+- Form/Autocomplete/StartsWithMatching
+- Form/Autocomplete/ContainsMatching
+- Form/Autocomplete/FuzzyMatching
+- Form/Autocomplete/NoFreeText
+- Form/Autocomplete/CustomDebounce
+- Form/Autocomplete/LimitedVisibleItems
+- Form/Autocomplete/DarkTheme
+- Form/Autocomplete/ResponsiveWidth
+- Form/Autocomplete/FormIntegration
+- Form/Autocomplete/LargeDatasetPerformance
 
 **Autotests**
 
@@ -153,18 +153,18 @@ Zero TS errors. Public types for props exported via `index.ts`.
 - completed
 - error
 
-| Test               | Status    | Notes                                        |
-| ------------------ | --------- | -------------------------------------------- |
-| Typing & free text | completed | Implemented with controlled component       |
-| Dropdown toggle    | completed | Dropdown appears/disappears correctly       |
-| Ghost completion   | completed | Ghost text feature with showGhostText prop  |
-| Keyboard nav       | completed | Arrow keys, Enter, Tab, Escape support      |
-| Mouse click select | completed | Click selection implemented                 |
-| Async loading      | completed | Async mode with loading indicator           |
-| Multiple tags      | completed | Multiple selection mode with chips          |
-| A11y roles & SR    | completed | ARIA combobox pattern implemented           |
-| Responsive layout  | completed | Responsive story with viewport parameters   |
-| Custom rendering   | completed | renderSuggestion prop for custom rendering  |
+| Test               | Status    | Notes                                      |
+| ------------------ | --------- | ------------------------------------------ |
+| Typing & free text | completed | Implemented with controlled component      |
+| Dropdown toggle    | completed | Dropdown appears/disappears correctly      |
+| Ghost completion   | completed | Ghost text feature with showGhostText prop |
+| Keyboard nav       | completed | Arrow keys, Enter, Tab, Escape support     |
+| Mouse click select | completed | Click selection implemented                |
+| Async loading      | completed | Async mode with loading indicator          |
+| Multiple tags      | completed | Multiple selection mode with chips         |
+| A11y roles & SR    | completed | ARIA combobox pattern implemented          |
+| Responsive layout  | completed | Responsive story with viewport parameters  |
+| Custom rendering   | completed | renderSuggestion prop for custom rendering |
 
 ---
 

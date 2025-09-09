@@ -55,32 +55,50 @@ The Select component provides dropdown selection functionality with search, filt
 - [ ] Screen reader compatibility
 - [ ] Virtual scrolling for large lists
 
-## Storybook Tests Status
+## 5) Storybook Tests
 
-- [ ] Basic Interaction (planned)
-- [ ] Form Interaction (planned)
-- [ ] Keyboard Navigation (planned)
-- [ ] Screen Reader (planned)
-- [ ] Focus Management (planned)
-- [ ] Responsive Design (planned)
-- [ ] Theme Variations (planned)
-- [ ] Visual States (planned)
-- [ ] Performance (planned)
-- [ ] Edge Cases (planned)
-- [ ] Integration (planned)
+**Stories**:
 
-## Current Section - 2025-01-13 21:30 (BRT)
+- Form/Select/Tests/BasicInteraction
+- Form/Select/Tests/FormInteraction
+- Form/Select/Tests/StateChangeTest
+- Form/Select/Tests/KeyboardNavigation
+- Form/Select/Tests/ScreenReaderTest
+- Form/Select/Tests/FocusManagement
+- Form/Select/Tests/ResponsiveDesign
+- Form/Select/Tests/ThemeVariations
+- Form/Select/Tests/VisualStates
+- Form/Select/Tests/PerformanceTest
+- Form/Select/Tests/EdgeCases
+- Form/Select/Tests/IntegrationTest
 
-### Current Task: Initial track.md file creation
+## **Stories**
 
-- Track.md file structure created
-- Component overview documented
-- Parameters identified
-- Testing scenarios outlined
+- Default
+- AllSizes
+- AllStates
+- InteractiveStates
+- Responsive
+- WithLabel
+- WithDefaultValue
+- ErrorState
+- WithManyOptions
+- NoFullWidth
+- GlassVariant
+- GradientVariant
+- AllVariants
+- WithGlowEffect
+- WithPulseAnimation
+- CombinedEffects
+- DisabledState
+- Playground
 
-### Next Steps:
+## **Current (BRT)**: 2025-09-09 22:30
 
-- Read existing component implementation
-- Verify current lint/type status
-- Update status based on actual component state
-- Begin systematic verification process
+omega-13
+
+- Fixed Stories coverage validation issue (Step 11/16)
+- Added missing required story exports: AllSizes, AllStates, InteractiveStates, Responsive
+- Created missing Select.md documentation file
+- Updated track.md format to match validation requirements
+- All validation checks now pass

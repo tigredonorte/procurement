@@ -25,7 +25,7 @@ import {
 
 import { Drawer, DrawerHeader, DrawerContent } from './Drawer';
 
-const meta = {
+const meta: Meta<typeof Drawer> = {
   title: 'Layout/Drawer',
   component: Drawer,
   parameters: {
@@ -44,7 +44,7 @@ const meta = {
       control: { type: 'number' },
     },
   },
-} satisfies Meta<typeof Drawer>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

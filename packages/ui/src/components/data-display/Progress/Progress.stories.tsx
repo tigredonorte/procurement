@@ -4,13 +4,13 @@ import React from 'react';
 
 import { Progress } from './Progress';
 
-const meta = {
-  title: 'Data Display/Progress',
+const meta: Meta<typeof Progress> = {
+  title: 'DataDisplay/Progress',
   component: Progress,
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs', 'component:Progress', "checked"],
+  tags: ['autodocs', 'component:Progress', 'checked'],
   argTypes: {
     variant: {
       control: { type: 'select' },
@@ -37,7 +37,7 @@ const meta = {
       control: { type: 'boolean' },
     },
   },
-} satisfies Meta<typeof Progress>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -362,6 +362,119 @@ export const LoadingStates: Story = {
           With Effects
         </Typography>
         <Progress variant="gradient" glow pulse />
+      </Box>
+    </Stack>
+  ),
+};
+
+// Required exports for validation
+export const AllVariants = Variants;
+export const AllSizes = Sizes;
+export const AllStates: Story = {
+  render: () => (
+    <Stack spacing={4}>
+      <Box>
+        <Typography variant="subtitle2" sx={{ mb: 1 }}>
+          Default State
+        </Typography>
+        <Progress variant="linear" value={60} showLabel />
+      </Box>
+      <Box>
+        <Typography variant="subtitle2" sx={{ mb: 1 }}>
+          Loading State
+        </Typography>
+        <Progress variant="linear" />
+      </Box>
+      <Box>
+        <Typography variant="subtitle2" sx={{ mb: 1 }}>
+          Complete State
+        </Typography>
+        <Progress variant="linear" value={100} showLabel />
+      </Box>
+      <Box>
+        <Typography variant="subtitle2" sx={{ mb: 1 }}>
+          With Glow Effect
+        </Typography>
+        <Progress variant="gradient" value={75} glow showLabel />
+      </Box>
+      <Box>
+        <Typography variant="subtitle2" sx={{ mb: 1 }}>
+          With Pulse Effect
+        </Typography>
+        <Progress variant="linear" value={45} pulse showLabel />
+      </Box>
+    </Stack>
+  ),
+};
+
+export const InteractiveStates: Story = {
+  render: () => {
+    const [progress, setProgress] = React.useState(25);
+
+    return (
+      <Stack spacing={3} sx={{ width: 400 }}>
+        <Typography variant="h6">Interactive Progress Control</Typography>
+        <Progress variant="gradient" value={progress} showLabel glow />
+        <Stack direction="row" spacing={2}>
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={() => setProgress(Math.max(0, progress - 10))}
+          >
+            -10%
+          </Button>
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={() => setProgress(Math.min(100, progress + 10))}
+          >
+            +10%
+          </Button>
+          <Button variant="contained" size="small" onClick={() => setProgress(0)}>
+            Reset
+          </Button>
+        </Stack>
+      </Stack>
+    );
+  },
+};
+
+export const Responsive: Story = {
+  render: () => (
+    <Stack spacing={4}>
+      <Box>
+        <Typography variant="subtitle2" sx={{ mb: 1 }}>
+          Mobile View (Small)
+        </Typography>
+        <Box sx={{ width: 300 }}>
+          <Progress variant="linear" value={65} showLabel />
+        </Box>
+      </Box>
+      <Box>
+        <Typography variant="subtitle2" sx={{ mb: 1 }}>
+          Tablet View (Medium)
+        </Typography>
+        <Box sx={{ width: 500 }}>
+          <Progress variant="segmented" segments={10} value={70} showLabel />
+        </Box>
+      </Box>
+      <Box>
+        <Typography variant="subtitle2" sx={{ mb: 1 }}>
+          Desktop View (Large)
+        </Typography>
+        <Box sx={{ width: 800 }}>
+          <Progress variant="gradient" value={80} showLabel glow />
+        </Box>
+      </Box>
+      <Box>
+        <Typography variant="subtitle2" sx={{ mb: 1 }}>
+          Circular Responsive
+        </Typography>
+        <Stack direction="row" spacing={3}>
+          <Progress variant="circular" size="sm" value={40} showLabel />
+          <Progress variant="circular" size="md" value={60} showLabel />
+          <Progress variant="circular" size="lg" value={80} showLabel />
+        </Stack>
       </Box>
     </Stack>
   ),

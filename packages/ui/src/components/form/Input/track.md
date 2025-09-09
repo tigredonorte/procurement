@@ -56,40 +56,49 @@ The Input component provides text input functionality with comprehensive validat
 - [ ] Input masking/formatting
 - [ ] Autocomplete behavior
 
-## Storybook Tests Status
+## 5) Storybook Tests
 
-- [ ] Basic Interaction (planned)
-- [ ] Form Interaction (planned)
-- [ ] Keyboard Navigation (planned)
-- [ ] Screen Reader (planned)
-- [ ] Focus Management (planned)
-- [ ] Responsive Design (planned)
-- [ ] Theme Variations (planned)
-- [ ] Visual States (planned)
-- [ ] Performance (planned)
-- [ ] Edge Cases (planned)
-- [ ] Integration (planned)
+**Stories**:
 
-## Current Section - 2025-09-09 08:45 (BRL)
+- Form/Input/Tests/BasicInteraction
+- Form/Input/Tests/FormInteraction
+- Form/Input/Tests/StateChangeTest
+- Form/Input/Tests/KeyboardNavigation
+- Form/Input/Tests/ScreenReaderTest
+- Form/Input/Tests/FocusManagement
+- Form/Input/Tests/ResponsiveDesign
+- Form/Input/Tests/ThemeVariations
+- Form/Input/Tests/VisualStates
+- Form/Input/Tests/EdgeCases
+- Form/Input/Tests/PerformanceTest
+- Form/Input/Tests/IntegrationTest
 
-### Current Task: Fixing Input component (omega-50)
+## **Stories**
 
-- Component marked as needs-fixes
-- Added missing required story exports (AllVariants, AllSizes, AllStates, Responsive)
-- Need to complete validation checks
-- Will verify test stories in Storybook
+- Default
+- WithLabel
+- AllVariants
+- Variants
+- AllSizes
+- Sizes
+- WithAdornments
+- FloatingLabels
+- ErrorStates
+- VisualEffects
+- AllStates
+- InteractiveStates
+- InputTypes
+- EdgeCases
+- Responsive
+- ResponsiveDemo
+- Playground
 
-### Progress:
+## **Current (BRT)**: 2025-09-09 23:59
 
-- ✅ Added required story exports (AllVariants, AllSizes, AllStates, Responsive)
-- ✅ Created missing Input.md documentation file
-- ✅ ESLint clean - no errors
-- ✅ TypeScript clean - no errors  
-- ⏳ Will verify test stories in Storybook at http://192.168.166.133:6008
-- ⏳ Update tests.md with status
+omega-29
 
-### Next Steps:
-
-- Verify test stories functionality in Storybook
-- Update tests.md with verification results
-- Ensure all validation checks pass
+- Fixing track.md validation issue (Step 15/16)
+- Updated track.md format with proper **Stories** sections and **Current (BRT)** format
+- All required story exports already present
+- TypeScript clean, ESLint clean
+- Need to complete final validation checks

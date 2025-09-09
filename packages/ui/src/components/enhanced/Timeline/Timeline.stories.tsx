@@ -16,7 +16,7 @@ import React from 'react';
 
 import { Timeline } from './Timeline';
 
-const meta = {
+const meta: Meta<typeof Timeline> = {
   title: 'Enhanced/Timeline',
   component: Timeline,
   parameters: {
@@ -53,7 +53,7 @@ const meta = {
       description: 'Alternate item positions (vertical only)',
     },
   },
-} satisfies Meta<typeof Timeline>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

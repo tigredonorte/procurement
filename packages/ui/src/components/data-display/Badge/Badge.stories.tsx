@@ -1,26 +1,63 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import { Box, Stack, IconButton, Avatar, Typography, Paper, ThemeProvider, createTheme, Button } from '@mui/material';
-import { Mail, Notifications, ShoppingCart, Star, Favorite, FiberManualRecord, CheckCircle, Error as ErrorIcon, Warning, Info, NewReleases, TrendingUp, Verified, Schedule } from '@mui/icons-material';
+import {
+  Box,
+  Stack,
+  IconButton,
+  Avatar,
+  Typography,
+  Paper,
+  ThemeProvider,
+  createTheme,
+  Button,
+} from '@mui/material';
+import {
+  Mail,
+  Notifications,
+  ShoppingCart,
+  Star,
+  Favorite,
+  FiberManualRecord,
+  CheckCircle,
+  Error as ErrorIcon,
+  Warning,
+  Info,
+  NewReleases,
+  TrendingUp,
+  Verified,
+  Schedule,
+} from '@mui/icons-material';
 
 import { Badge } from './Badge';
 
-const meta = {
+const meta: Meta<typeof Badge> = {
   title: 'DataDisplay/Badge',
   component: Badge,
   parameters: {
     layout: 'centered',
     docs: {
       description: {
-        component: 'A versatile badge component for displaying notifications, counts, and status indicators with various styles and animations.'
-      }
-    }
+        component:
+          'A versatile badge component for displaying notifications, counts, and status indicators with various styles and animations.',
+      },
+    },
   },
   tags: ['autodocs', 'component:Badge'],
   argTypes: {
     variant: {
       control: { type: 'select' },
-      options: ['default', 'dot', 'count', 'gradient', 'glass', 'outline', 'secondary', 'destructive', 'success', 'warning'],
+      options: [
+        'default',
+        'dot',
+        'count',
+        'gradient',
+        'glass',
+        'outline',
+        'secondary',
+        'destructive',
+        'success',
+        'warning',
+      ],
       description: 'The visual style variant of the badge',
     },
     size: {
@@ -69,7 +106,7 @@ const meta = {
       description: 'Accessibility label for screen readers',
     },
   },
-} satisfies Meta<typeof Badge>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -231,12 +268,24 @@ export const Sizes: Story = {
 export const Colors: Story = {
   render: () => (
     <Stack direction="row" spacing={3} alignItems="center">
-      <Badge color="primary" badgeContent={4}><Mail /></Badge>
-      <Badge color="secondary" badgeContent={4}><Mail /></Badge>
-      <Badge color="success" badgeContent={4}><Mail /></Badge>
-      <Badge color="warning" badgeContent={4}><Mail /></Badge>
-      <Badge color="error" badgeContent={4}><Mail /></Badge>
-      <Badge color="neutral" badgeContent={4}><Mail /></Badge>
+      <Badge color="primary" badgeContent={4}>
+        <Mail />
+      </Badge>
+      <Badge color="secondary" badgeContent={4}>
+        <Mail />
+      </Badge>
+      <Badge color="success" badgeContent={4}>
+        <Mail />
+      </Badge>
+      <Badge color="warning" badgeContent={4}>
+        <Mail />
+      </Badge>
+      <Badge color="error" badgeContent={4}>
+        <Mail />
+      </Badge>
+      <Badge color="neutral" badgeContent={4}>
+        <Mail />
+      </Badge>
     </Stack>
   ),
 };
@@ -362,7 +411,7 @@ export const UserProfileWithBadge: Story = {
   render: () => (
     <Stack direction="row" spacing={2} alignItems="center">
       <Badge variant="dot" color="success" position="bottom-right">
-        <Avatar 
+        <Avatar
           src="https://images.unsplash.com/photo-1494790108755-2616b612b789?w=150&h=150&fit=crop&crop=face"
           alt="User"
           sx={{ width: 56, height: 56 }}
@@ -379,19 +428,49 @@ export const UserProfileWithBadge: Story = {
 export const ProductBadges: Story = {
   render: () => (
     <Stack direction="row" spacing={3}>
-      <Box sx={{ position: 'relative', p: 2, border: 1, borderColor: 'divider', borderRadius: 2, width: 120, textAlign: 'center' }}>
+      <Box
+        sx={{
+          position: 'relative',
+          p: 2,
+          border: 1,
+          borderColor: 'divider',
+          borderRadius: 2,
+          width: 120,
+          textAlign: 'center',
+        }}
+      >
         <Badge badgeContent="NEW" color="success" size="sm" position="top-left">
           <Box sx={{ width: '100%', height: 80, bgcolor: 'grey.100', borderRadius: 1, mb: 1 }} />
         </Badge>
         <div style={{ fontSize: '0.875rem' }}>Product A</div>
       </Box>
-      <Box sx={{ position: 'relative', p: 2, border: 1, borderColor: 'divider', borderRadius: 2, width: 120, textAlign: 'center' }}>
+      <Box
+        sx={{
+          position: 'relative',
+          p: 2,
+          border: 1,
+          borderColor: 'divider',
+          borderRadius: 2,
+          width: 120,
+          textAlign: 'center',
+        }}
+      >
         <Badge badgeContent="50%" color="error" variant="gradient" position="top-right">
           <Box sx={{ width: '100%', height: 80, bgcolor: 'grey.100', borderRadius: 1, mb: 1 }} />
         </Badge>
         <div style={{ fontSize: '0.875rem' }}>Product B</div>
       </Box>
-      <Box sx={{ position: 'relative', p: 2, border: 1, borderColor: 'divider', borderRadius: 2, width: 120, textAlign: 'center' }}>
+      <Box
+        sx={{
+          position: 'relative',
+          p: 2,
+          border: 1,
+          borderColor: 'divider',
+          borderRadius: 2,
+          width: 120,
+          textAlign: 'center',
+        }}
+      >
         <Badge variant="dot" color="warning" pulse position="top-left">
           <Box sx={{ width: '100%', height: 80, bgcolor: 'grey.100', borderRadius: 1, mb: 1 }} />
         </Badge>
@@ -470,7 +549,9 @@ export const ThemeVariations: Story = {
     <Stack spacing={3}>
       <ThemeProvider theme={lightTheme}>
         <Paper sx={{ p: 3 }}>
-          <Typography variant="h6" gutterBottom>Light Theme</Typography>
+          <Typography variant="h6" gutterBottom>
+            Light Theme
+          </Typography>
           <Stack direction="row" spacing={2}>
             <Badge badgeContent={4} color="primary">
               <Mail />
@@ -487,10 +568,12 @@ export const ThemeVariations: Story = {
           </Stack>
         </Paper>
       </ThemeProvider>
-      
+
       <ThemeProvider theme={darkTheme}>
         <Paper sx={{ p: 3, bgcolor: 'background.default' }}>
-          <Typography variant="h6" gutterBottom>Dark Theme</Typography>
+          <Typography variant="h6" gutterBottom>
+            Dark Theme
+          </Typography>
           <Stack direction="row" spacing={2}>
             <Badge badgeContent={4} color="primary">
               <Mail />
@@ -523,7 +606,9 @@ export const StatusIndicators: Story = {
               <FiberManualRecord />
             </Avatar>
           </Badge>
-          <Typography variant="caption" display="block" mt={1}>Online</Typography>
+          <Typography variant="caption" display="block" mt={1}>
+            Online
+          </Typography>
         </Box>
         <Box textAlign="center">
           <Badge variant="dot" color="warning">
@@ -531,7 +616,9 @@ export const StatusIndicators: Story = {
               <FiberManualRecord />
             </Avatar>
           </Badge>
-          <Typography variant="caption" display="block" mt={1}>Away</Typography>
+          <Typography variant="caption" display="block" mt={1}>
+            Away
+          </Typography>
         </Box>
         <Box textAlign="center">
           <Badge variant="dot" color="error">
@@ -539,7 +626,9 @@ export const StatusIndicators: Story = {
               <FiberManualRecord />
             </Avatar>
           </Badge>
-          <Typography variant="caption" display="block" mt={1}>Busy</Typography>
+          <Typography variant="caption" display="block" mt={1}>
+            Busy
+          </Typography>
         </Box>
         <Box textAlign="center">
           <Badge variant="dot" color="neutral">
@@ -547,7 +636,9 @@ export const StatusIndicators: Story = {
               <FiberManualRecord />
             </Avatar>
           </Badge>
-          <Typography variant="caption" display="block" mt={1}>Offline</Typography>
+          <Typography variant="caption" display="block" mt={1}>
+            Offline
+          </Typography>
         </Box>
       </Stack>
     </Stack>
@@ -573,7 +664,9 @@ export const AnimatedBadges: Story = {
               <Star />
             </IconButton>
           </Badge>
-          <Typography variant="caption" display="block">Bounce</Typography>
+          <Typography variant="caption" display="block">
+            Bounce
+          </Typography>
         </Box>
         <Box textAlign="center">
           <Badge badgeContent={3} color="error" pulse>
@@ -581,7 +674,9 @@ export const AnimatedBadges: Story = {
               <Notifications />
             </IconButton>
           </Badge>
-          <Typography variant="caption" display="block">Pulse</Typography>
+          <Typography variant="caption" display="block">
+            Pulse
+          </Typography>
         </Box>
         <Box textAlign="center">
           <Badge badgeContent="HOT" color="warning" glow>
@@ -589,7 +684,9 @@ export const AnimatedBadges: Story = {
               <Star />
             </IconButton>
           </Badge>
-          <Typography variant="caption" display="block">Glow</Typography>
+          <Typography variant="caption" display="block">
+            Glow
+          </Typography>
         </Box>
         <Box textAlign="center">
           <Badge badgeContent="VIP" color="secondary" shimmer variant="gradient">
@@ -597,7 +694,9 @@ export const AnimatedBadges: Story = {
               <Verified />
             </IconButton>
           </Badge>
-          <Typography variant="caption" display="block">Shimmer</Typography>
+          <Typography variant="caption" display="block">
+            Shimmer
+          </Typography>
         </Box>
         <Box textAlign="center">
           <Badge badgeContent="!" color="error" glow pulse>
@@ -605,7 +704,9 @@ export const AnimatedBadges: Story = {
               <Warning />
             </IconButton>
           </Badge>
-          <Typography variant="caption" display="block">Glow + Pulse</Typography>
+          <Typography variant="caption" display="block">
+            Glow + Pulse
+          </Typography>
         </Box>
       </Stack>
     </Stack>
@@ -629,7 +730,7 @@ export const ClosableBadges: Story = {
               key={badge.id}
               badgeContent={badge.content}
               closable
-              onClose={() => setBadges(badges.filter(b => b.id !== badge.id))}
+              onClose={() => setBadges(badges.filter((b) => b.id !== badge.id))}
               color="primary"
               variant="secondary"
             >
@@ -639,11 +740,13 @@ export const ClosableBadges: Story = {
           {badges.length === 0 && (
             <Button
               size="small"
-              onClick={() => setBadges([
-                { id: 1, content: 'Tag 1' },
-                { id: 2, content: 'Tag 2' },
-                { id: 3, content: 'Tag 3' },
-              ])}
+              onClick={() =>
+                setBadges([
+                  { id: 1, content: 'Tag 1' },
+                  { id: 2, content: 'Tag 2' },
+                  { id: 3, content: 'Tag 3' },
+                ])
+              }
             >
               Reset Tags
             </Button>
@@ -742,28 +845,16 @@ export const AccessibilityExample: Story = {
     <Stack spacing={3}>
       <Typography variant="h6">Accessible Badges</Typography>
       <Stack direction="row" spacing={3}>
-        <Badge 
-          badgeContent={5} 
-          color="error"
-          aria-label="5 new messages"
-          aria-live="polite"
-        >
+        <Badge badgeContent={5} color="error" aria-label="5 new messages" aria-live="polite">
           <IconButton aria-label="Messages">
             <Mail />
           </IconButton>
         </Badge>
-        <Badge 
-          variant="dot" 
-          color="success"
-          aria-label="User is online"
-          aria-live="polite"
-        >
-          <Avatar aria-label="User avatar">
-            U
-          </Avatar>
+        <Badge variant="dot" color="success" aria-label="User is online" aria-live="polite">
+          <Avatar aria-label="User avatar">U</Avatar>
         </Badge>
-        <Badge 
-          badgeContent={99} 
+        <Badge
+          badgeContent={99}
           max={99}
           color="warning"
           aria-label="99 items in cart"
@@ -870,7 +961,11 @@ export const AllStates: Story = {
           <Badge badgeContent="Default" color="primary">
             <Box sx={{ p: 2, bgcolor: 'grey.100', borderRadius: 1 }}>Default State</Box>
           </Badge>
-          <Badge badgeContent="Hover" color="primary" sx={{ '&:hover': { transform: 'scale(1.05)' } }}>
+          <Badge
+            badgeContent="Hover"
+            color="primary"
+            sx={{ '&:hover': { transform: 'scale(1.05)' } }}
+          >
             <Box sx={{ p: 2, bgcolor: 'grey.100', borderRadius: 1 }}>Hover State</Box>
           </Badge>
         </Stack>
@@ -918,7 +1013,11 @@ export const InteractiveStates: Story = {
             <Button onClick={() => setCount(count + 1)} variant="outlined" size="small">
               Increment
             </Button>
-            <Button onClick={() => setCount(Math.max(0, count - 1))} variant="outlined" size="small">
+            <Button
+              onClick={() => setCount(Math.max(0, count - 1))}
+              variant="outlined"
+              size="small"
+            >
               Decrement
             </Button>
             <Button onClick={() => setShowBadge(!showBadge)} variant="outlined" size="small">
@@ -1003,25 +1102,33 @@ export const EdgeCases: Story = {
           <Badge badgeContent="VERYLONGTEXT" color="primary" size="sm">
             <Mail />
           </Badge>
-          <Typography variant="caption" display="block" mt={1}>Long Text</Typography>
+          <Typography variant="caption" display="block" mt={1}>
+            Long Text
+          </Typography>
         </Box>
         <Box textAlign="center">
           <Badge badgeContent={999999} max={9999} color="error">
             <Notifications />
           </Badge>
-          <Typography variant="caption" display="block" mt={1}>Large Number</Typography>
+          <Typography variant="caption" display="block" mt={1}>
+            Large Number
+          </Typography>
         </Box>
         <Box textAlign="center">
           <Badge badgeContent="🔥" color="warning" variant="gradient">
             <Star />
           </Badge>
-          <Typography variant="caption" display="block" mt={1}>Emoji</Typography>
+          <Typography variant="caption" display="block" mt={1}>
+            Emoji
+          </Typography>
         </Box>
         <Box textAlign="center">
           <Badge badgeContent="" color="primary">
             <ShoppingCart />
           </Badge>
-          <Typography variant="caption" display="block" mt={1}>Empty Content</Typography>
+          <Typography variant="caption" display="block" mt={1}>
+            Empty Content
+          </Typography>
         </Box>
       </Stack>
     </Stack>

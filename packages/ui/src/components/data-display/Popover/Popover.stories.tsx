@@ -4,14 +4,14 @@ import React from 'react';
 
 import { Popover } from './Popover';
 
-const meta = {
+const meta: Meta<typeof Popover> = {
   title: 'DataDisplay/Popover',
   component: Popover,
   parameters: {
     layout: 'centered',
   },
   tags: ['autodocs', 'component:Popover'],
-} satisfies Meta<typeof Popover>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -285,9 +285,7 @@ export const Responsive: Story = {
         <Typography variant="h6" gutterBottom>
           Responsive Popover
         </Typography>
-        <Typography paragraph>
-          This popover adapts to different screen sizes.
-        </Typography>
+        <Typography paragraph>This popover adapts to different screen sizes.</Typography>
         <Typography variant="body2" color="text.secondary">
           Try switching viewport sizes to see responsive behavior.
         </Typography>

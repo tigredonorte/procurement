@@ -4,7 +4,7 @@ import React from 'react';
 
 import { PhoneInput } from './PhoneInput';
 
-const meta = {
+const meta: Meta<typeof PhoneInput> = {
   title: 'Enhanced/PhoneInput',
   component: PhoneInput,
   parameters: {
@@ -56,7 +56,7 @@ const meta = {
       description: 'Take full width of container',
     },
   },
-} satisfies Meta<typeof PhoneInput>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

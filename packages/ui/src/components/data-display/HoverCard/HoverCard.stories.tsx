@@ -5,7 +5,7 @@ import { Person, Star, Verified } from '@mui/icons-material';
 
 import { HoverCard } from './HoverCard';
 
-const meta = {
+const meta: Meta<typeof HoverCard> = {
   title: 'DataDisplay/HoverCard',
   component: HoverCard,
   parameters: {
@@ -30,7 +30,7 @@ const meta = {
       control: { type: 'number' },
     },
   },
-} satisfies Meta<typeof HoverCard>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -464,12 +464,10 @@ export const AllSizes: Story = {
     <Stack spacing={3} alignItems="center">
       <Typography variant="h6">All HoverCard Sizes</Typography>
       <Stack direction="row" spacing={3} flexWrap="wrap">
-        <HoverCard
-          title="Small Card"
-          description="Compact size"
-          maxWidth={200}
-        >
-          <Button variant="outlined" size="small">Small (200px)</Button>
+        <HoverCard title="Small Card" description="Compact size" maxWidth={200}>
+          <Button variant="outlined" size="small">
+            Small (200px)
+          </Button>
         </HoverCard>
         <HoverCard
           title="Medium Card"
@@ -483,14 +481,18 @@ export const AllSizes: Story = {
           description="Large size for detailed information and rich content display"
           maxWidth={400}
         >
-          <Button variant="outlined" size="large">Large (400px)</Button>
+          <Button variant="outlined" size="large">
+            Large (400px)
+          </Button>
         </HoverCard>
         <HoverCard
           title="Extra Large Card"
           description="Extra large size for complex content layouts and detailed information panels"
           maxWidth={500}
         >
-          <Button variant="outlined" size="large">XL (500px)</Button>
+          <Button variant="outlined" size="large">
+            XL (500px)
+          </Button>
         </HoverCard>
       </Stack>
     </Stack>
@@ -502,10 +504,7 @@ export const AllStates: Story = {
     <Stack spacing={3} alignItems="center">
       <Typography variant="h6">All HoverCard States</Typography>
       <Stack direction="row" spacing={3} flexWrap="wrap">
-        <HoverCard
-          title="Normal State"
-          description="Default interactive state"
-        >
+        <HoverCard title="Normal State" description="Default interactive state">
           <Button variant="outlined">Normal</Button>
         </HoverCard>
         <HoverCard
@@ -514,14 +513,14 @@ export const AllStates: Story = {
           glow={true}
           variant="glass"
         >
-          <Button variant="outlined" color="primary">Glow Effect</Button>
+          <Button variant="outlined" color="primary">
+            Glow Effect
+          </Button>
         </HoverCard>
-        <HoverCard
-          title="With Pulse"
-          description="Pulsing animation effect"
-          pulse={true}
-        >
-          <Button variant="outlined" color="warning">Pulse Effect</Button>
+        <HoverCard title="With Pulse" description="Pulsing animation effect" pulse={true}>
+          <Button variant="outlined" color="warning">
+            Pulse Effect
+          </Button>
         </HoverCard>
         <HoverCard
           title="Combined Effects"
@@ -530,20 +529,14 @@ export const AllStates: Story = {
           pulse={true}
           variant="detailed"
         >
-          <Button variant="contained" color="secondary">Combined</Button>
+          <Button variant="contained" color="secondary">
+            Combined
+          </Button>
         </HoverCard>
-        <HoverCard
-          title="Loading State"
-          description="Content is loading"
-          loading={true}
-        >
+        <HoverCard title="Loading State" description="Content is loading" loading={true}>
           <Button variant="outlined">Loading</Button>
         </HoverCard>
-        <HoverCard
-          title="Disabled State"
-          description="This hover card is disabled"
-          disabled={true}
-        >
+        <HoverCard title="Disabled State" description="This hover card is disabled" disabled={true}>
           <Button disabled>Disabled</Button>
         </HoverCard>
       </Stack>
@@ -554,7 +547,7 @@ export const AllStates: Story = {
 const InteractiveStatesComponent = () => {
   const [open, setOpen] = React.useState(false);
   const [clickCount, setClickCount] = React.useState(0);
-  
+
   return (
     <Stack spacing={3} alignItems="center">
       <Typography variant="h6">Interactive HoverCard States</Typography>
@@ -573,7 +566,9 @@ const InteractiveStatesComponent = () => {
           enterDelay={0}
           exitDelay={0}
         >
-          <Button variant="outlined" color="primary">Quick Hover (0ms)</Button>
+          <Button variant="outlined" color="primary">
+            Quick Hover (0ms)
+          </Button>
         </HoverCard>
         <HoverCard
           title="With Callbacks"
@@ -585,14 +580,8 @@ const InteractiveStatesComponent = () => {
             Track State: {open ? 'Open' : 'Closed'}
           </Button>
         </HoverCard>
-        <HoverCard
-          title="Click Counter"
-          description={`Button clicked ${clickCount} times`}
-        >
-          <Button 
-            variant="contained" 
-            onClick={() => setClickCount(c => c + 1)}
-          >
+        <HoverCard title="Click Counter" description={`Button clicked ${clickCount} times`}>
+          <Button variant="contained" onClick={() => setClickCount((c) => c + 1)}>
             Click Count: {clickCount}
           </Button>
         </HoverCard>

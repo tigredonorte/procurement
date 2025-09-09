@@ -4,7 +4,7 @@ import { Stack } from '@mui/material';
 
 import { Button } from './Button';
 
-const meta = {
+const meta: Meta<typeof Button> = {
   title: 'Form/Button',
   component: Button,
   parameters: {
@@ -34,7 +34,7 @@ const meta = {
       control: { type: 'boolean' },
     },
   },
-} satisfies Meta<typeof Button>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

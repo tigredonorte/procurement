@@ -14,7 +14,7 @@ import {
 
 import { Card, CardHeader, CardContent, CardActions, CardMedia } from './Card';
 
-const meta = {
+const meta: Meta<typeof Card> = {
   title: 'Layout/Card',
   component: Card,
   parameters: {
@@ -37,7 +37,7 @@ const meta = {
       control: { type: 'boolean' },
     },
   },
-} satisfies Meta<typeof Card>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

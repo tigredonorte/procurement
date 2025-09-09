@@ -71,28 +71,29 @@ A customizable alert dialog component for confirmations, warnings, and notificat
 - [ ] Integration (planned)
 
 **Stories**
-* DataDisplay/AlertDialog/Default
-* DataDisplay/AlertDialog/Destructive
-* DataDisplay/AlertDialog/Glass
-* DataDisplay/AlertDialog/WithCustomIcon
-* DataDisplay/AlertDialog/LogoutConfirmation
-* DataDisplay/AlertDialog/WithoutCancel
-* DataDisplay/AlertDialog/Loading
-* DataDisplay/AlertDialog/WithGlow
-* DataDisplay/AlertDialog/WithPulse
-* DataDisplay/AlertDialog/WithGlowAndPulse
-* DataDisplay/AlertDialog/AllVariants
-* DataDisplay/AlertDialog/WithCustomContent
-* DataDisplay/AlertDialog/AllSizes
-* DataDisplay/AlertDialog/AllStates
-* DataDisplay/AlertDialog/InteractiveStates
-* DataDisplay/AlertDialog/Responsive
+
+- DataDisplay/AlertDialog/Default
+- DataDisplay/AlertDialog/Destructive
+- DataDisplay/AlertDialog/Glass
+- DataDisplay/AlertDialog/WithCustomIcon
+- DataDisplay/AlertDialog/LogoutConfirmation
+- DataDisplay/AlertDialog/WithoutCancel
+- DataDisplay/AlertDialog/Loading
+- DataDisplay/AlertDialog/WithGlow
+- DataDisplay/AlertDialog/WithPulse
+- DataDisplay/AlertDialog/WithGlowAndPulse
+- DataDisplay/AlertDialog/AllVariants
+- DataDisplay/AlertDialog/WithCustomContent
+- DataDisplay/AlertDialog/AllSizes
+- DataDisplay/AlertDialog/AllStates
+- DataDisplay/AlertDialog/InteractiveStates
+- DataDisplay/AlertDialog/Responsive
 
 **Current (BRT)**: 2025-09-09 14:40
 
 ### Current Task: Fix Stories Coverage
 
-- Fixed story title format from "Data Display/AlertDialog" to "DataDisplay/AlertDialog"
+- Fixed story title format from "DataDisplay/AlertDialog" to "DataDisplay/AlertDialog"
 - Added required story exports: AllSizes, AllStates, InteractiveStates, Responsive
 - Fixed ESLint errors in InteractiveStates story
 

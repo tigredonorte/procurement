@@ -5,7 +5,7 @@ import React from 'react';
 
 import { TutorialOverlay } from './TutorialOverlay';
 
-const meta = {
+const meta: Meta<typeof TutorialOverlay> = {
   title: 'Enhanced/TutorialOverlay',
   component: TutorialOverlay,
   parameters: {
@@ -42,7 +42,7 @@ const meta = {
       description: 'Enable animations',
     },
   },
-} satisfies Meta<typeof TutorialOverlay>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

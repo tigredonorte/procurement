@@ -1,7 +1,15 @@
 import { ReactNode } from 'react';
 
 export type ResizableVariant = 'horizontal' | 'vertical' | 'both';
-export type ResizeHandle = 'top' | 'right' | 'bottom' | 'left' | 'topRight' | 'bottomRight' | 'bottomLeft' | 'topLeft';
+export type ResizeHandle =
+  | 'top'
+  | 'right'
+  | 'bottom'
+  | 'left'
+  | 'topRight'
+  | 'bottomRight'
+  | 'bottomLeft'
+  | 'topLeft';
 
 export interface ResizableProps {
   children: ReactNode;
@@ -16,4 +24,5 @@ export interface ResizableProps {
   disabled?: boolean;
   handles?: ResizeHandle[];
   className?: string;
+  'data-testid'?: string;
 }

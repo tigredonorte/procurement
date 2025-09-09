@@ -221,9 +221,23 @@ export const CustomConnectors: Story = {
 export const LongLabels: Story = {
   args: {
     steps: [
-      { id: 'step1', label: 'Personal Information and Contact Details', description: 'Enter your complete personal information including name, email, phone number and other contact details' },
-      { id: 'step2', label: 'Billing and Shipping Address Information', description: 'Provide detailed billing address and shipping address information for accurate delivery' },
-      { id: 'step3', label: 'Payment Method Selection and Verification', description: 'Choose your preferred payment method and complete verification process' },
+      {
+        id: 'step1',
+        label: 'Personal Information and Contact Details',
+        description:
+          'Enter your complete personal information including name, email, phone number and other contact details',
+      },
+      {
+        id: 'step2',
+        label: 'Billing and Shipping Address Information',
+        description:
+          'Provide detailed billing address and shipping address information for accurate delivery',
+      },
+      {
+        id: 'step3',
+        label: 'Payment Method Selection and Verification',
+        description: 'Choose your preferred payment method and complete verification process',
+      },
     ],
     activeId: 'step2',
     completed: new Set(['step1']),
@@ -263,15 +277,15 @@ export const Interactive = () => {
 
   const handleStepChange = (stepId: string) => {
     setActiveId(stepId);
-    
+
     // Auto-complete previous steps in linear mode
-    const currentIndex = defaultSteps.findIndex(step => step.id === stepId);
+    const currentIndex = defaultSteps.findIndex((step) => step.id === stepId);
     const newCompleted = new Set(completed);
-    
+
     for (let i = 0; i < currentIndex; i++) {
       newCompleted.add(defaultSteps[i].id);
     }
-    
+
     setCompleted(newCompleted);
   };
 
@@ -290,7 +304,7 @@ export const Interactive = () => {
           onStepChange={handleStepChange}
         />
       </Paper>
-      
+
       <Box>
         <Typography variant="body2" gutterBottom>
           Current Step: <Chip label={activeId} size="small" />
@@ -308,7 +322,9 @@ export const AllVariants: Story = {
   render: () => (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4, p: 2 }}>
       <Box>
-        <Typography variant="h6" gutterBottom>Horizontal Linear</Typography>
+        <Typography variant="h6" gutterBottom>
+          Horizontal Linear
+        </Typography>
         <Box sx={{ width: 600 }}>
           <Stepper
             steps={defaultSteps}
@@ -319,9 +335,11 @@ export const AllVariants: Story = {
           />
         </Box>
       </Box>
-      
+
       <Box>
-        <Typography variant="h6" gutterBottom>Horizontal Non-Linear</Typography>
+        <Typography variant="h6" gutterBottom>
+          Horizontal Non-Linear
+        </Typography>
         <Box sx={{ width: 600 }}>
           <Stepper
             steps={defaultSteps}
@@ -333,9 +351,11 @@ export const AllVariants: Story = {
           />
         </Box>
       </Box>
-      
+
       <Box>
-        <Typography variant="h6" gutterBottom>Vertical Linear</Typography>
+        <Typography variant="h6" gutterBottom>
+          Vertical Linear
+        </Typography>
         <Box sx={{ height: 300 }}>
           <Stepper
             steps={defaultSteps}
@@ -346,9 +366,11 @@ export const AllVariants: Story = {
           />
         </Box>
       </Box>
-      
+
       <Box>
-        <Typography variant="h6" gutterBottom>Vertical Non-Linear</Typography>
+        <Typography variant="h6" gutterBottom>
+          Vertical Non-Linear
+        </Typography>
         <Box sx={{ height: 300 }}>
           <Stepper
             steps={defaultSteps}
@@ -368,7 +390,9 @@ export const AllSizes: Story = {
   render: () => (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4, p: 2 }}>
       <Box>
-        <Typography variant="h6" gutterBottom>Compact (3 steps)</Typography>
+        <Typography variant="h6" gutterBottom>
+          Compact (3 steps)
+        </Typography>
         <Box sx={{ width: 400 }}>
           <Stepper
             steps={defaultSteps.slice(0, 3)}
@@ -377,20 +401,20 @@ export const AllSizes: Story = {
           />
         </Box>
       </Box>
-      
+
       <Box>
-        <Typography variant="h6" gutterBottom>Standard (4 steps)</Typography>
+        <Typography variant="h6" gutterBottom>
+          Standard (4 steps)
+        </Typography>
         <Box sx={{ width: 600 }}>
-          <Stepper
-            steps={defaultSteps}
-            activeId="step2"
-            completed={new Set(['step1'])}
-          />
+          <Stepper steps={defaultSteps} activeId="step2" completed={new Set(['step1'])} />
         </Box>
       </Box>
-      
+
       <Box>
-        <Typography variant="h6" gutterBottom>Extended (6 steps)</Typography>
+        <Typography variant="h6" gutterBottom>
+          Extended (6 steps)
+        </Typography>
         <Box sx={{ width: 800 }}>
           <Stepper
             steps={[
@@ -411,14 +435,26 @@ export const AllStates: Story = {
   render: () => (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4, p: 2 }}>
       <Box>
-        <Typography variant="h6" gutterBottom>All Step States</Typography>
+        <Typography variant="h6" gutterBottom>
+          All Step States
+        </Typography>
         <Box sx={{ width: 700 }}>
           <Stepper
             steps={[
               { id: 'completed', label: 'Completed Step', description: 'This step is done' },
               { id: 'active', label: 'Active Step', description: 'Currently on this step' },
-              { id: 'optional', label: 'Optional Step', description: 'This is optional', optional: true },
-              { id: 'disabled', label: 'Disabled Step', description: 'Cannot access this', disabled: true },
+              {
+                id: 'optional',
+                label: 'Optional Step',
+                description: 'This is optional',
+                optional: true,
+              },
+              {
+                id: 'disabled',
+                label: 'Disabled Step',
+                description: 'Cannot access this',
+                disabled: true,
+              },
               { id: 'pending', label: 'Pending Step', description: 'Not yet accessible' },
             ]}
             activeId="active"
@@ -435,10 +471,12 @@ export const AllStates: Story = {
 const InteractiveStatesComponent = () => {
   const [activeId, setActiveId] = useState('step2');
   const [completed] = useState(new Set(['step1']));
-    
+
   return (
     <Box sx={{ width: 600, p: 2 }}>
-      <Typography variant="h6" gutterBottom>Interactive States Demo</Typography>
+      <Typography variant="h6" gutterBottom>
+        Interactive States Demo
+      </Typography>
       <Stepper
         steps={defaultSteps}
         activeId={activeId}
@@ -471,7 +509,9 @@ export const Responsive: Story = {
   render: () => (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4, p: 2 }}>
       <Box>
-        <Typography variant="h6" gutterBottom>Desktop (Horizontal)</Typography>
+        <Typography variant="h6" gutterBottom>
+          Desktop (Horizontal)
+        </Typography>
         <Box sx={{ width: '100%', minWidth: 600 }}>
           <Stepper
             steps={defaultSteps}
@@ -481,9 +521,11 @@ export const Responsive: Story = {
           />
         </Box>
       </Box>
-      
+
       <Box>
-        <Typography variant="h6" gutterBottom>Mobile (Vertical)</Typography>
+        <Typography variant="h6" gutterBottom>
+          Mobile (Vertical)
+        </Typography>
         <Box sx={{ width: 320, height: 400 }}>
           <Stepper
             steps={defaultSteps}

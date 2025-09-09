@@ -8,40 +8,41 @@ import { Select } from '../Select';
 import { Button } from '../Button';
 import { Textarea } from '../Textarea';
 
-const meta = {
+const meta: Meta<typeof Form> = {
   title: 'Form/Form',
   component: Form,
   parameters: {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Form is a flexible container component for building forms with consistent spacing, layout, and validation patterns. Supports multiple layout variants and provides built-in form field components.'
-      }
-    }
+        component:
+          'Form is a flexible container component for building forms with consistent spacing, layout, and validation patterns. Supports multiple layout variants and provides built-in form field components.',
+      },
+    },
   },
   tags: ['autodocs', 'component:Form'],
   argTypes: {
     variant: {
       control: { type: 'select' },
       options: ['vertical', 'horizontal', 'inline', 'stepped'],
-      description: 'Layout variant for the form'
+      description: 'Layout variant for the form',
     },
     maxWidth: {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg', 'xl', 'full'],
-      description: 'Maximum width constraint for the form'
+      description: 'Maximum width constraint for the form',
     },
     spacing: {
       control: { type: 'select' },
       options: ['xs', 'sm', 'md', 'lg', 'xl'],
-      description: 'Spacing between form elements'
+      description: 'Spacing between form elements',
     },
     onSubmit: {
       action: 'submitted',
-      description: 'Form submission handler'
-    }
+      description: 'Form submission handler',
+    },
   },
-} satisfies Meta<typeof Form>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -167,17 +168,12 @@ export const WithValidation: Story = {
     spacing: 'md',
     children: (
       <>
-        <FormField 
-          name="email" 
-          label="Email" 
-          required 
-          error="Please enter a valid email address"
-        >
+        <FormField name="email" label="Email" required error="Please enter a valid email address">
           <Input type="email" error />
         </FormField>
-        <FormField 
-          name="password" 
-          label="Password" 
+        <FormField
+          name="password"
+          label="Password"
           required
           helperText="Password must be at least 8 characters"
         >
@@ -201,7 +197,9 @@ export const AllSpacingVariations: Story = {
     spacing: 'xs',
     children: (
       <>
-        <Typography variant="h6" mb={1}>Extra Small Spacing (xs)</Typography>
+        <Typography variant="h6" mb={1}>
+          Extra Small Spacing (xs)
+        </Typography>
         <FormField name="field1" label="Field 1">
           <Input placeholder="Content" />
         </FormField>
@@ -220,7 +218,9 @@ export const LargeSpacing: Story = {
     spacing: 'xl',
     children: (
       <>
-        <Typography variant="h6" mb={1}>Extra Large Spacing (xl)</Typography>
+        <Typography variant="h6" mb={1}>
+          Extra Large Spacing (xl)
+        </Typography>
         <FormField name="field1" label="Field 1">
           <Input placeholder="Content" />
         </FormField>
@@ -239,7 +239,9 @@ export const MaxWidthVariations: Story = {
     spacing: 'md',
     children: (
       <>
-        <Typography variant="h6" mb={1}>Small Max Width</Typography>
+        <Typography variant="h6" mb={1}>
+          Small Max Width
+        </Typography>
         <FormField name="field1" label="Field 1">
           <Input placeholder="This form has small max width" />
         </FormField>
@@ -258,8 +260,10 @@ export const ComplexForm: Story = {
     spacing: 'md',
     children: (
       <>
-        <Typography variant="h5" mb={2}>User Profile Form</Typography>
-        
+        <Typography variant="h5" mb={2}>
+          User Profile Form
+        </Typography>
+
         <Stack direction="row" spacing={2}>
           <FormField name="firstName" label="First Name" required>
             <Input placeholder="John" />
@@ -268,18 +272,18 @@ export const ComplexForm: Story = {
             <Input placeholder="Doe" />
           </FormField>
         </Stack>
-        
+
         <FormField name="email" label="Email Address" required>
           <Input type="email" placeholder="john.doe@example.com" />
         </FormField>
-        
+
         <FormField name="bio" label="Biography" helperText="Tell us about yourself">
-          <Textarea 
+          <Textarea
             placeholder="I am a software developer with 5 years of experience..."
             rows={4}
           />
         </FormField>
-        
+
         <FormField name="role" label="Role" required>
           <Select
             options={[
@@ -291,7 +295,7 @@ export const ComplexForm: Story = {
             placeholder="Select your role"
           />
         </FormField>
-        
+
         <FormField name="preferences">
           <Stack spacing={1}>
             <Checkbox label="Send me product updates" />
@@ -299,7 +303,7 @@ export const ComplexForm: Story = {
             <Checkbox label="Send me security alerts" />
           </Stack>
         </FormField>
-        
+
         <Stack direction="row" spacing={2} mt={2}>
           <Button variant="outline" fullWidth>
             Cancel
@@ -320,7 +324,9 @@ export const DisabledForm: Story = {
     spacing: 'md',
     children: (
       <>
-        <Typography variant="h6" mb={2}>Disabled Form State</Typography>
+        <Typography variant="h6" mb={2}>
+          Disabled Form State
+        </Typography>
         <FormField name="email" label="Email" required>
           <Input type="email" placeholder="Enter your email" disabled />
         </FormField>
@@ -345,7 +351,9 @@ export const EmptyForm: Story = {
     spacing: 'md',
     children: (
       <>
-        <Typography variant="h6" mb={2}>Empty Form</Typography>
+        <Typography variant="h6" mb={2}>
+          Empty Form
+        </Typography>
         <Typography variant="body2" color="text.secondary" textAlign="center" py={4}>
           No form fields to display
         </Typography>
@@ -370,11 +378,10 @@ export const ResponsiveForm: Story = {
     spacing: 'md',
     children: (
       <>
-        <Typography variant="h6" mb={2}>Responsive Form Layout</Typography>
-        <Stack 
-          direction={{ xs: 'column', md: 'row' }}
-          spacing={2}
-        >
+        <Typography variant="h6" mb={2}>
+          Responsive Form Layout
+        </Typography>
+        <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
           <FormField name="firstName" label="First Name" required>
             <Input placeholder="First name" />
           </FormField>
@@ -402,7 +409,9 @@ export const AllVariants: Story = {
     children: (
       <Stack spacing={4}>
         <div>
-          <Typography variant="h6" mb={2}>Vertical Layout</Typography>
+          <Typography variant="h6" mb={2}>
+            Vertical Layout
+          </Typography>
           <Form variant="vertical" maxWidth="md" spacing="md">
             <FormField name="field1" label="Field 1">
               <Input placeholder="Vertical layout" />
@@ -412,9 +421,11 @@ export const AllVariants: Story = {
             </FormField>
           </Form>
         </div>
-        
+
         <div>
-          <Typography variant="h6" mb={2}>Horizontal Layout</Typography>
+          <Typography variant="h6" mb={2}>
+            Horizontal Layout
+          </Typography>
           <Form variant="horizontal" maxWidth="lg" spacing="md">
             <FormField name="field1" label="Field 1">
               <Input placeholder="Horizontal layout" />
@@ -424,9 +435,11 @@ export const AllVariants: Story = {
             </FormField>
           </Form>
         </div>
-        
+
         <div>
-          <Typography variant="h6" mb={2}>Inline Layout</Typography>
+          <Typography variant="h6" mb={2}>
+            Inline Layout
+          </Typography>
           <Form variant="inline" spacing="md">
             <Input placeholder="Inline layout" />
             <Button variant="solid">Submit</Button>
@@ -444,43 +457,53 @@ export const AllSizes: Story = {
     children: (
       <Stack spacing={4}>
         <div>
-          <Typography variant="h6" mb={2}>Small Max Width</Typography>
+          <Typography variant="h6" mb={2}>
+            Small Max Width
+          </Typography>
           <Form variant="vertical" maxWidth="sm" spacing="md">
             <FormField name="field" label="Small Width">
               <Input placeholder="Small max width form" />
             </FormField>
           </Form>
         </div>
-        
+
         <div>
-          <Typography variant="h6" mb={2}>Medium Max Width</Typography>
+          <Typography variant="h6" mb={2}>
+            Medium Max Width
+          </Typography>
           <Form variant="vertical" maxWidth="md" spacing="md">
             <FormField name="field" label="Medium Width">
               <Input placeholder="Medium max width form" />
             </FormField>
           </Form>
         </div>
-        
+
         <div>
-          <Typography variant="h6" mb={2}>Large Max Width</Typography>
+          <Typography variant="h6" mb={2}>
+            Large Max Width
+          </Typography>
           <Form variant="vertical" maxWidth="lg" spacing="md">
             <FormField name="field" label="Large Width">
               <Input placeholder="Large max width form" />
             </FormField>
           </Form>
         </div>
-        
+
         <div>
-          <Typography variant="h6" mb={2}>Extra Large Max Width</Typography>
+          <Typography variant="h6" mb={2}>
+            Extra Large Max Width
+          </Typography>
           <Form variant="vertical" maxWidth="xl" spacing="md">
             <FormField name="field" label="Extra Large Width">
               <Input placeholder="Extra large max width form" />
             </FormField>
           </Form>
         </div>
-        
+
         <div>
-          <Typography variant="h6" mb={2}>Full Width</Typography>
+          <Typography variant="h6" mb={2}>
+            Full Width
+          </Typography>
           <Form variant="vertical" maxWidth="full" spacing="md">
             <FormField name="field" label="Full Width">
               <Input placeholder="Full width form" />
@@ -500,42 +523,58 @@ export const AllStates: Story = {
     children: (
       <Stack spacing={4}>
         <div>
-          <Typography variant="h6" mb={2}>Default State</Typography>
+          <Typography variant="h6" mb={2}>
+            Default State
+          </Typography>
           <Form variant="vertical" maxWidth="sm" spacing="md">
             <FormField name="default" label="Default Field">
               <Input placeholder="Default state" />
             </FormField>
-            <Button variant="solid" type="submit">Submit</Button>
+            <Button variant="solid" type="submit">
+              Submit
+            </Button>
           </Form>
         </div>
-        
+
         <div>
-          <Typography variant="h6" mb={2}>With Validation Errors</Typography>
+          <Typography variant="h6" mb={2}>
+            With Validation Errors
+          </Typography>
           <Form variant="vertical" maxWidth="sm" spacing="md">
             <FormField name="error" label="Error Field" required error="This field is required">
               <Input placeholder="Error state" error />
             </FormField>
-            <Button variant="solid" type="submit">Submit</Button>
+            <Button variant="solid" type="submit">
+              Submit
+            </Button>
           </Form>
         </div>
-        
+
         <div>
-          <Typography variant="h6" mb={2}>Disabled State</Typography>
+          <Typography variant="h6" mb={2}>
+            Disabled State
+          </Typography>
           <Form variant="vertical" maxWidth="sm" spacing="md">
             <FormField name="disabled" label="Disabled Field">
               <Input placeholder="Disabled state" disabled />
             </FormField>
-            <Button variant="solid" type="submit" disabled>Submit</Button>
+            <Button variant="solid" type="submit" disabled>
+              Submit
+            </Button>
           </Form>
         </div>
-        
+
         <div>
-          <Typography variant="h6" mb={2}>With Helper Text</Typography>
+          <Typography variant="h6" mb={2}>
+            With Helper Text
+          </Typography>
           <Form variant="vertical" maxWidth="sm" spacing="md">
             <FormField name="helper" label="Field with Helper" helperText="This is helper text">
               <Input placeholder="With helper text" />
             </FormField>
-            <Button variant="solid" type="submit">Submit</Button>
+            <Button variant="solid" type="submit">
+              Submit
+            </Button>
           </Form>
         </div>
       </Stack>
@@ -550,11 +589,13 @@ export const InteractiveStates: Story = {
     spacing: 'md',
     children: (
       <>
-        <Typography variant="h6" mb={2}>Interactive Form Elements</Typography>
+        <Typography variant="h6" mb={2}>
+          Interactive Form Elements
+        </Typography>
         <FormField name="text" label="Text Input" required>
           <Input placeholder="Type here..." />
         </FormField>
-        
+
         <FormField name="select" label="Select Field" required>
           <Select
             options={[
@@ -565,11 +606,11 @@ export const InteractiveStates: Story = {
             placeholder="Select an option"
           />
         </FormField>
-        
+
         <FormField name="textarea" label="Text Area">
           <Textarea placeholder="Enter long text..." rows={3} />
         </FormField>
-        
+
         <FormField name="checkbox">
           <Stack spacing={1}>
             <Checkbox label="Option A" />
@@ -577,7 +618,7 @@ export const InteractiveStates: Story = {
             <Checkbox label="Option C" />
           </Stack>
         </FormField>
-        
+
         <Stack direction="row" spacing={2} mt={2}>
           <Button variant="outline" fullWidth>
             Reset
@@ -608,12 +649,10 @@ export const Responsive: Story = {
     spacing: 'md',
     children: (
       <>
-        <Typography variant="h5" mb={3}>Responsive Form</Typography>
-        <Stack 
-          direction={{ xs: 'column', sm: 'column', md: 'row' }}
-          spacing={2}
-          mb={2}
-        >
+        <Typography variant="h5" mb={3}>
+          Responsive Form
+        </Typography>
+        <Stack direction={{ xs: 'column', sm: 'column', md: 'row' }} spacing={2} mb={2}>
           <FormField name="firstName" label="First Name" required>
             <Input placeholder="First name" />
           </FormField>
@@ -621,24 +660,20 @@ export const Responsive: Story = {
             <Input placeholder="Last name" />
           </FormField>
         </Stack>
-        
+
         <FormField name="email" label="Email" required>
           <Input type="email" placeholder="email@example.com" />
         </FormField>
-        
+
         <FormField name="phone" label="Phone">
           <Input type="tel" placeholder="+1 (555) 000-0000" />
         </FormField>
-        
+
         <FormField name="address" label="Address">
           <Textarea placeholder="Enter your address..." rows={2} />
         </FormField>
-        
-        <Stack 
-          direction={{ xs: 'column', sm: 'row' }}
-          spacing={2}
-          mt={3}
-        >
+
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} mt={3}>
           <Button variant="outline" fullWidth>
             Cancel
           </Button>

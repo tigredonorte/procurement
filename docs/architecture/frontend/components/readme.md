@@ -5,6 +5,7 @@ This directory contains the core component documentation for the Requisio fronte
 ## 📋 Component Documentation
 
 ### Core Components
+
 - **[03-component-architecture.md](./03-component-architecture.md)** - Component patterns and architectural guidelines
 - **[04-component-examples.md](./04-component-examples.md)** - Implementation examples and best practices
 - **[08-core-components.md](./08-core-components.md)** - Basic UI components and their implementation
@@ -84,6 +85,7 @@ function ExampleForm() {
 ## 📝 Contributing
 
 When adding new component documentation:
+
 1. Follow the established numbering and naming convention
 2. Include comprehensive implementation examples
 3. Document responsive behavior and accessibility features
@@ -93,25 +95,30 @@ When adding new component documentation:
 ## 📊 Component Categories
 
 ### Layout Components
+
 - Container, Grid, Stack, Card, Sidebar
 - Responsive breakpoints and spacing
 
 ### Form Components
+
 - Input, Select, Checkbox, Radio, Button
 - Validation patterns and error states
 
 ### Navigation Components
+
 - Navbar, Sidebar, Tabs, Breadcrumbs
 - Mobile navigation patterns
 
-### Data Display
+### DataDisplay
+
 - Table, List, Badge, Avatar, Progress
 - Data visualization components
 
 ### Feedback & Overlays
+
 - Alert, Toast, Modal, Popover, Tooltip
 - Loading states and animations
 
 ---
 
-*For questions about component implementation or design patterns, refer to the individual component documentation files.*
+_For questions about component implementation or design patterns, refer to the individual component documentation files._

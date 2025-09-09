@@ -415,3 +415,203 @@ export const Playground: Story = {
     glow: false,
   },
 };
+
+// Required story exports for validation
+export const AllVariants: Story = {
+  render: () => <VariantsComponent />,
+};
+
+export const AllSizes: Story = {
+  render: () => <SizesComponent />,
+};
+
+const StatesComponent = () => {
+  const [normalValue, setNormalValue] = useState('center');
+  const [disabledValue, setDisabledValue] = useState('');
+  const [glasValue, setGlasValue] = useState('');
+  const [gradientValue, setGradientValue] = useState('left');
+
+  const disabledOptions = alignOptions.map((opt) => ({ ...opt, disabled: true }));
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Normal State
+        </Typography>
+        <ToggleGroup
+          options={alignOptions}
+          value={normalValue}
+          onChange={(event, value) => setNormalValue(value || '')}
+          color="primary"
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Disabled State
+        </Typography>
+        <ToggleGroup
+          options={disabledOptions}
+          value={disabledValue}
+          onChange={(event, value) => setDisabledValue(value || '')}
+          color="secondary"
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Glass Effect State
+        </Typography>
+        <ToggleGroup
+          glass
+          options={themeOptions}
+          value={glasValue}
+          onChange={(event, value) => setGlasValue(value || '')}
+          color="success"
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Gradient State
+        </Typography>
+        <ToggleGroup
+          gradient
+          options={alignOptions}
+          value={gradientValue}
+          onChange={(event, value) => setGradientValue(value || '')}
+          color="warning"
+        />
+      </Box>
+    </Box>
+  );
+};
+
+export const AllStates: Story = {
+  render: () => <StatesComponent />,
+};
+
+const InteractiveComponent = () => {
+  const [hoverValue, setHoverValue] = useState('');
+  const [focusValue, setFocusValue] = useState('left');
+  const [activeValue, setActiveValue] = useState(['bold', 'italic']);
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Hover & Focus States
+        </Typography>
+        <Typography variant="body2" color="text.secondary" gutterBottom>
+          Hover over options to see hover effects
+        </Typography>
+        <ToggleGroup
+          options={alignOptions}
+          value={hoverValue}
+          onChange={(event, value) => setHoverValue(value || '')}
+          color="primary"
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Pre-selected (Active)
+        </Typography>
+        <Typography variant="body2" color="text.secondary" gutterBottom>
+          Some options are pre-selected
+        </Typography>
+        <ToggleGroup
+          variant="single"
+          options={alignOptions}
+          value={focusValue}
+          onChange={(event, value) => setFocusValue(value || '')}
+          color="secondary"
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Multiple Active States
+        </Typography>
+        <Typography variant="body2" color="text.secondary" gutterBottom>
+          Multiple options can be active simultaneously
+        </Typography>
+        <ToggleGroup
+          variant="multiple"
+          options={formatOptions}
+          value={activeValue}
+          onChange={(event, value) => setActiveValue(value || [])}
+          color="success"
+        />
+      </Box>
+    </Box>
+  );
+};
+
+export const InteractiveStates: Story = {
+  render: () => <InteractiveComponent />,
+};
+
+const ResponsiveComponent = () => {
+  const [mobileValue, setMobileValue] = useState('');
+  const [tabletValue, setTabletValue] = useState(['bold']);
+  const [desktopValue, setDesktopValue] = useState('center');
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Mobile Layout (Small)
+        </Typography>
+        <Typography variant="body2" color="text.secondary" gutterBottom>
+          Compact size with touch-friendly targets
+        </Typography>
+        <ToggleGroup
+          size="sm"
+          options={mediaOptions}
+          value={mobileValue}
+          onChange={(event, value) => setMobileValue(value || '')}
+          color="primary"
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Tablet Layout (Medium)
+        </Typography>
+        <Typography variant="body2" color="text.secondary" gutterBottom>
+          Medium size with balanced spacing
+        </Typography>
+        <ToggleGroup
+          variant="multiple"
+          size="md"
+          options={formatOptions}
+          value={tabletValue}
+          onChange={(event, value) => setTabletValue(value || [])}
+          color="secondary"
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Desktop Layout (Large)
+        </Typography>
+        <Typography variant="body2" color="text.secondary" gutterBottom>
+          Large size with comfortable spacing for mouse interaction
+        </Typography>
+        <ToggleGroup
+          size="lg"
+          options={alignOptions}
+          value={desktopValue}
+          onChange={(event, value) => setDesktopValue(value || '')}
+          color="success"
+        />
+      </Box>
+    </Box>
+  );
+};
+
+export const Responsive: Story = {
+  render: () => <ResponsiveComponent />,
+};

@@ -13,6 +13,7 @@ This design system documentation is organized into focused, manageable sections.
 ## 📖 Table of Contents
 
 ### Foundation
+
 1. **[Design Philosophy & Principles](./01-design-philosophy.md)**
    - Core philosophy of "Intelligent Simplicity"
    - Design principles and guidelines
@@ -40,6 +41,7 @@ This design system documentation is organized into focused, manageable sections.
    - Layout patterns
 
 ### Design Tokens
+
 6. **[Motion & Animation](./06-motion-animation.md)**
    - Animation principles
    - Duration and easing scales
@@ -51,18 +53,19 @@ This design system documentation is organized into focused, manageable sections.
    - Theme provider implementation
    - Styling system
 
-10. **[Responsive Design](./10-responsive-design.md)**
-    - Mobile-first responsive design patterns
-    - Breakpoint system
-    - 16-column grid system
-    - Component responsive behavior
+8. **[Responsive Design](./10-responsive-design.md)**
+   - Mobile-first responsive design patterns
+   - Breakpoint system
+   - 16-column grid system
+   - Component responsive behavior
 
-11. **[Dark Mode Strategy](./11-dark-mode.md)**
-    - Color mode implementation
-    - Dark mode transitions
-    - Component dark variants
+9. **[Dark Mode Strategy](./11-dark-mode.md)**
+   - Color mode implementation
+   - Dark mode transitions
+   - Component dark variants
 
 ### Standards & Guidelines
+
 12. **[Accessibility Standards](./12-accessibility.md)**
     - WCAG compliance guidelines
     - Keyboard navigation patterns
@@ -76,6 +79,7 @@ This design system documentation is organized into focused, manageable sections.
     - Bundle size optimization
 
 ### Reference
+
 14. **[Appendices](./14-appendices.md)**
     - Color contrast matrix
     - Component size matrix
@@ -113,6 +117,7 @@ function App() {
 ## 🎨 Design System Highlights
 
 ### Key Features
+
 - **Material UI Integration**: Fully wrapped and enhanced Material UI components
 - **Glassmorphic Design**: Modern glass effects with backdrop blur
 - **Gradient System**: Beautiful gradient presets for all components
@@ -122,11 +127,12 @@ function App() {
 - **Type-Safe**: Full TypeScript support
 
 ### Component Categories
+
 - **70+ Components**: Comprehensive component library
 - **Layout Components**: Cards, Grids, Containers, Sidebars
 - **Navigation**: Menus, Tabs, Breadcrumbs, Pagination
 - **Form Controls**: Inputs, Selects, Switches, Sliders
-- **Data Display**: Tables, Charts, Lists, Badges
+- **DataDisplay**: Tables, Charts, Lists, Badges
 - **Feedback**: Alerts, Toasts, Progress indicators
 - **Overlays**: Modals, Drawers, Popovers, Tooltips
 
@@ -155,9 +161,9 @@ const customTheme = {
 
 ## 📋 Version Control
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0.0 | 2025-09-01 | Initial design system documentation |
+| Version | Date       | Changes                             |
+| ------- | ---------- | ----------------------------------- |
+| 1.0.0   | 2025-09-01 | Initial design system documentation |
 
 ## 👥 Team
 

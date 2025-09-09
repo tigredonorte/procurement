@@ -53,7 +53,7 @@ None - TypeScript compilation successful
 
 ## 5) Storybook Tests
 
-**Stories**
+**Stories**:
 
 - Utility/Portal/Basic
 - Utility/Portal/CustomContainer

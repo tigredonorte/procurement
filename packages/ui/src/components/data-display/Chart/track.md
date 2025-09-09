@@ -79,12 +79,13 @@ A comprehensive charting component built on Recharts, supporting multiple chart 
 ## 5) Storybook Tests
 
 **Stories**:
-* DataDisplay/Chart/Default
-* DataDisplay/Chart/AllVariants
-* DataDisplay/Chart/AllSizes
-* DataDisplay/Chart/AllStates
-* DataDisplay/Chart/InteractiveStates
-* DataDisplay/Chart/Responsive
+
+- DataDisplay/Chart/Default
+- DataDisplay/Chart/AllVariants
+- DataDisplay/Chart/AllSizes
+- DataDisplay/Chart/AllStates
+- DataDisplay/Chart/InteractiveStates
+- DataDisplay/Chart/Responsive
 
 ## Storybook Tests Status
 

@@ -5,7 +5,7 @@ import React from 'react';
 
 import { AlertDialog } from './AlertDialog';
 
-const meta = {
+const meta: Meta<typeof AlertDialog> = {
   title: 'DataDisplay/AlertDialog',
   component: AlertDialog,
   parameters: {
@@ -33,15 +33,18 @@ const meta = {
       control: { type: 'boolean' },
     },
   },
-} satisfies Meta<typeof AlertDialog>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 // Wrapper component to manage dialog state
-const DialogWrapper = ({ children, ...props }: { children: React.ReactNode } & Record<string, unknown>) => {
+const DialogWrapper = ({
+  children,
+  ...props
+}: { children: React.ReactNode } & Record<string, unknown>) => {
   const [open, setOpen] = React.useState(false);
-  
+
   return (
     <>
       <Button variant="contained" onClick={() => setOpen(true)}>
@@ -64,9 +67,7 @@ const DialogWrapper = ({ children, ...props }: { children: React.ReactNode } & R
 
 // Basic variants
 export const Default: Story = {
-  render: (args) => (
-    <DialogWrapper {...args} />
-  ),
+  render: (args) => <DialogWrapper {...args} />,
   args: {
     title: 'Confirm Action',
     description: 'Are you sure you want to perform this action? This cannot be undone.',
@@ -74,22 +75,19 @@ export const Default: Story = {
 };
 
 export const Destructive: Story = {
-  render: (args) => (
-    <DialogWrapper {...args} />
-  ),
+  render: (args) => <DialogWrapper {...args} />,
   args: {
     variant: 'destructive',
     title: 'Delete Account',
-    description: 'This action cannot be undone. This will permanently delete your account and remove all associated data.',
+    description:
+      'This action cannot be undone. This will permanently delete your account and remove all associated data.',
     confirmText: 'Delete Account',
     cancelText: 'Cancel',
   },
 };
 
 export const Glass: Story = {
-  render: (args) => (
-    <DialogWrapper {...args} />
-  ),
+  render: (args) => <DialogWrapper {...args} />,
   args: {
     variant: 'glass',
     title: 'Glass Effect Dialog',
@@ -100,9 +98,7 @@ export const Glass: Story = {
 
 // With custom icons
 export const WithCustomIcon: Story = {
-  render: (args) => (
-    <DialogWrapper {...args} />
-  ),
+  render: (args) => <DialogWrapper {...args} />,
   args: {
     variant: 'destructive',
     title: 'Delete Item',
@@ -113,9 +109,7 @@ export const WithCustomIcon: Story = {
 };
 
 export const LogoutConfirmation: Story = {
-  render: (args) => (
-    <DialogWrapper {...args} />
-  ),
+  render: (args) => <DialogWrapper {...args} />,
   args: {
     title: 'Sign Out',
     description: 'Are you sure you want to sign out of your account?',
@@ -127,9 +121,7 @@ export const LogoutConfirmation: Story = {
 
 // Without cancel button
 export const WithoutCancel: Story = {
-  render: (args) => (
-    <DialogWrapper {...args} />
-  ),
+  render: (args) => <DialogWrapper {...args} />,
   args: {
     title: 'Information',
     description: 'This is an informational dialog that only has a confirm button.',
@@ -140,9 +132,7 @@ export const WithoutCancel: Story = {
 
 // Loading state
 export const Loading: Story = {
-  render: (args) => (
-    <DialogWrapper {...args} />
-  ),
+  render: (args) => <DialogWrapper {...args} />,
   args: {
     title: 'Processing Request',
     description: 'Please wait while we process your request...',
@@ -153,9 +143,7 @@ export const Loading: Story = {
 
 // With effects
 export const WithGlow: Story = {
-  render: (args) => (
-    <DialogWrapper {...args} />
-  ),
+  render: (args) => <DialogWrapper {...args} />,
   args: {
     variant: 'default',
     glow: true,
@@ -166,9 +154,7 @@ export const WithGlow: Story = {
 };
 
 export const WithPulse: Story = {
-  render: (args) => (
-    <DialogWrapper {...args} />
-  ),
+  render: (args) => <DialogWrapper {...args} />,
   args: {
     variant: 'destructive',
     pulse: true,
@@ -180,9 +166,7 @@ export const WithPulse: Story = {
 };
 
 export const WithGlowAndPulse: Story = {
-  render: (args) => (
-    <DialogWrapper {...args} />
-  ),
+  render: (args) => <DialogWrapper {...args} />,
   args: {
     variant: 'glass',
     glow: true,
@@ -303,7 +287,7 @@ export const AllStates: Story = {
 // Component for interactive states demo
 const InteractiveStatesDemo = () => {
   const [loadingDialog, setLoadingDialog] = React.useState(false);
-  
+
   return (
     <Stack spacing={2} direction="row">
       <DialogWrapper

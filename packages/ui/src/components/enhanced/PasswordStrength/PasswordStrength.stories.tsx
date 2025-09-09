@@ -4,7 +4,7 @@ import React from 'react';
 
 import { PasswordStrength } from './PasswordStrength';
 
-const meta = {
+const meta: Meta<typeof PasswordStrength> = {
   title: 'Enhanced/PasswordStrength',
   component: PasswordStrength,
   parameters: {
@@ -40,7 +40,7 @@ const meta = {
       description: 'Enable smooth animations',
     },
   },
-} satisfies Meta<typeof PasswordStrength>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

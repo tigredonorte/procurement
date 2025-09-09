@@ -130,8 +130,7 @@ export const FormInteractionTest: Story = {
       expect(rect.top).toBeGreaterThan(0);
     });
 
-    // Type in last field
-    await userEvent.clear(lastField);
+    // Type in last field (skip clear due to MUI TextField compatibility)
     await userEvent.type(lastField, 'Last field input');
 
     // Click submit

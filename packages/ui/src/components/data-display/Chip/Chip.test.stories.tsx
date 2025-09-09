@@ -10,9 +10,9 @@ const meta: Meta<typeof Chip> = {
   component: Chip,
   parameters: {
     layout: 'centered',
-    chromatic: { disableSnapshot: false }
+    chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test']
+  tags: ['autodocs', 'test'],
 };
 
 export default meta;
@@ -21,7 +21,7 @@ type Story = StoryObj<typeof meta>;
 export const BasicInteraction: Story = {
   args: {
     label: 'Click me',
-    onClick: fn()
+    onClick: fn(),
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
@@ -30,7 +30,7 @@ export const BasicInteraction: Story = {
     // Test initial render
     expect(chip).toBeInTheDocument();
     expect(chip).toHaveTextContent('Click me');
-    
+
     // Test click interaction
     await userEvent.click(chip);
     expect(args.onClick).toHaveBeenCalledTimes(1);
@@ -40,7 +40,7 @@ export const BasicInteraction: Story = {
     await waitFor(() => {
       expect(chip).toHaveStyle('transform: translateY(-1px)');
     });
-  }
+  },
 };
 
 export const SelectionBehavior: Story = {
@@ -48,7 +48,7 @@ export const SelectionBehavior: Story = {
     label: 'Selectable',
     selectable: true,
     selected: false,
-    onClick: fn()
+    onClick: fn(),
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
@@ -56,80 +56,80 @@ export const SelectionBehavior: Story = {
 
     // Test initial state
     expect(chip).toHaveAttribute('aria-selected', 'false');
-    
+
     // Test selection
     await userEvent.click(chip);
     expect(args.onClick).toHaveBeenCalledTimes(1);
-    
+
     // Test role attribute
     expect(chip).toHaveAttribute('role', 'option');
-  }
+  },
 };
 
 export const DeletionFunctionality: Story = {
   args: {
     label: 'Deletable Chip',
     deletable: true,
-    onDelete: fn()
+    onDelete: fn(),
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     const deleteButton = canvas.getByLabelText('Remove Deletable Chip');
-    
+
     // Test delete button presence
     expect(deleteButton).toBeInTheDocument();
-    
+
     // Test delete functionality
     await userEvent.click(deleteButton);
     expect(args.onDelete).toHaveBeenCalledTimes(1);
-  }
+  },
 };
 
 export const KeyboardNavigation: Story = {
   args: {
     label: 'Keyboard Chip',
     selectable: true,
-    onClick: fn()
+    onClick: fn(),
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     const chip = canvas.getByRole('option');
-    
+
     // Focus the chip
     chip.focus();
     expect(chip).toHaveFocus();
-    
+
     // Test Enter key
     await userEvent.keyboard('{Enter}');
     expect(args.onClick).toHaveBeenCalledTimes(1);
-    
+
     // Test Space key
     await userEvent.keyboard(' ');
     expect(args.onClick).toHaveBeenCalledTimes(2);
-  }
+  },
 };
 
 export const KeyboardDeletion: Story = {
   args: {
     label: 'Keyboard Delete',
     deletable: true,
-    onDelete: fn()
+    onDelete: fn(),
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     const chip = canvas.getByRole('button');
-    
+
     // Focus the chip
     chip.focus();
-    
+
     // Test Delete key
     await userEvent.keyboard('{Delete}');
     expect(args.onDelete).toHaveBeenCalledTimes(1);
-    
+
     // Test Backspace key
     await userEvent.keyboard('{Backspace}');
     expect(args.onDelete).toHaveBeenCalledTimes(2);
-  }
+  },
 };
 
 export const ScreenReaderTest: Story = {
@@ -138,48 +138,50 @@ export const ScreenReaderTest: Story = {
     selectable: true,
     selected: true,
     deletable: true,
-    onDelete: fn()
+    onDelete: fn(),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const chip = canvas.getByRole('option');
     const deleteButton = canvas.getByLabelText('Remove Screen Reader Test');
-    
+
     // Test ARIA attributes
     expect(chip).toHaveAttribute('role', 'option');
     expect(chip).toHaveAttribute('aria-selected', 'true');
-    
+
     // Test delete button labeling
     expect(deleteButton).toHaveAttribute('aria-label', 'Remove Screen Reader Test');
-  }
+  },
 };
 
 export const FocusManagement: Story = {
   args: {
     label: 'Focus Test',
-    onClick: fn()
+    onClick: fn(),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const chip = canvas.getByRole('button');
-    
+
     // Test programmatic focus
     chip.focus();
     expect(chip).toHaveFocus();
-    
+
     // Test focus visibility
     expect(chip).toHaveStyle('outline: none'); // MUI handles focus styling internally
-  }
+  },
 };
 
 export const ResponsiveDesign: Story = {
   render: () => (
-    <div style={{ 
-      display: 'flex', 
-      flexWrap: 'wrap', 
-      gap: '8px',
-      maxWidth: '300px' 
-    }}>
+    <div
+      style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: '8px',
+        maxWidth: '300px',
+      }}
+    >
       {Array.from({ length: 8 }, (_, i) => (
         <Chip key={i} label={`Responsive ${i + 1}`} size="sm" />
       ))}
@@ -188,20 +190,20 @@ export const ResponsiveDesign: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const chips = canvas.getAllByRole('button');
-    
+
     // Test responsive wrapping
     expect(chips).toHaveLength(8);
-    
+
     // Test chip visibility
-    chips.forEach(chip => {
+    chips.forEach((chip) => {
       expect(chip).toBeVisible();
     });
   },
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1'
-    }
-  }
+      defaultViewport: 'mobile1',
+    },
+  },
 };
 
 export const ThemeVariations: Story = {
@@ -224,22 +226,22 @@ export const ThemeVariations: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const chips = canvas.getAllByRole('button');
-    
+
     // Test theme color application
     expect(chips).toHaveLength(8);
-    
+
     // Test filled vs outlined variants
     const filledChips = chips.slice(0, 5);
     const outlinedChips = chips.slice(5, 8);
-    
-    filledChips.forEach(chip => {
+
+    filledChips.forEach((chip) => {
       expect(chip).toBeVisible();
     });
-    
-    outlinedChips.forEach(chip => {
+
+    outlinedChips.forEach((chip) => {
       expect(chip).toBeVisible();
     });
-  }
+  },
 };
 
 export const VisualStates: Story = {
@@ -255,37 +257,37 @@ export const VisualStates: Story = {
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Test different visual states
     const normalChip = canvas.getByText('Normal');
     expect(normalChip).toBeVisible();
-    
+
     const selectedChip = canvas.getByText('Selected');
     expect(selectedChip).toHaveAttribute('aria-selected', 'true');
-    
+
     const disabledChip = canvas.getByText('Disabled');
     expect(disabledChip).toBeDisabled();
-    
+
     const avatarChip = canvas.getByText('With Avatar');
     expect(avatarChip).toBeVisible();
-    
+
     const iconChip = canvas.getByText('With Icon');
     expect(iconChip).toBeVisible();
-    
+
     const deletableChip = canvas.getByText('Deletable');
     expect(deletableChip).toBeVisible();
     const deleteButton = canvas.getByLabelText('Remove Deletable');
     expect(deleteButton).toBeInTheDocument();
-  }
+  },
 };
 
 export const PerformanceTest: Story = {
   render: () => (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', maxWidth: '500px' }}>
       {Array.from({ length: 100 }, (_, i) => (
-        <Chip 
-          key={i} 
-          label={`Chip ${i + 1}`} 
+        <Chip
+          key={i}
+          label={`Chip ${i + 1}`}
           size="sm"
           deletable={i % 3 === 0}
           selectable={i % 2 === 0}
@@ -296,23 +298,23 @@ export const PerformanceTest: Story = {
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Measure performance by checking render time
     const startTime = Date.now();
     const chips = canvas.getAllByText(/^Chip \d+$/);
     const endTime = Date.now();
-    
+
     // Test that all chips are rendered
     expect(chips).toHaveLength(100);
-    
+
     // Test performance (should render in reasonable time)
     const renderTime = endTime - startTime;
     expect(renderTime).toBeLessThan(1000); // Less than 1 second
-    
+
     // Test that chips are interactive
     const clickableChips = chips.filter((_, i) => i % 2 === 0); // selectable ones
     expect(clickableChips.length).toBeGreaterThan(0);
-  }
+  },
 };
 
 export const EdgeCases: Story = {
@@ -325,64 +327,75 @@ export const EdgeCases: Story = {
       </div>
       <div style={{ display: 'flex', gap: '8px' }}>
         <Chip label="No handlers" /> {/* No click handlers */}
-        <Chip label="Multiple states" selectable selected deletable onDelete={() => {}} onClick={() => {}} />
+        <Chip
+          label="Multiple states"
+          selectable
+          selected
+          deletable
+          onDelete={() => {}}
+          onClick={() => {}}
+        />
         <Chip label="Special chars: !@#$%^&*()_+-=[]{}|;:,.<>?" />
       </div>
     </div>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Test empty label handling
     const emptyChip = canvas.getByRole('button', { name: /^$/ });
     expect(emptyChip).toBeInTheDocument();
-    
+
     // Test single character
     const singleChar = canvas.getByText('A');
     expect(singleChar).toBeVisible();
-    
+
     // Test long label
     const longLabel = canvas.getByText(/This is an extremely long label/);
     expect(longLabel).toBeVisible();
-    
+
     // Test special characters
     const specialChars = canvas.getByText(/Special chars:/);
     expect(specialChars).toBeVisible();
-    
+
     // Test multiple states
     const multipleStates = canvas.getByText('Multiple states');
     expect(multipleStates).toBeVisible();
     expect(multipleStates).toHaveAttribute('aria-selected', 'true');
-    
+
     const deleteButton = canvas.getByLabelText('Remove Multiple states');
     expect(deleteButton).toBeInTheDocument();
-  }
+  },
 };
 
 const IntegrationTestComponent = () => {
   const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
   const [availableTags] = React.useState([
-    'React', 'TypeScript', 'JavaScript', 'Node.js', 'Python', 'Java', 'C++'
+    'React',
+    'TypeScript',
+    'JavaScript',
+    'Node.js',
+    'Python',
+    'Java',
+    'C++',
   ]);
-  
+
   const handleTagSelect = (tag: string) => {
-    setSelectedTags(prev => 
-      prev.includes(tag) 
-        ? prev.filter(t => t !== tag)
-        : [...prev, tag]
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
     );
   };
-  
+
   const handleTagRemove = (tag: string) => {
-    setSelectedTags(prev => prev.filter(t => t !== tag));
+    setSelectedTags((prev) => prev.filter((t) => t !== tag));
   };
-  
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <div>
         <h4>Available Tags:</h4>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-          {availableTags.map(tag => (
+          {availableTags.map((tag) => (
             <Chip
               key={tag}
               label={tag}
@@ -396,7 +409,7 @@ const IntegrationTestComponent = () => {
       <div>
         <h4>Selected Tags:</h4>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-          {selectedTags.map(tag => (
+          {selectedTags.map((tag) => (
             <Chip
               key={`selected-${tag}`}
               label={tag}
@@ -414,34 +427,34 @@ export const IntegrationTest: Story = {
   render: () => <IntegrationTestComponent />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Test initial state
     const availableSection = canvas.getByText('Available Tags:');
     expect(availableSection).toBeInTheDocument();
-    
+
     const selectedSection = canvas.getByText('Selected Tags:');
     expect(selectedSection).toBeInTheDocument();
-    
+
     // Test selecting a tag
     const reactTag = canvas.getByRole('option', { name: 'React' });
     await userEvent.click(reactTag);
-    
+
     // Wait for the selected tag to appear
     await waitFor(() => {
       const selectedReactTag = canvas.getAllByText('React');
       expect(selectedReactTag).toHaveLength(2); // One in available, one in selected
     });
-    
+
     // Test removing a selected tag
     const deleteButtons = canvas.getAllByLabelText('Remove React');
     if (deleteButtons.length > 0) {
       await userEvent.click(deleteButtons[0]);
-      
+
       // Wait for the tag to be removed
       await waitFor(() => {
         const reactTags = canvas.getAllByText('React');
         expect(reactTags).toHaveLength(1); // Only in available section
       });
     }
-  }
+  },
 };

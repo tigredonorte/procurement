@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 import { Input } from './Input';
 
-const meta = {
+const meta: Meta<typeof Input> = {
   title: 'Form/Input',
   component: Input,
   parameters: {
@@ -26,7 +26,7 @@ const meta = {
       options: ['text', 'email', 'password', 'number', 'tel', 'url'],
     },
   },
-} satisfies Meta<typeof Input>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -77,17 +77,8 @@ export const Sizes = AllSizes;
 export const WithAdornments: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '300px' }}>
-      <Input 
-        label="Search" 
-        placeholder="Search..." 
-        startAdornment={<Search />}
-      />
-      <Input 
-        label="Email" 
-        type="email" 
-        placeholder="john@example.com" 
-        startAdornment={<Email />}
-      />
+      <Input label="Search" placeholder="Search..." startAdornment={<Search />} />
+      <Input label="Email" type="email" placeholder="john@example.com" startAdornment={<Email />} />
       <PasswordInput />
     </div>
   ),
@@ -96,7 +87,7 @@ export const WithAdornments: Story = {
 // Password input with visibility toggle
 function PasswordInput() {
   const [showPassword, setShowPassword] = useState(false);
-  
+
   return (
     <Input
       label="Password"
@@ -125,18 +116,13 @@ export const FloatingLabels: Story = {
 export const ErrorStates: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '300px' }}>
-      <Input 
-        label="Email" 
-        error 
+      <Input
+        label="Email"
+        error
         helperText="Please enter a valid email address"
         defaultValue="invalid-email"
       />
-      <Input 
-        variant="glass" 
-        label="Required Field" 
-        error 
-        helperText="This field is required"
-      />
+      <Input variant="glass" label="Required Field" error helperText="This field is required" />
     </div>
   ),
 };
@@ -144,7 +130,17 @@ export const ErrorStates: Story = {
 // Enhanced Visual Effects Stories
 export const VisualEffects: Story = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', width: '300px', backgroundColor: '#f5f5f5', padding: '24px', borderRadius: '8px' }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '24px',
+        width: '300px',
+        backgroundColor: '#f5f5f5',
+        padding: '24px',
+        borderRadius: '8px',
+      }}
+    >
       <Input variant="glass" label="Glow Effect" placeholder="Focus me!" glow />
       <Input variant="outlined" label="Pulse Animation" placeholder="Watch me pulse" pulse />
       <Input variant="gradient" label="Loading State" placeholder="Processing..." loading />
@@ -162,14 +158,19 @@ export const AllStates: Story = {
       <Input label="Hover State" placeholder="Hover over me" />
       <Input label="Disabled State" placeholder="Cannot type" disabled />
       <Input label="Readonly State" placeholder="Read only" value="Cannot change this" readOnly />
-      <Input label="Error State" placeholder="Has error" error helperText="This field has an error" />
+      <Input
+        label="Error State"
+        placeholder="Has error"
+        error
+        helperText="This field has an error"
+      />
       <Input label="Required Field" placeholder="This is required" required />
       <Input label="Loading State" placeholder="Loading..." loading />
     </div>
   ),
 };
 
-// Backward compatibility alias 
+// Backward compatibility alias
 export const InteractiveStates = AllStates;
 
 // Different Input Types
@@ -190,12 +191,19 @@ export const InputTypes: Story = {
 export const EdgeCases: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '300px' }}>
-      <Input label="Long Text Overflow" defaultValue="This is a very long text that should show how the input handles overflow and long content gracefully" />
+      <Input
+        label="Long Text Overflow"
+        defaultValue="This is a very long text that should show how the input handles overflow and long content gracefully"
+      />
       <Input label="Empty with Floating" floating placeholder="Floating label behavior" />
       <Input label="No Full Width" fullWidth={false} placeholder="Not full width" />
-      <Input variant="glass" label="Glass + All Props" 
+      <Input
+        variant="glass"
+        label="Glass + All Props"
         placeholder="Kitchen sink example"
-        glow pulse floating
+        glow
+        pulse
+        floating
         helperText="This has all visual effects enabled"
       />
     </div>
@@ -205,7 +213,13 @@ export const EdgeCases: Story = {
 // Required story export: Responsive
 export const Responsive: Story = {
   render: () => (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '16px' }}>
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+        gap: '16px',
+      }}
+    >
       <Input variant="outlined" label="Responsive 1" placeholder="Resize window" />
       <Input variant="glass" label="Responsive 2" placeholder="Watch layout" />
       <Input variant="gradient" label="Responsive 3" placeholder="Adapt to screen" />
@@ -214,11 +228,11 @@ export const Responsive: Story = {
   parameters: {
     viewport: {
       viewports: {
-        mobile: { name: 'Mobile', styles: { width: '375px', height: '667px' }},
-        tablet: { name: 'Tablet', styles: { width: '768px', height: '1024px' }},
-        desktop: { name: 'Desktop', styles: { width: '1200px', height: '800px' }},
-      }
-    }
+        mobile: { name: 'Mobile', styles: { width: '375px', height: '667px' } },
+        tablet: { name: 'Tablet', styles: { width: '768px', height: '1024px' } },
+        desktop: { name: 'Desktop', styles: { width: '1200px', height: '800px' } },
+      },
+    },
   },
 };
 

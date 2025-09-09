@@ -4,7 +4,7 @@ import React from 'react';
 
 import { Blockquote } from './Blockquote';
 
-const meta = {
+const meta: Meta<typeof Blockquote> = {
   title: 'Typography/Blockquote',
   component: Blockquote,
   parameters: {
@@ -37,7 +37,7 @@ const meta = {
       description: 'Source reference',
     },
   },
-} satisfies Meta<typeof Blockquote>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

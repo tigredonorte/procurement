@@ -79,17 +79,18 @@ EmptyState is a friendly placeholder component for "no data / no results / error
 ## 5) Storybook Tests
 
 **Stories**
-* `DataDisplay/EmptyState/Tests/BasicInteraction`
-* `DataDisplay/EmptyState/Tests/ActionInteraction`
-* `DataDisplay/EmptyState/Tests/KeyboardNavigation`
-* `DataDisplay/EmptyState/Tests/ScreenReader`
-* `DataDisplay/EmptyState/Tests/FocusManagement`
-* `DataDisplay/EmptyState/Tests/ResponsiveDesign`
-* `DataDisplay/EmptyState/Tests/ThemeVariations`
-* `DataDisplay/EmptyState/Tests/VisualStates`
-* `DataDisplay/EmptyState/Tests/Performance`
-* `DataDisplay/EmptyState/Tests/EdgeCases`
-* `DataDisplay/EmptyState/Tests/Integration`
+
+- `DataDisplay/EmptyState/Tests/BasicInteraction`
+- `DataDisplay/EmptyState/Tests/ActionInteraction`
+- `DataDisplay/EmptyState/Tests/KeyboardNavigation`
+- `DataDisplay/EmptyState/Tests/ScreenReader`
+- `DataDisplay/EmptyState/Tests/FocusManagement`
+- `DataDisplay/EmptyState/Tests/ResponsiveDesign`
+- `DataDisplay/EmptyState/Tests/ThemeVariations`
+- `DataDisplay/EmptyState/Tests/VisualStates`
+- `DataDisplay/EmptyState/Tests/Performance`
+- `DataDisplay/EmptyState/Tests/EdgeCases`
+- `DataDisplay/EmptyState/Tests/Integration`
 
 **Current (BRT)**: 2025-09-09 13:15
 
@@ -98,7 +99,7 @@ EmptyState is a friendly placeholder component for "no data / no results / error
 ### Current Task: Component implementation and testing - COMPLETED
 
 - ✅ Component implementation completed (EmptyState.tsx)
-- ✅ TypeScript types defined (EmptyState.types.ts)  
+- ✅ TypeScript types defined (EmptyState.types.ts)
 - ✅ Barrel export created (index.ts)
 - ✅ Main stories implemented (EmptyState.stories.tsx)
 - ✅ Test stories implemented (EmptyState.test.stories.tsx)

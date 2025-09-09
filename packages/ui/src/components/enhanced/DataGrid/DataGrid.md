@@ -311,7 +311,7 @@ Dark mode:
 Create stories for:
 
 - **Docs**: overview, API, do/don’t; client vs server-mode examples.
-- **Tests** (`Data Display/DataGrid/Tests/*`):
+- **Tests** (`DataDisplay/DataGrid/Tests/*`):
   - Basic rendering & semantics (ARIA grid)
   - Virtualization correctness (render window, keep indices)
   - Sorting (client & server)

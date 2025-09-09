@@ -73,7 +73,7 @@ None - all type checks passing
 
 - [x] All stories render without console errors
 - [x] No broken stories in sidebar
-- [x] Component appears in correct category (Data Display)
+- [x] Component appears in correct category (DataDisplay)
 
 ### Broken Stories
 

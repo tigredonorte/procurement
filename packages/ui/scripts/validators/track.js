@@ -23,10 +23,13 @@ export function loadTrack(componentDirAbs) {
     const idx = md.search(/##\s*5\)\s*Storybook Tests/i);
     if (idx < 0) return '';
     const sub = md.slice(idx);
-    const storiesIdx = sub.search(/\*\*Stories\*\*/i);
+    // Match **Stories** with optional colon and whitespace
+    const storiesIdx = sub.search(/\*\*Stories\*\*\s*:?\s*/i);
     if (storiesIdx < 0) return '';
     const after = sub.slice(storiesIdx);
-    const blockMatch = after.match(/\*\*Stories\*\*([\s\S]*?)(\n\s*\n|^\s*\*\*|^##)/m);
+    // Allow matching any heading level (like '###') to find the end of the list.
+    // Also match **Stories**: with colon
+    const blockMatch = after.match(/\*\*Stories\*\*\s*:?\s*([\s\S]*?)(\n\s*\n|^\s*\*\*|^#)/m);
     return blockMatch ? blockMatch[1] : '';
   })();
 
@@ -34,7 +37,9 @@ export function loadTrack(componentDirAbs) {
   if (storiesSection) {
     const lines = storiesSection.split('\n');
     for (const line of lines) {
-      const m = line.match(/^\s*\*\s*`?([^`]+?)`?\s*$/);
+      // Match list items starting with a hyphen '-' OR asterisk '*'
+      // Also handle items without backticks
+      const m = line.match(/^\s*[-*]\s*`?([^`]+?)`?\s*$/);
       if (m) {
         const value = m[1].trim();
         if (value.includes('/')) stories.push(value); // e.g. Inputs/Autocomplete/Default
@@ -100,7 +105,6 @@ export function assertTrackFreshness(currentStr) {
     process.exit(1);
   }
 }
-
 
 function listStoryFiles(componentDirAbs) {
   // Convert absolute path to relative path from cwd for git ls-files

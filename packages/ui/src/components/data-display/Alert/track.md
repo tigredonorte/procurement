@@ -52,33 +52,34 @@ The Alert component displays important messages and notifications with various s
 ## 5) Storybook Tests
 
 **Stories**:
-* DataDisplay/Alert/Default
-* DataDisplay/Alert/Info
-* DataDisplay/Alert/Success
-* DataDisplay/Alert/Warning
-* DataDisplay/Alert/Danger
-* DataDisplay/Alert/Glass
-* DataDisplay/Alert/WithTitle
-* DataDisplay/Alert/WithCustomIcon
-* DataDisplay/Alert/WithoutIcon
-* DataDisplay/Alert/Closable
-* DataDisplay/Alert/WithGlow
-* DataDisplay/Alert/WithPulse
-* DataDisplay/Alert/WithGlowAndPulse
-* DataDisplay/Alert/AllVariants
-* DataDisplay/Alert/Interactive
-* DataDisplay/Alert/GradientVariant
-* DataDisplay/Alert/WithActions
-* DataDisplay/Alert/LongContent
-* DataDisplay/Alert/PriorityLevels
-* DataDisplay/Alert/AccessibilityFocus
-* DataDisplay/Alert/RealWorldExamples
-* DataDisplay/Alert/MultipleAlerts
-* DataDisplay/Alert/MinimalContent
-* DataDisplay/Alert/AllSizes
-* DataDisplay/Alert/AllStates
-* DataDisplay/Alert/InteractiveStates
-* DataDisplay/Alert/Responsive
+
+- DataDisplay/Alert/Default
+- DataDisplay/Alert/Info
+- DataDisplay/Alert/Success
+- DataDisplay/Alert/Warning
+- DataDisplay/Alert/Danger
+- DataDisplay/Alert/Glass
+- DataDisplay/Alert/WithTitle
+- DataDisplay/Alert/WithCustomIcon
+- DataDisplay/Alert/WithoutIcon
+- DataDisplay/Alert/Closable
+- DataDisplay/Alert/WithGlow
+- DataDisplay/Alert/WithPulse
+- DataDisplay/Alert/WithGlowAndPulse
+- DataDisplay/Alert/AllVariants
+- DataDisplay/Alert/Interactive
+- DataDisplay/Alert/GradientVariant
+- DataDisplay/Alert/WithActions
+- DataDisplay/Alert/LongContent
+- DataDisplay/Alert/PriorityLevels
+- DataDisplay/Alert/AccessibilityFocus
+- DataDisplay/Alert/RealWorldExamples
+- DataDisplay/Alert/MultipleAlerts
+- DataDisplay/Alert/MinimalContent
+- DataDisplay/Alert/AllSizes
+- DataDisplay/Alert/AllStates
+- DataDisplay/Alert/InteractiveStates
+- DataDisplay/Alert/Responsive
 
 ## Storybook Tests Status
 
@@ -97,7 +98,7 @@ The Alert component displays important messages and notifications with various s
 
 ### Task Completed: Fixed track.md validation issues
 
-- Updated components.tasks.md status to (working) [omega-75] 
+- Updated components.tasks.md status to (working) [omega-75]
 - Fixed track.md "Current (BRT)" format from header to expected format
 - Added required "5) Storybook Tests" section with complete **Stories** listing
 - Listed all 28 story exports that exist in Alert.stories.tsx

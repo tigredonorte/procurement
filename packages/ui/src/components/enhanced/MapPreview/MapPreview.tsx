@@ -146,7 +146,13 @@ export const MapPreview: FC<MapPreviewProps> = ({
   };
 
   return (
-    <MapContainer elevation={2}>
+    <MapContainer
+      elevation={2}
+      data-testid="map-preview-container"
+      role="img"
+      aria-label={`Map preview centered at ${coordinates.lat}, ${coordinates.lng} with zoom level ${currentZoom}`}
+      tabIndex={0}
+    >
       <MapWrapper height={isFullscreen ? '100vh' : height}>
         {/* Since we don't have actual Google Maps API key, show fallback */}
         <FallbackMap coordinates={coordinates} height={isFullscreen ? '100vh' : height} />

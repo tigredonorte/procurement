@@ -27,6 +27,7 @@ Visual step progress component for multi-step flows supporting both linear and n
 ## Testing Scenarios
 
 ### Test Stories (planned)
+
 - [ ] BasicInteraction - User step navigation and state management
 - [ ] StateChangeTest - Active/completed state transitions and callbacks
 - [ ] KeyboardNavigation - Arrow keys, Enter/Space navigation patterns
@@ -40,6 +41,7 @@ Visual step progress component for multi-step flows supporting both linear and n
 - [ ] IntegrationTest - Integration with forms and multi-step workflows
 
 ### Static Stories (planned)
+
 - [ ] Default - Basic horizontal stepper with minimal configuration
 - [ ] Horizontal - Standard horizontal layout with step descriptions
 - [ ] Vertical - Vertical orientation layout for sidebar navigation
@@ -63,8 +65,9 @@ Visual step progress component for multi-step flows supporting both linear and n
 ## Storybook Tests List
 
 ### Test Stories (completed)
+
 - [x] BasicInteraction
-- [x] StateChangeTest  
+- [x] StateChangeTest
 - [x] KeyboardNavigation
 - [x] ScreenReaderTest
 - [x] FocusManagement
@@ -78,23 +81,24 @@ Visual step progress component for multi-step flows supporting both linear and n
 ## 5) Storybook Tests
 
 **Stories**:
-* DataDisplay/Stepper/Default
-* DataDisplay/Stepper/Horizontal
-* DataDisplay/Stepper/Vertical
-* DataDisplay/Stepper/Linear
-* DataDisplay/Stepper/NonLinear
-* DataDisplay/Stepper/WithOptional
-* DataDisplay/Stepper/WithDisabled
-* DataDisplay/Stepper/Completed
-* DataDisplay/Stepper/CustomConnectors
-* DataDisplay/Stepper/LongLabels
-* DataDisplay/Stepper/MobileResponsive
-* DataDisplay/Stepper/Interactive
-* DataDisplay/Stepper/AllVariants
-* DataDisplay/Stepper/AllSizes
-* DataDisplay/Stepper/AllStates
-* DataDisplay/Stepper/InteractiveStates
-* DataDisplay/Stepper/Responsive
+
+- DataDisplay/Stepper/Default
+- DataDisplay/Stepper/Horizontal
+- DataDisplay/Stepper/Vertical
+- DataDisplay/Stepper/Linear
+- DataDisplay/Stepper/NonLinear
+- DataDisplay/Stepper/WithOptional
+- DataDisplay/Stepper/WithDisabled
+- DataDisplay/Stepper/Completed
+- DataDisplay/Stepper/CustomConnectors
+- DataDisplay/Stepper/LongLabels
+- DataDisplay/Stepper/MobileResponsive
+- DataDisplay/Stepper/Interactive
+- DataDisplay/Stepper/AllVariants
+- DataDisplay/Stepper/AllSizes
+- DataDisplay/Stepper/AllStates
+- DataDisplay/Stepper/InteractiveStates
+- DataDisplay/Stepper/Responsive
 
 **Current (BRT)**: 2025-09-08 12:45 [omega-80]
 

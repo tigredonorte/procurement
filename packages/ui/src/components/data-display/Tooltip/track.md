@@ -68,24 +68,25 @@ None - Component has proper TypeScript typing
 - [x] Integration (completed)
 
 **Stories**:
-* DataDisplay/Tooltip/Default
-* DataDisplay/Tooltip/WithIcon
-* DataDisplay/Tooltip/Variants
-* DataDisplay/Tooltip/Sizes
-* DataDisplay/Tooltip/Placements
-* DataDisplay/Tooltip/WithGlow
-* DataDisplay/Tooltip/WithPulse
-* DataDisplay/Tooltip/WithGlowAndPulse
-* DataDisplay/Tooltip/ComplexTooltip
-* DataDisplay/Tooltip/UserInterface
-* DataDisplay/Tooltip/FormHelp
-* DataDisplay/Tooltip/InteractiveTooltips
-* DataDisplay/Tooltip/LongText
-* DataDisplay/Tooltip/AllVariants
-* DataDisplay/Tooltip/AllSizes
-* DataDisplay/Tooltip/AllStates
-* DataDisplay/Tooltip/InteractiveStates
-* DataDisplay/Tooltip/Responsive
+
+- DataDisplay/Tooltip/Default
+- DataDisplay/Tooltip/WithIcon
+- DataDisplay/Tooltip/Variants
+- DataDisplay/Tooltip/Sizes
+- DataDisplay/Tooltip/Placements
+- DataDisplay/Tooltip/WithGlow
+- DataDisplay/Tooltip/WithPulse
+- DataDisplay/Tooltip/WithGlowAndPulse
+- DataDisplay/Tooltip/ComplexTooltip
+- DataDisplay/Tooltip/UserInterface
+- DataDisplay/Tooltip/FormHelp
+- DataDisplay/Tooltip/InteractiveTooltips
+- DataDisplay/Tooltip/LongText
+- DataDisplay/Tooltip/AllVariants
+- DataDisplay/Tooltip/AllSizes
+- DataDisplay/Tooltip/AllStates
+- DataDisplay/Tooltip/InteractiveStates
+- DataDisplay/Tooltip/Responsive
 
 **Current (BRT)**: 2025-09-09 15:00
 

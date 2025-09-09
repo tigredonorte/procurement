@@ -6,7 +6,7 @@ import { Button, Typography, Box, ThemeProvider, createTheme, Stack } from '@mui
 import { HoverCard } from './HoverCard';
 
 const meta: Meta<typeof HoverCard> = {
-  title: 'Data Display/HoverCard/Tests',
+  title: 'DataDisplay/HoverCard/Tests',
   component: HoverCard,
   parameters: {
     layout: 'centered',

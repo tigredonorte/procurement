@@ -77,7 +77,7 @@ None - all type issues resolved
 
 - [x] All stories render without console errors
 - [x] No broken stories in sidebar
-- [x] Component appears in correct category (Data Display/HoverCard)
+- [x] Component appears in correct category (DataDisplay/HoverCard)
 
 ### Broken Stories
 
