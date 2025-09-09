@@ -1,4 +1,4 @@
-import type { Preview } from '@storybook/react';
+import type { Preview } from '@storybook/react-vite';
 import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
 import React from 'react';
 

@@ -56,21 +56,20 @@ An international phone number input component with country selection, automatic 
 
 ## 5) Storybook Tests
 
-**Stories**
-
-- Default
-- InternationalNumbers
-- WithValidation
-- ContactForm
-- DifferentVariants
-- WithCountryRestrictions
-- DisabledAndReadOnly
-- EmergencyContacts
-- AllVariants
-- AllSizes
-- AllStates
-- InteractiveStates
-- Responsive
+**Stories**:
+* Enhanced/PhoneInput/Default
+* Enhanced/PhoneInput/InternationalNumbers
+* Enhanced/PhoneInput/WithValidation
+* Enhanced/PhoneInput/ContactForm
+* Enhanced/PhoneInput/DifferentVariants
+* Enhanced/PhoneInput/WithCountryRestrictions
+* Enhanced/PhoneInput/DisabledAndReadOnly
+* Enhanced/PhoneInput/EmergencyContacts
+* Enhanced/PhoneInput/AllVariants
+* Enhanced/PhoneInput/AllSizes
+* Enhanced/PhoneInput/AllStates
+* Enhanced/PhoneInput/InteractiveStates
+* Enhanced/PhoneInput/Responsive
 
 **Test Status**
 

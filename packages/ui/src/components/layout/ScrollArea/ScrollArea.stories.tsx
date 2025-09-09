@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Box, Typography, Paper, List, ListItem, ListItemText, Chip } from '@mui/material';
 
 import { ScrollArea } from './ScrollArea';

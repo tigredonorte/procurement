@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Box, Typography } from '@mui/material';
 import { useState } from 'react';
 
@@ -444,5 +444,331 @@ export const EightDigits: Story = {
     variant: 'numeric',
     length: 8,
     color: 'success',
+  },
+};
+
+// Required comprehensive story exports for validation
+
+const AllVariantsComponent = () => {
+  const [values, setValues] = useState({
+    numeric: '',
+    alphanumeric: '',
+    masked: '123456',
+  });
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4, p: 4 }}>
+      <Typography variant="h5" gutterBottom>
+        All InputOTP Variants
+      </Typography>
+      
+      <Box>
+        <Typography variant="subtitle1" gutterBottom>
+          Numeric (digits only)
+        </Typography>
+        <InputOTP
+          variant="numeric"
+          length={6}
+          value={values.numeric}
+          onChange={(value) => setValues((prev) => ({ ...prev, numeric: value }))}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="subtitle1" gutterBottom>
+          Alphanumeric (letters and numbers)
+        </Typography>
+        <InputOTP
+          variant="alphanumeric"
+          length={8}
+          value={values.alphanumeric}
+          onChange={(value) => setValues((prev) => ({ ...prev, alphanumeric: value }))}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="subtitle1" gutterBottom>
+          Masked (hidden input)
+        </Typography>
+        <InputOTP
+          variant="masked"
+          length={6}
+          value={values.masked}
+          onChange={(value) => setValues((prev) => ({ ...prev, masked: value }))}
+        />
+      </Box>
+    </Box>
+  );
+};
+
+export const AllVariants: Story = {
+  render: () => <AllVariantsComponent />,
+};
+
+const AllSizesComponent = () => {
+  const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+  const [value, setValue] = useState('');
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, p: 4 }}>
+      <Typography variant="h5" gutterBottom>
+        All InputOTP Sizes
+      </Typography>
+      {sizes.map((size) => (
+        <Box key={size}>
+          <Typography variant="subtitle2" gutterBottom>
+            Size: {size.toUpperCase()}
+          </Typography>
+          <InputOTP
+            size={size}
+            length={6}
+            value={value}
+            onChange={setValue}
+          />
+        </Box>
+      ))}
+    </Box>
+  );
+};
+
+export const AllSizes: Story = {
+  render: () => <AllSizesComponent />,
+};
+
+const AllStatesComponent = () => {
+  const [values, setValues] = useState({
+    default: '',
+    disabled: '123',
+    error: '456',
+    glass: '',
+    gradient: '',
+  });
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, p: 4 }}>
+      <Typography variant="h5" gutterBottom>
+        All InputOTP States
+      </Typography>
+
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>
+          Default State
+        </Typography>
+        <InputOTP
+          length={6}
+          value={values.default}
+          onChange={(value) => setValues((prev) => ({ ...prev, default: value }))}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>
+          Disabled State
+        </Typography>
+        <InputOTP
+          length={6}
+          disabled
+          value={values.disabled}
+          onChange={(value) => setValues((prev) => ({ ...prev, disabled: value }))}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>
+          Error State
+        </Typography>
+        <InputOTP
+          length={6}
+          error
+          value={values.error}
+          onChange={(value) => setValues((prev) => ({ ...prev, error: value }))}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>
+          Glass Morphism
+        </Typography>
+        <InputOTP
+          length={6}
+          glass
+          value={values.glass}
+          onChange={(value) => setValues((prev) => ({ ...prev, glass: value }))}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>
+          Gradient Effect
+        </Typography>
+        <InputOTP
+          length={6}
+          gradient
+          value={values.gradient}
+          onChange={(value) => setValues((prev) => ({ ...prev, gradient: value }))}
+        />
+      </Box>
+    </Box>
+  );
+};
+
+export const AllStates: Story = {
+  render: () => <AllStatesComponent />,
+};
+
+const InteractiveStatesComponent = () => {
+  const [values, setValues] = useState({
+    hover: '',
+    focus: '',
+    active: '',
+    complete: '',
+  });
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, p: 4 }}>
+      <Typography variant="h5" gutterBottom>
+        Interactive States Demo
+      </Typography>
+
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>
+          Hover over the inputs
+        </Typography>
+        <InputOTP
+          length={4}
+          color="primary"
+          value={values.hover}
+          onChange={(value) => setValues((prev) => ({ ...prev, hover: value }))}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>
+          Focus state (click to focus)
+        </Typography>
+        <InputOTP
+          length={4}
+          color="secondary"
+          value={values.focus}
+          onChange={(value) => setValues((prev) => ({ ...prev, focus: value }))}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>
+          Active state (type to see)
+        </Typography>
+        <InputOTP
+          length={4}
+          color="success"
+          value={values.active}
+          onChange={(value) => setValues((prev) => ({ ...prev, active: value }))}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>
+          Complete state (fill all inputs)
+        </Typography>
+        <InputOTP
+          length={4}
+          color="warning"
+          value={values.complete}
+          onChange={(value) => setValues((prev) => ({ ...prev, complete: value }))}
+          onComplete={(value) => {
+            // Completed with value
+            void value;
+          }}
+        />
+      </Box>
+    </Box>
+  );
+};
+
+export const InteractiveStates: Story = {
+  render: () => <InteractiveStatesComponent />,
+};
+
+const ResponsiveComponent = () => {
+  const [value, setValue] = useState('');
+
+  return (
+    <Box sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
+      <Typography variant="h5" gutterBottom>
+        Responsive InputOTP
+      </Typography>
+      
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+        <Box>
+          <Typography variant="subtitle2" gutterBottom>
+            Mobile View (xs-sm)
+          </Typography>
+          <Box sx={{ maxWidth: '320px' }}>
+            <InputOTP
+              size="sm"
+              length={4}
+              value={value}
+              onChange={setValue}
+            />
+          </Box>
+        </Box>
+
+        <Box>
+          <Typography variant="subtitle2" gutterBottom>
+            Tablet View (md)
+          </Typography>
+          <Box sx={{ maxWidth: '768px' }}>
+            <InputOTP
+              size="md"
+              length={6}
+              value={value}
+              onChange={setValue}
+            />
+          </Box>
+        </Box>
+
+        <Box>
+          <Typography variant="subtitle2" gutterBottom>
+            Desktop View (lg-xl)
+          </Typography>
+          <Box sx={{ maxWidth: '1200px' }}>
+            <InputOTP
+              size="lg"
+              length={8}
+              value={value}
+              onChange={setValue}
+            />
+          </Box>
+        </Box>
+
+        <Box>
+          <Typography variant="subtitle2" gutterBottom>
+            Responsive with MUI Breakpoints
+          </Typography>
+          <Box
+            sx={{
+              '& .MuiInputBase-root': {
+                fontSize: { xs: '14px', sm: '16px', md: '18px' },
+              },
+            }}
+          >
+            <InputOTP
+              length={6}
+              value={value}
+              onChange={setValue}
+            />
+          </Box>
+        </Box>
+      </Box>
+    </Box>
+  );
+};
+
+export const Responsive: Story = {
+  render: () => <ResponsiveComponent />,
+  parameters: {
+    viewport: {
+      defaultViewport: 'responsive',
+    },
   },
 };

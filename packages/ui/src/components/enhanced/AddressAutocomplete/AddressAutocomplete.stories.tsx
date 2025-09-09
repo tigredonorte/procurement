@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Box, Stack, Typography, Paper, Alert } from '@mui/material';
 import { Home, Business, LocalShipping } from '@mui/icons-material';
 import React from 'react';
@@ -344,6 +344,287 @@ export const CustomIcons: Story = {
         googleMapsApiKey="demo-key"
         onSelect={handleAddressSelect}
       />
+    </Stack>
+  ),
+};
+
+// Required story exports for validation
+export const AllVariants: Story = {
+  render: () => (
+    <Stack spacing={3}>
+      <Typography variant="h6" gutterBottom>All Variants</Typography>
+      
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>Glass Variant</Typography>
+        <Box
+          sx={{
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            p: 3,
+            borderRadius: 2,
+          }}
+        >
+          <AddressAutocomplete
+            variant="glass"
+            label="Glass Address"
+            placeholder="Enter address..."
+            googleMapsApiKey="demo-key"
+            onSelect={handleAddressSelect}
+          />
+        </Box>
+      </Box>
+
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>Outlined Variant</Typography>
+        <AddressAutocomplete
+          variant="outlined"
+          label="Outlined Address"
+          placeholder="Enter address..."
+          googleMapsApiKey="demo-key"
+          onSelect={handleAddressSelect}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>Filled Variant</Typography>
+        <AddressAutocomplete
+          variant="filled"
+          label="Filled Address"
+          placeholder="Enter address..."
+          googleMapsApiKey="demo-key"
+          onSelect={handleAddressSelect}
+        />
+      </Box>
+    </Stack>
+  ),
+};
+
+export const AllSizes: Story = {
+  render: () => (
+    <Stack spacing={3}>
+      <Typography variant="h6" gutterBottom>All Size Configurations</Typography>
+      
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>Default Width</Typography>
+        <AddressAutocomplete
+          variant="outlined"
+          label="Default Width"
+          placeholder="Enter address..."
+          googleMapsApiKey="demo-key"
+          onSelect={handleAddressSelect}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>Full Width</Typography>
+        <AddressAutocomplete
+          variant="outlined"
+          label="Full Width Address"
+          placeholder="Enter address..."
+          fullWidth
+          googleMapsApiKey="demo-key"
+          onSelect={handleAddressSelect}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>With Floating Label</Typography>
+        <AddressAutocomplete
+          variant="outlined"
+          label="Floating Label"
+          placeholder="Enter address..."
+          floating
+          googleMapsApiKey="demo-key"
+          onSelect={handleAddressSelect}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>With Icon</Typography>
+        <AddressAutocomplete
+          variant="outlined"
+          label="Address with Icon"
+          placeholder="Enter address..."
+          icon={<Home />}
+          googleMapsApiKey="demo-key"
+          onSelect={handleAddressSelect}
+        />
+      </Box>
+    </Stack>
+  ),
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <Stack spacing={3}>
+      <Typography variant="h6" gutterBottom>All States</Typography>
+      
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>Default State</Typography>
+        <AddressAutocomplete
+          variant="outlined"
+          label="Default"
+          placeholder="Enter address..."
+          googleMapsApiKey="demo-key"
+          onSelect={handleAddressSelect}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>Error State</Typography>
+        <AddressAutocomplete
+          variant="outlined"
+          label="Error"
+          placeholder="Enter address..."
+          error
+          helperText="This field has an error"
+          googleMapsApiKey="demo-key"
+          onSelect={handleAddressSelect}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>Disabled State</Typography>
+        <AddressAutocomplete
+          variant="outlined"
+          label="Disabled"
+          placeholder="Enter address..."
+          disabled
+          defaultValue="123 Main St, San Francisco, CA"
+          googleMapsApiKey="demo-key"
+          onSelect={handleAddressSelect}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>Required State</Typography>
+        <AddressAutocomplete
+          variant="outlined"
+          label="Required"
+          placeholder="Enter address..."
+          required
+          helperText="This field is required"
+          googleMapsApiKey="demo-key"
+          onSelect={handleAddressSelect}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>With Current Location</Typography>
+        <AddressAutocomplete
+          variant="outlined"
+          label="With Location"
+          placeholder="Enter address or use current location..."
+          getCurrentLocation
+          googleMapsApiKey="demo-key"
+          onSelect={handleAddressSelect}
+        />
+      </Box>
+    </Stack>
+  ),
+};
+
+const InteractiveStatesComponent = () => {
+  const [hoveredIndex, setHoveredIndex] = React.useState<number | null>(null);
+  
+  const states = [
+    { label: 'Hover State', variant: 'outlined' as const },
+    { label: 'Focus State', variant: 'outlined' as const },
+    { label: 'Active State', variant: 'outlined' as const },
+  ];
+
+  return (
+    <Stack spacing={3}>
+      <Typography variant="h6" gutterBottom>Interactive States</Typography>
+      {states.map((state, index) => (
+        <Box
+          key={index}
+          onMouseEnter={() => setHoveredIndex(index)}
+          onMouseLeave={() => setHoveredIndex(null)}
+        >
+          <Typography variant="subtitle2" gutterBottom>
+            {state.label} {hoveredIndex === index && '(Hovered)'}
+          </Typography>
+          <AddressAutocomplete
+            variant={state.variant}
+            label={state.label}
+            placeholder="Interact with this field..."
+            googleMapsApiKey="demo-key"
+            onSelect={handleAddressSelect}
+          />
+        </Box>
+      ))}
+    </Stack>
+  );
+};
+
+export const InteractiveStates: Story = {
+  render: () => <InteractiveStatesComponent />,
+};
+
+export const Responsive: Story = {
+  parameters: {
+    viewport: {
+      viewports: {
+        mobile: {
+          name: 'Mobile',
+          styles: { width: '375px', height: '667px' },
+        },
+        tablet: {
+          name: 'Tablet',
+          styles: { width: '768px', height: '1024px' },
+        },
+        desktop: {
+          name: 'Desktop',
+          styles: { width: '1440px', height: '900px' },
+        },
+      },
+    },
+  },
+  render: () => (
+    <Stack spacing={3}>
+      <Typography variant="h6" gutterBottom>
+        Responsive Design (resize viewport)
+      </Typography>
+      
+      <Alert severity="info">
+        This component adapts to different screen sizes. Try changing the viewport size using Storybook&apos;s viewport addon.
+      </Alert>
+
+      <Box sx={{ width: '100%' }}>
+        <AddressAutocomplete
+          variant="outlined"
+          label="Responsive Address"
+          placeholder="Enter your address..."
+          fullWidth
+          getCurrentLocation
+          googleMapsApiKey="demo-key"
+          onSelect={handleAddressSelect}
+          helperText="This field adapts to the container width"
+        />
+      </Box>
+
+      <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+        <Box sx={{ flex: '1 1 300px' }}>
+          <AddressAutocomplete
+            variant="outlined"
+            label="Home Address"
+            icon={<Home />}
+            fullWidth
+            googleMapsApiKey="demo-key"
+            onSelect={handleAddressSelect}
+          />
+        </Box>
+        <Box sx={{ flex: '1 1 300px' }}>
+          <AddressAutocomplete
+            variant="outlined"
+            label="Work Address"
+            icon={<Business />}
+            fullWidth
+            googleMapsApiKey="demo-key"
+            onSelect={handleAddressSelect}
+          />
+        </Box>
+      </Box>
     </Stack>
   ),
 };

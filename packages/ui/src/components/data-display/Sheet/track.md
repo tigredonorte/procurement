@@ -87,7 +87,37 @@ Sheet is a versatile drawer-like overlay component that slides in from any scree
 - [ ] Responsive behavior
 - [ ] Performance with complex content
 
-## Storybook Tests Status
+## 5) Storybook Tests
+
+**Stories**:
+* DataDisplay/Sheet/Default
+* DataDisplay/Sheet/Positions
+* DataDisplay/Sheet/Sizes
+* DataDisplay/Sheet/Variants
+* DataDisplay/Sheet/DraggableBottomSheet
+* DataDisplay/Sheet/MusicPlayer
+* DataDisplay/Sheet/CustomSnapPoints
+* DataDisplay/Sheet/WithResistance
+* DataDisplay/Sheet/DraggableWithContent
+* DataDisplay/Sheet/WithForm
+* DataDisplay/Sheet/WithList
+* DataDisplay/Sheet/Glass
+* DataDisplay/Sheet/Gradient
+* DataDisplay/Sheet/WithEffects
+* DataDisplay/Sheet/Swipeable
+* DataDisplay/Sheet/Persistent
+* DataDisplay/Sheet/Loading
+* DataDisplay/Sheet/NoOverlay
+* DataDisplay/Sheet/CustomHeader
+* DataDisplay/Sheet/FullHeight
+* DataDisplay/Sheet/Settings
+* DataDisplay/Sheet/AllVariants
+* DataDisplay/Sheet/AllSizes
+* DataDisplay/Sheet/AllStates
+* DataDisplay/Sheet/InteractiveStates
+* DataDisplay/Sheet/Responsive
+
+### Test Status
 
 - [ ] Basic Interaction (planned)
 - [ ] Form Interaction (planned)
@@ -101,18 +131,17 @@ Sheet is a versatile drawer-like overlay component that slides in from any scree
 - [ ] Edge Cases (planned)
 - [ ] Integration (planned)
 
-## Current Section - 2025-01-13 21:30 (BRT)
+**Current (BRT)**: 2025-09-09 15:00
 
-### Current Task: Initial track.md file creation
+### Current Task: Fixing Sheet component validation
 
-- Track.md file structure created
-- Component overview documented
-- Parameters identified
-- Testing scenarios outlined
+- Added all required story exports (AllVariants, AllSizes, AllStates, InteractiveStates, Responsive)
+- Updated track.md with Stories section listing all stories
+- Fixed track.md format to include bold **Current (BRT)** section
+- All validation checks passing
 
 ### Next Steps:
 
-- Read existing component implementation
-- Verify current lint/type status
-- Update status based on actual component state
-- Begin systematic verification process
+- Verify component in Storybook UI
+- Ensure all stories render correctly
+- Update components.tasks.md status to completed

@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within, expect, waitFor, fn } from '@storybook/test';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { userEvent, within, expect, waitFor, fn } from 'storybook/test';
 import { useState } from 'react';
 import { Button, Typography, Box, Stack } from '@mui/material';
 import { ExpandMore, Settings } from '@mui/icons-material';
@@ -454,7 +454,10 @@ export const VisualStates: Story = {
 
     await step('Disabled state verification', async () => {
       const disabledAccordion = canvas.getByTestId('disabled-accordion');
-      await expect(disabledAccordion).toHaveAttribute('aria-disabled', 'true');
+      await expect(disabledAccordion).toBeInTheDocument();
+      
+      // MUI Accordion uses classes for disabled state, not aria-disabled
+      await expect(disabledAccordion).toHaveClass(/Mui-disabled/);
 
       const disabledSummary = canvas.getByTestId('disabled-summary');
       // Should not be clickable when disabled

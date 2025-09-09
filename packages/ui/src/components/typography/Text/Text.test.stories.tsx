@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within, expect, waitFor } from '@storybook/test';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { userEvent, within, expect, waitFor } from 'storybook/test';
 import { Box, Stack } from '@mui/material';
 import React from 'react';
 
@@ -644,4 +644,59 @@ export const Integration: Story = {
       </Stack>
     );
   },
+};
+
+// Required Story Exports for Validation
+export const AllSizes: Story = {
+  name: 'All Sizes',
+  render: () => (
+    <Stack spacing={2}>
+      <Text size="xs">Extra Small Text</Text>
+      <Text size="sm">Small Text</Text>
+      <Text size="md">Medium Text</Text>
+      <Text size="lg">Large Text</Text>
+      <Text size="xl">Extra Large Text</Text>
+    </Stack>
+  ),
+};
+
+export const AllStates: Story = {
+  name: 'All States',
+  render: () => (
+    <Stack spacing={2}>
+      <Text variant="body">Body Text</Text>
+      <Text variant="heading">Heading Text</Text>
+      <Text variant="caption">Caption Text</Text>
+      <Text variant="code">Code Text</Text>
+    </Stack>
+  ),
+};
+
+export const InteractiveStates: Story = {
+  name: 'Interactive States',
+  render: () => (
+    <Stack spacing={2}>
+      <Text tabIndex={0}>Focusable Text</Text>
+      <Text style={{ cursor: 'pointer' }} onClick={() => {}}>Clickable Text</Text>
+      <Text underline>Underlined Text</Text>
+      <Text strikethrough>Strikethrough Text</Text>
+    </Stack>
+  ),
+};
+
+export const Responsive: Story = {
+  name: 'Responsive',
+  parameters: {
+    viewport: { defaultViewport: 'mobile1' },
+  },
+  render: () => (
+    <Text
+      sx={{
+        fontSize: { xs: '0.875rem', sm: '1rem', md: '1.125rem' },
+        lineHeight: { xs: 1.4, sm: 1.5, md: 1.6 },
+      }}
+    >
+      This text adapts to different screen sizes
+    </Text>
+  ),
 };

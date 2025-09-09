@@ -53,8 +53,8 @@ const getScrollbarStyles = (
   if (hideNativeScrollbars) {
     return {
       /* Hide native scrollbars */
-      scrollbarWidth: 'none',
-      '-ms-overflow-style': 'none',
+      scrollbarWidth: 'none' as const,
+      '-ms-overflow-style': 'none' as const,
       '&::-webkit-scrollbar': {
         display: 'none',
       },
@@ -63,7 +63,7 @@ const getScrollbarStyles = (
 
   const baseScrollbarStyles = {
     /* Firefox */
-    scrollbarWidth: scrollbarSize === 'thin' ? 'thin' : 'auto',
+    scrollbarWidth: scrollbarSize === 'thin' ? ('thin' as const) : ('auto' as const),
     scrollbarColor: `${thumbColor} ${trackColor}`,
 
     /* WebKit browsers */
@@ -137,8 +137,8 @@ const getScrollbarStyles = (
 
   if (variant === 'hidden') {
     return {
-      scrollbarWidth: 'none',
-      '-ms-overflow-style': 'none',
+      scrollbarWidth: 'none' as const,
+      '-ms-overflow-style': 'none' as const,
       '&::-webkit-scrollbar': {
         display: 'none',
       },

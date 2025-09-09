@@ -62,18 +62,18 @@ Visual step progress component for multi-step flows supporting both linear and n
 
 ## Storybook Tests List
 
-### Test Stories (working)
-- [ ] BasicInteraction
-- [ ] StateChangeTest  
-- [ ] KeyboardNavigation
-- [ ] ScreenReaderTest
-- [ ] FocusManagement
-- [ ] ResponsiveDesign
-- [ ] ThemeVariations
-- [ ] VisualStates
-- [ ] PerformanceTest
-- [ ] EdgeCases
-- [ ] IntegrationTest
+### Test Stories (completed)
+- [x] BasicInteraction
+- [x] StateChangeTest  
+- [x] KeyboardNavigation
+- [x] ScreenReaderTest
+- [x] FocusManagement
+- [x] ResponsiveDesign
+- [x] ThemeVariations
+- [x] VisualStates
+- [x] PerformanceTest
+- [x] EdgeCases
+- [x] IntegrationTest
 
 ## 5) Storybook Tests
 

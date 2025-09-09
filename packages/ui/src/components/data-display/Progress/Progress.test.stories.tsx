@@ -1,18 +1,18 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within, expect, waitFor } from '@storybook/test';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { userEvent, within, expect, waitFor } from 'storybook/test';
 import { Box, Typography, Button, Stack } from '@mui/material';
 import React from 'react';
 
 import { Progress } from './Progress';
 
 const meta: Meta<typeof Progress> = {
-  title: 'Data Display/Progress 🥇/Tests',
+  title: 'Data Display/Progress/Tests',
   component: Progress,
   parameters: {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test', 'component:Progress'],
+  tags: ['autodocs', 'test', 'component:Progress', "checked"],
 };
 
 export default meta;

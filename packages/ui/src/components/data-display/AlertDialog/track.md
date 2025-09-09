@@ -57,7 +57,7 @@ A customizable alert dialog component for confirmations, warnings, and notificat
 - [ ] Screen reader accessibility
 - [ ] Close button functionality
 
-## Storybook Tests Status
+## 5) Storybook Tests
 
 - [ ] Basic Interaction (planned)
 - [ ] Keyboard Navigation (planned)
@@ -70,18 +70,55 @@ A customizable alert dialog component for confirmations, warnings, and notificat
 - [ ] Edge Cases (planned)
 - [ ] Integration (planned)
 
-## Current Section - 2025-01-13 21:30 (BRT)
+**Stories**
+* DataDisplay/AlertDialog/Default
+* DataDisplay/AlertDialog/Destructive
+* DataDisplay/AlertDialog/Glass
+* DataDisplay/AlertDialog/WithCustomIcon
+* DataDisplay/AlertDialog/LogoutConfirmation
+* DataDisplay/AlertDialog/WithoutCancel
+* DataDisplay/AlertDialog/Loading
+* DataDisplay/AlertDialog/WithGlow
+* DataDisplay/AlertDialog/WithPulse
+* DataDisplay/AlertDialog/WithGlowAndPulse
+* DataDisplay/AlertDialog/AllVariants
+* DataDisplay/AlertDialog/WithCustomContent
+* DataDisplay/AlertDialog/AllSizes
+* DataDisplay/AlertDialog/AllStates
+* DataDisplay/AlertDialog/InteractiveStates
+* DataDisplay/AlertDialog/Responsive
 
-### Current Task: Initial track.md file creation
+**Current (BRT)**: 2025-09-09 14:40
 
-- Track.md file structure created
-- Component overview documented
-- Parameters identified
-- Testing scenarios outlined
+### Current Task: Fix Stories Coverage
 
-### Next Steps:
+- Fixed story title format from "Data Display/AlertDialog" to "DataDisplay/AlertDialog"
+- Added required story exports: AllSizes, AllStates, InteractiveStates, Responsive
+- Fixed ESLint errors in InteractiveStates story
 
-- Read existing component implementation
-- Verify current lint/type status
-- Update status based on actual component state
-- Begin systematic verification process
+### Completed:
+
+- All required story exports implemented
+- Stories coverage validation passing (Step 12/16)
+- ESLint clean
+- TypeScript clean
+- Component builds successfully
+
+### Stories Status:
+
+- Default ✓
+- Destructive ✓
+- Glass ✓
+- WithCustomIcon ✓
+- LogoutConfirmation ✓
+- WithoutCancel ✓
+- Loading ✓
+- WithGlow ✓
+- WithPulse ✓
+- WithGlowAndPulse ✓
+- AllVariants ✓
+- WithCustomContent ✓
+- AllSizes ✓
+- AllStates ✓
+- InteractiveStates ✓
+- Responsive ✓

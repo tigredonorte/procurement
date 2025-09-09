@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import {
   Dashboard,
@@ -21,7 +21,7 @@ import { Breadcrumbs } from './Breadcrumbs';
 import { BreadcrumbItem } from './Breadcrumbs.types';
 
 const meta = {
-  title: 'Navigation/Breadcrumbs 🥇',
+  title: 'Navigation/Breadcrumbs',
   component: Breadcrumbs,
   parameters: {
     layout: 'padded',
@@ -51,7 +51,7 @@ A sophisticated breadcrumb navigation component with glass morphism effects, smo
       ],
     },
   },
-  tags: ['autodocs', 'component:Breadcrumbs'],
+  tags: ['autodocs', 'component:Breadcrumbs', 'checked'],
   argTypes: {
     variant: {
       control: 'select',
@@ -211,63 +211,69 @@ export const Outlined: Story = {
 
 // Separator types showcase
 export const SeparatorTypes: Story = {
-  render: () => (
+  args: {
+    items: basicItems,
+  },
+  render: ({ items }) => (
     <Stack spacing={3}>
       <Box>
         <Typography variant="caption" color="text.secondary" gutterBottom>
-          Arrow Separator
-        </Typography>
-        <Breadcrumbs items={basicItems} separatorType="arrow" />
+          Default Separator
+          </Typography>
+        <Breadcrumbs items={items} separatorType="arrow" />
       </Box>
       <Box>
         <Typography variant="caption" color="text.secondary" gutterBottom>
           Chevron Separator
         </Typography>
-        <Breadcrumbs items={basicItems} separatorType="chevron" />
+        <Breadcrumbs items={items} separatorType="chevron" />
       </Box>
       <Box>
         <Typography variant="caption" color="text.secondary" gutterBottom>
           Slash Separator
         </Typography>
-        <Breadcrumbs items={basicItems} separatorType="slash" />
+        <Breadcrumbs items={items} separatorType="slash" />
       </Box>
       <Box>
         <Typography variant="caption" color="text.secondary" gutterBottom>
           Dot Separator
         </Typography>
-        <Breadcrumbs items={basicItems} separatorType="dot" />
+        <Breadcrumbs items={items} separatorType="dot" />
       </Box>
       <Box>
         <Typography variant="caption" color="text.secondary" gutterBottom>
           Pipe Separator
         </Typography>
-        <Breadcrumbs items={basicItems} separatorType="pipe" />
+        <Breadcrumbs items={items} separatorType="pipe" />
       </Box>
     </Stack>
   ),
 };
 
-// Size variations
-export const SizeVariations: Story = {
-  render: () => (
+// Size variations - Required story export
+export const AllSizes: Story = {
+  args: {
+    items: basicItems,
+  },
+  render: ({ items }) => (
     <Stack spacing={3}>
       <Box>
         <Typography variant="caption" color="text.secondary" gutterBottom>
           Small Size
         </Typography>
-        <Breadcrumbs items={basicItems} size="sm" variant="glass" />
+        <Breadcrumbs items={items} size="sm" variant="glass" />
       </Box>
       <Box>
         <Typography variant="caption" color="text.secondary" gutterBottom>
           Medium Size (Default)
         </Typography>
-        <Breadcrumbs items={basicItems} size="md" variant="glass" />
+        <Breadcrumbs items={items} size="md" variant="glass" />
       </Box>
       <Box>
         <Typography variant="caption" color="text.secondary" gutterBottom>
           Large Size
         </Typography>
-        <Breadcrumbs items={basicItems} size="lg" variant="glass" />
+        <Breadcrumbs items={items} size="lg" variant="glass" />
       </Box>
     </Stack>
   ),
@@ -275,25 +281,28 @@ export const SizeVariations: Story = {
 
 // Color variations
 export const ColorVariations: Story = {
-  render: () => (
+  args: {
+    items: basicItems,
+  },
+  render: ({ items }) => (
     <Stack spacing={3}>
       <Box>
         <Typography variant="caption" color="text.secondary" gutterBottom>
           Default Color
         </Typography>
-        <Breadcrumbs items={basicItems} color="default" variant="elevated" />
+        <Breadcrumbs items={items} color="default" variant="elevated" />
       </Box>
       <Box>
         <Typography variant="caption" color="text.secondary" gutterBottom>
           Primary Color
         </Typography>
-        <Breadcrumbs items={basicItems} color="primary" variant="elevated" />
+        <Breadcrumbs items={items} color="primary" variant="elevated" />
       </Box>
       <Box>
         <Typography variant="caption" color="text.secondary" gutterBottom>
           Secondary Color
         </Typography>
-        <Breadcrumbs items={basicItems} color="secondary" variant="elevated" />
+        <Breadcrumbs items={items} color="secondary" variant="elevated" />
       </Box>
     </Stack>
   ),
@@ -303,11 +312,14 @@ export const ColorVariations: Story = {
 
 // Interactive example with click handlers
 export const Interactive: Story = {
-  render: () => {
+  args: {
+    items: basicItems,
+  },
+  render: ({ items }) => {
     const InteractiveBreadcrumbs = () => {
-      const [path, setPath] = useState(['Home', 'Products', 'Electronics', 'Laptops']);
+      const [path, setPath] = useState(items.map((item) => item.label));
 
-      const items: BreadcrumbItem[] = path.map((label, index) => ({
+      const mappedItems: BreadcrumbItem[] = path.map((label, index) => ({
         label,
         href: '#',
         onClick: (e) => {
@@ -321,7 +333,7 @@ export const Interactive: Story = {
 
       return (
         <Stack spacing={3}>
-          <Breadcrumbs items={items} variant="glass" separatorType="chevron" showHomeIcon />
+          <Breadcrumbs items={mappedItems} variant="glass" separatorType="chevron" showHomeIcon />
           <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
             <Button
               size="small"
@@ -384,8 +396,8 @@ export const DarkMode: Story = {
   ],
 };
 
-// Mobile responsive behavior
-export const MobileResponsive: Story = {
+// Responsive behavior - Required story export  
+export const Responsive: Story = {
   args: {
     items: [
       { label: 'Home', href: '#', icon: <Home fontSize="small" /> },
@@ -451,13 +463,16 @@ export const ComplexPath: Story = {
 
 // All variants showcase
 export const AllVariants: Story = {
-  render: () => (
+  args: {
+    items: basicItems,
+  },
+  render: ({ items }) => (
     <Stack spacing={4}>
       <Paper sx={{ p: 2 }}>
         <Typography variant="subtitle2" gutterBottom>
           Default Variant
         </Typography>
-        <Breadcrumbs items={basicItems} variant="default" />
+        <Breadcrumbs items={items} variant="default" />
       </Paper>
 
       <Paper
@@ -476,17 +491,134 @@ export const AllVariants: Story = {
         <Typography variant="subtitle2" gutterBottom>
           Elevated Variant
         </Typography>
-        <Breadcrumbs items={basicItems} variant="elevated" elevation={3} />
+        <Breadcrumbs items={items} variant="elevated" elevation={3} />
       </Paper>
 
       <Paper sx={{ p: 2 }}>
         <Typography variant="subtitle2" gutterBottom>
           Outlined Variant
         </Typography>
-        <Breadcrumbs items={basicItems} variant="outlined" />
+        <Breadcrumbs items={items} variant="outlined" />
       </Paper>
     </Stack>
   ),
+};
+
+// All interactive states - Required story export
+export const AllStates: Story = {
+  args: {
+    items: basicItems,
+  },
+  render: ({ items }) => (
+    <Stack spacing={3}>
+      <Box>
+        <Typography variant="caption" color="text.secondary" gutterBottom>
+          Default State
+        </Typography>
+        <Breadcrumbs items={items} variant="glass" />
+      </Box>
+      <Box>
+        <Typography variant="caption" color="text.secondary" gutterBottom>
+          Hover State (simulate)
+        </Typography>
+        <Breadcrumbs 
+          items={items.map(item => ({
+            ...item,
+            sx: { '&:hover': { backgroundColor: 'action.hover' } }
+          }))}
+          variant="glass" 
+        />
+      </Box>
+      <Box>
+        <Typography variant="caption" color="text.secondary" gutterBottom>
+          Focus State
+        </Typography>
+        <Breadcrumbs 
+          items={items} 
+          variant="elevated"
+          sx={{ '& .MuiBreadcrumbs-ol > li:first-of-type a': { outline: '2px solid primary.main' } }}
+        />
+      </Box>
+      <Box>
+        <Typography variant="caption" color="text.secondary" gutterBottom>
+          Collapsed State
+        </Typography>
+        <Breadcrumbs 
+          items={[
+            { label: 'Home', href: '#' },
+            { label: 'Products', href: '#' },
+            { label: 'Electronics', href: '#' },
+            { label: 'Computers', href: '#' },
+            { label: 'Laptops', href: '#' },
+            { label: 'Gaming', href: '#' },
+            { label: 'Current' }
+          ]}
+          variant="glass"
+          maxItems={3}
+          collapseBehavior="menu"
+        />
+      </Box>
+    </Stack>
+  ),
+};
+
+// Interactive states - Required story export
+export const InteractiveStates: Story = {
+  args: {
+    items: basicItems,
+  },
+  render: ({ items }) => {
+    const InteractiveDemo = () => {
+      const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+      const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
+      const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+      const interactiveItems = items.map((item, index) => ({
+        ...item,
+        onClick: (e: React.MouseEvent) => {
+          e.preventDefault();
+          setActiveIndex(index);
+          window.setTimeout(() => setActiveIndex(null), 200);
+        },
+        onMouseEnter: () => setHoveredIndex(index),
+        onMouseLeave: () => setHoveredIndex(null),
+        onFocus: () => setFocusedIndex(index),
+        onBlur: () => setFocusedIndex(null),
+        sx: {
+          transition: 'all 0.2s ease-in-out',
+          ...(hoveredIndex === index && {
+            backgroundColor: 'action.hover',
+            transform: 'scale(1.02)'
+          }),
+          ...(focusedIndex === index && {
+            outline: '2px solid',
+            outlineColor: 'primary.main',
+            outlineOffset: 2
+          }),
+          ...(activeIndex === index && {
+            backgroundColor: 'action.selected',
+            transform: 'scale(0.98)'
+          })
+        }
+      }));
+
+      return (
+        <Stack spacing={2}>
+          <Typography variant="body2" color="text.secondary">
+            Hover, focus, and click on breadcrumb items to see interactive states
+          </Typography>
+          <Breadcrumbs 
+            items={interactiveItems}
+            variant="glass"
+            separatorType="chevron"
+            elevation={2}
+          />
+        </Stack>
+      );
+    };
+
+    return <InteractiveDemo />;
+  },
 };
 
 // Performance test with many items

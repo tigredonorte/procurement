@@ -1,12 +1,12 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Box, Typography, Button, Card, CardContent } from '@mui/material';
 
 import { Carousel } from './Carousel';
 import { CarouselItem } from './Carousel.types';
 
 const meta: Meta<typeof Carousel> = {
-  title: 'Data Display/Carousel',
+  title: 'DataDisplay/Carousel',
   component: Carousel,
   parameters: {
     layout: 'padded',
@@ -455,4 +455,167 @@ export const CustomContent: Story = {
       />
     );
   },
+};
+
+// Required story exports for comprehensive coverage
+export const AllVariants: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      {(['default', 'glass', 'gradient', 'elevated', 'minimal', 'cards'] as const).map((variant) => (
+        <Box key={variant}>
+          <Typography variant="h6" gutterBottom>
+            Variant: {variant}
+          </Typography>
+          <Carousel
+            items={imageItems.slice(0, 3)}
+            variant={variant}
+            height={250}
+            showArrows={true}
+            showIndicators={true}
+            {...(variant === 'glass' && { glass: true, glow: true })}
+            {...(variant === 'gradient' && { gradient: true, color: 'primary' })}
+          />
+        </Box>
+      ))}
+    </Box>
+  ),
+};
+
+export const AllSizes: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
+        <Box key={size}>
+          <Typography variant="h6" gutterBottom>
+            Size: {size.toUpperCase()}
+          </Typography>
+          <Carousel 
+            items={imageItems.slice(0, 3)} 
+            size={size}
+            showArrows={true}
+            showIndicators={true}
+          />
+        </Box>
+      ))}
+    </Box>
+  ),
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Default State
+        </Typography>
+        <Carousel items={imageItems.slice(0, 3)} height={250} />
+      </Box>
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Loading State
+        </Typography>
+        <Carousel items={[]} loading={true} height={250} />
+      </Box>
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Disabled State
+        </Typography>
+        <Carousel items={imageItems.slice(0, 3)} disabled={true} height={250} />
+      </Box>
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          AutoPlay State
+        </Typography>
+        <Carousel 
+          items={imageItems.slice(0, 3)} 
+          autoPlay={true} 
+          autoPlayInterval={2000}
+          height={250} 
+        />
+      </Box>
+    </Box>
+  ),
+};
+
+const InteractiveStatesComponent = () => {
+  const [activeIndex, setActiveIndex] = React.useState(0);
+  const [clickInfo, setClickInfo] = React.useState('');
+  
+  return (
+    <Box>
+      <Typography variant="h6" gutterBottom>
+        Interactive Carousel with Event Handlers
+      </Typography>
+      <Carousel
+        items={imageItems}
+        activeIndex={activeIndex}
+        onIndexChange={(index) => setActiveIndex(index)}
+        onClick={(item, index) => {
+          setClickInfo(`Clicked: ${item.title} at index ${index}`);
+        }}
+        height={400}
+        showArrows={true}
+        showIndicators={true}
+        pauseOnHover={true}
+      />
+      <Box sx={{ mt: 2, display: 'flex', gap: 2, alignItems: 'center' }}>
+        <Typography variant="body2">
+          Current Index: {activeIndex}
+        </Typography>
+        {clickInfo && (
+          <Typography variant="body2" color="primary">
+            {clickInfo}
+          </Typography>
+        )}
+      </Box>
+      <Box sx={{ mt: 2, display: 'flex', gap: 1 }}>
+        {imageItems.map((_, index) => (
+          <Button
+            key={index}
+            variant={index === activeIndex ? 'contained' : 'outlined'}
+            size="small"
+            onClick={() => setActiveIndex(index)}
+          >
+            {index + 1}
+          </Button>
+        ))}
+      </Box>
+    </Box>
+  );
+};
+
+export const InteractiveStates: Story = {
+  render: () => <InteractiveStatesComponent />,
+};
+
+export const Responsive: Story = {
+  parameters: {
+    viewport: {
+      defaultViewport: 'responsive',
+    },
+  },
+  render: () => (
+    <Box>
+      <Typography variant="h6" gutterBottom>
+        Responsive Carousel (resize viewport to test)
+      </Typography>
+      <Box sx={{ width: '100%', maxWidth: { xs: '100%', sm: 600, md: 800, lg: 1000 } }}>
+        <Carousel
+          items={imageItems}
+          height={{ xs: 200, sm: 300, md: 400, lg: 500 }}
+          showArrows={{ xs: false, sm: true }}
+          showIndicators={true}
+          showThumbnails={{ xs: false, md: true }}
+          size={{ xs: 'xs', sm: 'sm', md: 'md', lg: 'lg' }}
+        />
+      </Box>
+      <Typography variant="body2" sx={{ mt: 2 }} color="text.secondary">
+        • Mobile (xs): Height 200px, no arrows, no thumbnails
+        <br />
+        • Tablet (sm): Height 300px, with arrows
+        <br />
+        • Desktop (md+): Height 400px+, with thumbnails
+      </Typography>
+    </Box>
+  ),
 };

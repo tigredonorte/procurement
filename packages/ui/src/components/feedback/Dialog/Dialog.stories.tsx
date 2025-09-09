@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { Button, Typography, Box } from '@mui/material';
 
@@ -443,4 +443,391 @@ const BorderRadiusVariationsComponent = () => {
 
 export const BorderRadiusVariations: Story = {
   render: () => <BorderRadiusVariationsComponent />,
+};
+
+// Required story exports for validation
+export const AllVariants: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <Typography variant="h6">Dialog Variants Showcase</Typography>
+      
+      {/* Default Variant */}
+      <Box>
+        <Typography variant="subtitle1" gutterBottom>Default Variant</Typography>
+        <DialogWrapper variant="default" size="md">
+          <DialogHeader title="Default Dialog" subtitle="Standard Material-UI styling" />
+          <DialogContent>
+            <Typography>Default variant with clean, minimal design.</Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button>Cancel</Button>
+            <Button variant="contained">Confirm</Button>
+          </DialogActions>
+        </DialogWrapper>
+      </Box>
+
+      {/* Glass Variant */}
+      <Box>
+        <Typography variant="subtitle1" gutterBottom>Glass Variant</Typography>
+        <DialogWrapper variant="glass" size="md" glow>
+          <DialogHeader title="Glass Dialog" subtitle="Glass morphism effect" />
+          <DialogContent>
+            <Typography>Glass variant with blur and translucent background.</Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button>Cancel</Button>
+            <Button variant="contained">Confirm</Button>
+          </DialogActions>
+        </DialogWrapper>
+      </Box>
+
+      {/* Fullscreen Variant */}
+      <Box>
+        <Typography variant="subtitle1" gutterBottom>Fullscreen Variant</Typography>
+        <DialogWrapper variant="fullscreen">
+          <DialogHeader title="Fullscreen Dialog" subtitle="Immersive experience" />
+          <DialogContent>
+            <Typography>Fullscreen variant for complex content.</Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button>Cancel</Button>
+            <Button variant="contained">Save</Button>
+          </DialogActions>
+        </DialogWrapper>
+      </Box>
+
+      {/* Drawer Variant */}
+      <Box>
+        <Typography variant="subtitle1" gutterBottom>Drawer Variant</Typography>
+        <DialogWrapper variant="drawer" size="sm">
+          <DialogHeader title="Drawer Dialog" subtitle="Slide-in panel" />
+          <DialogContent>
+            <Typography>Drawer variant that slides in from the side.</Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button>Close</Button>
+            <Button variant="contained">Apply</Button>
+          </DialogActions>
+        </DialogWrapper>
+      </Box>
+    </Box>
+  ),
+  parameters: {
+    layout: 'padded',
+  },
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <Typography variant="h6">Dialog States</Typography>
+      
+      {/* Normal State */}
+      <Box>
+        <Typography variant="subtitle1" gutterBottom>Normal State</Typography>
+        <DialogWrapper variant="default" size="md">
+          <DialogHeader title="Normal Dialog" subtitle="Standard state" />
+          <DialogContent>
+            <Typography>Normal dialog with standard interaction.</Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button>Cancel</Button>
+            <Button variant="contained">OK</Button>
+          </DialogActions>
+        </DialogWrapper>
+      </Box>
+
+      {/* With Glow Effect */}
+      <Box>
+        <Typography variant="subtitle1" gutterBottom>With Glow Effect</Typography>
+        <DialogWrapper variant="glass" size="md" glow>
+          <DialogHeader title="Glowing Dialog" subtitle="Enhanced visibility" />
+          <DialogContent>
+            <Typography>Dialog with glow effect for emphasis.</Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button>Cancel</Button>
+            <Button variant="contained">Confirm</Button>
+          </DialogActions>
+        </DialogWrapper>
+      </Box>
+
+      {/* With Gradient */}
+      <Box>
+        <Typography variant="subtitle1" gutterBottom>With Gradient</Typography>
+        <DialogWrapper variant="default" gradient glow size="lg">
+          <DialogHeader title="Gradient Dialog" subtitle="Premium appearance" />
+          <DialogContent>
+            <Typography>Dialog with gradient background.</Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button>Skip</Button>
+            <Button variant="contained">Upgrade</Button>
+          </DialogActions>
+        </DialogWrapper>
+      </Box>
+
+      {/* Persistent State */}
+      <Box>
+        <Typography variant="subtitle1" gutterBottom>Persistent State (No backdrop close)</Typography>
+        <DialogWrapper variant="default" size="md" persistent>
+          <DialogHeader title="Persistent Dialog" subtitle="Must use action buttons" showCloseButton={false} />
+          <DialogContent>
+            <Typography>This dialog cannot be closed by clicking outside or pressing Escape.</Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button color="error">Cancel</Button>
+            <Button variant="contained">Confirm</Button>
+          </DialogActions>
+        </DialogWrapper>
+      </Box>
+
+      {/* With Pulse Effect */}
+      <Box>
+        <Typography variant="subtitle1" gutterBottom>With Pulse Effect</Typography>
+        <DialogWrapper variant="default" size="md" pulse glow>
+          <DialogHeader title="Pulsing Dialog" subtitle="Attention-grabbing animation" />
+          <DialogContent>
+            <Typography>Dialog with pulse animation to draw attention.</Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button>Dismiss</Button>
+            <Button variant="contained">Take Action</Button>
+          </DialogActions>
+        </DialogWrapper>
+      </Box>
+    </Box>
+  ),
+  parameters: {
+    layout: 'padded',
+  },
+};
+
+const InteractiveStatesComponent = () => {
+  const [dialogStates, setDialogStates] = useState({
+    hover: false,
+    focus: false,
+    active: false,
+  });
+
+  return (
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+        <Typography variant="h6">Interactive Dialog States</Typography>
+        
+        {/* Interactive Demo */}
+        <Box>
+          <Typography variant="subtitle1" gutterBottom>Interactive Elements Demo</Typography>
+          <DialogWrapper variant="glass" size="md" glow>
+            <DialogHeader 
+              title="Interactive Dialog" 
+              subtitle="Test hover, focus, and active states"
+            />
+            <DialogContent>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <Typography>
+                  Interact with the elements below to see state changes:
+                </Typography>
+                
+                <Box sx={{ display: 'flex', gap: 2 }}>
+                  <Button 
+                    variant="outlined"
+                    onMouseEnter={() => setDialogStates(prev => ({ ...prev, hover: true }))}
+                    onMouseLeave={() => setDialogStates(prev => ({ ...prev, hover: false }))}
+                    onFocus={() => setDialogStates(prev => ({ ...prev, focus: true }))}
+                    onBlur={() => setDialogStates(prev => ({ ...prev, focus: false }))}
+                    onMouseDown={() => setDialogStates(prev => ({ ...prev, active: true }))}
+                    onMouseUp={() => setDialogStates(prev => ({ ...prev, active: false }))}
+                  >
+                    Interactive Button
+                  </Button>
+                </Box>
+
+                <Box sx={{ mt: 2, p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
+                  <Typography variant="body2">
+                    States: 
+                    {dialogStates.hover && ' [Hovering]'}
+                    {dialogStates.focus && ' [Focused]'}
+                    {dialogStates.active && ' [Active]'}
+                    {!dialogStates.hover && !dialogStates.focus && !dialogStates.active && ' [Idle]'}
+                  </Typography>
+                </Box>
+              </Box>
+            </DialogContent>
+            <DialogActions>
+              <Button>Cancel</Button>
+              <Button variant="contained">Apply</Button>
+            </DialogActions>
+          </DialogWrapper>
+        </Box>
+
+        {/* Form Interaction */}
+        <Box>
+          <Typography variant="subtitle1" gutterBottom>Form Interaction</Typography>
+          <DialogWrapper variant="default" size="md">
+            <DialogHeader title="Form Dialog" subtitle="Interactive form elements" />
+            <DialogContent>
+              <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <input 
+                  type="text" 
+                  placeholder="Enter text..." 
+                  style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
+                />
+                <textarea 
+                  placeholder="Enter description..." 
+                  rows={3}
+                  style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
+                />
+                <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                  <input type="checkbox" id="agree" />
+                  <label htmlFor="agree">I agree to the terms</label>
+                </Box>
+              </Box>
+            </DialogContent>
+            <DialogActions>
+              <Button>Cancel</Button>
+              <Button variant="contained">Submit</Button>
+            </DialogActions>
+          </DialogWrapper>
+        </Box>
+
+        {/* Keyboard Navigation Demo */}
+        <Box>
+          <Typography variant="subtitle1" gutterBottom>Keyboard Navigation</Typography>
+          <DialogWrapper variant="glass" size="sm">
+            <DialogHeader title="Keyboard Navigation" subtitle="Press Tab to navigate" />
+            <DialogContent>
+              <Typography variant="body2" gutterBottom>
+                Use Tab/Shift+Tab to navigate between elements. Press Escape to close.
+              </Typography>
+              <Box sx={{ display: 'flex', gap: 1, mt: 2 }}>
+                <Button size="small">First</Button>
+                <Button size="small">Second</Button>
+                <Button size="small">Third</Button>
+              </Box>
+            </DialogContent>
+            <DialogActions>
+              <Button>Cancel</Button>
+              <Button variant="contained">Done</Button>
+            </DialogActions>
+          </DialogWrapper>
+        </Box>
+      </Box>
+  );
+};
+
+export const InteractiveStates: Story = {
+  render: () => <InteractiveStatesComponent />,
+  parameters: {
+    layout: 'padded',
+  },
+};
+
+export const Responsive: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <Typography variant="h6">Responsive Dialog Behavior</Typography>
+      
+      {/* Mobile View */}
+      <Box>
+        <Typography variant="subtitle1" gutterBottom>Mobile View (Fullscreen on small screens)</Typography>
+        <Box sx={{ maxWidth: '375px', border: '1px solid #ccc', borderRadius: 1, p: 2 }}>
+          <DialogWrapper variant="default" size="md">
+            <DialogHeader title="Mobile Dialog" subtitle="Adapts to screen size" />
+            <DialogContent>
+              <Typography variant="body2">
+                On mobile devices, dialogs automatically adapt to provide the best user experience.
+                This might include fullscreen display or adjusted padding.
+              </Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button size="small">Cancel</Button>
+              <Button variant="contained" size="small">OK</Button>
+            </DialogActions>
+          </DialogWrapper>
+        </Box>
+      </Box>
+
+      {/* Tablet View */}
+      <Box>
+        <Typography variant="subtitle1" gutterBottom>Tablet View</Typography>
+        <Box sx={{ maxWidth: '768px', border: '1px solid #ccc', borderRadius: 1, p: 2 }}>
+          <DialogWrapper variant="glass" size="lg">
+            <DialogHeader title="Tablet Dialog" subtitle="Optimized for medium screens" />
+            <DialogContent>
+              <Typography>
+                Tablet view provides balanced spacing and sizing, making good use of available screen space
+                while maintaining readability and touch-friendly interactions.
+              </Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button>Cancel</Button>
+              <Button variant="contained">Continue</Button>
+            </DialogActions>
+          </DialogWrapper>
+        </Box>
+      </Box>
+
+      {/* Desktop View */}
+      <Box>
+        <Typography variant="subtitle1" gutterBottom>Desktop View</Typography>
+        <DialogWrapper variant="default" size="xl">
+          <DialogHeader title="Desktop Dialog" subtitle="Full-featured desktop experience" />
+          <DialogContent>
+            <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
+              <Typography>
+                Desktop view can utilize more complex layouts with multiple columns,
+                larger content areas, and more sophisticated interactions.
+              </Typography>
+              <Typography>
+                This provides the richest experience with all features available
+                and optimal use of screen real estate.
+              </Typography>
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <Button>Cancel</Button>
+            <Button>Save Draft</Button>
+            <Button variant="contained">Publish</Button>
+          </DialogActions>
+        </DialogWrapper>
+      </Box>
+
+      {/* Responsive Size Grid */}
+      <Box>
+        <Typography variant="subtitle1" gutterBottom>Responsive Size Grid</Typography>
+        <Box sx={{ 
+          display: 'grid', 
+          gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
+          gap: 2 
+        }}>
+          {['xs', 'sm', 'md', 'lg', 'xl'].map(size => (
+            <Box key={size} sx={{ border: '1px solid #ccc', borderRadius: 1, p: 2 }}>
+              <Typography variant="body2" gutterBottom>{size.toUpperCase()} Size</Typography>
+              <DialogWrapper variant="glass" size={size as 'xs' | 'sm' | 'md' | 'lg' | 'xl'}>
+                <DialogHeader title={`${size.toUpperCase()} Dialog`} />
+                <DialogContent>
+                  <Typography variant="body2">
+                    Responsive {size} size
+                  </Typography>
+                </DialogContent>
+                <DialogActions>
+                  <Button size="small">Close</Button>
+                </DialogActions>
+              </DialogWrapper>
+            </Box>
+          ))}
+        </Box>
+      </Box>
+    </Box>
+  ),
+  parameters: {
+    layout: 'padded',
+    viewport: {
+      viewports: {
+        mobile: { name: 'Mobile', styles: { width: '375px', height: '667px' } },
+        tablet: { name: 'Tablet', styles: { width: '768px', height: '1024px' } },
+        desktop: { name: 'Desktop', styles: { width: '1920px', height: '1080px' } },
+      },
+    },
+  },
 };

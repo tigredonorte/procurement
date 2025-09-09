@@ -1,5 +1,5 @@
 import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { AspectRatio } from './AspectRatio';
 import type { AspectRatioVariant } from './AspectRatio.types';
@@ -51,6 +51,18 @@ const DemoContent = ({ title, color }: { title: string; color: string }) => (
     {title}
   </Box>
 );
+
+export const Default: Story = {
+  args: {
+    variant: '16:9',
+    maxWidth: 400,
+  },
+  render: (args) => (
+    <AspectRatio {...args}>
+      <DemoContent title="16:9 Aspect Ratio" color="#1976d2" />
+    </AspectRatio>
+  ),
+};
 
 export const Standard16x9: Story = {
   args: {
@@ -259,4 +271,144 @@ export const ResponsiveGallery: Story = {
       </Box>
     );
   },
+};
+
+export const AllSizes: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', flexWrap: 'wrap' }}>
+        <AspectRatio variant="16:9" maxWidth={150}>
+          <DemoContent title="Small" color="#1976d2" />
+        </AspectRatio>
+        <AspectRatio variant="16:9" maxWidth={250}>
+          <DemoContent title="Medium" color="#388e3c" />
+        </AspectRatio>
+        <AspectRatio variant="16:9" maxWidth={400}>
+          <DemoContent title="Large" color="#f57c00" />
+        </AspectRatio>
+      </Box>
+    </Box>
+  ),
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>
+          Default State
+        </Typography>
+        <AspectRatio variant="16:9" maxWidth={250}>
+          <DemoContent title="Default" color="#1976d2" />
+        </AspectRatio>
+      </Box>
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>
+          With Max Constraints
+        </Typography>
+        <AspectRatio variant="16:9" maxWidth={200} maxHeight={150}>
+          <DemoContent title="Constrained" color="#388e3c" />
+        </AspectRatio>
+      </Box>
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>
+          Custom Ratio
+        </Typography>
+        <AspectRatio variant="custom" ratio={3} maxWidth={250}>
+          <DemoContent title="3:1 Custom" color="#f57c00" />
+        </AspectRatio>
+      </Box>
+    </Box>
+  ),
+};
+
+export const InteractiveStates: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>
+          Hover Effect
+        </Typography>
+        <AspectRatio variant="16:9" maxWidth={250}>
+          <Box
+            sx={{
+              width: '100%',
+              height: '100%',
+              bgcolor: '#1976d2',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'white',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                bgcolor: '#1565c0',
+                transform: 'scale(0.98)',
+              },
+            }}
+          >
+            Hover Me
+          </Box>
+        </AspectRatio>
+      </Box>
+      <Box>
+        <Typography variant="subtitle2" gutterBottom>
+          Clickable Content
+        </Typography>
+        <AspectRatio variant="1:1" maxWidth={200}>
+          <Box
+            sx={{
+              width: '100%',
+              height: '100%',
+              bgcolor: '#388e3c',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'white',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              userSelect: 'none',
+              '&:active': {
+                bgcolor: '#2e7d32',
+                transform: 'scale(0.98)',
+              },
+            }}
+          >
+            Interactive
+          </Box>
+        </AspectRatio>
+      </Box>
+    </Box>
+  ),
+};
+
+export const Responsive: Story = {
+  render: () => (
+    <Box sx={{ width: '100%', maxWidth: 800 }}>
+      <Typography variant="h6" gutterBottom>
+        Responsive Grid Layout
+      </Typography>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: {
+            xs: '1fr',
+            sm: 'repeat(2, 1fr)',
+            md: 'repeat(3, 1fr)',
+          },
+          gap: 2,
+        }}
+      >
+        {Array.from({ length: 6 }, (_, i) => (
+          <AspectRatio key={i} variant="4:3">
+            <DemoContent
+              title={`Item ${i + 1}`}
+              color={['#1976d2', '#388e3c', '#f57c00', '#7b1fa2', '#d32f2f', '#0288d1'][i]}
+            />
+          </AspectRatio>
+        ))}
+      </Box>
+    </Box>
+  ),
 };

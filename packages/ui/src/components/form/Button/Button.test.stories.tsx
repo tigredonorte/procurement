@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within, expect, waitFor, fn } from '@storybook/test';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { userEvent, within, expect, waitFor, fn } from 'storybook/test';
 import { Save, Delete } from '@mui/icons-material';
 
 import { Button } from './Button';

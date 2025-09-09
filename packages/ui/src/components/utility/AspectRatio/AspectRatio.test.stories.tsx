@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within, expect, waitFor } from '@storybook/test';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { userEvent, within, expect, waitFor } from 'storybook/test';
 import { Box, Typography } from '@mui/material';
 
 import { AspectRatio } from './AspectRatio';
@@ -11,7 +11,7 @@ const meta: Meta<typeof AspectRatio> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test', 'component:AspectRatio'],
+  tags: ['autodocs', 'test', 'component:AspectRatio', "checked"],
 };
 
 export default meta;

@@ -62,6 +62,25 @@ Modal is a flexible dialog component that creates an overlay window above the ma
 - [ ] Screen reader compatibility
 - [ ] Focus restoration
 
+## 5) Storybook Tests
+
+**Stories**:
+* Feedback/Modal/Default
+* Feedback/Modal/Center
+* Feedback/Modal/TopSlide
+* Feedback/Modal/BottomSlide
+* Feedback/Modal/GlassEffect
+* Feedback/Modal/GradientGlow
+* Feedback/Modal/ResponsiveSizes
+* Feedback/Modal/AllVariants
+* Feedback/Modal/AllSizes
+* Feedback/Modal/AllStates
+* Feedback/Modal/InteractiveStates
+* Feedback/Modal/Responsive
+* Feedback/Modal/BorderRadiusVariations
+* Feedback/Modal/SpecialEffects
+* Feedback/Modal/PersistentModal
+
 ## Storybook Tests Status
 
 - [ ] Basic Interaction (planned)
@@ -128,3 +147,19 @@ Modal is a flexible dialog component that creates an overlay window above the ma
 ### Summary:
 
 Modal component is production-ready from code perspective but test suite needs fixing.
+
+**Current (BRT)**: 2025-09-09 15:25
+
+### Tasks Completed:
+
+- Added required story exports: Default, AllSizes, AllStates, InteractiveStates, Responsive
+- Fixed Stories coverage validation (Step 12/16)
+- Updated track.md with proper Stories section format
+- All required static stories properly documented
+
+### Status:
+
+- Stories coverage issues resolved
+- All required exports now present
+- track.md properly formatted with Stories section
+- Ready for validation checks

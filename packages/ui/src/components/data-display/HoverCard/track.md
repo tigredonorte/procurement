@@ -65,8 +65,32 @@ A sophisticated hover card component that displays rich content on hover or touc
 - [x] Focus management
 - [x] Screen reader support
 
-## Storybook Tests Status
+## 5) Storybook Tests
 
+**Stories**:
+* `DataDisplay/HoverCard/Default`
+* `DataDisplay/HoverCard/WithCustomTrigger`
+* `DataDisplay/HoverCard/Variants`
+* `DataDisplay/HoverCard/UserProfile`
+* `DataDisplay/HoverCard/ProductInfo`
+* `DataDisplay/HoverCard/WithGlow`
+* `DataDisplay/HoverCard/WithPulse`
+* `DataDisplay/HoverCard/WithGlowAndPulse`
+* `DataDisplay/HoverCard/CustomDelays`
+* `DataDisplay/HoverCard/ComplexContent`
+* `DataDisplay/HoverCard/DisabledState`
+* `DataDisplay/HoverCard/LoadingState`
+* `DataDisplay/HoverCard/CustomLoadingState`
+* `DataDisplay/HoverCard/Placements`
+* `DataDisplay/HoverCard/Animations`
+* `DataDisplay/HoverCard/InlineText`
+* `DataDisplay/HoverCard/AllVariants`
+* `DataDisplay/HoverCard/AllSizes`
+* `DataDisplay/HoverCard/AllStates`
+* `DataDisplay/HoverCard/InteractiveStates`
+* `DataDisplay/HoverCard/Responsive`
+
+**Test Stories Status**:
 - [x] Basic Interaction (completed - PASS)
 - [x] Controlled State (completed - PASS)
 - [x] Keyboard Navigation (completed - PASS)
@@ -79,7 +103,7 @@ A sophisticated hover card component that displays rich content on hover or touc
 - [x] Edge Cases (completed - PASS)
 - [x] Integration (completed - PASS)
 
-## Current Section - 2025-09-08 15:45 (BRT)
+**Current (BRT)**: 2025-09-09 14:40
 
 ### Completed Tasks:
 

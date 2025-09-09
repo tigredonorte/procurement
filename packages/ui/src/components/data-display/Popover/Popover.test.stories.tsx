@@ -1,12 +1,12 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within, expect, waitFor, fn } from '@storybook/test';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { userEvent, within, expect, waitFor, fn } from 'storybook/test';
 import { Button, Typography, Stack, List, ListItem, ListItemText } from '@mui/material';
 import React from 'react';
 
 import { Popover } from './Popover';
 
 const meta: Meta<typeof Popover> = {
-  title: 'Data Display/Popover/Tests',
+  title: 'DataDisplay/Popover/Tests',
   component: Popover,
   parameters: {
     layout: 'centered',

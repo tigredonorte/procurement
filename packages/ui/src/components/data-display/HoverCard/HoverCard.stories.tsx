@@ -1,11 +1,12 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button, Typography, Chip, Stack, Box } from '@mui/material';
 import { Person, Star, Verified } from '@mui/icons-material';
 
 import { HoverCard } from './HoverCard';
 
 const meta = {
-  title: 'Data Display/HoverCard',
+  title: 'DataDisplay/HoverCard',
   component: HoverCard,
   parameters: {
     layout: 'centered',
@@ -422,5 +423,237 @@ export const InlineText: Story = {
       </HoverCard>{' '}
       to see additional information without navigating away from the current page.
     </Typography>
+  ),
+};
+
+// Required story exports for validation
+export const AllVariants: Story = {
+  render: () => (
+    <Stack spacing={3} alignItems="center">
+      <Typography variant="h6">All HoverCard Variants</Typography>
+      <Stack direction="row" spacing={3} flexWrap="wrap">
+        <HoverCard
+          variant="default"
+          title="Default Variant"
+          description="Standard hover card with default styling"
+        >
+          <Button variant="outlined">Default</Button>
+        </HoverCard>
+        <HoverCard
+          variant="glass"
+          title="Glass Variant"
+          description="Glassmorphism effect with blur and transparency"
+        >
+          <Button variant="outlined">Glass</Button>
+        </HoverCard>
+        <HoverCard
+          variant="detailed"
+          title="Detailed Variant"
+          description="Enhanced styling for rich content display"
+          avatar="https://images.unsplash.com/photo-1494790108755-2616b612b789?w=150&h=150&fit=crop&crop=face"
+        >
+          <Button variant="outlined">Detailed</Button>
+        </HoverCard>
+      </Stack>
+    </Stack>
+  ),
+};
+
+export const AllSizes: Story = {
+  render: () => (
+    <Stack spacing={3} alignItems="center">
+      <Typography variant="h6">All HoverCard Sizes</Typography>
+      <Stack direction="row" spacing={3} flexWrap="wrap">
+        <HoverCard
+          title="Small Card"
+          description="Compact size"
+          maxWidth={200}
+        >
+          <Button variant="outlined" size="small">Small (200px)</Button>
+        </HoverCard>
+        <HoverCard
+          title="Medium Card"
+          description="Default medium size for standard content"
+          maxWidth={300}
+        >
+          <Button variant="outlined">Medium (300px)</Button>
+        </HoverCard>
+        <HoverCard
+          title="Large Card"
+          description="Large size for detailed information and rich content display"
+          maxWidth={400}
+        >
+          <Button variant="outlined" size="large">Large (400px)</Button>
+        </HoverCard>
+        <HoverCard
+          title="Extra Large Card"
+          description="Extra large size for complex content layouts and detailed information panels"
+          maxWidth={500}
+        >
+          <Button variant="outlined" size="large">XL (500px)</Button>
+        </HoverCard>
+      </Stack>
+    </Stack>
+  ),
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <Stack spacing={3} alignItems="center">
+      <Typography variant="h6">All HoverCard States</Typography>
+      <Stack direction="row" spacing={3} flexWrap="wrap">
+        <HoverCard
+          title="Normal State"
+          description="Default interactive state"
+        >
+          <Button variant="outlined">Normal</Button>
+        </HoverCard>
+        <HoverCard
+          title="With Glow"
+          description="Glowing effect applied"
+          glow={true}
+          variant="glass"
+        >
+          <Button variant="outlined" color="primary">Glow Effect</Button>
+        </HoverCard>
+        <HoverCard
+          title="With Pulse"
+          description="Pulsing animation effect"
+          pulse={true}
+        >
+          <Button variant="outlined" color="warning">Pulse Effect</Button>
+        </HoverCard>
+        <HoverCard
+          title="Combined Effects"
+          description="Both glow and pulse"
+          glow={true}
+          pulse={true}
+          variant="detailed"
+        >
+          <Button variant="contained" color="secondary">Combined</Button>
+        </HoverCard>
+        <HoverCard
+          title="Loading State"
+          description="Content is loading"
+          loading={true}
+        >
+          <Button variant="outlined">Loading</Button>
+        </HoverCard>
+        <HoverCard
+          title="Disabled State"
+          description="This hover card is disabled"
+          disabled={true}
+        >
+          <Button disabled>Disabled</Button>
+        </HoverCard>
+      </Stack>
+    </Stack>
+  ),
+};
+
+const InteractiveStatesComponent = () => {
+  const [open, setOpen] = React.useState(false);
+  const [clickCount, setClickCount] = React.useState(0);
+  
+  return (
+    <Stack spacing={3} alignItems="center">
+      <Typography variant="h6">Interactive HoverCard States</Typography>
+      <Stack direction="row" spacing={3} flexWrap="wrap">
+        <HoverCard
+          title="Hover Interaction"
+          description="Shows on hover with 700ms delay"
+          enterDelay={700}
+          exitDelay={200}
+        >
+          <Button variant="outlined">Hover Me (700ms delay)</Button>
+        </HoverCard>
+        <HoverCard
+          title="Quick Hover"
+          description="Shows immediately on hover"
+          enterDelay={0}
+          exitDelay={0}
+        >
+          <Button variant="outlined" color="primary">Quick Hover (0ms)</Button>
+        </HoverCard>
+        <HoverCard
+          title="With Callbacks"
+          description={`Opened: ${open ? 'Yes' : 'No'}`}
+          onOpen={() => setOpen(true)}
+          onClose={() => setOpen(false)}
+        >
+          <Button variant="outlined" color="secondary">
+            Track State: {open ? 'Open' : 'Closed'}
+          </Button>
+        </HoverCard>
+        <HoverCard
+          title="Click Counter"
+          description={`Button clicked ${clickCount} times`}
+        >
+          <Button 
+            variant="contained" 
+            onClick={() => setClickCount(c => c + 1)}
+          >
+            Click Count: {clickCount}
+          </Button>
+        </HoverCard>
+      </Stack>
+      <Typography variant="caption" color="text.secondary">
+        Test hover interactions, delays, and state management
+      </Typography>
+    </Stack>
+  );
+};
+
+export const InteractiveStates: Story = {
+  render: () => <InteractiveStatesComponent />,
+};
+
+export const Responsive: Story = {
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
+  render: () => (
+    <Stack spacing={3} alignItems="center" sx={{ p: 2 }}>
+      <Typography variant="h6">Responsive HoverCard</Typography>
+      <Stack spacing={2} sx={{ width: '100%' }}>
+        <HoverCard
+          title="Mobile Optimized"
+          description="Touch-enabled for mobile devices"
+          touchEnabled={true}
+          placement="bottom"
+          maxWidth={280}
+        >
+          <Button fullWidth variant="outlined">
+            Touch & Hold (Mobile)
+          </Button>
+        </HoverCard>
+        <HoverCard
+          title="Tablet View"
+          description="Optimized for tablet screens"
+          placement="right"
+          maxWidth={350}
+        >
+          <Button fullWidth variant="outlined" color="primary">
+            Tablet Optimized
+          </Button>
+        </HoverCard>
+        <HoverCard
+          title="Desktop View"
+          description="Full-featured desktop experience with rich content"
+          variant="detailed"
+          avatar="https://images.unsplash.com/photo-1494790108755-2616b612b789?w=150&h=150&fit=crop&crop=face"
+          maxWidth={400}
+        >
+          <Button fullWidth variant="contained">
+            Desktop Experience
+          </Button>
+        </HoverCard>
+      </Stack>
+      <Typography variant="caption" color="text.secondary" sx={{ textAlign: 'center' }}>
+        Resize viewport to test responsive behavior
+      </Typography>
+    </Stack>
   ),
 };

@@ -43,16 +43,16 @@ Legend: Pending | Running | PASS | FAIL
 
 ## Static Stories Status
 
-- [ ] Default story
-- [ ] All variants covered (default, glass, gradient, elevated, minimal, cards)
-- [ ] All animations covered (slide, fade, zoom, flip)
-- [ ] Autoplay story
-- [ ] With thumbnails story
-- [ ] Different indicator positions
-- [ ] Different arrow positions
-- [ ] Loading state story
-- [ ] Disabled state story
-- [ ] Empty state story
+- [x] Default story
+- [x] All variants covered (default, glass, gradient, elevated, minimal, cards)
+- [x] All animations covered (slide, fade, zoom, flip)
+- [x] Autoplay story
+- [x] With thumbnails story
+- [x] Different indicator positions
+- [x] Different arrow positions
+- [x] Loading state story
+- [x] Disabled state story
+- [x] Required story exports (AllVariants, AllSizes, AllStates, InteractiveStates, Responsive)
 
 ## Lint Status
 

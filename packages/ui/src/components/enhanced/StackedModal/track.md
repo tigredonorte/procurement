@@ -65,22 +65,21 @@ A sophisticated modal system that supports stacking multiple modals with proper 
 ## 5) Storybook Tests
 
 **Stories**:
-
-- Enhanced/StackedModal/Default
-- Enhanced/StackedModal/GlassMorphism
-- Enhanced/StackedModal/MultiLevelStacking
-- Enhanced/StackedModal/MobileResponsive
-- Enhanced/StackedModal/AsyncContentLoading
-- Enhanced/StackedModal/CustomActions
-- Enhanced/StackedModal/ComplexWorkflow
-- Enhanced/StackedModal/PerformanceDemo
-- Enhanced/StackedModal/RTLSupport
-- Enhanced/StackedModal/AccessibilityShowcase
-- Enhanced/StackedModal/AllVariants
-- Enhanced/StackedModal/AllSizes
-- Enhanced/StackedModal/AllStates
-- Enhanced/StackedModal/InteractiveStates
-- Enhanced/StackedModal/Responsive
+* Enhanced/StackedModal/Default
+* Enhanced/StackedModal/GlassMorphism
+* Enhanced/StackedModal/MultiLevelStacking
+* Enhanced/StackedModal/MobileResponsive
+* Enhanced/StackedModal/AsyncContentLoading
+* Enhanced/StackedModal/CustomActions
+* Enhanced/StackedModal/ComplexWorkflow
+* Enhanced/StackedModal/PerformanceDemo
+* Enhanced/StackedModal/RTLSupport
+* Enhanced/StackedModal/AccessibilityShowcase
+* Enhanced/StackedModal/AllVariants
+* Enhanced/StackedModal/AllSizes
+* Enhanced/StackedModal/AllStates
+* Enhanced/StackedModal/InteractiveStates
+* Enhanced/StackedModal/Responsive
 
 ## Storybook Tests Status
 

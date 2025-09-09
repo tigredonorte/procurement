@@ -1,5 +1,5 @@
 import { Box, Button, Paper, Stack, Typography } from '@mui/material';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 
 import { Toaster, toast } from './Sonner';
@@ -513,4 +513,184 @@ const ThemedToastsComponent = () => {
 
 export const ThemedToasts: Story = {
   render: () => <ThemedToastsComponent />,
+};
+
+// Required story exports for validation
+export const AllVariants: Story = {
+  render: () => (
+    <>
+      <Toaster richColors closeButton />
+      <Stack spacing={2} direction="row" flexWrap="wrap">
+        <Button variant="contained" onClick={() => toast('Default toast')}>
+          Default
+        </Button>
+        <Button variant="contained" color="success" onClick={() => toast.success('Success!')}>
+          Success
+        </Button>
+        <Button variant="contained" color="error" onClick={() => toast.error('Error!')}>
+          Error
+        </Button>
+        <Button variant="contained" color="warning" onClick={() => toast.warning('Warning!')}>
+          Warning
+        </Button>
+        <Button variant="contained" color="info" onClick={() => toast.info('Info!')}>
+          Info
+        </Button>
+        <Button variant="outlined" onClick={() => toast.loading('Loading...')}>
+          Loading
+        </Button>
+      </Stack>
+    </>
+  ),
+};
+
+export const AllSizes: Story = {
+  render: () => (
+    <>
+      <Toaster />
+      <Stack spacing={2}>
+        <Button 
+          variant="outlined" 
+          onClick={() => toast('Compact', { duration: 3000 })}
+        >
+          Default Size
+        </Button>
+        <Button 
+          variant="outlined" 
+          onClick={() => toast('Toast with description', { 
+            description: 'This is additional information',
+            duration: 3000 
+          })}
+        >
+          With Description
+        </Button>
+        <Button 
+          variant="outlined" 
+          onClick={() => toast('Toast with action', { 
+            action: { label: 'Undo', onClick: () => {} },
+            duration: 3000 
+          })}
+        >
+          With Action
+        </Button>
+      </Stack>
+    </>
+  ),
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <>
+      <Toaster richColors closeButton />
+      <Stack spacing={2}>
+        <Button variant="outlined" onClick={() => toast('Normal state toast')}>
+          Normal
+        </Button>
+        <Button 
+          variant="outlined" 
+          onClick={() => {
+            const id = toast.loading('Processing...');
+            window.setTimeout(() => toast.success('Complete!', { id }), 2000);
+          }}
+        >
+          Loading → Success
+        </Button>
+        <Button 
+          variant="outlined" 
+          onClick={() => {
+            const id = toast.loading('Processing...');
+            window.setTimeout(() => toast.error('Failed!', { id }), 2000);
+          }}
+        >
+          Loading → Error
+        </Button>
+        <Button 
+          variant="outlined" 
+          onClick={() => toast('Hoverable toast', { duration: 10000 })}
+        >
+          Hover to Pause
+        </Button>
+      </Stack>
+    </>
+  ),
+};
+
+export const InteractiveStates: Story = {
+  render: () => (
+    <>
+      <Toaster closeButton richColors />
+      <Stack spacing={2}>
+        <Button 
+          variant="contained" 
+          onClick={() => toast('Click to dismiss', {
+            duration: Infinity,
+            onClick: (t) => toast.dismiss(t.id),
+          })}
+        >
+          Clickable Toast
+        </Button>
+        <Button 
+          variant="contained" 
+          onClick={() => toast('Toast with action', {
+            action: {
+              label: 'Undo',
+              onClick: () => toast.success('Undone!'),
+            },
+          })}
+        >
+          With Action Button
+        </Button>
+        <Button 
+          variant="contained" 
+          onClick={() => toast('Dismissible toast', {
+            duration: 10000,
+          })}
+        >
+          With Close Button
+        </Button>
+        <Button 
+          variant="outlined" 
+          color="error" 
+          onClick={() => toast.dismiss()}
+        >
+          Dismiss All
+        </Button>
+      </Stack>
+    </>
+  ),
+};
+
+export const Responsive: Story = {
+  parameters: {
+    viewport: { defaultViewport: 'mobile1' },
+  },
+  render: () => (
+    <>
+      <Toaster position="bottom-center" />
+      <Stack spacing={2}>
+        <Typography variant="body2">Test on different screen sizes:</Typography>
+        <Button variant="contained" onClick={() => toast('Mobile responsive toast')}>
+          Show Toast (Mobile)
+        </Button>
+        <Button 
+          variant="contained" 
+          onClick={() => toast.success('Success notification', {
+            description: 'This adapts to screen size',
+          })}
+        >
+          With Description
+        </Button>
+        <Button 
+          variant="contained" 
+          onClick={() => {
+            toast('First toast');
+            toast('Second toast');
+            toast('Third toast');
+          }}
+        >
+          Multiple Toasts
+        </Button>
+      </Stack>
+    </>
+  ),
 };

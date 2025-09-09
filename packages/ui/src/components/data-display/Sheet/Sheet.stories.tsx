@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import {
   Box,
   Button,
@@ -33,7 +33,7 @@ import { SheetProps } from './Sheet.types';
 import { Sheet } from './Sheet';
 
 const meta: Meta<typeof Sheet> = {
-  title: 'Data Display/Sheet',
+  title: 'DataDisplay/Sheet',
   component: Sheet,
   parameters: {
     layout: 'centered',
@@ -829,4 +829,165 @@ const [open, setOpen] = useState(false);
 
 export const Settings: Story = {
   render: () => <SettingsComponent />,
+};
+
+// Required story exports for validation
+export const AllVariants: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+      {(['default', 'glass', 'gradient', 'elevated', 'minimal', 'draggable'] as const).map((variant) => (
+        <SheetWrapper
+          key={variant}
+          variant={variant}
+          title={`${variant} Variant`}
+          buttonText={variant}
+          glow={variant === 'glass'}
+          glass={variant === 'glass'}
+          gradient={variant === 'gradient'}
+        >
+          <Typography>
+            This is a {variant} variant sheet
+          </Typography>
+        </SheetWrapper>
+      ))}
+    </Box>
+  ),
+};
+
+export const AllSizes: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+      {(['xs', 'sm', 'md', 'lg', 'xl', 'full'] as const).map((size) => (
+        <SheetWrapper
+          key={size}
+          size={size}
+          title={`Size: ${size.toUpperCase()}`}
+          buttonText={`Size ${size}`}
+        >
+          <Typography>
+            This is a {size} sized sheet
+          </Typography>
+        </SheetWrapper>
+      ))}
+    </Box>
+  ),
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+      <SheetWrapper
+        title="Loading State"
+        buttonText="Loading"
+        loading
+      />
+      <SheetWrapper
+        title="Disabled State"
+        buttonText="Disabled"
+        disabled
+      >
+        <Typography>Disabled content</Typography>
+      </SheetWrapper>
+      <SheetWrapper
+        title="Persistent State"
+        buttonText="Persistent"
+        persistent
+        closeOnOverlayClick={false}
+        closeOnEscape={false}
+      >
+        <Typography>Persistent sheet - cannot be easily closed</Typography>
+      </SheetWrapper>
+      <SheetWrapper
+        title="No Overlay State"
+        buttonText="No Overlay"
+        showOverlay={false}
+      >
+        <Typography>Sheet without backdrop</Typography>
+      </SheetWrapper>
+    </Box>
+  ),
+};
+
+export const InteractiveStates: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+      <SheetWrapper
+        title="Swipeable Sheet"
+        buttonText="Swipeable"
+        swipeable
+        showHandle
+        position="bottom"
+      >
+        <Typography>Swipe down to close (mobile)</Typography>
+      </SheetWrapper>
+      <SheetWrapper
+        variant="draggable"
+        title="Draggable Sheet"
+        buttonText="Draggable"
+        position="bottom"
+        snapPoints={[0.25, 0.5, 0.75]}
+        defaultSnapPoint={0.5}
+        showHandle
+      >
+        <Typography>Drag to resize</Typography>
+      </SheetWrapper>
+      <SheetWrapper
+        title="With Effects"
+        buttonText="Glow & Glass"
+        variant="glass"
+        glow
+        glass
+        pulse
+      >
+        <Typography>Interactive visual effects</Typography>
+      </SheetWrapper>
+    </Box>
+  ),
+};
+
+export const Responsive: Story = {
+  parameters: {
+    viewport: {
+      viewports: {
+        mobile: { name: 'Mobile', styles: { width: '375px', height: '667px' } },
+        tablet: { name: 'Tablet', styles: { width: '768px', height: '1024px' } },
+        desktop: { name: 'Desktop', styles: { width: '1440px', height: '900px' } },
+      },
+    },
+    chromatic: {
+      viewports: [375, 768, 1440],
+    },
+  },
+  render: () => (
+    <Box>
+      <Typography variant="body2" sx={{ mb: 2 }}>
+        This sheet adapts to different screen sizes
+      </Typography>
+      <SheetWrapper
+        title="Responsive Sheet"
+        description="Adapts to viewport size"
+        buttonText="Open Responsive Sheet"
+        position="bottom"
+        size="md"
+      >
+        <Stack spacing={2}>
+          <Typography variant="h6">Responsive Content</Typography>
+          <Typography variant="body2">
+            This sheet adjusts its behavior and appearance based on the viewport size.
+          </Typography>
+          <Box sx={{ 
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: '1fr 1fr 1fr' },
+            gap: 2
+          }}>
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <Paper key={i} sx={{ p: 2 }}>
+                <Typography>Item {i}</Typography>
+              </Paper>
+            ))}
+          </Box>
+        </Stack>
+      </SheetWrapper>
+    </Box>
+  ),
 };

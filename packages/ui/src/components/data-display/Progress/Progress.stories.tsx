@@ -1,16 +1,16 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Stack, Box, Typography, Button } from '@mui/material';
 import React from 'react';
 
 import { Progress } from './Progress';
 
 const meta = {
-  title: 'Data Display/Progress 🥇',
+  title: 'Data Display/Progress',
   component: Progress,
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs', 'component:Progress'],
+  tags: ['autodocs', 'component:Progress', "checked"],
   argTypes: {
     variant: {
       control: { type: 'select' },

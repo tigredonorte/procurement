@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
@@ -75,6 +75,11 @@ const meta: Meta<typeof Autocomplete> = {
 
 export default meta;
 type Story = StoryObj<typeof Autocomplete>;
+
+// Required story exports for validation
+export const Default: Story = {
+  render: () => <ControlledAutocomplete suggestions={fruits} placeholder="Select a fruit..." />,
+};
 
 // Controlled Component Wrapper
 const ControlledAutocomplete = <T = string | Person,>(props: Partial<AutocompleteProps<T>>) => {
@@ -412,4 +417,263 @@ export const LargeDatasetPerformance: Story = {
       />
     );
   },
+};
+
+// Required story exports for validation
+export const AllVariants: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <div>
+        <h4>Default</h4>
+        <ControlledAutocomplete suggestions={fruits} placeholder="Default autocomplete..." />
+      </div>
+      <div>
+        <h4>With Ghost Text</h4>
+        <ControlledAutocomplete
+          suggestions={countries}
+          showGhostText={true}
+          placeholder="Type to see ghost text..."
+        />
+      </div>
+      <div>
+        <h4>Multiple Selection</h4>
+        <ControlledAutocomplete
+          suggestions={fruits}
+          multiple={true}
+          placeholder="Select multiple items..."
+        />
+      </div>
+      <div>
+        <h4>Custom Renderer</h4>
+        <ControlledAutocomplete
+          suggestions={samplePeople}
+          getKey={(person: Person) => person.id}
+          getLabel={(person: Person) => person.name}
+          renderSuggestion={(person: Person, state) => (
+            <div
+              style={{
+                padding: '8px',
+                backgroundColor: state.active ? '#e3f2fd' : 'transparent',
+              }}
+            >
+              <div style={{ fontWeight: 'bold' }}>{person.name}</div>
+              <div style={{ fontSize: '0.875rem' }}>{person.email}</div>
+            </div>
+          )}
+          placeholder="Custom rendered items..."
+        />
+      </div>
+      <div>
+        <h4>Async Mode</h4>
+        <AsyncModeComponent />
+      </div>
+    </div>
+  ),
+};
+
+export const AllSizes: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <div>
+        <h4>Small (Default MUI Input Size)</h4>
+        <ControlledAutocomplete 
+          suggestions={fruits} 
+          placeholder="Small size..."
+        />
+      </div>
+      <div>
+        <h4>Medium (Default)</h4>
+        <ControlledAutocomplete 
+          suggestions={fruits} 
+          placeholder="Medium size..."
+        />
+      </div>
+      <div>
+        <h4>Large (Custom styling)</h4>
+        <div style={{ fontSize: '1.25rem' }}>
+          <ControlledAutocomplete 
+            suggestions={fruits} 
+            placeholder="Large size..."
+          />
+        </div>
+      </div>
+    </div>
+  ),
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <div>
+        <h4>Default</h4>
+        <ControlledAutocomplete suggestions={fruits} placeholder="Default state..." />
+      </div>
+      <div>
+        <h4>With Value</h4>
+        <ControlledAutocomplete 
+          value="Apple" 
+          suggestions={fruits} 
+          placeholder="Has value..."
+        />
+      </div>
+      <div>
+        <h4>Disabled</h4>
+        <ControlledAutocomplete
+          suggestions={fruits}
+          disabled={true}
+          value="Disabled"
+          placeholder="Disabled state..."
+        />
+      </div>
+      <div>
+        <h4>Loading</h4>
+        <ControlledAutocomplete
+          suggestions={[]}
+          async={true}
+          isLoading={true}
+          placeholder="Loading state..."
+        />
+      </div>
+      <div>
+        <h4>Empty Results</h4>
+        <ControlledAutocomplete 
+          suggestions={[]} 
+          value="xyz" 
+          placeholder="No results..."
+        />
+      </div>
+      <div>
+        <h4>Multiple Selected</h4>
+        <ControlledAutocomplete
+          suggestions={fruits}
+          multiple={true}
+          selectedItems={['Apple', 'Banana', 'Cherry']}
+          placeholder="Multiple selected..."
+        />
+      </div>
+    </div>
+  ),
+};
+
+const InteractiveStatesComponent = () => {
+  const [hoverValue, setHoverValue] = useState('');
+  const [focusValue, setFocusValue] = useState('');
+  const [activeValue, setActiveValue] = useState('');
+  
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <div>
+        <h4>Hover State</h4>
+        <div
+          onMouseEnter={() => setHoverValue('Hovered')}
+          onMouseLeave={() => setHoverValue('')}
+          style={{ 
+            border: hoverValue ? '2px solid #1976d2' : 'none',
+            padding: '2px',
+            borderRadius: '4px'
+          }}
+        >
+          <ControlledAutocomplete 
+            suggestions={fruits} 
+            placeholder="Hover over me..."
+            value={hoverValue}
+          />
+        </div>
+      </div>
+      <div>
+        <h4>Focus State</h4>
+        <ControlledAutocomplete
+          suggestions={fruits}
+          placeholder="Click to focus..."
+          value={focusValue}
+          onChange={(value) => setFocusValue(value)}
+          onFocus={() => setFocusValue('Focused')}
+          onBlur={() => setFocusValue('')}
+        />
+      </div>
+      <div>
+        <h4>Active/Typing State</h4>
+        <ControlledAutocomplete
+          suggestions={fruits}
+          placeholder="Start typing..."
+          value={activeValue}
+          onChange={(value) => setActiveValue(value)}
+        />
+      </div>
+      <div>
+        <h4>Dropdown Open State</h4>
+        <ControlledAutocomplete
+          suggestions={fruits}
+          placeholder="Click to open dropdown..."
+          defaultOpen={true}
+        />
+      </div>
+    </div>
+  );
+};
+
+export const InteractiveStates: Story = {
+  render: () => <InteractiveStatesComponent />,
+};
+
+export const Responsive: Story = {
+  parameters: {
+    viewport: {
+      viewports: {
+        mobile: { name: 'Mobile', styles: { width: '375px', height: '667px' } },
+        tablet: { name: 'Tablet', styles: { width: '768px', height: '1024px' } },
+        desktop: { name: 'Desktop', styles: { width: '1440px', height: '900px' } },
+      },
+    },
+  },
+  render: () => (
+    <div style={{ padding: '20px' }}>
+      <h3>Responsive Autocomplete</h3>
+      <p>Resize the viewport to see responsive behavior</p>
+      <div style={{ marginTop: '20px' }}>
+        <ControlledAutocomplete
+          suggestions={countries}
+          placeholder="Responsive autocomplete..."
+        />
+      </div>
+      <div style={{ marginTop: '20px' }}>
+        <h4>In a flex container</h4>
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+          <div style={{ flex: '1 1 300px' }}>
+            <ControlledAutocomplete
+              suggestions={fruits}
+              placeholder="Flex item 1..."
+            />
+          </div>
+          <div style={{ flex: '1 1 300px' }}>
+            <ControlledAutocomplete
+              suggestions={countries}
+              placeholder="Flex item 2..."
+            />
+          </div>
+        </div>
+      </div>
+      <div style={{ marginTop: '20px' }}>
+        <h4>In a grid container</h4>
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+          gap: '15px' 
+        }}>
+          <ControlledAutocomplete
+            suggestions={fruits}
+            placeholder="Grid item 1..."
+          />
+          <ControlledAutocomplete
+            suggestions={countries}
+            placeholder="Grid item 2..."
+          />
+          <ControlledAutocomplete
+            suggestions={fruits}
+            placeholder="Grid item 3..."
+          />
+        </div>
+      </div>
+    </div>
+  ),
 };

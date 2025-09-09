@@ -58,11 +58,15 @@ A map preview component for displaying geographic locations with markers, custom
 **Stories**:
 
 - Enhanced/MapPreview/Default
-- Enhanced/MapPreview/AllVariants
+- Enhanced/MapPreview/AllVariants 
 - Enhanced/MapPreview/AllSizes
 - Enhanced/MapPreview/AllStates
 - Enhanced/MapPreview/InteractiveStates
 - Enhanced/MapPreview/Responsive
+- Enhanced/MapPreview/WithCustomHeight
+- Enhanced/MapPreview/MinimalSetup
+- Enhanced/MapPreview/HighZoom
+- Enhanced/MapPreview/LowZoom
 
 * [ ] Basic Interaction (planned)
 * [ ] Keyboard Navigation (planned)

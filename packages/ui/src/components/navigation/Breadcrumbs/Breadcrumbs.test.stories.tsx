@@ -1,18 +1,18 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within, expect, waitFor, fn } from '@storybook/test';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { userEvent, within, expect, waitFor, fn } from 'storybook/test';
 import { Home, Dashboard, Folder, Settings, Article, AccountTree, Code } from '@mui/icons-material';
 
 import { Breadcrumbs } from './Breadcrumbs';
 import { BreadcrumbItem } from './Breadcrumbs.types';
 
 const meta: Meta<typeof Breadcrumbs> = {
-  title: 'Navigation/Breadcrumbs 🥇/Tests',
+  title: 'Navigation/Breadcrumbs/Tests',
   component: Breadcrumbs,
   parameters: {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test', 'component:Breadcrumbs'],
+  tags: ['autodocs', 'test', 'component:Breadcrumbs', 'checked'],
 };
 
 export default meta;

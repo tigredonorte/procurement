@@ -52,7 +52,7 @@ None - Component has proper TypeScript typing
 - [x] Edge cases
 - [x] Integration with other components
 
-## Storybook Tests Status
+## 5) Storybook Tests
 
 - [x] Basic Interaction (completed)
 - [x] Click Interaction (completed)
@@ -67,9 +67,31 @@ None - Component has proper TypeScript typing
 - [x] Edge Cases (completed)
 - [x] Integration (completed)
 
-## Current Section - 2025-09-08 15:15 (BRT)
+**Stories**:
+* DataDisplay/Tooltip/Default
+* DataDisplay/Tooltip/WithIcon
+* DataDisplay/Tooltip/Variants
+* DataDisplay/Tooltip/Sizes
+* DataDisplay/Tooltip/Placements
+* DataDisplay/Tooltip/WithGlow
+* DataDisplay/Tooltip/WithPulse
+* DataDisplay/Tooltip/WithGlowAndPulse
+* DataDisplay/Tooltip/ComplexTooltip
+* DataDisplay/Tooltip/UserInterface
+* DataDisplay/Tooltip/FormHelp
+* DataDisplay/Tooltip/InteractiveTooltips
+* DataDisplay/Tooltip/LongText
+* DataDisplay/Tooltip/AllVariants
+* DataDisplay/Tooltip/AllSizes
+* DataDisplay/Tooltip/AllStates
+* DataDisplay/Tooltip/InteractiveStates
+* DataDisplay/Tooltip/Responsive
 
-### Current Task: Verification and Completion [omega-10]
+**Current (BRT)**: 2025-09-09 15:00
+
+## Current Section - 2025-09-09 15:00 (BRT) [omega-96]
+
+### Current Task: Fixed Stories Coverage
 
 - Fixed index.ts to index.tsx for build compatibility
 - Ran pnpm check:component - all checks pass

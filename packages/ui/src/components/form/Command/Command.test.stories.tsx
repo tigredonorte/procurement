@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within, expect, waitFor, fn } from '@storybook/test';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { userEvent, within, expect, waitFor, fn } from 'storybook/test';
 import { Button, Box } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import SettingsIcon from '@mui/icons-material/Settings';
-import PersonIcon from '@mui/icons-material/Person';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import SaveIcon from '@mui/icons-material/Save';
+
 import { Command } from './Command';
 import { CommandItem } from './Command.types';
 
@@ -79,7 +77,7 @@ const TestWrapper: React.FC<{
   items?: CommandItem[]; 
   onSelect?: (item: CommandItem) => void;
   onOpenChange?: (open: boolean) => void;
-  [key: string]: any;
+  [key: string]: unknown;
 }> = ({ 
   items = testItems, 
   onSelect = fn(), 
@@ -513,7 +511,7 @@ export const PerformanceTest: Story = {
     const canvas = within(canvasElement);
 
     await step('Open command palette with many items', async () => {
-      const startTime = performance.now();
+      const startTime = Date.now();
       
       const openButton = canvas.getByTestId('open-command');
       await userEvent.click(openButton);
@@ -521,10 +519,8 @@ export const PerformanceTest: Story = {
       const dialog = await canvas.findByRole('dialog');
       await expect(dialog).toBeInTheDocument();
       
-      const endTime = performance.now();
+      const endTime = Date.now();
       const renderTime = endTime - startTime;
-      
-      console.log(`Command palette render time: ${renderTime}ms`);
       // Should render reasonably quickly
       expect(renderTime).toBeLessThan(2000);
     });
@@ -532,17 +528,15 @@ export const PerformanceTest: Story = {
     await step('Search performance with many items', async () => {
       const input = canvas.getByRole('textbox');
       
-      const startTime = performance.now();
+      const startTime = Date.now();
       await userEvent.type(input, 'Command 50');
       
       await waitFor(() => {
         expect(canvas.getByText('Command 50')).toBeInTheDocument();
       });
       
-      const endTime = performance.now();
+      const endTime = Date.now();
       const searchTime = endTime - startTime;
-      
-      console.log(`Search filter time: ${searchTime}ms`);
       // Search should be responsive
       expect(searchTime).toBeLessThan(1000);
     });
@@ -555,7 +549,7 @@ export const PerformanceTest: Story = {
 
 export const IntegrationTest: Story = {
   name: '🔗 Integration Test',
-  render: (args) => {
+  render: function IntegrationTestComponent(args) {
     const [lastAction, setLastAction] = useState<string>('');
     
     const integrationItems: CommandItem[] = testItems.map(item => ({
@@ -623,8 +617,7 @@ export const IntegrationTest: Story = {
 
 export const AllVariants: Story = {
   name: '🎨 All Variants Test',
-  render: () => {
-    const [currentVariant, setCurrentVariant] = useState<string>('default');
+  render: function AllVariantsTestComponent() {
     const variants = ['default', 'glass', 'gradient', 'minimal', 'elevated'] as const;
     
     return (

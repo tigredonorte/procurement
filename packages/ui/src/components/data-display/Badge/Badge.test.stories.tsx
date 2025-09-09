@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within, expect, waitFor, fn } from '@storybook/test';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { userEvent, within, expect, waitFor, fn } from 'storybook/test';
 import { Box, IconButton, Button } from '@mui/material';
 import { Mail, Notifications, ShoppingCart, CheckCircle, Star, Person, Settings } from '@mui/icons-material';
 import React, { useState } from 'react';

@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within, expect, waitFor } from '@storybook/test';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { userEvent, within, expect, waitFor } from 'storybook/test';
 import { useState } from 'react';
 import { Button, Box, Typography, Paper, Alert, TextField, InputLabel } from '@mui/material';
 

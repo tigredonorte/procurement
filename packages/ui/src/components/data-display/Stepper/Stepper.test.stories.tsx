@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within, expect, waitFor, fn } from '@storybook/test';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { userEvent, within, expect, waitFor, fn } from 'storybook/test';
 import { useState } from 'react';
 import { Box } from '@mui/material';
 
-import { Stepper } from './Stepper';
-import { Step } from './Stepper.types';
+import { Stepper } from './';
+import type { Step } from './';
 
 const meta: Meta<typeof Stepper> = {
   title: 'DataDisplay/Stepper/Tests',

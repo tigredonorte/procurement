@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Box, SvgIcon } from '@mui/material';
-import { fn } from '@storybook/test';
+import { fn } from 'storybook/test';
 
 import { EmptyState } from './EmptyState';
 

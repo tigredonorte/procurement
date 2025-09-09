@@ -38,7 +38,7 @@
 
   ```bash
   cd packages/ui
-  pnpm check:component overlays Lightbox
+  pnpm check:component data-display Lightbox
   ```
 
 - Must be clean for: **ESLint**, **TypeScript**, **format** (Prettier), **storybook stories build**.
@@ -115,13 +115,25 @@
 ## 5) Storybook Tests
 
 **Stories**
-
-- `Overlays/Lightbox/Default`
-- `Overlays/Lightbox/Filmstrip`
-- `Overlays/Lightbox/MixedMedia`
-- `Overlays/Lightbox/Autoplay`
-- `Overlays/Lightbox/Zoomable`
-- `Overlays/Lightbox/EdgeCases`
+* `DataDisplay/Lightbox/Default`
+* `DataDisplay/Lightbox/SingleImage`
+* `DataDisplay/Lightbox/WithFilmstrip`
+* `DataDisplay/Lightbox/Autoplay`
+* `DataDisplay/Lightbox/CustomAutoplayInterval`
+* `DataDisplay/Lightbox/WithLoop`
+* `DataDisplay/Lightbox/NoControls`
+* `DataDisplay/Lightbox/NoCaptions`
+* `DataDisplay/Lightbox/MixedMedia`
+* `DataDisplay/Lightbox/NotZoomable`
+* `DataDisplay/Lightbox/StartAtIndex`
+* `DataDisplay/Lightbox/FullFeatured`
+* `DataDisplay/Lightbox/DarkMode`
+* `DataDisplay/Lightbox/MobileResponsive`
+* `DataDisplay/Lightbox/AllVariants`
+* `DataDisplay/Lightbox/AllSizes`
+* `DataDisplay/Lightbox/AllStates`
+* `DataDisplay/Lightbox/InteractiveStates`
+* `DataDisplay/Lightbox/Responsive`
 
 **Autotests (collocated)**
 
@@ -156,7 +168,7 @@
 
 ## 6) Current Plan
 
-1. Scaffold component + stories (`Overlays/Lightbox/*`).
+1. Scaffold component + stories (`DataDisplay/Lightbox/*`).
 2. Implement overlay, focus trap, scroll-lock, close paths.
 3. Add gallery navigation (buttons, keys, swipe) with loop toggle.
 4. Integrate lazy-load + preload hooks; mixed media container.
@@ -165,7 +177,7 @@
 7. Autoplay controller with pause/resume heuristics.
 8. A11y pass (labels, announcements, roving focus in filmstrip).
 9. Storybook tests: interaction + a11y + visual regression.
-10. `pnpm check:component overlays Lightbox` → clean; DOD.
+10. `pnpm check:component data-display Lightbox` → clean; DOD.
 
 **Owner**: _assign here_
 **Links**: _PR/issue links here_

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Box, Typography } from '@mui/material';
 import { Moon, Sun, Volume2, VolumeX, Wifi, WifiOff, Bell, BellOff } from 'lucide-react';
 import { useState } from 'react';

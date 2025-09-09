@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button, Typography, Avatar, IconButton, Chip, Stack, Box, Grid } from '@mui/material';
 import { 
   Favorite, 
