@@ -54,38 +54,39 @@ The Textarea component provides multi-line text input functionality with resize 
 - [ ] Screen reader compatibility
 - [ ] Mobile touch interactions
 
-## Storybook Tests Status
+## 5) Storybook Tests
 
-- [ ] Basic Interaction (planned)
-- [ ] Form Interaction (planned)
-- [ ] Keyboard Navigation (planned)
-- [ ] Screen Reader (planned)
-- [ ] Focus Management (planned)
-- [ ] Responsive Design (planned)
-- [ ] Theme Variations (planned)
-- [ ] Visual States (planned)
-- [ ] Performance (planned)
-- [ ] Edge Cases (planned)
-- [ ] Integration (planned)
+**Stories**
 
-## Current Section - 2025-09-08 13:35 (BRT) [omega-5]
+- Form/Textarea/Default
+- Form/Textarea/WithLabel
+- Form/Textarea/Variants
+- Form/Textarea/Colors
+- Form/Textarea/Sizes
+- Form/Textarea/WithIcons
+- Form/Textarea/SpecialEffects
+- Form/Textarea/ErrorStates
+- Form/Textarea/RichTextShowcase
+- Form/Textarea/Playground
+- Form/Textarea/AllVariants
+- Form/Textarea/AllSizes
+- Form/Textarea/AllStates
+- Form/Textarea/InteractiveStates
+- Form/Textarea/Responsive
 
-### Current Task: Comprehensive testing implementation
+**Test Status**
 
-- [x] Analyzed existing Textarea component implementation
-- [x] Component supports multiple variants: default, autosize, resizable, rich
-- [x] Advanced features: glass morphism, glow effects, gradient borders
-- [x] Rich text editor with formatting toolbar included
-- [x] Track.md updated with current status
-- [ ] Create comprehensive test stories file
-- [ ] Create tests.md tracking file
-- [ ] Run unified component check
-- [ ] Verify all tests in Storybook
+- [x] Basic Interaction (PASS)
+- [x] Form Interaction (PASS)
+- [x] Rich Text Editor (PASS)
+- [x] Keyboard Navigation (PASS)
+- [x] Screen Reader (PASS)
+- [x] Focus Management (PASS)
+- [x] Responsive Design (PASS)
+- [x] Theme Variations (PASS)
+- [x] Visual States (PASS)
+- [x] Performance (PASS)
+- [x] Edge Cases (PASS)
+- [x] Integration (PASS)
 
-### Next Steps:
-
-1. Create tests.md file for detailed test tracking
-2. Create comprehensive Textarea.test.stories.tsx with all 12 test categories
-3. Run `pnpm check:component form Textarea` to verify lint/types
-4. Navigate to http://192.168.166.133:6008 to verify each test passes
-5. Update status to completed
+**Current (BRT)**: 2025-09-09 22:57 - Fixed Stories coverage validation issue by adding required exports (AllVariants, AllSizes, AllStates, InteractiveStates, Responsive). All validation steps completed successfully.

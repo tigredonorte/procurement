@@ -4,7 +4,7 @@ import React from 'react';
 
 import { Paragraph } from './Paragraph';
 
-const meta = {
+const meta: Meta<typeof Paragraph> = {
   title: 'Typography/Paragraph',
   component: Paragraph,
   parameters: {
@@ -34,7 +34,7 @@ const meta = {
       description: 'Size variant',
     },
   },
-} satisfies Meta<typeof Paragraph>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

@@ -73,11 +73,7 @@ const SheetWrapper: React.FC<SheetProps & { buttonText?: string }> = ({
       <Button variant="contained" onClick={() => setOpen(true)}>
         {buttonText}
       </Button>
-      <Sheet
-        {...props}
-        open={open}
-        onOpenChange={setOpen}
-      />
+      <Sheet {...props} open={open} onOpenChange={setOpen} />
     </>
   );
 };
@@ -110,9 +106,7 @@ export const Positions: Story = {
           title={`${position} Sheet`}
           buttonText={`Open ${position}`}
         >
-          <Typography>
-            This sheet slides in from the {position}
-          </Typography>
+          <Typography>This sheet slides in from the {position}</Typography>
         </SheetWrapper>
       ))}
     </Box>
@@ -129,9 +123,7 @@ export const Sizes: Story = {
           title={`Size: ${size.toUpperCase()}`}
           buttonText={`Size ${size}`}
         >
-          <Typography>
-            This is a {size} sized sheet
-          </Typography>
+          <Typography>This is a {size} sized sheet</Typography>
         </SheetWrapper>
       ))}
     </Box>
@@ -151,9 +143,7 @@ export const Variants: Story = {
           glass={variant === 'glass'}
           gradient={variant === 'gradient'}
         >
-          <Typography>
-            This is a {variant} variant sheet
-          </Typography>
+          <Typography>This is a {variant} variant sheet</Typography>
         </SheetWrapper>
       ))}
     </Box>
@@ -161,53 +151,50 @@ export const Variants: Story = {
 };
 
 const DraggableBottomSheetComponent = () => {
-const [open, setOpen] = useState(false);
-    const [currentSnapPoint, setCurrentSnapPoint] = useState(0.5);
+  const [open, setOpen] = useState(false);
+  const [currentSnapPoint, setCurrentSnapPoint] = useState(0.5);
 
-    return (
-      <>
-        <Button
-          variant="contained"
-          onClick={() => setOpen(true)}
-        >
-          Open Draggable Bottom Sheet
-        </Button>
-        <Sheet
-          open={open}
-          onOpenChange={setOpen}
-          variant="draggable"
-          position="bottom"
-          title="Draggable Sheet"
-          description={`Current height: ${Math.round(currentSnapPoint * 100)}%`}
-          snapPoints={[0.25, 0.5, 0.75, 1]}
-          defaultSnapPoint={0.5}
-          onSnapPointChange={setCurrentSnapPoint}
-          showHandle
-        >
-          <Stack spacing={2}>
-            <Typography variant="body1">
-              Drag the handle to resize this sheet. It will snap to 25%, 50%, 75%, or 100% height.
+  return (
+    <>
+      <Button variant="contained" onClick={() => setOpen(true)}>
+        Open Draggable Bottom Sheet
+      </Button>
+      <Sheet
+        open={open}
+        onOpenChange={setOpen}
+        variant="draggable"
+        position="bottom"
+        title="Draggable Sheet"
+        description={`Current height: ${Math.round(currentSnapPoint * 100)}%`}
+        snapPoints={[0.25, 0.5, 0.75, 1]}
+        defaultSnapPoint={0.5}
+        onSnapPointChange={setCurrentSnapPoint}
+        showHandle
+      >
+        <Stack spacing={2}>
+          <Typography variant="body1">
+            Drag the handle to resize this sheet. It will snap to 25%, 50%, 75%, or 100% height.
+          </Typography>
+          <Paper elevation={2} sx={{ p: 2 }}>
+            <Typography variant="h6" gutterBottom>
+              Features:
             </Typography>
-            <Paper elevation={2} sx={{ p: 2 }}>
-              <Typography variant="h6" gutterBottom>
-                Features:
-              </Typography>
-              <List dense>
-                <ListItem>• Smooth spring animations</ListItem>
-                <ListItem>• Velocity-based snapping</ListItem>
-                <ListItem>• Boundary resistance</ListItem>
-                <ListItem>• Touch and mouse support</ListItem>
-              </List>
-            </Paper>
-            <Box sx={{ bgcolor: 'grey.100', p: 2, borderRadius: 1 }}>
-              <Typography variant="body2" color="text.secondary">
-                Try dragging quickly to trigger velocity-based snapping!
-              </Typography>
-            </Box>
-          </Stack>
-        </Sheet>
-      </>
-    );
+            <List dense>
+              <ListItem>• Smooth spring animations</ListItem>
+              <ListItem>• Velocity-based snapping</ListItem>
+              <ListItem>• Boundary resistance</ListItem>
+              <ListItem>• Touch and mouse support</ListItem>
+            </List>
+          </Paper>
+          <Box sx={{ bgcolor: 'grey.100', p: 2, borderRadius: 1 }}>
+            <Typography variant="body2" color="text.secondary">
+              Try dragging quickly to trigger velocity-based snapping!
+            </Typography>
+          </Box>
+        </Stack>
+      </Sheet>
+    </>
+  );
 };
 
 export const DraggableBottomSheet: Story = {
@@ -215,95 +202,88 @@ export const DraggableBottomSheet: Story = {
 };
 
 const MusicPlayerComponent = () => {
-const [open, setOpen] = useState(false);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [volume, setVolume] = useState(30);
-    const [progress, setProgress] = useState(45);
+  const [open, setOpen] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [volume, setVolume] = useState(30);
+  const [progress, setProgress] = useState(45);
 
-    return (
-      <>
-        <Button
-          variant="contained"
-          startIcon={<PlayArrowIcon />}
-          onClick={() => setOpen(true)}
-        >
-          Open Music Player
-        </Button>
-        <Sheet
-          open={open}
-          onOpenChange={setOpen}
-          variant="draggable"
-          position="bottom"
-          snapPoints={[0.15, 0.5, 0.95]}
-          defaultSnapPoint={0.15}
-          showHandle
-          color="secondary"
-          glow
-        >
-          <Box sx={{ p: 2 }}>
-            {/* Mini Player View */}
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-              <Avatar
-                sx={{ width: 60, height: 60, mr: 2 }}
-                src="https://via.placeholder.com/60"
-              />
-              <Box sx={{ flex: 1 }}>
-                <Typography variant="subtitle1" fontWeight="bold">
-                  Song Title
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Artist Name
-                </Typography>
-              </Box>
-              <IconButton onClick={() => setIsPlaying(!isPlaying)}>
+  return (
+    <>
+      <Button variant="contained" startIcon={<PlayArrowIcon />} onClick={() => setOpen(true)}>
+        Open Music Player
+      </Button>
+      <Sheet
+        open={open}
+        onOpenChange={setOpen}
+        variant="draggable"
+        position="bottom"
+        snapPoints={[0.15, 0.5, 0.95]}
+        defaultSnapPoint={0.15}
+        showHandle
+        color="secondary"
+        glow
+      >
+        <Box sx={{ p: 2 }}>
+          {/* Mini Player View */}
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+            <Avatar sx={{ width: 60, height: 60, mr: 2 }} src="https://via.placeholder.com/60" />
+            <Box sx={{ flex: 1 }}>
+              <Typography variant="subtitle1" fontWeight="bold">
+                Song Title
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Artist Name
+              </Typography>
+            </Box>
+            <IconButton onClick={() => setIsPlaying(!isPlaying)}>
+              {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
+            </IconButton>
+          </Box>
+
+          {/* Expanded Controls */}
+          <Stack spacing={2}>
+            <Slider
+              value={progress}
+              onChange={(e, v) => setProgress(v as number)}
+              aria-label="Progress"
+            />
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Typography variant="caption">1:45</Typography>
+              <Typography variant="caption">3:20</Typography>
+            </Box>
+
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
+              <IconButton>
+                <SkipPreviousIcon />
+              </IconButton>
+              <IconButton
+                sx={{
+                  bgcolor: 'primary.main',
+                  color: 'white',
+                  '&:hover': { bgcolor: 'primary.dark' },
+                }}
+                onClick={() => setIsPlaying(!isPlaying)}
+              >
                 {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
+              </IconButton>
+              <IconButton>
+                <SkipNextIcon />
               </IconButton>
             </Box>
 
-            {/* Expanded Controls */}
-            <Stack spacing={2}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <VolumeUpIcon />
               <Slider
-                value={progress}
-                onChange={(e, v) => setProgress(v as number)}
-                aria-label="Progress"
+                value={volume}
+                onChange={(e, v) => setVolume(v as number)}
+                aria-label="Volume"
               />
-              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Typography variant="caption">1:45</Typography>
-                <Typography variant="caption">3:20</Typography>
-              </Box>
-              
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
-                <IconButton>
-                  <SkipPreviousIcon />
-                </IconButton>
-                <IconButton 
-                  sx={{ 
-                    bgcolor: 'primary.main', 
-                    color: 'white',
-                    '&:hover': { bgcolor: 'primary.dark' }
-                  }}
-                  onClick={() => setIsPlaying(!isPlaying)}
-                >
-                  {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
-                </IconButton>
-                <IconButton>
-                  <SkipNextIcon />
-                </IconButton>
-              </Box>
-
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <VolumeUpIcon />
-                <Slider
-                  value={volume}
-                  onChange={(e, v) => setVolume(v as number)}
-                  aria-label="Volume"
-                />
-              </Box>
-            </Stack>
-          </Box>
-        </Sheet>
-      </>
-    );
+            </Box>
+          </Stack>
+        </Box>
+      </Sheet>
+    </>
+  );
 };
 
 export const MusicPlayer: Story = {
@@ -311,59 +291,52 @@ export const MusicPlayer: Story = {
 };
 
 const CustomSnapPointsComponent = () => {
-const [open, setOpen] = useState(false);
-    const [snapPoint, setSnapPoint] = useState(0.3);
+  const [open, setOpen] = useState(false);
+  const [snapPoint, setSnapPoint] = useState(0.3);
 
-    return (
-      <>
-        <Button
-          variant="contained"
-          onClick={() => setOpen(true)}
-        >
-          Open Custom Snap Points
-        </Button>
-        <Sheet
-          open={open}
-          onOpenChange={setOpen}
-          variant="draggable"
-          position="bottom"
-          title="Custom Snap Points"
-          snapPoints={[0.1, 0.3, 0.6, 0.9]}
-          defaultSnapPoint={0.3}
-          onSnapPointChange={setSnapPoint}
-          showHandle
-          minSnapPoint={0.1}
-          maxSnapPoint={0.9}
-        >
-          <Stack spacing={2}>
-            <Paper sx={{ p: 2, bgcolor: 'primary.main', color: 'white' }}>
-              <Typography variant="h6">
-                Current: {Math.round(snapPoint * 100)}%
-              </Typography>
-            </Paper>
-            <Typography>
-              This sheet has custom snap points at:
-            </Typography>
-            <Grid container spacing={1}>
-              {[10, 30, 60, 90].map((percent) => (
-                <Grid item xs={3} key={percent}>
-                  <Card>
-                    <CardContent>
-                      <Typography align="center" fontWeight="bold">
-                        {percent}%
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
-            <Typography variant="body2" color="text.secondary">
-              The sheet is constrained between 10% and 90% height.
-            </Typography>
-          </Stack>
-        </Sheet>
-      </>
-    );
+  return (
+    <>
+      <Button variant="contained" onClick={() => setOpen(true)}>
+        Open Custom Snap Points
+      </Button>
+      <Sheet
+        open={open}
+        onOpenChange={setOpen}
+        variant="draggable"
+        position="bottom"
+        title="Custom Snap Points"
+        snapPoints={[0.1, 0.3, 0.6, 0.9]}
+        defaultSnapPoint={0.3}
+        onSnapPointChange={setSnapPoint}
+        showHandle
+        minSnapPoint={0.1}
+        maxSnapPoint={0.9}
+      >
+        <Stack spacing={2}>
+          <Paper sx={{ p: 2, bgcolor: 'primary.main', color: 'white' }}>
+            <Typography variant="h6">Current: {Math.round(snapPoint * 100)}%</Typography>
+          </Paper>
+          <Typography>This sheet has custom snap points at:</Typography>
+          <Grid container spacing={1}>
+            {[10, 30, 60, 90].map((percent) => (
+              <Grid item xs={3} key={percent}>
+                <Card>
+                  <CardContent>
+                    <Typography align="center" fontWeight="bold">
+                      {percent}%
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+          <Typography variant="body2" color="text.secondary">
+            The sheet is constrained between 10% and 90% height.
+          </Typography>
+        </Stack>
+      </Sheet>
+    </>
+  );
 };
 
 export const CustomSnapPoints: Story = {
@@ -371,37 +344,34 @@ export const CustomSnapPoints: Story = {
 };
 
 const WithResistanceComponent = () => {
-const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
-    return (
-      <>
-        <Button
-          variant="contained"
-          onClick={() => setOpen(true)}
-        >
-          Open Sheet with High Resistance
-        </Button>
-        <Sheet
-          open={open}
-          onOpenChange={setOpen}
-          variant="draggable"
-          position="bottom"
-          title="High Drag Resistance"
-          description="Feel the resistance at boundaries"
-          snapPoints={[0.3, 0.7]}
-          defaultSnapPoint={0.3}
-          dragResistance={0.1}
-          showHandle
-        >
-          <Typography variant="body1" paragraph>
-            This sheet has high drag resistance (0.1) at the boundaries.
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Try dragging beyond the snap points to feel the rubber-band effect.
-          </Typography>
-        </Sheet>
-      </>
-    );
+  return (
+    <>
+      <Button variant="contained" onClick={() => setOpen(true)}>
+        Open Sheet with High Resistance
+      </Button>
+      <Sheet
+        open={open}
+        onOpenChange={setOpen}
+        variant="draggable"
+        position="bottom"
+        title="High Drag Resistance"
+        description="Feel the resistance at boundaries"
+        snapPoints={[0.3, 0.7]}
+        defaultSnapPoint={0.3}
+        dragResistance={0.1}
+        showHandle
+      >
+        <Typography variant="body1" paragraph>
+          This sheet has high drag resistance (0.1) at the boundaries.
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Try dragging beyond the snap points to feel the rubber-band effect.
+        </Typography>
+      </Sheet>
+    </>
+  );
 };
 
 export const WithResistance: Story = {
@@ -409,50 +379,44 @@ export const WithResistance: Story = {
 };
 
 const DraggableWithContentComponent = () => {
-const [open, setOpen] = useState(false);
-    const items = Array.from({ length: 20 }, (_, i) => ({
-      id: i + 1,
-      title: `Item ${i + 1}`,
-      description: `Description for item ${i + 1}`,
-    }));
+  const [open, setOpen] = useState(false);
+  const items = Array.from({ length: 20 }, (_, i) => ({
+    id: i + 1,
+    title: `Item ${i + 1}`,
+    description: `Description for item ${i + 1}`,
+  }));
 
-    return (
-      <>
-        <Button
-          variant="contained"
-          onClick={() => setOpen(true)}
-        >
-          Open Draggable List
-        </Button>
-        <Sheet
-          open={open}
-          onOpenChange={setOpen}
-          variant="draggable"
-          position="bottom"
-          title="Scrollable Content"
-          description="Drag to resize, scroll to navigate"
-          snapPoints={[0.25, 0.5, 0.75, 1]}
-          defaultSnapPoint={0.5}
-          showHandle
-          footer={
-            <Button variant="contained" fullWidth>
-              Load More Items
-            </Button>
-          }
-        >
-          <List>
-            {items.map((item) => (
-              <ListItem key={item.id} divider>
-                <ListItemText
-                  primary={item.title}
-                  secondary={item.description}
-                />
-              </ListItem>
-            ))}
-          </List>
-        </Sheet>
-      </>
-    );
+  return (
+    <>
+      <Button variant="contained" onClick={() => setOpen(true)}>
+        Open Draggable List
+      </Button>
+      <Sheet
+        open={open}
+        onOpenChange={setOpen}
+        variant="draggable"
+        position="bottom"
+        title="Scrollable Content"
+        description="Drag to resize, scroll to navigate"
+        snapPoints={[0.25, 0.5, 0.75, 1]}
+        defaultSnapPoint={0.5}
+        showHandle
+        footer={
+          <Button variant="contained" fullWidth>
+            Load More Items
+          </Button>
+        }
+      >
+        <List>
+          {items.map((item) => (
+            <ListItem key={item.id} divider>
+              <ListItemText primary={item.title} secondary={item.description} />
+            </ListItem>
+          ))}
+        </List>
+      </Sheet>
+    </>
+  );
 };
 
 export const DraggableWithContent: Story = {
@@ -475,17 +439,8 @@ export const WithForm: Story = {
       }
     >
       <Stack spacing={3}>
-        <TextField
-          label="Full Name"
-          fullWidth
-          defaultValue="John Doe"
-        />
-        <TextField
-          label="Email"
-          type="email"
-          fullWidth
-          defaultValue="john.doe@example.com"
-        />
+        <TextField label="Full Name" fullWidth defaultValue="John Doe" />
+        <TextField label="Email" type="email" fullWidth defaultValue="john.doe@example.com" />
         <TextField
           label="Bio"
           multiline
@@ -493,14 +448,8 @@ export const WithForm: Story = {
           fullWidth
           placeholder="Tell us about yourself..."
         />
-        <FormControlLabel
-          control={<Switch defaultChecked />}
-          label="Email notifications"
-        />
-        <FormControlLabel
-          control={<Switch />}
-          label="Make profile public"
-        />
+        <FormControlLabel control={<Switch defaultChecked />} label="Email notifications" />
+        <FormControlLabel control={<Switch />} label="Make profile public" />
       </Stack>
     </SheetWrapper>
   ),
@@ -520,21 +469,14 @@ export const WithList: Story = {
     ];
 
     return (
-      <SheetWrapper
-        {...args}
-        title="Team Members"
-        description="Manage your team"
-      >
+      <SheetWrapper {...args} title="Team Members" description="Manage your team">
         <List>
           {items.map((item) => (
             <ListItem key={item.id}>
               <Avatar sx={{ mr: 2 }}>
                 <PersonIcon />
               </Avatar>
-              <ListItemText
-                primary={item.name}
-                secondary={item.role}
-              />
+              <ListItemText primary={item.name} secondary={item.role} />
               <Chip
                 label={item.status}
                 color={item.status === 'active' ? 'success' : 'default'}
@@ -579,13 +521,7 @@ export const Glass: Story = {
 
 export const Gradient: Story = {
   render: (args) => (
-    <SheetWrapper
-      {...args}
-      variant="gradient"
-      gradient
-      color="primary"
-      title="Gradient Background"
-    >
+    <SheetWrapper {...args} variant="gradient" gradient color="primary" title="Gradient Background">
       <Typography variant="h6" gutterBottom>
         Beautiful Gradient
       </Typography>
@@ -607,9 +543,7 @@ export const WithEffects: Story = {
       title="Enhanced Effects"
       description="Multiple visual effects combined"
     >
-      <Typography>
-        This sheet combines glow and pulse effects with glass morphism.
-      </Typography>
+      <Typography>This sheet combines glow and pulse effects with glass morphism.</Typography>
     </SheetWrapper>
   ),
 };
@@ -667,12 +601,7 @@ export const Persistent: Story = {
 
 export const Loading: Story = {
   render: (args) => (
-    <SheetWrapper
-      {...args}
-      loading
-      title="Loading Content"
-      description="Please wait..."
-    />
+    <SheetWrapper {...args} loading title="Loading Content" description="Please wait..." />
   ),
 };
 
@@ -684,9 +613,7 @@ export const NoOverlay: Story = {
       title="No Overlay"
       description="Sheet without backdrop overlay"
     >
-      <Typography>
-        This sheet appears without a backdrop overlay.
-      </Typography>
+      <Typography>This sheet appears without a backdrop overlay.</Typography>
     </SheetWrapper>
   ),
 };
@@ -709,22 +636,14 @@ export const CustomHeader: Story = {
         </Box>
       }
     >
-      <Typography>
-        Sheet with custom header content
-      </Typography>
+      <Typography>Sheet with custom header content</Typography>
     </SheetWrapper>
   ),
 };
 
 export const FullHeight: Story = {
   render: (args) => (
-    <SheetWrapper
-      {...args}
-      fullHeight
-      title="Full Height Sheet"
-      position="right"
-      size="md"
-    >
+    <SheetWrapper {...args} fullHeight title="Full Height Sheet" position="right" size="md">
       <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
         <Typography variant="h6" gutterBottom>
           Full Height Content
@@ -740,91 +659,81 @@ export const FullHeight: Story = {
 };
 
 const SettingsComponent = () => {
-const [open, setOpen] = useState(false);
-    const [notifications, setNotifications] = useState(true);
-    const [darkMode, setDarkMode] = useState(false);
-    const [autoSave, setAutoSave] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [notifications, setNotifications] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
+  const [autoSave, setAutoSave] = useState(true);
 
-    return (
-      <>
-        <Button
-          variant="contained"
-          startIcon={<SettingsIcon />}
-          onClick={() => setOpen(true)}
-        >
-          Open Settings
-        </Button>
-        <Sheet
-          open={open}
-          onOpenChange={setOpen}
-          title="Application Settings"
-          position="right"
-          size="md"
-          variant="elevated"
-          footer={
-            <Box sx={{ display: 'flex', gap: 2 }}>
-              <Button variant="outlined" onClick={() => setOpen(false)} fullWidth>
-                Cancel
-              </Button>
-              <Button variant="contained" color="primary" onClick={() => setOpen(false)} fullWidth>
-                Save
-              </Button>
-            </Box>
-          }
-        >
-          <Stack spacing={3}>
-            <Box>
-              <Typography variant="subtitle2" gutterBottom>
-                Appearance
-              </Typography>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={darkMode}
-                    onChange={(e) => setDarkMode(e.target.checked)}
-                  />
-                }
-                label="Dark Mode"
-              />
-            </Box>
-            
-            <Divider />
-            
-            <Box>
-              <Typography variant="subtitle2" gutterBottom>
-                Notifications
-              </Typography>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={notifications}
-                    onChange={(e) => setNotifications(e.target.checked)}
-                  />
-                }
-                label="Enable Notifications"
-              />
-            </Box>
-            
-            <Divider />
-            
-            <Box>
-              <Typography variant="subtitle2" gutterBottom>
-                Data & Storage
-              </Typography>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={autoSave}
-                    onChange={(e) => setAutoSave(e.target.checked)}
-                  />
-                }
-                label="Auto-save"
-              />
-            </Box>
-          </Stack>
-        </Sheet>
-      </>
-    );
+  return (
+    <>
+      <Button variant="contained" startIcon={<SettingsIcon />} onClick={() => setOpen(true)}>
+        Open Settings
+      </Button>
+      <Sheet
+        open={open}
+        onOpenChange={setOpen}
+        title="Application Settings"
+        position="right"
+        size="md"
+        variant="elevated"
+        footer={
+          <Box sx={{ display: 'flex', gap: 2 }}>
+            <Button variant="outlined" onClick={() => setOpen(false)} fullWidth>
+              Cancel
+            </Button>
+            <Button variant="contained" color="primary" onClick={() => setOpen(false)} fullWidth>
+              Save
+            </Button>
+          </Box>
+        }
+      >
+        <Stack spacing={3}>
+          <Box>
+            <Typography variant="subtitle2" gutterBottom>
+              Appearance
+            </Typography>
+            <FormControlLabel
+              control={
+                <Switch checked={darkMode} onChange={(e) => setDarkMode(e.target.checked)} />
+              }
+              label="Dark Mode"
+            />
+          </Box>
+
+          <Divider />
+
+          <Box>
+            <Typography variant="subtitle2" gutterBottom>
+              Notifications
+            </Typography>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={notifications}
+                  onChange={(e) => setNotifications(e.target.checked)}
+                />
+              }
+              label="Enable Notifications"
+            />
+          </Box>
+
+          <Divider />
+
+          <Box>
+            <Typography variant="subtitle2" gutterBottom>
+              Data & Storage
+            </Typography>
+            <FormControlLabel
+              control={
+                <Switch checked={autoSave} onChange={(e) => setAutoSave(e.target.checked)} />
+              }
+              label="Auto-save"
+            />
+          </Box>
+        </Stack>
+      </Sheet>
+    </>
+  );
 };
 
 export const Settings: Story = {
@@ -835,21 +744,21 @@ export const Settings: Story = {
 export const AllVariants: Story = {
   render: () => (
     <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-      {(['default', 'glass', 'gradient', 'elevated', 'minimal', 'draggable'] as const).map((variant) => (
-        <SheetWrapper
-          key={variant}
-          variant={variant}
-          title={`${variant} Variant`}
-          buttonText={variant}
-          glow={variant === 'glass'}
-          glass={variant === 'glass'}
-          gradient={variant === 'gradient'}
-        >
-          <Typography>
-            This is a {variant} variant sheet
-          </Typography>
-        </SheetWrapper>
-      ))}
+      {(['default', 'glass', 'gradient', 'elevated', 'minimal', 'draggable'] as const).map(
+        (variant) => (
+          <SheetWrapper
+            key={variant}
+            variant={variant}
+            title={`${variant} Variant`}
+            buttonText={variant}
+            glow={variant === 'glass'}
+            glass={variant === 'glass'}
+            gradient={variant === 'gradient'}
+          >
+            <Typography>This is a {variant} variant sheet</Typography>
+          </SheetWrapper>
+        ),
+      )}
     </Box>
   ),
 };
@@ -864,9 +773,7 @@ export const AllSizes: Story = {
           title={`Size: ${size.toUpperCase()}`}
           buttonText={`Size ${size}`}
         >
-          <Typography>
-            This is a {size} sized sheet
-          </Typography>
+          <Typography>This is a {size} sized sheet</Typography>
         </SheetWrapper>
       ))}
     </Box>
@@ -876,16 +783,8 @@ export const AllSizes: Story = {
 export const AllStates: Story = {
   render: () => (
     <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-      <SheetWrapper
-        title="Loading State"
-        buttonText="Loading"
-        loading
-      />
-      <SheetWrapper
-        title="Disabled State"
-        buttonText="Disabled"
-        disabled
-      >
+      <SheetWrapper title="Loading State" buttonText="Loading" loading />
+      <SheetWrapper title="Disabled State" buttonText="Disabled" disabled>
         <Typography>Disabled content</Typography>
       </SheetWrapper>
       <SheetWrapper
@@ -897,11 +796,7 @@ export const AllStates: Story = {
       >
         <Typography>Persistent sheet - cannot be easily closed</Typography>
       </SheetWrapper>
-      <SheetWrapper
-        title="No Overlay State"
-        buttonText="No Overlay"
-        showOverlay={false}
-      >
+      <SheetWrapper title="No Overlay State" buttonText="No Overlay" showOverlay={false}>
         <Typography>Sheet without backdrop</Typography>
       </SheetWrapper>
     </Box>
@@ -931,14 +826,7 @@ export const InteractiveStates: Story = {
       >
         <Typography>Drag to resize</Typography>
       </SheetWrapper>
-      <SheetWrapper
-        title="With Effects"
-        buttonText="Glow & Glass"
-        variant="glass"
-        glow
-        glass
-        pulse
-      >
+      <SheetWrapper title="With Effects" buttonText="Glow & Glass" variant="glass" glow glass pulse>
         <Typography>Interactive visual effects</Typography>
       </SheetWrapper>
     </Box>
@@ -975,11 +863,13 @@ export const Responsive: Story = {
           <Typography variant="body2">
             This sheet adjusts its behavior and appearance based on the viewport size.
           </Typography>
-          <Box sx={{ 
-            display: 'grid',
-            gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: '1fr 1fr 1fr' },
-            gap: 2
-          }}>
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: '1fr 1fr 1fr' },
+              gap: 2,
+            }}
+          >
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <Paper key={i} sx={{ p: 2 }}>
                 <Typography>Item {i}</Typography>

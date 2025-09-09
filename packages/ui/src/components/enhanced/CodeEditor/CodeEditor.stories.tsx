@@ -5,14 +5,15 @@ import React from 'react';
 import { CodeEditor } from './CodeEditor';
 import type { EditorLanguage } from './CodeEditor.types';
 
-const meta = {
+const meta: Meta<typeof CodeEditor> = {
   title: 'Enhanced/CodeEditor',
   component: CodeEditor,
   parameters: {
     layout: 'padded',
     docs: {
       description: {
-        component: 'A powerful Monaco-based code editor with syntax highlighting, themes, and advanced features like auto-formatting, fullscreen mode, and live editing.',
+        component:
+          'A powerful Monaco-based code editor with syntax highlighting, themes, and advanced features like auto-formatting, fullscreen mode, and live editing.',
       },
     },
   },
@@ -20,7 +21,17 @@ const meta = {
   argTypes: {
     language: {
       control: { type: 'select' },
-      options: ['javascript', 'typescript', 'json', 'css', 'html', 'yaml', 'markdown', 'sql', 'python'],
+      options: [
+        'javascript',
+        'typescript',
+        'json',
+        'css',
+        'html',
+        'yaml',
+        'markdown',
+        'sql',
+        'python',
+      ],
       description: 'Programming language for syntax highlighting',
     },
     theme: {
@@ -61,7 +72,7 @@ const meta = {
       description: 'Auto-format code on load',
     },
   },
-} satisfies Meta<typeof CodeEditor>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -507,7 +518,7 @@ Please read our [contributing guidelines](./CONTRIBUTING.md) before submitting P
 
 ---
 
-*Last updated: January 2024*`
+*Last updated: January 2024*`,
 };
 
 export const Default: Story = {
@@ -522,31 +533,33 @@ export const Default: Story = {
 
 const AllLanguagesComponent = () => {
   const [activeLanguage, setActiveLanguage] = React.useState<EditorLanguage>('javascript');
-    
-    return (
-      <Stack spacing={3}>
-        <Stack direction="row" spacing={1} flexWrap="wrap">
-          {Object.keys(sampleCode).map((lang) => (
-            <Button
-              key={lang}
-              variant={activeLanguage === lang ? 'contained' : 'outlined'}
-              size="small"
-              onClick={() => setActiveLanguage(lang as EditorLanguage)}
-            >
-              {lang}
-            </Button>
-          ))}
-        </Stack>
-        
-        <CodeEditor
-          language={activeLanguage}
-          value={sampleCode[activeLanguage as keyof typeof sampleCode]}
-          height="500px"
-          showToolbar={true}
-          onChange={() => { /** do nothing */}}
-        />
+
+  return (
+    <Stack spacing={3}>
+      <Stack direction="row" spacing={1} flexWrap="wrap">
+        {Object.keys(sampleCode).map((lang) => (
+          <Button
+            key={lang}
+            variant={activeLanguage === lang ? 'contained' : 'outlined'}
+            size="small"
+            onClick={() => setActiveLanguage(lang as EditorLanguage)}
+          >
+            {lang}
+          </Button>
+        ))}
       </Stack>
-    );
+
+      <CodeEditor
+        language={activeLanguage}
+        value={sampleCode[activeLanguage as keyof typeof sampleCode]}
+        height="500px"
+        showToolbar={true}
+        onChange={() => {
+          /** do nothing */
+        }}
+      />
+    </Stack>
+  );
 };
 
 export const AllLanguages: Story = {
@@ -601,44 +614,42 @@ export const ReadOnlyMode: Story = {
 const LiveEditorComponent = () => {
   const [code, setCode] = React.useState(sampleCode.javascript);
   const [saved, setSaved] = React.useState(false);
-    
-    const handleSave = (value: string) => {
-      setCode(value);
-      setSaved(true);
-      window.setTimeout(() => setSaved(false), 2000);
-    };
-    
-    return (
-      <Stack spacing={3}>
-        <Typography variant="h6">Live Code Editor with Save</Typography>
-        <Typography variant="body2" color="text.secondary">
-          Edit the code below and press Ctrl+S (or Cmd+S) to save
+
+  const handleSave = (value: string) => {
+    setCode(value);
+    setSaved(true);
+    window.setTimeout(() => setSaved(false), 2000);
+  };
+
+  return (
+    <Stack spacing={3}>
+      <Typography variant="h6">Live Code Editor with Save</Typography>
+      <Typography variant="body2" color="text.secondary">
+        Edit the code below and press Ctrl+S (or Cmd+S) to save
+      </Typography>
+
+      {saved && <Alert severity="success">Code saved successfully!</Alert>}
+
+      <CodeEditor
+        language="javascript"
+        value={code}
+        onChange={setCode}
+        onSave={handleSave}
+        height="400px"
+        showToolbar={true}
+        autoFormat={false}
+      />
+
+      <Paper sx={{ p: 2, bgcolor: 'grey.50' }}>
+        <Typography variant="subtitle2" gutterBottom>
+          Code Length: {code.length} characters
         </Typography>
-        
-        {saved && (
-          <Alert severity="success">Code saved successfully!</Alert>
-        )}
-        
-        <CodeEditor
-          language="javascript"
-          value={code}
-          onChange={setCode}
-          onSave={handleSave}
-          height="400px"
-          showToolbar={true}
-          autoFormat={false}
-        />
-        
-        <Paper sx={{ p: 2, bgcolor: 'grey.50' }}>
-          <Typography variant="subtitle2" gutterBottom>
-            Code Length: {code.length} characters
-          </Typography>
-          <Typography variant="caption" color="text.secondary">
-            Last modified: {new Date().toLocaleTimeString()}
-          </Typography>
-        </Paper>
-      </Stack>
-    );
+        <Typography variant="caption" color="text.secondary">
+          Last modified: {new Date().toLocaleTimeString()}
+        </Typography>
+      </Paper>
+    </Stack>
+  );
 };
 
 export const LiveEditor: Story = {
@@ -657,32 +668,32 @@ export const WithMinimap: Story = {
 
 const CustomFontSizeComponent = () => {
   const [fontSize, setFontSize] = React.useState(14);
-    
-    return (
-      <Stack spacing={3}>
-        <Stack direction="row" spacing={2} alignItems="center">
-          <Typography>Font Size:</Typography>
-          {[12, 14, 16, 18, 20].map((size) => (
-            <Button
-              key={size}
-              variant={fontSize === size ? 'contained' : 'outlined'}
-              size="small"
-              onClick={() => setFontSize(size)}
-            >
-              {size}px
-            </Button>
-          ))}
-        </Stack>
-        
-        <CodeEditor
-          language="python"
-          value={sampleCode.python}
-          fontSize={fontSize}
-          height="400px"
-          showToolbar={true}
-        />
+
+  return (
+    <Stack spacing={3}>
+      <Stack direction="row" spacing={2} alignItems="center">
+        <Typography>Font Size:</Typography>
+        {[12, 14, 16, 18, 20].map((size) => (
+          <Button
+            key={size}
+            variant={fontSize === size ? 'contained' : 'outlined'}
+            size="small"
+            onClick={() => setFontSize(size)}
+          >
+            {size}px
+          </Button>
+        ))}
       </Stack>
-    );
+
+      <CodeEditor
+        language="python"
+        value={sampleCode.python}
+        fontSize={fontSize}
+        height="400px"
+        showToolbar={true}
+      />
+    </Stack>
+  );
 };
 
 export const CustomFontSize: Story = {
@@ -721,13 +732,11 @@ export const WithPlaceholder: Story = {
 export const AutoFormat: Story = {
   render: () => {
     const unformattedCode = `function messy(a,b,c){if(a>b){return c}else{return a+b}}const x={name:"test",value:123,items:[1,2,3,4,5]};`;
-    
+
     return (
       <Stack spacing={3}>
-        <Alert severity="info">
-          This editor will automatically format the code when it loads
-        </Alert>
-        
+        <Alert severity="info">This editor will automatically format the code when it loads</Alert>
+
         <CodeEditor
           language="javascript"
           value={unformattedCode}
@@ -744,11 +753,11 @@ export const ComparisonView: Story = {
   render: () => {
     const originalCode = sampleCode.javascript;
     const modifiedCode = sampleCode.typescript;
-    
+
     return (
       <Stack spacing={3}>
         <Typography variant="h6">Code Comparison</Typography>
-        
+
         <Box display="grid" gridTemplateColumns="1fr 1fr" gap={2}>
           <Stack spacing={1}>
             <Typography variant="subtitle2">Original (JavaScript)</Typography>
@@ -760,7 +769,7 @@ export const ComparisonView: Story = {
               showToolbar={false}
             />
           </Stack>
-          
+
           <Stack spacing={1}>
             <Typography variant="subtitle2">Modified (TypeScript)</Typography>
             <CodeEditor
@@ -782,7 +791,11 @@ export const AllVariants: Story = {
   render: () => (
     <Stack spacing={4}>
       <CodeEditor language="javascript" value="console.log('Default variant');" />
-      <CodeEditor language="typescript" value="const message: string = 'TypeScript variant';" theme="dark" />
+      <CodeEditor
+        language="typescript"
+        value="const message: string = 'TypeScript variant';"
+        theme="dark"
+      />
       <CodeEditor language="json" value='{"variant": "JSON with minimap"}' minimap />
     </Stack>
   ),
@@ -792,7 +805,12 @@ export const AllSizes: Story = {
   render: () => (
     <Stack spacing={4}>
       <CodeEditor language="javascript" value="// Small size" height="200px" fontSize={12} />
-      <CodeEditor language="javascript" value="// Medium size (default)" height="400px" fontSize={14} />
+      <CodeEditor
+        language="javascript"
+        value="// Medium size (default)"
+        height="400px"
+        fontSize={14}
+      />
       <CodeEditor language="javascript" value="// Large size" height="600px" fontSize={16} />
     </Stack>
   ),
@@ -811,27 +829,16 @@ export const AllStates: Story = {
 const InteractiveComponent = () => {
   const [code1, setCode1] = React.useState('// Interactive editor 1');
   const [code2, setCode2] = React.useState('// Interactive editor 2');
-  
+
   const handleSave = (value: string) => {
     // Handle save action
     setCode1(value);
   };
-  
+
   return (
     <Stack spacing={4}>
-      <CodeEditor 
-        language="javascript" 
-        value={code1} 
-        onChange={setCode1}
-        onSave={handleSave}
-      />
-      <CodeEditor 
-        language="typescript" 
-        value={code2} 
-        onChange={setCode2}
-        wordWrap
-        autoFormat
-      />
+      <CodeEditor language="javascript" value={code1} onChange={setCode1} onSave={handleSave} />
+      <CodeEditor language="typescript" value={code2} onChange={setCode2} wordWrap autoFormat />
     </Stack>
   );
 };
@@ -851,8 +858,8 @@ export const Responsive: Story = {
     },
   },
   render: () => (
-    <CodeEditor 
-      language="javascript" 
+    <CodeEditor
+      language="javascript"
       value={`// Responsive code editor
 // This editor adapts to different screen sizes
 function responsiveFunction() {

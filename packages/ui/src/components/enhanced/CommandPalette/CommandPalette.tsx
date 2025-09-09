@@ -26,6 +26,7 @@ import {
 } from '@mui/icons-material';
 import Fuse from 'fuse.js';
 import { TransitionProps } from '@mui/material/transitions';
+
 import { Command, CommandPaletteProps } from './CommandPalette.types';
 
 // Styled components

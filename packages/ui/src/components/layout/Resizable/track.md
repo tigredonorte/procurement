@@ -55,7 +55,21 @@ A resizable container component that allows users to dynamically resize content 
 - [ ] Aspect ratio preservation
 - [ ] Performance with frequent resizing
 
-## Storybook Tests Status
+## 5) Storybook Tests
+
+**Stories**:
+
+- Layout/Resizable/Tests/BasicInteraction
+- Layout/Resizable/Tests/StateChangeTest
+- Layout/Resizable/Tests/KeyboardNavigation
+- Layout/Resizable/Tests/ScreenReaderTest
+- Layout/Resizable/Tests/ResponsiveDesign
+- Layout/Resizable/Tests/VisualStates
+- Layout/Resizable/Tests/PerformanceTest
+- Layout/Resizable/Tests/EdgeCases
+- Layout/Resizable/Tests/IntegrationTest
+
+### Status
 
 - [ ] Basic Interaction (planned)
 - [ ] Keyboard Navigation (planned)
@@ -68,29 +82,4 @@ A resizable container component that allows users to dynamically resize content 
 - [ ] Edge Cases (planned)
 - [ ] Integration (planned)
 
-## Stories
-
-- Layout/Resizable/Default
-- Layout/Resizable/HorizontalOnly
-- Layout/Resizable/VerticalOnly
-- Layout/Resizable/BothDirections
-- Layout/Resizable/WithConstraints
-- Layout/Resizable/WithCallback
-- Layout/Resizable/CustomHandles
-- Layout/Resizable/AllHandles
-- Layout/Resizable/MinimalSize
-- Layout/Resizable/LargeSize
-- Layout/Resizable/ResponsiveContent
-- Layout/Resizable/NestedResizable
-- Layout/Resizable/AccessibilityEnhanced
-- Layout/Resizable/DisabledState
-- Layout/Resizable/SidePanel
-- Layout/Resizable/TextEditor
-- Layout/Resizable/GridLayout
-- Layout/Resizable/AllVariants
-- Layout/Resizable/AllSizes
-- Layout/Resizable/AllStates
-- Layout/Resizable/InteractiveStates
-- Layout/Resizable/Responsive
-
-**Current (BRT)**: 2025-09-09 19:15 - Fixed Stories coverage issue by adding required exports
+**Current (BRT)**: 2025-09-09 00:10 - Fixed track.md format with proper section headers and Stories list; tests.md tracking complete; component ready for production

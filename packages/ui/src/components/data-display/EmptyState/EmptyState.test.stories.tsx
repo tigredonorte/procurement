@@ -8,7 +8,10 @@ import { EmptyState } from './EmptyState';
 const TestIcon = () => (
   <SvgIcon sx={{ fontSize: 64 }} data-testid="empty-state-icon">
     <svg viewBox="0 0 24 24">
-      <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+      <path
+        fill="currentColor"
+        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+      />
     </svg>
   </SvgIcon>
 );
@@ -16,9 +19,9 @@ const TestIcon = () => (
 const meta: Meta<typeof EmptyState> = {
   title: 'DataDisplay/EmptyState/Tests',
   component: EmptyState,
-  parameters: { 
-    layout: 'centered', 
-    chromatic: { disableSnapshot: false } 
+  parameters: {
+    layout: 'centered',
+    chromatic: { disableSnapshot: false },
   },
   tags: ['autodocs', 'test'],
 };
@@ -34,18 +37,18 @@ export const BasicInteraction: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Test component renders
     const title = canvas.getByRole('heading', { name: 'Basic Interaction Test' });
     await expect(title).toBeInTheDocument();
-    
+
     // Test region role
     const region = canvas.getByRole('region');
     await expect(region).toBeInTheDocument();
-    
+
     // Test aria-labelledby
     await expect(region).toHaveAttribute('aria-labelledby', title.id);
-    
+
     // Test description
     const description = canvas.getByText('Testing basic rendering and accessibility.');
     await expect(description).toBeInTheDocument();
@@ -71,19 +74,19 @@ export const ActionInteraction: Story = {
   },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
-    
+
     // Test primary action click
     const primaryButton = canvas.getByRole('button', { name: 'Primary Action' });
     await expect(primaryButton).toBeInTheDocument();
     await userEvent.click(primaryButton);
     await expect(args.primaryAction?.onClick).toHaveBeenCalledTimes(1);
-    
+
     // Test secondary action click
     const secondaryButton = canvas.getByRole('button', { name: 'Secondary Action' });
     await expect(secondaryButton).toBeInTheDocument();
     await userEvent.click(secondaryButton);
     await expect(args.secondaryAction?.onClick).toHaveBeenCalledTimes(1);
-    
+
     // Test help link
     const helpLink = canvas.getByRole('link', { name: 'Help Link' });
     await expect(helpLink).toBeInTheDocument();
@@ -110,21 +113,21 @@ export const KeyboardNavigation: Story = {
   },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
-    
+
     // Tab to primary button
     await userEvent.tab();
     const primaryButton = canvas.getByRole('button', { name: 'Primary' });
     await expect(primaryButton).toHaveFocus();
-    
+
     // Press Enter to activate
     await userEvent.keyboard('{Enter}');
     await expect(args.primaryAction?.onClick).toHaveBeenCalledTimes(1);
-    
+
     // Tab to secondary button
     await userEvent.tab();
     const secondaryButton = canvas.getByRole('button', { name: 'Secondary' });
     await expect(secondaryButton).toHaveFocus();
-    
+
     // Tab to help link
     await userEvent.tab();
     const helpLink = canvas.getByRole('link', { name: 'Help' });
@@ -140,16 +143,16 @@ export const ScreenReader: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Test region has proper labeling
     const region = canvas.getByRole('region');
     const heading = canvas.getByRole('heading');
     await expect(region).toHaveAttribute('aria-labelledby', heading.id);
-    
+
     // Test heading structure
     await expect(heading).toHaveAttribute('id');
     await expect(heading.tagName).toBe('H3');
-    
+
     // Test illustration accessibility
     const icon = canvas.getByTestId('empty-state-icon');
     await expect(icon).toBeInTheDocument();
@@ -171,18 +174,18 @@ export const FocusManagement: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Test initial focus state
     const button = canvas.getByRole('button', { name: 'Focus Test Button' });
     const link = canvas.getByRole('link', { name: 'Focus Test Link' });
-    
+
     // Test focus indicators are visible
     await userEvent.tab();
     await expect(button).toHaveFocus();
-    
+
     await userEvent.tab();
     await expect(link).toHaveFocus();
-    
+
     // Test focus trap doesn't exist (buttons should be focusable)
     await userEvent.tab();
     await expect(link).not.toHaveFocus();
@@ -213,14 +216,14 @@ export const ResponsiveDesign: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Test buttons are present and accessible
     const primaryButton = canvas.getByRole('button', { name: 'Primary' });
     const secondaryButton = canvas.getByRole('button', { name: 'Secondary' });
-    
+
     await expect(primaryButton).toBeInTheDocument();
     await expect(secondaryButton).toBeInTheDocument();
-    
+
     // Test responsive text wrapping
     const title = canvas.getByRole('heading');
     await expect(title).toBeInTheDocument();
@@ -244,14 +247,14 @@ export const ThemeVariations: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Test component renders in different themes
     const title = canvas.getByRole('heading', { name: 'Theme Variations Test' });
     await expect(title).toBeInTheDocument();
-    
+
     const description = canvas.getByText('Testing theme compatibility and color contrast.');
     await expect(description).toBeInTheDocument();
-    
+
     // Test icon renders
     const icon = canvas.getByTestId('empty-state-icon');
     await expect(icon).toBeInTheDocument();
@@ -261,10 +264,7 @@ export const ThemeVariations: Story = {
 export const VisualStates: Story = {
   render: () => (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-      <EmptyState
-        title="Default State"
-        description="Default visual appearance."
-      />
+      <EmptyState title="Default State" description="Default visual appearance." />
       <EmptyState
         variant="illustrated"
         title="Illustrated State"
@@ -289,15 +289,15 @@ export const VisualStates: Story = {
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Test all visual states render
     const states = ['Default State', 'Illustrated State', 'Minimal State', 'Action State'];
-    
+
     for (const stateName of states) {
       const heading = canvas.getByRole('heading', { name: stateName });
       await expect(heading).toBeInTheDocument();
     }
-    
+
     // Test action button in action state
     const actionButton = canvas.getByRole('button', { name: 'Primary' });
     await expect(actionButton).toBeInTheDocument();
@@ -317,32 +317,34 @@ export const Performance: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const startTime = Date.now();
-    
+
     // Test component renders quickly
     const title = canvas.getByRole('heading', { name: 'Performance Test' });
     await expect(title).toBeInTheDocument();
-    
+
     const endTime = Date.now();
     const renderTime = endTime - startTime;
-    
+
     // Expect render to complete within reasonable time (100ms)
     expect(renderTime).toBeLessThan(100);
-    
+
     // Test interaction performance
     const button = canvas.getByRole('button', { name: 'Performance Action' });
     const clickStartTime = Date.now();
     await userEvent.click(button);
     const clickEndTime = Date.now();
     const clickTime = clickEndTime - clickStartTime;
-    
+
     expect(clickTime).toBeLessThan(50);
   },
 };
 
 export const EdgeCases: Story = {
   args: {
-    title: 'Very Long Title That Should Wrap Properly Even When It Exceeds The Maximum Width Of The Container And Continues To Be Very Long',
-    description: 'Very long description text that should wrap properly and maintain readability even when it contains a lot of content and exceeds the normal expected length for description text in an empty state component. This should handle text overflow gracefully.',
+    title:
+      'Very Long Title That Should Wrap Properly Even When It Exceeds The Maximum Width Of The Container And Continues To Be Very Long',
+    description:
+      'Very long description text that should wrap properly and maintain readability even when it contains a lot of content and exceeds the normal expected length for description text in an empty state component. This should handle text overflow gracefully.',
     helpLink: {
       label: 'Very Long Help Link Text That Should Also Handle Overflow Gracefully',
       href: '#very-long-url-that-might-cause-layout-issues-if-not-handled-properly',
@@ -351,15 +353,15 @@ export const EdgeCases: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Test long title renders and wraps
     const title = canvas.getByRole('heading');
     await expect(title).toBeInTheDocument();
-    
+
     // Test long description renders
     const description = canvas.getByText(/Very long description text/);
     await expect(description).toBeInTheDocument();
-    
+
     // Test long help link renders
     const helpLink = canvas.getByRole('link');
     await expect(helpLink).toBeInTheDocument();
@@ -385,15 +387,15 @@ export const Integration: Story = {
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Test integration within container
     const title = canvas.getByRole('heading', { name: 'Integrated Empty State' });
     await expect(title).toBeInTheDocument();
-    
+
     // Test integrated action works
     const button = canvas.getByRole('button', { name: 'Integrated Action' });
     await expect(button).toBeInTheDocument();
-    
+
     // Test container integration doesn't break functionality
     const region = canvas.getByRole('region');
     await expect(region).toBeInTheDocument();

@@ -6,7 +6,7 @@ import { Banner } from './Banner';
 const meta: Meta<typeof Banner> = {
   title: 'DataDisplay/Banner/Tests',
   component: Banner,
-  parameters: { 
+  parameters: {
     layout: 'fullscreen',
     chromatic: { disableSnapshot: false },
   },
@@ -26,20 +26,20 @@ export const BasicInteraction: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Verify banner is visible
     const banner = canvas.getByRole('status');
     expect(banner).toBeInTheDocument();
     expect(banner).toBeVisible();
-    
+
     // Verify content
     expect(canvas.getByText('Test Banner')).toBeInTheDocument();
     expect(canvas.getByText('Testing basic interaction functionality')).toBeInTheDocument();
-    
+
     // Verify dismiss button functionality
     const dismissButton = canvas.getByRole('button', { name: /dismiss banner/i });
     expect(dismissButton).toBeInTheDocument();
-    
+
     // Test dismiss functionality
     await userEvent.click(dismissButton);
     await waitFor(() => {
@@ -62,18 +62,18 @@ export const StateChange: Story = {
   },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
-    
+
     // Verify initial state
     const banner = canvas.getByRole('alert');
     expect(banner).toBeVisible();
-    
+
     // Test action button clicks
     const primaryButton = canvas.getByRole('button', { name: 'Primary Action' });
     const secondaryButton = canvas.getByRole('button', { name: 'Secondary Action' });
-    
+
     await userEvent.click(primaryButton);
     expect(args.actions![0].onClick).toHaveBeenCalledTimes(1);
-    
+
     await userEvent.click(secondaryButton);
     expect(args.actions![1].onClick).toHaveBeenCalledTimes(1);
   },
@@ -93,32 +93,32 @@ export const KeyboardNavigation: Story = {
   },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
-    
+
     // Focus the banner
     const banner = canvas.getByRole('status');
     banner.focus();
     expect(banner).toHaveFocus();
-    
+
     // Tab to first action button
     await userEvent.tab();
     const action1 = canvas.getByRole('button', { name: 'Action 1' });
     expect(action1).toHaveFocus();
-    
+
     // Tab to second action button
     await userEvent.tab();
     const action2 = canvas.getByRole('button', { name: 'Action 2' });
     expect(action2).toHaveFocus();
-    
+
     // Tab to dismiss button
     await userEvent.tab();
     const dismissButton = canvas.getByRole('button', { name: /dismiss banner/i });
     expect(dismissButton).toHaveFocus();
-    
+
     // Test Enter key on action button
     action1.focus();
     await userEvent.keyboard('{Enter}');
     expect(args.actions![0].onClick).toHaveBeenCalledTimes(1);
-    
+
     // Test Space key on dismiss button
     dismissButton.focus();
     await userEvent.keyboard(' ');
@@ -138,16 +138,16 @@ export const ScreenReader: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Verify ARIA attributes for critical variant
     const banner = canvas.getByRole('alert');
     expect(banner).toHaveAttribute('aria-live', 'assertive');
     expect(banner).toHaveAttribute('aria-atomic', 'true');
-    
+
     // Verify dismiss button accessibility
     const dismissButton = canvas.getByRole('button', { name: /dismiss banner/i });
     expect(dismissButton).toHaveAttribute('aria-label', 'Dismiss banner');
-    
+
     // Verify content structure for screen readers
     expect(canvas.getByText('Screen Reader Test')).toBeInTheDocument();
     expect(canvas.getByText('Testing screen reader accessibility')).toBeInTheDocument();
@@ -160,27 +160,25 @@ export const FocusManagement: Story = {
     variant: 'info',
     title: 'Focus Management Test',
     description: 'Testing focus management and keyboard navigation',
-    actions: [
-      { label: 'Focus Test', onClick: fn(), variant: 'primary' },
-    ],
+    actions: [{ label: 'Focus Test', onClick: fn(), variant: 'primary' }],
     dismissible: true,
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Test initial focus state
     const banner = canvas.getByRole('status');
     expect(banner).toHaveAttribute('tabIndex', '0');
-    
+
     // Test focus visibility
     banner.focus();
     expect(banner).toHaveFocus();
-    
+
     // Test that focus moves properly through interactive elements
     await userEvent.tab();
     const actionButton = canvas.getByRole('button', { name: 'Focus Test' });
     expect(actionButton).toHaveFocus();
-    
+
     await userEvent.tab();
     const dismissButton = canvas.getByRole('button', { name: /dismiss banner/i });
     expect(dismissButton).toHaveFocus();
@@ -210,18 +208,18 @@ export const ResponsiveDesign: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Verify banner renders correctly
     const banner = canvas.getByRole('alert');
     expect(banner).toBeVisible();
-    
+
     // Verify all elements are present
     expect(canvas.getByText('Responsive Design Test')).toBeInTheDocument();
     expect(canvas.getByText('Testing responsive layout behavior')).toBeInTheDocument();
     expect(canvas.getByRole('button', { name: 'Action 1' })).toBeInTheDocument();
     expect(canvas.getByRole('button', { name: 'Action 2' })).toBeInTheDocument();
     expect(canvas.getByRole('button', { name: /dismiss banner/i })).toBeInTheDocument();
-    
+
     // Verify layout adaptation (elements should be accessible regardless of viewport)
     const actionsContainer = banner.querySelector('.banner-actions');
     expect(actionsContainer).toBeInTheDocument();
@@ -238,15 +236,15 @@ export const ThemeVariations: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Verify banner has appropriate styling for success variant
     const banner = canvas.getByRole('status');
     expect(banner).toBeVisible();
-    
+
     // Verify icon is present (success variant should have CheckCircle icon)
     const icon = banner.querySelector('.banner-icon');
     expect(icon).toBeInTheDocument();
-    
+
     // Verify color scheme is applied
     const computedStyle = window.getComputedStyle(banner);
     expect(computedStyle.backgroundColor).toBeTruthy();
@@ -266,11 +264,11 @@ export const VisualStates: Story = {
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Verify all variants are rendered
     const banners = canvas.getAllByRole(/status|alert/);
     expect(banners).toHaveLength(4);
-    
+
     // Verify each variant has appropriate styling
     banners.forEach((banner) => {
       expect(banner).toBeVisible();
@@ -292,9 +290,9 @@ export const Performance: Story = {
           title={`Performance Test Banner ${i + 1}`}
           description={`Testing performance with multiple banners - Instance ${i + 1}`}
           dismissible={i % 2 === 0}
-          actions={i % 3 === 0 ? [
-            { label: 'Action', onClick: fn(), variant: 'primary' }
-          ] : undefined}
+          actions={
+            i % 3 === 0 ? [{ label: 'Action', onClick: fn(), variant: 'primary' }] : undefined
+          }
         />
       ))}
     </div>
@@ -302,16 +300,16 @@ export const Performance: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const startTime = window.performance.now();
-    
+
     // Verify all banners are rendered
     const banners = canvas.getAllByRole(/status|alert/);
     expect(banners).toHaveLength(10);
-    
+
     // Verify performance is acceptable
     const endTime = window.performance.now();
     const renderTime = endTime - startTime;
     expect(renderTime).toBeLessThan(100); // Should render in less than 100ms
-    
+
     // Test interaction performance
     const dismissibleBanners = banners.filter((banner, i) => i % 2 === 0);
     for (const banner of dismissibleBanners.slice(0, 3)) {
@@ -328,14 +326,14 @@ export const EdgeCases: Story = {
       <Banner variant="info" title="" description="" />
       <Banner variant="success" title="Only Title" />
       <Banner variant="warning" description="Only description provided" />
-      <Banner 
-        variant="critical" 
-        title="Very Long Title That Should Handle Overflow Gracefully Without Breaking Layout" 
+      <Banner
+        variant="critical"
+        title="Very Long Title That Should Handle Overflow Gracefully Without Breaking Layout"
         description="This is a very long description that tests how the banner handles overflow content and ensures that the layout remains stable even with extensive text content that might wrap to multiple lines."
       />
-      <Banner 
-        variant="info" 
-        title="Many Actions Test" 
+      <Banner
+        variant="info"
+        title="Many Actions Test"
         actions={[
           { label: 'Action 1', onClick: fn(), variant: 'primary' },
           { label: 'Action 2', onClick: fn(), variant: 'secondary' },
@@ -347,24 +345,24 @@ export const EdgeCases: Story = {
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Verify all edge case banners render
     const banners = canvas.getAllByRole(/status|alert/);
     expect(banners).toHaveLength(5);
-    
+
     // Verify empty content banner
     const emptyBanner = banners[0];
     expect(emptyBanner).toBeVisible();
-    
+
     // Verify title-only banner
     expect(canvas.getByText('Only Title')).toBeInTheDocument();
-    
+
     // Verify description-only banner
     expect(canvas.getByText('Only description provided')).toBeInTheDocument();
-    
+
     // Verify long content banner
     expect(canvas.getByText(/Very Long Title/)).toBeInTheDocument();
-    
+
     // Verify many actions banner
     const manyActionsBanner = banners[4];
     const actionButtons = within(manyActionsBanner).getAllByRole('button');
@@ -376,9 +374,9 @@ export const EdgeCases: Story = {
 export const Integration: Story = {
   render: () => (
     <div>
-      <Banner 
-        variant="info" 
-        title="Cookie Notice" 
+      <Banner
+        variant="info"
+        title="Cookie Notice"
         description="We use cookies to enhance your experience"
         actions={[
           { label: 'Accept All', onClick: fn(), variant: 'primary' },
@@ -390,9 +388,9 @@ export const Integration: Story = {
         <p>Page content below the banner</p>
         <button>Page button</button>
       </div>
-      <Banner 
-        variant="warning" 
-        title="Maintenance Notice" 
+      <Banner
+        variant="warning"
+        title="Maintenance Notice"
         description="Scheduled maintenance tonight from 2-4 AM"
         sticky
         fullWidth
@@ -402,23 +400,23 @@ export const Integration: Story = {
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Verify both banners are present
     const banners = canvas.getAllByRole(/status|alert/);
     expect(banners).toHaveLength(2);
-    
+
     // Test integration with page content
     expect(canvas.getByText('Page content below the banner')).toBeInTheDocument();
     expect(canvas.getByRole('button', { name: 'Page button' })).toBeInTheDocument();
-    
+
     // Test banner interactions don't interfere with page
     const acceptButton = canvas.getByRole('button', { name: 'Accept All' });
     await userEvent.click(acceptButton);
-    
+
     // Verify page content is still accessible
     const pageButton = canvas.getByRole('button', { name: 'Page button' });
     await userEvent.click(pageButton);
-    
+
     // Test sticky banner functionality
     const stickyBanner = banners[1];
     expect(stickyBanner).toBeVisible();

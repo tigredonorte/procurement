@@ -115,25 +115,26 @@
 ## 5) Storybook Tests
 
 **Stories**
-* `DataDisplay/Lightbox/Default`
-* `DataDisplay/Lightbox/SingleImage`
-* `DataDisplay/Lightbox/WithFilmstrip`
-* `DataDisplay/Lightbox/Autoplay`
-* `DataDisplay/Lightbox/CustomAutoplayInterval`
-* `DataDisplay/Lightbox/WithLoop`
-* `DataDisplay/Lightbox/NoControls`
-* `DataDisplay/Lightbox/NoCaptions`
-* `DataDisplay/Lightbox/MixedMedia`
-* `DataDisplay/Lightbox/NotZoomable`
-* `DataDisplay/Lightbox/StartAtIndex`
-* `DataDisplay/Lightbox/FullFeatured`
-* `DataDisplay/Lightbox/DarkMode`
-* `DataDisplay/Lightbox/MobileResponsive`
-* `DataDisplay/Lightbox/AllVariants`
-* `DataDisplay/Lightbox/AllSizes`
-* `DataDisplay/Lightbox/AllStates`
-* `DataDisplay/Lightbox/InteractiveStates`
-* `DataDisplay/Lightbox/Responsive`
+
+- `DataDisplay/Lightbox/Default`
+- `DataDisplay/Lightbox/SingleImage`
+- `DataDisplay/Lightbox/WithFilmstrip`
+- `DataDisplay/Lightbox/Autoplay`
+- `DataDisplay/Lightbox/CustomAutoplayInterval`
+- `DataDisplay/Lightbox/WithLoop`
+- `DataDisplay/Lightbox/NoControls`
+- `DataDisplay/Lightbox/NoCaptions`
+- `DataDisplay/Lightbox/MixedMedia`
+- `DataDisplay/Lightbox/NotZoomable`
+- `DataDisplay/Lightbox/StartAtIndex`
+- `DataDisplay/Lightbox/FullFeatured`
+- `DataDisplay/Lightbox/DarkMode`
+- `DataDisplay/Lightbox/MobileResponsive`
+- `DataDisplay/Lightbox/AllVariants`
+- `DataDisplay/Lightbox/AllSizes`
+- `DataDisplay/Lightbox/AllStates`
+- `DataDisplay/Lightbox/InteractiveStates`
+- `DataDisplay/Lightbox/Responsive`
 
 **Autotests (collocated)**
 

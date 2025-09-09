@@ -55,32 +55,26 @@ The Switch component provides toggle functionality for binary on/off states with
 - [ ] Screen reader compatibility
 - [ ] Label association
 
-## Storybook Tests Status
+## 5) Storybook Tests
 
-- [ ] Basic Interaction (planned)
-- [ ] Form Interaction (planned)
-- [ ] Keyboard Navigation (planned)
-- [ ] Screen Reader (planned)
-- [ ] Focus Management (planned)
-- [ ] Responsive Design (planned)
-- [ ] Theme Variations (planned)
-- [ ] Visual States (planned)
-- [ ] Performance (planned)
-- [ ] Edge Cases (planned)
-- [ ] Integration (planned)
+**Stories**:
 
-## Current Section - 2025-01-13 21:30 (BRT)
+- Form/Switch/Default
+- Form/Switch/WithLabel
+- Form/Switch/Variants
+- Form/Switch/Colors
+- Form/Switch/Sizes
+- Form/Switch/WithIcons
+- Form/Switch/LabelPositions
+- Form/Switch/SpecialEffects
+- Form/Switch/ErrorStates
+- Form/Switch/CustomSizes
+- Form/Switch/AdvancedFeatures
+- Form/Switch/Playground
+- Form/Switch/AllVariants
+- Form/Switch/AllSizes
+- Form/Switch/AllStates
+- Form/Switch/InteractiveStates
+- Form/Switch/Responsive
 
-### Current Task: Initial track.md file creation
-
-- Track.md file structure created
-- Component overview documented
-- Parameters identified
-- Testing scenarios outlined
-
-### Next Steps:
-
-- Read existing component implementation
-- Verify current lint/type status
-- Update status based on actual component state
-- Begin systematic verification process
+## **Current (BRT)**: 2025-09-09 22:35 - All 16 validation checks pass. Stories coverage fixed with required exports (AllVariants, AllSizes, AllStates, InteractiveStates, Responsive). Track.md format corrected. Component ready for production.

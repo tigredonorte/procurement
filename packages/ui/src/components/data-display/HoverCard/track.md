@@ -68,29 +68,31 @@ A sophisticated hover card component that displays rich content on hover or touc
 ## 5) Storybook Tests
 
 **Stories**:
-* `DataDisplay/HoverCard/Default`
-* `DataDisplay/HoverCard/WithCustomTrigger`
-* `DataDisplay/HoverCard/Variants`
-* `DataDisplay/HoverCard/UserProfile`
-* `DataDisplay/HoverCard/ProductInfo`
-* `DataDisplay/HoverCard/WithGlow`
-* `DataDisplay/HoverCard/WithPulse`
-* `DataDisplay/HoverCard/WithGlowAndPulse`
-* `DataDisplay/HoverCard/CustomDelays`
-* `DataDisplay/HoverCard/ComplexContent`
-* `DataDisplay/HoverCard/DisabledState`
-* `DataDisplay/HoverCard/LoadingState`
-* `DataDisplay/HoverCard/CustomLoadingState`
-* `DataDisplay/HoverCard/Placements`
-* `DataDisplay/HoverCard/Animations`
-* `DataDisplay/HoverCard/InlineText`
-* `DataDisplay/HoverCard/AllVariants`
-* `DataDisplay/HoverCard/AllSizes`
-* `DataDisplay/HoverCard/AllStates`
-* `DataDisplay/HoverCard/InteractiveStates`
-* `DataDisplay/HoverCard/Responsive`
+
+- `DataDisplay/HoverCard/Default`
+- `DataDisplay/HoverCard/WithCustomTrigger`
+- `DataDisplay/HoverCard/Variants`
+- `DataDisplay/HoverCard/UserProfile`
+- `DataDisplay/HoverCard/ProductInfo`
+- `DataDisplay/HoverCard/WithGlow`
+- `DataDisplay/HoverCard/WithPulse`
+- `DataDisplay/HoverCard/WithGlowAndPulse`
+- `DataDisplay/HoverCard/CustomDelays`
+- `DataDisplay/HoverCard/ComplexContent`
+- `DataDisplay/HoverCard/DisabledState`
+- `DataDisplay/HoverCard/LoadingState`
+- `DataDisplay/HoverCard/CustomLoadingState`
+- `DataDisplay/HoverCard/Placements`
+- `DataDisplay/HoverCard/Animations`
+- `DataDisplay/HoverCard/InlineText`
+- `DataDisplay/HoverCard/AllVariants`
+- `DataDisplay/HoverCard/AllSizes`
+- `DataDisplay/HoverCard/AllStates`
+- `DataDisplay/HoverCard/InteractiveStates`
+- `DataDisplay/HoverCard/Responsive`
 
 **Test Stories Status**:
+
 - [x] Basic Interaction (completed - PASS)
 - [x] Controlled State (completed - PASS)
 - [x] Keyboard Navigation (completed - PASS)

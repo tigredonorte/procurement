@@ -132,8 +132,8 @@ This plan defines the **Storybook-only** tests for `DataGrid`. All assertions li
 
 **Story Locations**
 
-- Docs & gallery: `Data Display/DataGrid/*`
-- Tests: `Data Display/DataGrid/Tests/*`
+- Docs & gallery: `DataDisplay/DataGrid/*`
+- Tests: `DataDisplay/DataGrid/Tests/*`
 
 **Template Snippet**
 
@@ -190,25 +190,25 @@ export const Sorting_ClientMode: Story = {
 
 ### Test Results
 
-| Test Name                   | Status    | Pass/Fail | Notes                                 |
-| --------------------------- | --------- | --------- | ------------------------------------- |
-| Basic Rendering & Semantics | Ready     | PASS      | ARIA grid pattern implemented        |
-| Virtualization              | Ready     | PASS      | Simple virtualization for large data |
-| Sorting                     | Ready     | PASS      | Client and server modes               |
-| Filtering                   | N/A       | -         | Basic implementation only             |
-| Pagination                  | N/A       | -         | Basic implementation only             |
-| Selection                   | Ready     | PASS      | Single and multi-selection modes     |
-| Column Resize/Reorder/Pin   | N/A       | -         | Not implemented in basic version      |
-| Editing                     | N/A       | -         | Not implemented in basic version      |
-| Row Expansion               | Ready     | PASS      | Expandable rows with custom content   |
-| Keyboard Navigation         | Ready     | PASS      | Arrow key navigation implemented      |
-| Sticky/Pinned               | Ready     | PASS      | Sticky headers implemented            |
-| Empty/Loading/Error         | Ready     | PASS      | All states properly handled           |
-| Theming & Dark Mode         | Ready     | PASS      | MUI theme integration                 |
-| Responsive                  | Ready     | PASS      | Mobile-friendly layout                |
-| Performance                 | Ready     | PASS      | Handles 10k+ rows via virtualization |
-| Edge Cases                  | Ready     | PASS      | Graceful handling of edge conditions  |
-| Integration                 | Ready     | PASS      | Works with multiple features combined |
+| Test Name                   | Status | Pass/Fail | Notes                                 |
+| --------------------------- | ------ | --------- | ------------------------------------- |
+| Basic Rendering & Semantics | Ready  | PASS      | ARIA grid pattern implemented         |
+| Virtualization              | Ready  | PASS      | Simple virtualization for large data  |
+| Sorting                     | Ready  | PASS      | Client and server modes               |
+| Filtering                   | N/A    | -         | Basic implementation only             |
+| Pagination                  | N/A    | -         | Basic implementation only             |
+| Selection                   | Ready  | PASS      | Single and multi-selection modes      |
+| Column Resize/Reorder/Pin   | N/A    | -         | Not implemented in basic version      |
+| Editing                     | N/A    | -         | Not implemented in basic version      |
+| Row Expansion               | Ready  | PASS      | Expandable rows with custom content   |
+| Keyboard Navigation         | Ready  | PASS      | Arrow key navigation implemented      |
+| Sticky/Pinned               | Ready  | PASS      | Sticky headers implemented            |
+| Empty/Loading/Error         | Ready  | PASS      | All states properly handled           |
+| Theming & Dark Mode         | Ready  | PASS      | MUI theme integration                 |
+| Responsive                  | Ready  | PASS      | Mobile-friendly layout                |
+| Performance                 | Ready  | PASS      | Handles 10k+ rows via virtualization  |
+| Edge Cases                  | Ready  | PASS      | Graceful handling of edge conditions  |
+| Integration                 | Ready  | PASS      | Works with multiple features combined |
 
 **Legend:** Pending | Running | PASS | FAIL
 
@@ -232,7 +232,7 @@ export const Sorting_ClientMode: Story = {
 ## Completed Actions
 
 1. ✅ Implemented `DataGrid` per `DataGrid.md` specifications
-2. ✅ Built comprehensive stories and test stories  
+2. ✅ Built comprehensive stories and test stories
 3. ✅ Verified TypeScript compilation and ESLint compliance
 4. ✅ Implemented accessibility features with ARIA grid pattern
 5. ✅ Created 17 comprehensive test stories covering all scenarios

@@ -6,13 +6,13 @@ import React from 'react';
 import { Progress } from './Progress';
 
 const meta: Meta<typeof Progress> = {
-  title: 'Data Display/Progress/Tests',
+  title: 'DataDisplay/Progress/Tests',
   component: Progress,
   parameters: {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test', 'component:Progress', "checked"],
+  tags: ['autodocs', 'test', 'component:Progress', 'checked'],
 };
 
 export default meta;

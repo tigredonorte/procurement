@@ -4,7 +4,7 @@ import { userEvent, within, expect, waitFor, fn } from 'storybook/test';
 import { Carousel } from './Carousel';
 
 const meta: Meta<typeof Carousel> = {
-  title: 'Data Display/Carousel/Tests',
+  title: 'DataDisplay/Carousel/Tests',
   component: Carousel,
   parameters: {
     layout: 'centered',

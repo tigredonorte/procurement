@@ -60,32 +60,42 @@ A customizable toggle button component that extends MUI's ToggleButton with enha
 - [ ] Screen reader accessibility
 - [ ] Form integration
 
-## Storybook Tests Status
+## 5) Storybook Tests
 
-- [ ] Basic Interaction (planned)
-- [ ] Form Interaction (planned)
-- [ ] Keyboard Navigation (planned)
-- [ ] Screen Reader (planned)
-- [ ] Focus Management (planned)
-- [ ] Responsive Design (planned)
-- [ ] Theme Variations (planned)
-- [ ] Visual States (planned)
-- [ ] Performance (planned)
-- [ ] Edge Cases (planned)
-- [ ] Integration (planned)
+**Stories**:
 
-## Current Section - 2025-01-13 21:30 (BRT)
+- Form/Toggle/Tests/BasicInteraction
+- Form/Toggle/Tests/FormInteraction
+- Form/Toggle/Tests/KeyboardNavigation
+- Form/Toggle/Tests/ScreenReader
+- Form/Toggle/Tests/FocusManagement
+- Form/Toggle/Tests/ResponsiveDesign
+- Form/Toggle/Tests/ThemeVariations
+- Form/Toggle/Tests/VisualStates
+- Form/Toggle/Tests/Performance
+- Form/Toggle/Tests/EdgeCases
+- Form/Toggle/Tests/Integration
 
-### Current Task: Initial track.md file creation
+## **Stories**
 
-- Track.md file structure created
-- Component overview documented
-- Parameters identified
-- Testing scenarios outlined
+- Default
+- WithIcon
+- IconOnly
+- Variants
+- Colors
+- Sizes
+- SpecialEffects
+- ActionButtons
+- MediaControls
+- DisabledState
+- Playground
+- AllVariants
+- AllSizes
+- AllStates
+- InteractiveStates
+- Responsive
 
-### Next Steps:
+**Current (BRT)**: 2025-09-09 23:22
 
-- Read existing component implementation
-- Verify current lint/type status
-- Update status based on actual component state
-- Begin systematic verification process
+omega-18
+Fixed stories coverage issue by adding required story exports (AllVariants, AllSizes, AllStates, InteractiveStates, Responsive). Component has comprehensive visual coverage with all variants, sizes, states, and interactive behaviors. All stories are functional with proper component integration.

@@ -104,27 +104,28 @@ Banner is a page-level notification bar component for displaying system messages
 ## 5) Storybook Tests
 
 **Stories**
-* DataDisplay/Banner/Default
-* DataDisplay/Banner/InfoVariant
-* DataDisplay/Banner/Success
-* DataDisplay/Banner/WarningVariant
-* DataDisplay/Banner/Critical
-* DataDisplay/Banner/WithCustomIcon
-* DataDisplay/Banner/Dismissible
-* DataDisplay/Banner/WithActions
-* DataDisplay/Banner/MultipleActions
-* DataDisplay/Banner/Sticky
-* DataDisplay/Banner/FullWidth
-* DataDisplay/Banner/AllVariants
-* DataDisplay/Banner/ContentVariations
-* DataDisplay/Banner/RealWorldExamples
-* DataDisplay/Banner/LongContent
-* DataDisplay/Banner/AccessibilityFocus
-* DataDisplay/Banner/MultipleBanners
-* DataDisplay/Banner/AllSizes
-* DataDisplay/Banner/AllStates
-* DataDisplay/Banner/InteractiveStates
-* DataDisplay/Banner/Responsive
+
+- DataDisplay/Banner/Default
+- DataDisplay/Banner/InfoVariant
+- DataDisplay/Banner/Success
+- DataDisplay/Banner/WarningVariant
+- DataDisplay/Banner/Critical
+- DataDisplay/Banner/WithCustomIcon
+- DataDisplay/Banner/Dismissible
+- DataDisplay/Banner/WithActions
+- DataDisplay/Banner/MultipleActions
+- DataDisplay/Banner/Sticky
+- DataDisplay/Banner/FullWidth
+- DataDisplay/Banner/AllVariants
+- DataDisplay/Banner/ContentVariations
+- DataDisplay/Banner/RealWorldExamples
+- DataDisplay/Banner/LongContent
+- DataDisplay/Banner/AccessibilityFocus
+- DataDisplay/Banner/MultipleBanners
+- DataDisplay/Banner/AllSizes
+- DataDisplay/Banner/AllStates
+- DataDisplay/Banner/InteractiveStates
+- DataDisplay/Banner/Responsive
 
 **Current (BRT)**: 2025-09-09 00:02 [omega-70]
 

@@ -5,7 +5,7 @@ import { ExpandMore, Settings, Info, Security, Help } from '@mui/icons-material'
 
 import { Accordion, AccordionSummary, AccordionDetails, AccordionActions } from './Accordion';
 
-const meta = {
+const meta: Meta<typeof Accordion> = {
   title: 'Layout/Accordion',
   component: Accordion,
   parameters: {
@@ -24,7 +24,7 @@ const meta = {
       control: { type: 'boolean' },
     },
   },
-} satisfies Meta<typeof Accordion>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -557,10 +557,11 @@ export const InteractiveStates: Story = {
       const [expanded, setExpanded] = useState<string | false>('panel1');
       const [clickCount, setClickCount] = useState(0);
 
-      const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
-        setExpanded(isExpanded ? panel : false);
-        setClickCount(clickCount + 1);
-      };
+      const handleChange =
+        (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+          setExpanded(isExpanded ? panel : false);
+          setClickCount(clickCount + 1);
+        };
 
       return (
         <Stack spacing={2}>
@@ -623,8 +624,8 @@ export const Responsive: Story = {
           </AccordionSummary>
           <AccordionDetails>
             <Typography sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem', md: '1rem' } }}>
-              This accordion adapts to different screen sizes. On mobile it uses smaller text,
-              on tablet medium text, and on desktop larger text.
+              This accordion adapts to different screen sizes. On mobile it uses smaller text, on
+              tablet medium text, and on desktop larger text.
             </Typography>
           </AccordionDetails>
         </Accordion>
@@ -635,7 +636,7 @@ export const Responsive: Story = {
             flexDirection: { md: 'column' },
           }}
         >
-          <AccordionSummary 
+          <AccordionSummary
             expandIcon={<ExpandMore />}
             sx={{
               flexDirection: { xs: 'row', md: 'row-reverse' },

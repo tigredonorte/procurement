@@ -43,14 +43,14 @@ Legend: Pending | Running | PASS | FAIL
 
 ## Static Stories Status
 
-- [ ] Default story
-- [ ] All variants covered
-- [ ] Glass effect variant (if applicable)
-- [ ] Hover state story
-- [ ] Disabled state story
-- [ ] Loading state story (if applicable)
-- [ ] Error state story (if applicable)
-- [ ] Empty state story (if applicable)
+- [x] Default story
+- [x] All variants covered (AllVariants, GlassVariant, GradientVariant)
+- [x] Glass effect variant
+- [x] Hover state story (InteractiveStates)
+- [x] Disabled state story
+- [x] Loading state story (not applicable for Select)
+- [x] Error state story
+- [x] Empty state story (not applicable)
 
 ## Lint Status
 
@@ -72,9 +72,9 @@ None - All TypeScript checks pass
 
 ## Storybook Build Status
 
-- [ ] All stories render without console errors
-- [ ] No broken stories in sidebar
-- [ ] Component appears in correct category
+- [x] All stories render without console errors
+- [x] No broken stories in sidebar
+- [x] Component appears in correct category
 
 ### Broken Stories
 

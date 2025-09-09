@@ -25,7 +25,7 @@ import {
 
 import { AnimatedIcon } from './AnimatedIcon';
 
-const meta = {
+const meta: Meta<typeof AnimatedIcon> = {
   title: 'Enhanced/AnimatedIcon',
   component: AnimatedIcon,
   parameters: {
@@ -125,10 +125,17 @@ const meta = {
       description: 'Enable holographic rainbow effect',
     },
   },
-} satisfies Meta<typeof AnimatedIcon>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+// Required Default story
+export const Default: Story = {
+  args: {
+    children: <Star />,
+  },
+};
 
 export const Playground: Story = {
   args: {
@@ -691,6 +698,250 @@ export const PerformanceDemo: Story = {
           );
         })}
       </Grid>
+    </Stack>
+  ),
+};
+
+// Required AllSizes story
+export const AllSizes: Story = {
+  args: {},
+  render: () => (
+    <Stack spacing={4} alignItems="center">
+      <Typography variant="h5">Size Variations</Typography>
+      <Grid container spacing={3} justifyContent="center">
+        {(['sm', 'md', 'lg', 'xl'] as const).map((size) => (
+          <Grid item key={size}>
+            <Paper sx={{ p: 3, textAlign: 'center' }}>
+              <AnimatedIcon variant="pulse" size={size}>
+                <Star />
+              </AnimatedIcon>
+              <Typography variant="subtitle2" sx={{ mt: 2, textTransform: 'uppercase' }}>
+                {size}
+              </Typography>
+            </Paper>
+          </Grid>
+        ))}
+      </Grid>
+    </Stack>
+  ),
+};
+
+// Required AllStates story
+export const AllStates: Story = {
+  args: {},
+  render: () => (
+    <Stack spacing={4}>
+      <Typography variant="h5">All Component States</Typography>
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={6} md={4}>
+          <Paper sx={{ p: 3, textAlign: 'center' }}>
+            <AnimatedIcon variant="none" size="lg">
+              <Star />
+            </AnimatedIcon>
+            <Typography variant="subtitle2" sx={{ mt: 2 }}>
+              Static State
+            </Typography>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+          <Paper sx={{ p: 3, textAlign: 'center' }}>
+            <AnimatedIcon variant="rotate" size="lg">
+              <Refresh />
+            </AnimatedIcon>
+            <Typography variant="subtitle2" sx={{ mt: 2 }}>
+              Loading State
+            </Typography>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+          <Paper sx={{ p: 3, textAlign: 'center' }}>
+            <AnimatedIcon variant="pulse" size="lg" glow glowColor="#4CAF50">
+              <Favorite />
+            </AnimatedIcon>
+            <Typography variant="subtitle2" sx={{ mt: 2 }}>
+              Active State
+            </Typography>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+          <Paper sx={{ p: 3, textAlign: 'center' }}>
+            <AnimatedIcon variant="bounce" size="lg" color="#F44336">
+              <Notifications />
+            </AnimatedIcon>
+            <Typography variant="subtitle2" sx={{ mt: 2 }}>
+              Alert State
+            </Typography>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+          <Paper sx={{ p: 3, textAlign: 'center', opacity: 0.5 }}>
+            <AnimatedIcon variant="none" size="lg" color="#ccc">
+              <Settings />
+            </AnimatedIcon>
+            <Typography variant="subtitle2" sx={{ mt: 2, color: 'text.disabled' }}>
+              Disabled State
+            </Typography>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+          <Paper sx={{ p: 3, textAlign: 'center' }}>
+            <AnimatedIcon variant="heartbeat" size="lg" glow glowColor="#FF6B6B">
+              <Bolt />
+            </AnimatedIcon>
+            <Typography variant="subtitle2" sx={{ mt: 2 }}>
+              Success State
+            </Typography>
+          </Paper>
+        </Grid>
+      </Grid>
+    </Stack>
+  ),
+};
+
+// Required InteractiveStates story
+export const InteractiveStates: Story = {
+  args: {},
+  render: () => {
+    const [isActive, setIsActive] = React.useState(false);
+    const [isHovered, setIsHovered] = React.useState(false);
+    const [isFocused, setIsFocused] = React.useState(false);
+
+    return (
+      <Stack spacing={4}>
+        <Typography variant="h5">Interactive States</Typography>
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={6} md={4}>
+            <Paper sx={{ p: 3, textAlign: 'center' }}>
+              <AnimatedIcon
+                variant={isHovered ? 'pulse' : 'none'}
+                size="lg"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                style={{ cursor: 'pointer' }}
+              >
+                <Home />
+              </AnimatedIcon>
+              <Typography variant="subtitle2" sx={{ mt: 2 }}>
+                Hover to Activate
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                State: {isHovered ? 'Hovered' : 'Normal'}
+              </Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Paper sx={{ p: 3, textAlign: 'center' }}>
+              <AnimatedIcon
+                variant={isActive ? 'spin' : 'none'}
+                size="lg"
+                glow={isActive}
+                glowColor="#FFD700"
+                onClick={() => setIsActive(!isActive)}
+                style={{ cursor: 'pointer' }}
+              >
+                <Settings />
+              </AnimatedIcon>
+              <Typography variant="subtitle2" sx={{ mt: 2 }}>
+                Click to Toggle
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                State: {isActive ? 'Active' : 'Inactive'}
+              </Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Paper sx={{ p: 3, textAlign: 'center' }}>
+              <AnimatedIcon
+                variant={isFocused ? 'heartbeat' : 'none'}
+                size="lg"
+                glass={isFocused}
+                tabIndex={0}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
+                style={{ cursor: 'pointer', outline: isFocused ? '2px solid #1976d2' : 'none' }}
+              >
+                <Search />
+              </AnimatedIcon>
+              <Typography variant="subtitle2" sx={{ mt: 2 }}>
+                Focus with Tab
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                State: {isFocused ? 'Focused' : 'Unfocused'}
+              </Typography>
+            </Paper>
+          </Grid>
+        </Grid>
+      </Stack>
+    );
+  },
+};
+
+// Required Responsive story
+export const Responsive: Story = {
+  args: {},
+  render: () => (
+    <Stack spacing={4}>
+      <Typography variant="h5">Responsive Design</Typography>
+      <Typography variant="body2" color="text.secondary">
+        Icons adapt to different screen sizes and breakpoints
+      </Typography>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: {
+            xs: '1fr',
+            sm: '1fr 1fr',
+            md: '1fr 1fr 1fr',
+            lg: '1fr 1fr 1fr 1fr',
+          },
+          gap: 3,
+        }}
+      >
+        <Paper sx={{ p: 3, textAlign: 'center' }}>
+          <AnimatedIcon variant="pulse" size="lg" glow glowColor="#2196F3">
+            <Star />
+          </AnimatedIcon>
+          <Typography variant="subtitle2" sx={{ mt: 2 }}>
+            Mobile First
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            Responsive sizing
+          </Typography>
+        </Paper>
+        <Paper sx={{ p: 3, textAlign: 'center' }}>
+          <AnimatedIcon variant="rotate" size="lg">
+            <Settings />
+          </AnimatedIcon>
+          <Typography variant="subtitle2" sx={{ mt: 2 }}>
+            Fixed Large
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            Always lg
+          </Typography>
+        </Paper>
+        <Paper sx={{ p: 3, textAlign: 'center' }}>
+          <AnimatedIcon variant="bounce" size="md" glass>
+            <Favorite />
+          </AnimatedIcon>
+          <Typography variant="subtitle2" sx={{ mt: 2 }}>
+            Medium Glass
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            With glass effect
+          </Typography>
+        </Paper>
+        <Paper sx={{ p: 3, textAlign: 'center' }}>
+          <AnimatedIcon variant="float" size="xl" gradient>
+            <Rocket />
+          </AnimatedIcon>
+          <Typography variant="subtitle2" sx={{ mt: 2 }}>
+            Extra Large
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            XL with gradient
+          </Typography>
+        </Paper>
+      </Box>
     </Stack>
   ),
 };

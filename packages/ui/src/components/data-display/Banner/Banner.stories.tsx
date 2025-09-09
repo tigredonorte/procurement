@@ -1,25 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { 
-  Star, 
-  Security,
-  Update,
-  Cookie,
-  Payment,
-} from '@mui/icons-material';
+import { Star, Security, Update, Cookie, Payment } from '@mui/icons-material';
 import { Stack, Box, Typography, Container } from '@mui/material';
 import React from 'react';
 import { fn } from 'storybook/test';
 
 import { Banner } from './Banner';
 
-const meta = {
+const meta: Meta<typeof Banner> = {
   title: 'DataDisplay/Banner',
   component: Banner,
   parameters: {
     layout: 'fullscreen',
     docs: {
       description: {
-        component: 'A page-level notification bar for system messages. Supports multiple variants, inline actions, dismissible functionality, and can be made sticky to affix to the top on scroll.',
+        component:
+          'A page-level notification bar for system messages. Supports multiple variants, inline actions, dismissible functionality, and can be made sticky to affix to the top on scroll.',
       },
     },
   },
@@ -73,7 +68,7 @@ const meta = {
       },
     },
   },
-} satisfies Meta<typeof Banner>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -210,22 +205,22 @@ export const Sticky: Story = {
           Scroll Down to See Sticky Behavior
         </Typography>
         <Typography variant="body1" paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor 
-          incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis 
-          nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt
+          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+          ullamco laboris nisi ut aliquip ex ea commodo consequat.
         </Typography>
         <Typography variant="body1" paragraph>
-          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore 
-          eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt 
-          in culpa qui officia deserunt mollit anim id est laborum.
+          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+          nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+          deserunt mollit anim id est laborum.
         </Typography>
         <Typography variant="body1" paragraph>
           Continue scrolling to see the sticky banner remain at the top of the viewport.
         </Typography>
         {Array.from({ length: 20 }, (_, i) => (
           <Typography key={i} variant="body1" paragraph>
-            Paragraph {i + 1}: More content to demonstrate scrolling behavior. 
-            The banner should remain visible and accessible at all times.
+            Paragraph {i + 1}: More content to demonstrate scrolling behavior. The banner should
+            remain visible and accessible at all times.
           </Typography>
         ))}
       </Container>
@@ -248,10 +243,30 @@ export const FullWidth: Story = {
 export const AllVariants: Story = {
   render: () => (
     <Stack spacing={2} sx={{ p: 2 }}>
-      <Banner variant="info" title="Information" description="Informational message for users" dismissible />
-      <Banner variant="success" title="Success" description="Operation completed successfully" dismissible />
-      <Banner variant="warning" title="Warning" description="Please review before proceeding" dismissible />
-      <Banner variant="critical" title="Critical Error" description="Immediate action required" dismissible />
+      <Banner
+        variant="info"
+        title="Information"
+        description="Informational message for users"
+        dismissible
+      />
+      <Banner
+        variant="success"
+        title="Success"
+        description="Operation completed successfully"
+        dismissible
+      />
+      <Banner
+        variant="warning"
+        title="Warning"
+        description="Please review before proceeding"
+        dismissible
+      />
+      <Banner
+        variant="critical"
+        title="Critical Error"
+        description="Immediate action required"
+        dismissible
+      />
     </Stack>
   ),
 };
@@ -301,9 +316,7 @@ const RealWorldExamplesComponent = () => {
           icon={<Update />}
           title="Scheduled Maintenance"
           description="System maintenance is scheduled for tonight from 2:00 AM to 4:00 AM EST."
-          actions={[
-            { label: 'Learn More', onClick: fn(), variant: 'primary' },
-          ]}
+          actions={[{ label: 'Learn More', onClick: fn(), variant: 'primary' }]}
           dismissible
           onDismiss={() => setShowMaintenance(false)}
         />
@@ -329,9 +342,7 @@ const RealWorldExamplesComponent = () => {
         icon={<Security />}
         title="Security Alert"
         description="Please verify your identity to continue using the application."
-        actions={[
-          { label: 'Verify Now', onClick: fn(), variant: 'primary' },
-        ]}
+        actions={[{ label: 'Verify Now', onClick: fn(), variant: 'primary' }]}
       />
     </Stack>
   );
@@ -346,7 +357,8 @@ export const LongContent: Story = {
   args: {
     variant: 'info',
     title: 'Terms of Service Update - Important Changes to Review',
-    description: 'We have updated our terms of service to better protect your privacy and improve our services. These changes include enhanced data protection measures, clearer explanations of how we use your information, new rights regarding your personal data, improved security protocols, and updated billing procedures. Please review the updated terms carefully as they affect your use of our services and may impact your account settings.',
+    description:
+      'We have updated our terms of service to better protect your privacy and improve our services. These changes include enhanced data protection measures, clearer explanations of how we use your information, new rights regarding your personal data, improved security protocols, and updated billing procedures. Please review the updated terms carefully as they affect your use of our services and may impact your account settings.',
     actions: [
       { label: 'Review Terms', onClick: fn(), variant: 'primary' },
       { label: 'Accept Changes', onClick: fn(), variant: 'secondary' },
@@ -370,18 +382,14 @@ export const AccessibilityFocus: Story = {
         title="Accessible Info Banner"
         description="This banner uses role='status' and aria-live='polite' for screen readers"
         dismissible
-        actions={[
-          { label: 'Action Button', onClick: fn(), variant: 'primary' },
-        ]}
+        actions={[{ label: 'Action Button', onClick: fn(), variant: 'primary' }]}
       />
       <Banner
         variant="critical"
         title="Urgent Critical Banner"
         description="This critical banner uses role='alert' and aria-live='assertive' for immediate announcement"
         dismissible
-        actions={[
-          { label: 'Fix Issue', onClick: fn(), variant: 'primary' },
-        ]}
+        actions={[{ label: 'Fix Issue', onClick: fn(), variant: 'primary' }]}
       />
     </Stack>
   ),
@@ -398,9 +406,9 @@ export const MultipleBanners: Story = {
           title={`Banner ${i + 1}`}
           description={`This is banner number ${i + 1} demonstrating performance with multiple instances`}
           dismissible={i % 2 === 0}
-          actions={i % 3 === 0 ? [
-            { label: 'Action', onClick: fn(), variant: 'primary' }
-          ] : undefined}
+          actions={
+            i % 3 === 0 ? [{ label: 'Action', onClick: fn(), variant: 'primary' }] : undefined
+          }
         />
       ))}
     </Stack>
@@ -412,8 +420,16 @@ export const AllSizes: Story = {
   render: () => (
     <Stack spacing={2} sx={{ p: 2 }}>
       <Banner variant="info" title="Standard Banner" description="Standard size banner message" />
-      <Banner variant="success" title="Success Banner" description="Standard size success message" />
-      <Banner variant="warning" title="Warning Banner" description="Standard size warning message" />
+      <Banner
+        variant="success"
+        title="Success Banner"
+        description="Standard size success message"
+      />
+      <Banner
+        variant="warning"
+        title="Warning Banner"
+        description="Standard size warning message"
+      />
     </Stack>
   ),
 };
@@ -433,24 +449,27 @@ export const InteractiveStates: Story = {
   render: () => (
     <Stack spacing={2} sx={{ p: 2 }}>
       <Banner variant="info" title="Standard Banner" description="Non-interactive banner" />
-      <Banner variant="success" title="Dismissible Banner" description="Click the X to close" dismissible />
-      <Banner 
-        variant="warning" 
-        title="With Actions" 
-        description="Banner with action buttons" 
+      <Banner
+        variant="success"
+        title="Dismissible Banner"
+        description="Click the X to close"
+        dismissible
+      />
+      <Banner
+        variant="warning"
+        title="With Actions"
+        description="Banner with action buttons"
         actions={[
           { label: 'Primary', onClick: fn(), variant: 'primary' },
           { label: 'Secondary', onClick: fn(), variant: 'secondary' },
         ]}
       />
-      <Banner 
-        variant="critical" 
-        title="Full Interactive" 
-        description="Dismissible with actions" 
+      <Banner
+        variant="critical"
+        title="Full Interactive"
+        description="Dismissible with actions"
         dismissible
-        actions={[
-          { label: 'Fix Now', onClick: fn(), variant: 'primary' },
-        ]}
+        actions={[{ label: 'Fix Now', onClick: fn(), variant: 'primary' }]}
       />
     </Stack>
   ),
@@ -460,9 +479,9 @@ export const Responsive: Story = {
   render: () => (
     <Box>
       <Stack spacing={2} sx={{ p: 2 }}>
-        <Banner 
-          variant="info" 
-          title="Responsive Banner" 
+        <Banner
+          variant="info"
+          title="Responsive Banner"
           description="This banner adapts to different screen sizes and container widths"
           dismissible
           actions={[
@@ -471,28 +490,26 @@ export const Responsive: Story = {
           ]}
         />
         <Box sx={{ maxWidth: 600 }}>
-          <Banner 
-            variant="success" 
-            title="Medium Container" 
+          <Banner
+            variant="success"
+            title="Medium Container"
             description="Banner in a medium-width container"
             dismissible
-            actions={[
-              { label: 'Action', onClick: fn(), variant: 'primary' },
-            ]}
+            actions={[{ label: 'Action', onClick: fn(), variant: 'primary' }]}
           />
         </Box>
         <Box sx={{ maxWidth: 400 }}>
-          <Banner 
-            variant="warning" 
-            title="Narrow Container" 
+          <Banner
+            variant="warning"
+            title="Narrow Container"
             description="Banner in a narrow container adapts layout for mobile"
             dismissible
           />
         </Box>
         <Box sx={{ maxWidth: 300 }}>
-          <Banner 
-            variant="critical" 
-            title="Very Narrow" 
+          <Banner
+            variant="critical"
+            title="Very Narrow"
             description="Actions stack on mobile"
             actions={[
               { label: 'Fix', onClick: fn(), variant: 'primary' },

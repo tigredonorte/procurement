@@ -90,10 +90,18 @@ export const Variants: Story = {
   render: () => (
     <Stack spacing={2}>
       <Label variant="default">Default Label</Label>
-      <Label variant="filled" color="primary">Filled Label</Label>
-      <Label variant="outlined" color="secondary">Outlined Label</Label>
-      <Label variant="glass" glow>Glass Label with Glow</Label>
-      <Label variant="gradient" color="primary">Gradient Label</Label>
+      <Label variant="filled" color="primary">
+        Filled Label
+      </Label>
+      <Label variant="outlined" color="secondary">
+        Outlined Label
+      </Label>
+      <Label variant="glass" glow>
+        Glass Label with Glow
+      </Label>
+      <Label variant="gradient" color="primary">
+        Gradient Label
+      </Label>
       <Label variant="minimal">Minimal Label</Label>
     </Stack>
   ),
@@ -140,10 +148,18 @@ export const States: Story = {
 export const Effects: Story = {
   render: () => (
     <Stack spacing={2}>
-      <Label glow color="primary">Label with Glow</Label>
-      <Label pulse color="secondary">Label with Pulse</Label>
-      <Label glow pulse variant="glass">Glass with Glow and Pulse</Label>
-      <Label variant="gradient" glow>Gradient with Glow</Label>
+      <Label glow color="primary">
+        Label with Glow
+      </Label>
+      <Label pulse color="secondary">
+        Label with Pulse
+      </Label>
+      <Label glow pulse variant="glass">
+        Glass with Glow and Pulse
+      </Label>
+      <Label variant="gradient" glow>
+        Gradient with Glow
+      </Label>
       <Label onClick={() => window.alert('Interactive Label clicked')}>
         Interactive Label with Click Handler
       </Label>
@@ -186,26 +202,13 @@ export const WithTooltip: Story = {
 export const Clickable: Story = {
   render: () => (
     <Stack spacing={2}>
-      <Label
-        onClick={() => window.alert('Label clicked!')}
-        variant="filled"
-        color="primary"
-        ripple
-      >
+      <Label onClick={() => window.alert('Label clicked!')} variant="filled" color="primary" ripple>
         Click me (with ripple)
       </Label>
-      <Label
-        onClick={() => window.alert('Label clicked!')}
-        variant="outlined"
-        color="secondary"
-      >
+      <Label onClick={() => window.alert('Label clicked!')} variant="outlined" color="secondary">
         Click me (outlined)
       </Label>
-      <Label
-        onClick={() => window.alert('Label clicked!')}
-        variant="glass"
-        glow
-      >
+      <Label onClick={() => window.alert('Label clicked!')} variant="glass" glow>
         Click me (glass with glow)
       </Label>
     </Stack>
@@ -221,7 +224,12 @@ export const AsteriskPlacement: Story = {
       <Label required asteriskPlacement="start">
         Asterisk at Start
       </Label>
-      <Label required asteriskPlacement="end" icon={<PersonIcon fontSize="small" />} iconPosition="start">
+      <Label
+        required
+        asteriskPlacement="end"
+        icon={<PersonIcon fontSize="small" />}
+        iconPosition="start"
+      >
         With Icon and Asterisk
       </Label>
     </Stack>
@@ -235,9 +243,7 @@ export const Truncate: Story = {
         <Label truncate>
           This is a very long label that should be truncated when it exceeds the container width
         </Label>
-        <Label nowrap>
-          This label has nowrap and will not break to a new line
-        </Label>
+        <Label nowrap>This label has nowrap and will not break to a new line</Label>
       </Stack>
     </Box>
   ),
@@ -258,7 +264,7 @@ export const WithFormField: Story = {
           sx={{ mt: 1 }}
         />
       </Box>
-      
+
       <Box>
         <Label
           htmlFor="password-field"
@@ -278,14 +284,9 @@ export const WithFormField: Story = {
           sx={{ mt: 1 }}
         />
       </Box>
-      
+
       <Box>
-        <Label
-          htmlFor="username-field"
-          variant="glass"
-          glow
-          icon={<PersonIcon fontSize="small" />}
-        >
+        <Label htmlFor="username-field" variant="glass" glow icon={<PersonIcon fontSize="small" />}>
           Username
         </Label>
         <TextField
@@ -306,11 +307,7 @@ export const ScreenReaderOnly: Story = {
       <Label srOnly htmlFor="sr-input">
         This label is only visible to screen readers
       </Label>
-      <TextField
-        id="sr-input"
-        placeholder="Field with screen reader only label"
-        fullWidth
-      />
+      <TextField id="sr-input" placeholder="Field with screen reader only label" fullWidth />
       <Typography variant="caption" sx={{ mt: 1, display: 'block' }}>
         The label above is visually hidden but accessible to screen readers
       </Typography>
@@ -335,7 +332,7 @@ export const AllCombinations: Story = {
       >
         Premium Feature
       </Label>
-      
+
       <Label
         variant="glass"
         color="info"
@@ -350,13 +347,126 @@ export const AllCombinations: Story = {
       >
         Special Field
       </Label>
-      
+
+      <Label variant="filled" color="success" onClick={() => window.alert('Label clicked')}>
+        Clickable Label
+      </Label>
+    </Stack>
+  ),
+};
+
+// Required story exports for validation
+export const AllVariants: Story = {
+  render: () => (
+    <Stack spacing={2}>
+      <Label variant="default">Default Variant</Label>
+      <Label variant="filled" color="primary">
+        Filled Variant
+      </Label>
+      <Label variant="outlined" color="secondary">
+        Outlined Variant
+      </Label>
+      <Label variant="glass" glow>
+        Glass Variant
+      </Label>
+      <Label variant="gradient" color="primary">
+        Gradient Variant
+      </Label>
+      <Label variant="minimal">Minimal Variant</Label>
+    </Stack>
+  ),
+};
+
+export const AllSizes: Story = {
+  render: () => (
+    <Stack spacing={2}>
+      <Label size="xs">Extra Small Size</Label>
+      <Label size="sm">Small Size</Label>
+      <Label size="md">Medium Size</Label>
+      <Label size="lg">Large Size</Label>
+      <Label size="xl">Extra Large Size</Label>
+    </Stack>
+  ),
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <Stack spacing={2}>
+      <Label>Normal State</Label>
+      <Label disabled>Disabled State</Label>
+      <Label error>Error State</Label>
+      <Label loading>Loading State</Label>
+      <Label required>Required State</Label>
+    </Stack>
+  ),
+};
+
+export const InteractiveStates: Story = {
+  render: () => (
+    <Stack spacing={2}>
+      <Label onClick={() => window.alert('Label clicked!')} variant="filled" color="primary" ripple>
+        Clickable with Ripple
+      </Label>
+      <Label onClick={() => window.alert('Label clicked!')} variant="outlined" color="secondary">
+        Clickable Outlined
+      </Label>
+      <Label onClick={() => window.alert('Label clicked!')} variant="glass" glow>
+        Clickable Glass
+      </Label>
+      <Label onClick={() => window.alert('Label clicked!')} pulse>
+        Clickable with Pulse
+      </Label>
+    </Stack>
+  ),
+};
+
+export const Responsive: Story = {
+  render: () => (
+    <Stack spacing={2}>
+      <Label
+        sx={{
+          fontSize: {
+            xs: '0.75rem',
+            sm: '0.875rem',
+            md: '1rem',
+            lg: '1.125rem',
+            xl: '1.25rem',
+          },
+        }}
+      >
+        Responsive Font Size
+      </Label>
       <Label
         variant="filled"
-        color="success"
-        onClick={() => window.alert('Label clicked')}
+        sx={{
+          padding: {
+            xs: '4px 8px',
+            sm: '6px 12px',
+            md: '8px 16px',
+            lg: '10px 20px',
+          },
+        }}
       >
-        Clickable Label
+        Responsive Padding
+      </Label>
+      <Label
+        icon={<InfoIcon fontSize="small" />}
+        sx={{
+          display: {
+            xs: 'flex',
+            sm: 'inline-flex',
+          },
+          flexDirection: {
+            xs: 'column',
+            sm: 'row',
+          },
+          alignItems: {
+            xs: 'flex-start',
+            sm: 'center',
+          },
+        }}
+      >
+        Responsive Layout
       </Label>
     </Stack>
   ),

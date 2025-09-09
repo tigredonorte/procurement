@@ -53,6 +53,11 @@ Legend: Pending | Running | PASS | FAIL
 - [x] ErrorStates story (exists)
 - [x] RichTextShowcase story (exists)
 - [x] Playground story (exists)
+- [x] AllVariants story (added for validation)
+- [x] AllSizes story (added for validation)
+- [x] AllStates story (added for validation)
+- [x] InteractiveStates story (added for validation)
+- [x] Responsive story (added for validation)
 
 ## Lint Status
 

@@ -62,7 +62,7 @@ A slide-out drawer component that can be positioned from any side of the screen.
 
 ## 5) Storybook Tests
 
-**Stories**
+**Stories**:
 
 - Layout/Drawer/Default
 - Layout/Drawer/AllVariants
@@ -95,4 +95,4 @@ A slide-out drawer component that can be positioned from any side of the screen.
 - [ ] Edge Cases (planned)
 - [ ] Integration (planned)
 
-**Current (BRT)**: 2025-09-09 19:10 - Fixed Stories coverage validation issue by adding required story exports
+**Current (BRT)**: 2025-09-09 05:30 - Fixing track.md validation for proper format

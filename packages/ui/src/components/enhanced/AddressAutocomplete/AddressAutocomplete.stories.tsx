@@ -6,7 +6,7 @@ import React from 'react';
 import { AddressAutocomplete } from './AddressAutocomplete';
 import type { AddressDetails } from './AddressAutocomplete.types';
 
-const meta = {
+const meta: Meta<typeof AddressAutocomplete> = {
   title: 'Enhanced/AddressAutocomplete',
   component: AddressAutocomplete,
   parameters: {
@@ -66,7 +66,7 @@ const meta = {
       description: 'Google Maps API key for autocomplete functionality',
     },
   },
-} satisfies Meta<typeof AddressAutocomplete>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -352,10 +352,14 @@ export const CustomIcons: Story = {
 export const AllVariants: Story = {
   render: () => (
     <Stack spacing={3}>
-      <Typography variant="h6" gutterBottom>All Variants</Typography>
-      
+      <Typography variant="h6" gutterBottom>
+        All Variants
+      </Typography>
+
       <Box>
-        <Typography variant="subtitle2" gutterBottom>Glass Variant</Typography>
+        <Typography variant="subtitle2" gutterBottom>
+          Glass Variant
+        </Typography>
         <Box
           sx={{
             background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -374,7 +378,9 @@ export const AllVariants: Story = {
       </Box>
 
       <Box>
-        <Typography variant="subtitle2" gutterBottom>Outlined Variant</Typography>
+        <Typography variant="subtitle2" gutterBottom>
+          Outlined Variant
+        </Typography>
         <AddressAutocomplete
           variant="outlined"
           label="Outlined Address"
@@ -385,7 +391,9 @@ export const AllVariants: Story = {
       </Box>
 
       <Box>
-        <Typography variant="subtitle2" gutterBottom>Filled Variant</Typography>
+        <Typography variant="subtitle2" gutterBottom>
+          Filled Variant
+        </Typography>
         <AddressAutocomplete
           variant="filled"
           label="Filled Address"
@@ -401,10 +409,14 @@ export const AllVariants: Story = {
 export const AllSizes: Story = {
   render: () => (
     <Stack spacing={3}>
-      <Typography variant="h6" gutterBottom>All Size Configurations</Typography>
-      
+      <Typography variant="h6" gutterBottom>
+        All Size Configurations
+      </Typography>
+
       <Box>
-        <Typography variant="subtitle2" gutterBottom>Default Width</Typography>
+        <Typography variant="subtitle2" gutterBottom>
+          Default Width
+        </Typography>
         <AddressAutocomplete
           variant="outlined"
           label="Default Width"
@@ -415,7 +427,9 @@ export const AllSizes: Story = {
       </Box>
 
       <Box>
-        <Typography variant="subtitle2" gutterBottom>Full Width</Typography>
+        <Typography variant="subtitle2" gutterBottom>
+          Full Width
+        </Typography>
         <AddressAutocomplete
           variant="outlined"
           label="Full Width Address"
@@ -427,7 +441,9 @@ export const AllSizes: Story = {
       </Box>
 
       <Box>
-        <Typography variant="subtitle2" gutterBottom>With Floating Label</Typography>
+        <Typography variant="subtitle2" gutterBottom>
+          With Floating Label
+        </Typography>
         <AddressAutocomplete
           variant="outlined"
           label="Floating Label"
@@ -439,7 +455,9 @@ export const AllSizes: Story = {
       </Box>
 
       <Box>
-        <Typography variant="subtitle2" gutterBottom>With Icon</Typography>
+        <Typography variant="subtitle2" gutterBottom>
+          With Icon
+        </Typography>
         <AddressAutocomplete
           variant="outlined"
           label="Address with Icon"
@@ -456,10 +474,14 @@ export const AllSizes: Story = {
 export const AllStates: Story = {
   render: () => (
     <Stack spacing={3}>
-      <Typography variant="h6" gutterBottom>All States</Typography>
-      
+      <Typography variant="h6" gutterBottom>
+        All States
+      </Typography>
+
       <Box>
-        <Typography variant="subtitle2" gutterBottom>Default State</Typography>
+        <Typography variant="subtitle2" gutterBottom>
+          Default State
+        </Typography>
         <AddressAutocomplete
           variant="outlined"
           label="Default"
@@ -470,7 +492,9 @@ export const AllStates: Story = {
       </Box>
 
       <Box>
-        <Typography variant="subtitle2" gutterBottom>Error State</Typography>
+        <Typography variant="subtitle2" gutterBottom>
+          Error State
+        </Typography>
         <AddressAutocomplete
           variant="outlined"
           label="Error"
@@ -483,7 +507,9 @@ export const AllStates: Story = {
       </Box>
 
       <Box>
-        <Typography variant="subtitle2" gutterBottom>Disabled State</Typography>
+        <Typography variant="subtitle2" gutterBottom>
+          Disabled State
+        </Typography>
         <AddressAutocomplete
           variant="outlined"
           label="Disabled"
@@ -496,7 +522,9 @@ export const AllStates: Story = {
       </Box>
 
       <Box>
-        <Typography variant="subtitle2" gutterBottom>Required State</Typography>
+        <Typography variant="subtitle2" gutterBottom>
+          Required State
+        </Typography>
         <AddressAutocomplete
           variant="outlined"
           label="Required"
@@ -509,7 +537,9 @@ export const AllStates: Story = {
       </Box>
 
       <Box>
-        <Typography variant="subtitle2" gutterBottom>With Current Location</Typography>
+        <Typography variant="subtitle2" gutterBottom>
+          With Current Location
+        </Typography>
         <AddressAutocomplete
           variant="outlined"
           label="With Location"
@@ -525,7 +555,7 @@ export const AllStates: Story = {
 
 const InteractiveStatesComponent = () => {
   const [hoveredIndex, setHoveredIndex] = React.useState<number | null>(null);
-  
+
   const states = [
     { label: 'Hover State', variant: 'outlined' as const },
     { label: 'Focus State', variant: 'outlined' as const },
@@ -534,7 +564,9 @@ const InteractiveStatesComponent = () => {
 
   return (
     <Stack spacing={3}>
-      <Typography variant="h6" gutterBottom>Interactive States</Typography>
+      <Typography variant="h6" gutterBottom>
+        Interactive States
+      </Typography>
       {states.map((state, index) => (
         <Box
           key={index}
@@ -585,9 +617,10 @@ export const Responsive: Story = {
       <Typography variant="h6" gutterBottom>
         Responsive Design (resize viewport)
       </Typography>
-      
+
       <Alert severity="info">
-        This component adapts to different screen sizes. Try changing the viewport size using Storybook&apos;s viewport addon.
+        This component adapts to different screen sizes. Try changing the viewport size using
+        Storybook&apos;s viewport addon.
       </Alert>
 
       <Box sx={{ width: '100%' }}>

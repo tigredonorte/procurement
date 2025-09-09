@@ -86,7 +86,7 @@ const sampleAnimation = {
   ],
 };
 
-const meta = {
+const meta: Meta<typeof LottieAnimation> = {
   title: 'Enhanced/LottieAnimation',
   component: LottieAnimation,
   parameters: {
@@ -122,7 +122,7 @@ const meta = {
       control: 'boolean',
     },
   },
-} satisfies Meta<typeof LottieAnimation>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

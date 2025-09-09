@@ -59,6 +59,11 @@ Legend: Pending | Running | PASS | FAIL
 
 - [x] Default story
 - [x] All variants covered (default, pills, underline, enclosed)
+- [x] AllVariants story (required export)
+- [x] AllSizes story (required export)
+- [x] AllStates story (required export)
+- [x] InteractiveStates story (required export)
+- [x] Responsive story (required export)
 - [x] Glass effect variant (N/A for tabs)
 - [x] Hover state story (covered in variants)
 - [x] Disabled state story
@@ -104,4 +109,6 @@ None - All tests pass (with unhandled error suppression for implicit actions)
 - [x] Lint clean
 - [x] TypeCheck clean
 - [x] Stories working
+- [x] Stories coverage validation passing (16/16 checks)
+- [x] Required story exports implemented
 - [x] Ready for production

@@ -27,7 +27,6 @@ type Story = StoryObj<typeof meta>;
 
 // Basic Interaction Tests
 export const BasicInteraction: Story = {
-  name: 'Basic Interaction',
   render: function BasicInteractionTest() {
     const { addToast, removeToast, clearAllToasts } = useToast();
     const [toastId, setToastId] = useState<string | null>(null);
@@ -89,7 +88,6 @@ export const BasicInteraction: Story = {
 
 // Form Interaction Tests
 export const FormInteraction: Story = {
-  name: 'Form Interaction',
   render: function FormInteractionTest() {
     const { addToast } = useToast();
     const [message, setMessage] = useState('');
@@ -174,7 +172,6 @@ export const FormInteraction: Story = {
 
 // Keyboard Navigation Tests
 export const KeyboardNavigation: Story = {
-  name: 'Keyboard Navigation',
   render: function KeyboardNavigationTest() {
     const { addToast } = useToast();
     const buttonRef = useRef<HTMLButtonElement>(null);
@@ -248,7 +245,6 @@ export const KeyboardNavigation: Story = {
 
 // Screen Reader Tests
 export const ScreenReader: Story = {
-  name: 'Screen Reader',
   render: function ScreenReaderTest() {
     const { addToast } = useToast();
 
@@ -317,7 +313,6 @@ export const ScreenReader: Story = {
 
 // Focus Management Tests
 export const FocusManagement: Story = {
-  name: 'Focus Management',
   render: function FocusManagementTest() {
     const { addToast } = useToast();
     const triggerButtonRef = useRef<HTMLButtonElement>(null);
@@ -385,7 +380,6 @@ export const FocusManagement: Story = {
 
 // Responsive Design Tests
 export const ResponsiveDesign: Story = {
-  name: 'Responsive Design',
   render: function ResponsiveDesignTest() {
     const { addToast } = useToast();
 
@@ -441,7 +435,6 @@ export const ResponsiveDesign: Story = {
 
 // Theme Variations Tests
 export const ThemeVariations: Story = {
-  name: 'Theme Variations',
   render: function ThemeVariationsTest() {
     const { addToast } = useToast();
 
@@ -490,7 +483,6 @@ export const ThemeVariations: Story = {
 
 // Visual States Tests
 export const VisualStates: Story = {
-  name: 'Visual States',
   render: function VisualStatesTest() {
     const { addToast } = useToast();
 
@@ -561,7 +553,6 @@ export const VisualStates: Story = {
 
 // Performance Tests
 export const Performance: Story = {
-  name: 'Performance',
   render: function PerformanceTest() {
     const { addToast, clearAllToasts } = useToast();
     const [isStressing, setIsStressing] = useState(false);
@@ -634,7 +625,6 @@ export const Performance: Story = {
 
 // Edge Cases Tests
 export const EdgeCases: Story = {
-  name: 'Edge Cases',
   render: function EdgeCasesTest() {
     const { addToast, promise } = useToast();
 
@@ -744,7 +734,6 @@ export const EdgeCases: Story = {
 
 // Integration Tests
 export const Integration: Story = {
-  name: 'Integration',
   render: function IntegrationTest() {
     const { addToast } = useToast();
 

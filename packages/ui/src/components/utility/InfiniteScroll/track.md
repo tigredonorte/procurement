@@ -60,31 +60,19 @@ A performance-optimized infinite scrolling component supporting multiple scroll 
 - [ ] Memory management and cleanup
 - [ ] Responsive behavior across screen sizes
 
-## Storybook Tests Status
+## 5) Storybook Tests
 
-- [ ] Basic Interaction (planned)
-- [ ] Keyboard Navigation (planned)
-- [ ] Screen Reader (planned)
-- [ ] Focus Management (planned)
-- [ ] Responsive Design (planned)
-- [ ] Theme Variations (planned)
-- [ ] Visual States (planned)
-- [ ] Performance (planned)
-- [ ] Edge Cases (planned)
-- [ ] Integration (planned)
+**Stories**:
 
-## Current Section - 2025-01-13 21:30 (BRT)
+- Utility/InfiniteScroll/VerticalScroll
+- Utility/InfiniteScroll/CardGrid
+- Utility/InfiniteScroll/ReverseScroll
+- Utility/InfiniteScroll/HorizontalScroll
+- Utility/InfiniteScroll/Default
+- Utility/InfiniteScroll/AllVariants
+- Utility/InfiniteScroll/AllSizes
+- Utility/InfiniteScroll/AllStates
+- Utility/InfiniteScroll/InteractiveStates
+- Utility/InfiniteScroll/Responsive
 
-### Current Task: Initial track.md file creation
-
-- Track.md file structure created
-- Component overview documented
-- Parameters identified
-- Testing scenarios outlined
-
-### Next Steps:
-
-- Read existing component implementation
-- Verify current lint/type status
-- Update status based on actual component state
-- Begin systematic verification process
+## **Current (BRT)**: 2025-09-09 23:40 - Stories coverage fixed with all required exports (Default, AllVariants, AllSizes, AllStates, InteractiveStates, Responsive); track.md format corrected; component ready for final validation

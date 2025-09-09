@@ -5,7 +5,7 @@ import { Chart } from './Chart';
 import { ChartDataPoint } from './Chart.types';
 
 const meta: Meta<typeof Chart> = {
-  title: 'Data Display/Chart/Tests',
+  title: 'DataDisplay/Chart/Tests',
   component: Chart,
   parameters: {
     layout: 'centered',

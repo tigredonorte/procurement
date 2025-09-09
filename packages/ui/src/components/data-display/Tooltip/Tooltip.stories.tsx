@@ -4,7 +4,7 @@ import { Help, Info, Settings, Delete } from '@mui/icons-material';
 
 import { Tooltip } from './Tooltip';
 
-const meta = {
+const meta: Meta<typeof Tooltip> = {
   title: 'DataDisplay/Tooltip',
   component: Tooltip,
   parameters: {
@@ -31,7 +31,7 @@ const meta = {
       control: { type: 'boolean' },
     },
   },
-} satisfies Meta<typeof Tooltip>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -80,13 +80,17 @@ export const Sizes: Story = {
   render: () => (
     <Stack direction="row" spacing={3}>
       <Tooltip size="sm" title="Small tooltip">
-        <Button variant="outlined" size="small">Small</Button>
+        <Button variant="outlined" size="small">
+          Small
+        </Button>
       </Tooltip>
       <Tooltip size="md" title="Medium tooltip">
         <Button variant="outlined">Medium</Button>
       </Tooltip>
       <Tooltip size="lg" title="Large tooltip">
-        <Button variant="outlined" size="large">Large</Button>
+        <Button variant="outlined" size="large">
+          Large
+        </Button>
       </Tooltip>
     </Stack>
   ),
@@ -95,24 +99,40 @@ export const Sizes: Story = {
 // Placements
 export const Placements: Story = {
   render: () => (
-    <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 3, width: 300, height: 200 }}>
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)',
+        gap: 3,
+        width: 300,
+        height: 200,
+      }}
+    >
       <Box />
       <Tooltip placement="top" title="Top tooltip">
-        <Button variant="outlined" fullWidth>Top</Button>
+        <Button variant="outlined" fullWidth>
+          Top
+        </Button>
       </Tooltip>
       <Box />
-      
+
       <Tooltip placement="left" title="Left tooltip">
-        <Button variant="outlined" fullWidth>Left</Button>
+        <Button variant="outlined" fullWidth>
+          Left
+        </Button>
       </Tooltip>
       <Box />
       <Tooltip placement="right" title="Right tooltip">
-        <Button variant="outlined" fullWidth>Right</Button>
+        <Button variant="outlined" fullWidth>
+          Right
+        </Button>
       </Tooltip>
-      
+
       <Box />
       <Tooltip placement="bottom" title="Bottom tooltip">
-        <Button variant="outlined" fullWidth>Bottom</Button>
+        <Button variant="outlined" fullWidth>
+          Bottom
+        </Button>
       </Tooltip>
       <Box />
     </Box>
@@ -125,7 +145,11 @@ export const WithGlow: Story = {
     variant: 'dark',
     glow: true,
     title: 'This tooltip has a glow effect',
-    children: <Button variant="contained" color="primary">Glow Effect</Button>,
+    children: (
+      <Button variant="contained" color="primary">
+        Glow Effect
+      </Button>
+    ),
   },
 };
 
@@ -134,7 +158,11 @@ export const WithPulse: Story = {
     variant: 'light',
     pulse: true,
     title: 'This tooltip pulses to grab attention',
-    children: <Button variant="contained" color="warning">Pulse Effect</Button>,
+    children: (
+      <Button variant="contained" color="warning">
+        Pulse Effect
+      </Button>
+    ),
   },
 };
 
@@ -144,7 +172,11 @@ export const WithGlowAndPulse: Story = {
     glow: true,
     pulse: true,
     title: 'This tooltip combines both effects',
-    children: <Button variant="contained" color="secondary">Combined Effects</Button>,
+    children: (
+      <Button variant="contained" color="secondary">
+        Combined Effects
+      </Button>
+    ),
   },
 };
 
@@ -181,27 +213,27 @@ export const UserInterface: Story = {
   render: () => (
     <Stack direction="row" spacing={2} alignItems="center">
       <Tooltip title="User profile and settings">
-        <Avatar 
+        <Avatar
           src="https://images.unsplash.com/photo-1494790108755-2616b612b789?w=150&h=150&fit=crop&crop=face"
           alt="User"
           sx={{ cursor: 'pointer' }}
         />
       </Tooltip>
-      
+
       <Tooltip title="Get help and support" variant="light">
         <IconButton>
           <Help />
         </IconButton>
       </Tooltip>
-      
+
       <Tooltip title="View system information" variant="glass">
         <IconButton>
           <Info />
         </IconButton>
       </Tooltip>
-      
-      <Tooltip 
-        title="This action cannot be undone. All data will be permanently deleted." 
+
+      <Tooltip
+        title="This action cannot be undone. All data will be permanently deleted."
         variant="dark"
         placement="left"
         glow
@@ -219,7 +251,7 @@ export const FormHelp: Story = {
     <Stack spacing={3} sx={{ width: 400 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
         <Typography variant="subtitle2">Email Address</Typography>
-        <Tooltip 
+        <Tooltip
           title="We'll use this email to send you important updates and notifications"
           variant="light"
           size="sm"
@@ -227,10 +259,10 @@ export const FormHelp: Story = {
           <Help fontSize="small" sx={{ color: 'text.secondary', cursor: 'pointer' }} />
         </Tooltip>
       </Box>
-      
+
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
         <Typography variant="subtitle2">Password</Typography>
-        <Tooltip 
+        <Tooltip
           title="Password must be at least 8 characters long and include uppercase, lowercase, number, and special character"
           variant="glass"
           maxWidth={250}
@@ -238,10 +270,10 @@ export const FormHelp: Story = {
           <Help fontSize="small" sx={{ color: 'text.secondary', cursor: 'pointer' }} />
         </Tooltip>
       </Box>
-      
+
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
         <Typography variant="subtitle2">Two-Factor Authentication</Typography>
-        <Tooltip 
+        <Tooltip
           title="Adds an extra layer of security to your account by requiring a second form of verification"
           variant="dark"
           glow
@@ -257,23 +289,15 @@ export const FormHelp: Story = {
 export const InteractiveTooltips: Story = {
   render: () => (
     <Stack direction="row" spacing={3}>
-      <Tooltip 
-        title="This tooltip appears quickly"
-        enterDelay={100}
-        leaveDelay={0}
-      >
+      <Tooltip title="This tooltip appears quickly" enterDelay={100} leaveDelay={0}>
         <Button variant="outlined">Fast</Button>
       </Tooltip>
-      
-      <Tooltip 
-        title="This tooltip has a longer delay"
-        enterDelay={1000}
-        leaveDelay={200}
-      >
+
+      <Tooltip title="This tooltip has a longer delay" enterDelay={1000} leaveDelay={200}>
         <Button variant="outlined">Slow</Button>
       </Tooltip>
-      
-      <Tooltip 
+
+      <Tooltip
         title="This tooltip stays open longer"
         enterDelay={500}
         leaveDelay={1000}
@@ -292,7 +316,8 @@ export const LongText: Story = {
     variant: 'light',
     size: 'md',
     maxWidth: 200,
-    title: 'This is a very long tooltip text that should wrap nicely within the maximum width constraints. It demonstrates how the tooltip handles longer content.',
+    title:
+      'This is a very long tooltip text that should wrap nicely within the maximum width constraints. It demonstrates how the tooltip handles longer content.',
     children: <Button variant="outlined">Long Tooltip</Button>,
   },
 };
@@ -326,13 +351,17 @@ export const AllSizes: Story = {
       <Typography variant="h6">All Tooltip Sizes</Typography>
       <Stack direction="row" spacing={3}>
         <Tooltip size="sm" title="Small size tooltip">
-          <Button variant="outlined" size="small">Small</Button>
+          <Button variant="outlined" size="small">
+            Small
+          </Button>
         </Tooltip>
         <Tooltip size="md" title="Medium size tooltip">
           <Button variant="outlined">Medium</Button>
         </Tooltip>
         <Tooltip size="lg" title="Large size tooltip">
-          <Button variant="outlined" size="large">Large</Button>
+          <Button variant="outlined" size="large">
+            Large
+          </Button>
         </Tooltip>
       </Stack>
     </Stack>
@@ -358,7 +387,9 @@ export const AllStates: Story = {
         </Tooltip>
         <Tooltip title="Disabled element" disabled>
           <span>
-            <Button variant="outlined" disabled>Disabled</Button>
+            <Button variant="outlined" disabled>
+              Disabled
+            </Button>
           </span>
         </Tooltip>
       </Stack>
@@ -401,18 +432,32 @@ export const Responsive: Story = {
   render: () => (
     <Stack spacing={3} sx={{ p: 2 }}>
       <Typography variant="h6">Responsive Tooltips</Typography>
-      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: 'repeat(4, 1fr)' }, gap: 2 }}>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: 'repeat(4, 1fr)' },
+          gap: 2,
+        }}
+      >
         <Tooltip title="Responsive tooltip on mobile" placement="bottom">
-          <Button variant="outlined" fullWidth>Mobile</Button>
+          <Button variant="outlined" fullWidth>
+            Mobile
+          </Button>
         </Tooltip>
         <Tooltip title="Responsive tooltip on tablet" placement="top">
-          <Button variant="outlined" fullWidth>Tablet</Button>
+          <Button variant="outlined" fullWidth>
+            Tablet
+          </Button>
         </Tooltip>
         <Tooltip title="Responsive tooltip on desktop" placement="right">
-          <Button variant="outlined" fullWidth>Desktop</Button>
+          <Button variant="outlined" fullWidth>
+            Desktop
+          </Button>
         </Tooltip>
         <Tooltip title="Adaptive placement" placement="auto">
-          <Button variant="outlined" fullWidth>Adaptive</Button>
+          <Button variant="outlined" fullWidth>
+            Adaptive
+          </Button>
         </Tooltip>
       </Box>
     </Stack>

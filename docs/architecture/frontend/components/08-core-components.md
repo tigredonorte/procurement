@@ -57,7 +57,7 @@ Our UI library provides a comprehensive set of components, fully wrapping Materi
 | **ToggleGroup**  | Toggle button group  | `single`, `multiple`, `exclusive`                |
 | **UploadButton** | Single file upload   | `default`, `outline`, `ghost`, `dropzone`        |
 
-### Data Display Components
+### DataDisplay Components
 
 | Component       | Description             | Variants                                         |
 | --------------- | ----------------------- | ------------------------------------------------ |

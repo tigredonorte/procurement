@@ -16,6 +16,7 @@ export const Resizable: React.FC<ResizableProps> = ({
   disabled = false,
   handles,
   className,
+  ...rest
 }) => {
   const theme = useTheme();
   const [size, setSize] = useState({ width: initialWidth, height: initialHeight });
@@ -27,74 +28,85 @@ export const Resizable: React.FC<ResizableProps> = ({
 
   const getDefaultHandles = (): ResizeHandle[] => {
     switch (variant) {
-      case 'horizontal': return ['right'];
-      case 'vertical': return ['bottom'];
-      case 'both': return ['right', 'bottom', 'bottomRight'];
-      default: return ['right', 'bottom', 'bottomRight'];
+      case 'horizontal':
+        return ['right'];
+      case 'vertical':
+        return ['bottom'];
+      case 'both':
+        return ['right', 'bottom', 'bottomRight'];
+      default:
+        return ['right', 'bottom', 'bottomRight'];
     }
   };
 
   const activeHandles = handles || getDefaultHandles();
 
-  const handleMouseDown = useCallback((e: React.MouseEvent, handle: ResizeHandle) => {
-    if (disabled) return;
-    
-    e.preventDefault();
-    e.stopPropagation();
-    
-    setIsResizing(true);
-    activeHandle.current = handle;
-    startPos.current = { x: e.clientX, y: e.clientY };
-    startSize.current = { width: size.width, height: size.height };
+  React.useEffect(() => {
+    setSize({ width: initialWidth, height: initialHeight });
+  }, [initialWidth, initialHeight]);
 
-    const handleMouseMove = (e: globalThis.MouseEvent) => {
-      const deltaX = e.clientX - startPos.current.x;
-      const deltaY = e.clientY - startPos.current.y;
-      
-      let newWidth = startSize.current.width;
-      let newHeight = startSize.current.height;
+  const handleMouseDown = useCallback(
+    (e: React.MouseEvent, handle: ResizeHandle) => {
+      if (disabled) return;
 
-      switch (handle) {
-        case 'right':
-        case 'topRight':
-        case 'bottomRight':
-          newWidth = Math.max(minWidth, Math.min(maxWidth, startSize.current.width + deltaX));
-          break;
-        case 'left':
-        case 'topLeft':
-        case 'bottomLeft':
-          newWidth = Math.max(minWidth, Math.min(maxWidth, startSize.current.width - deltaX));
-          break;
-      }
+      e.preventDefault();
+      e.stopPropagation();
 
-      switch (handle) {
-        case 'bottom':
-        case 'bottomLeft':
-        case 'bottomRight':
-          newHeight = Math.max(minHeight, Math.min(maxHeight, startSize.current.height + deltaY));
-          break;
-        case 'top':
-        case 'topLeft':
-        case 'topRight':
-          newHeight = Math.max(minHeight, Math.min(maxHeight, startSize.current.height - deltaY));
-          break;
-      }
+      setIsResizing(true);
+      activeHandle.current = handle;
+      startPos.current = { x: e.clientX, y: e.clientY };
+      startSize.current = { width: size.width, height: size.height };
 
-      const newSize = { width: newWidth, height: newHeight };
-      setSize(newSize);
-      onResize?.(newWidth, newHeight);
-    };
+      const handleMouseMove = (e: globalThis.MouseEvent) => {
+        const deltaX = e.clientX - startPos.current.x;
+        const deltaY = e.clientY - startPos.current.y;
 
-    const handleMouseUp = () => {
-      setIsResizing(false);
-      activeHandle.current = null;
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-    };
+        let newWidth = startSize.current.width;
+        let newHeight = startSize.current.height;
 
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-  }, [disabled, size, minWidth, maxWidth, minHeight, maxHeight, onResize]);
+        switch (handle) {
+          case 'right':
+          case 'topRight':
+          case 'bottomRight':
+            newWidth = Math.max(minWidth, Math.min(maxWidth, startSize.current.width + deltaX));
+            break;
+          case 'left':
+          case 'topLeft':
+          case 'bottomLeft':
+            newWidth = Math.max(minWidth, Math.min(maxWidth, startSize.current.width - deltaX));
+            break;
+        }
+
+        switch (handle) {
+          case 'bottom':
+          case 'bottomLeft':
+          case 'bottomRight':
+            newHeight = Math.max(minHeight, Math.min(maxHeight, startSize.current.height + deltaY));
+            break;
+          case 'top':
+          case 'topLeft':
+          case 'topRight':
+            newHeight = Math.max(minHeight, Math.min(maxHeight, startSize.current.height - deltaY));
+            break;
+        }
+
+        const newSize = { width: newWidth, height: newHeight };
+        setSize(newSize);
+        onResize?.(newWidth, newHeight);
+      };
+
+      const handleMouseUp = () => {
+        setIsResizing(false);
+        activeHandle.current = null;
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+      };
+
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    },
+    [disabled, size, minWidth, maxWidth, minHeight, maxHeight, onResize],
+  );
 
   const getHandleStyle = (handle: ResizeHandle) => {
     const baseStyle = {
@@ -144,6 +156,7 @@ export const Resizable: React.FC<ResizableProps> = ({
 
   return (
     <Box
+      {...rest}
       ref={containerRef}
       className={className}
       sx={{

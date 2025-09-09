@@ -54,22 +54,19 @@ An animated icon component that provides smooth transitions, rotations, and inte
 **Stories**
 
 - Enhanced/AnimatedIcon/Default
-- Enhanced/AnimatedIcon/Rotate
-- Enhanced/AnimatedIcon/Pulse
-- Enhanced/AnimatedIcon/Translate
-- Enhanced/AnimatedIcon/WithGlow
-- Enhanced/AnimatedIcon/WithGlass
+- Enhanced/AnimatedIcon/Playground
 - Enhanced/AnimatedIcon/AllVariants
+- Enhanced/AnimatedIcon/AllAnimationVariants
+- Enhanced/AnimatedIcon/VisualEffects
+- Enhanced/AnimatedIcon/ShadowStyles
+- Enhanced/AnimatedIcon/CombinedEffects
+- Enhanced/AnimatedIcon/InteractiveDemo
+- Enhanced/AnimatedIcon/UseCases
+- Enhanced/AnimatedIcon/PerformanceDemo
 - Enhanced/AnimatedIcon/AllSizes
-- Enhanced/AnimatedIcon/CustomColors
-- Enhanced/AnimatedIcon/DifferentDurations
-- Enhanced/AnimatedIcon/InContext
 - Enhanced/AnimatedIcon/AllStates
 - Enhanced/AnimatedIcon/InteractiveStates
 - Enhanced/AnimatedIcon/Responsive
-- Enhanced/AnimatedIcon/GlowEffects
-- Enhanced/AnimatedIcon/GlassMorphism
-- Enhanced/AnimatedIcon/IconAgnostic
 
 ## Storybook Tests Status
 

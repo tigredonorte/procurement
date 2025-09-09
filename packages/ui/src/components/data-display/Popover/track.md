@@ -58,22 +58,23 @@ A flexible popover component that extends Material-UI's Popover with enhanced st
 ## 5) Storybook Tests
 
 **Stories**:
-* DataDisplay/Popover/Default
-* DataDisplay/Popover/Variants
-* DataDisplay/Popover/WithEffects
-* DataDisplay/Popover/ComplexContent
-* DataDisplay/Popover/GlassEffect
-* DataDisplay/Popover/WithArrow
-* DataDisplay/Popover/DifferentSizes
-* DataDisplay/Popover/CombinedEffects
-* DataDisplay/Popover/EmptyState
-* DataDisplay/Popover/LoadingState
-* DataDisplay/Popover/ErrorState
-* DataDisplay/Popover/AllVariants
-* DataDisplay/Popover/AllSizes
-* DataDisplay/Popover/AllStates
-* DataDisplay/Popover/InteractiveStates
-* DataDisplay/Popover/Responsive
+
+- DataDisplay/Popover/Default
+- DataDisplay/Popover/Variants
+- DataDisplay/Popover/WithEffects
+- DataDisplay/Popover/ComplexContent
+- DataDisplay/Popover/GlassEffect
+- DataDisplay/Popover/WithArrow
+- DataDisplay/Popover/DifferentSizes
+- DataDisplay/Popover/CombinedEffects
+- DataDisplay/Popover/EmptyState
+- DataDisplay/Popover/LoadingState
+- DataDisplay/Popover/ErrorState
+- DataDisplay/Popover/AllVariants
+- DataDisplay/Popover/AllSizes
+- DataDisplay/Popover/AllStates
+- DataDisplay/Popover/InteractiveStates
+- DataDisplay/Popover/Responsive
 
 ## Storybook Tests Status
 
@@ -92,7 +93,7 @@ A flexible popover component that extends Material-UI's Popover with enhanced st
 
 ### Task: Fix Stories coverage validation
 
-- Fixed CSF title format from 'Data Display/Popover' to 'DataDisplay/Popover'
+- Fixed CSF title format from 'DataDisplay/Popover' to 'DataDisplay/Popover'
 - Added required story exports: AllVariants, AllSizes, AllStates, InteractiveStates, Responsive
 - Updated track.md with proper story listing in section 5
 - All 16 validation checks should now pass

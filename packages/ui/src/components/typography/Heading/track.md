@@ -48,9 +48,26 @@ A flexible heading component supporting semantic HTML heading levels (h1-h6) and
 - [ ] Dark/light theme adaptation
 - [ ] Content overflow and text wrapping
 
+## 5) Storybook Tests
+
+**Stories**:
+
+- Typography/Heading/Tests/BasicInteraction
+- Typography/Heading/Tests/AnchorLinks
+- Typography/Heading/Tests/KeyboardNavigation
+- Typography/Heading/Tests/ScreenReader
+- Typography/Heading/Tests/FocusManagement
+- Typography/Heading/Tests/ResponsiveDesign
+- Typography/Heading/Tests/ThemeVariations
+- Typography/Heading/Tests/VisualStates
+- Typography/Heading/Tests/Performance
+- Typography/Heading/Tests/EdgeCases
+- Typography/Heading/Tests/Integration
+
 ## Storybook Tests Status
 
 - [ ] Basic Interaction (planned)
+- [ ] Anchor Links (planned)
 - [ ] Keyboard Navigation (planned)
 - [ ] Screen Reader (planned)
 - [ ] Focus Management (planned)
@@ -61,18 +78,4 @@ A flexible heading component supporting semantic HTML heading levels (h1-h6) and
 - [ ] Edge Cases (planned)
 - [ ] Integration (planned)
 
-## Current Section - 2025-01-13 21:30 (BRT)
-
-### Current Task: Initial track.md file creation
-
-- Track.md file structure created
-- Component overview documented
-- Parameters identified
-- Testing scenarios outlined
-
-### Next Steps:
-
-- Read existing component implementation
-- Verify current lint/type status
-- Update status based on actual component state
-- Begin systematic verification process
+**Current (BRT)**: 2025-09-09 10:00 - [omega-8] ESLint warnings fixed by removing redundant story name annotations; Required story exports added (AllVariants, AllSizes, AllStates, InteractiveStates, Responsive); All 16 validation checks now passing

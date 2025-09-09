@@ -90,32 +90,33 @@ Sheet is a versatile drawer-like overlay component that slides in from any scree
 ## 5) Storybook Tests
 
 **Stories**:
-* DataDisplay/Sheet/Default
-* DataDisplay/Sheet/Positions
-* DataDisplay/Sheet/Sizes
-* DataDisplay/Sheet/Variants
-* DataDisplay/Sheet/DraggableBottomSheet
-* DataDisplay/Sheet/MusicPlayer
-* DataDisplay/Sheet/CustomSnapPoints
-* DataDisplay/Sheet/WithResistance
-* DataDisplay/Sheet/DraggableWithContent
-* DataDisplay/Sheet/WithForm
-* DataDisplay/Sheet/WithList
-* DataDisplay/Sheet/Glass
-* DataDisplay/Sheet/Gradient
-* DataDisplay/Sheet/WithEffects
-* DataDisplay/Sheet/Swipeable
-* DataDisplay/Sheet/Persistent
-* DataDisplay/Sheet/Loading
-* DataDisplay/Sheet/NoOverlay
-* DataDisplay/Sheet/CustomHeader
-* DataDisplay/Sheet/FullHeight
-* DataDisplay/Sheet/Settings
-* DataDisplay/Sheet/AllVariants
-* DataDisplay/Sheet/AllSizes
-* DataDisplay/Sheet/AllStates
-* DataDisplay/Sheet/InteractiveStates
-* DataDisplay/Sheet/Responsive
+
+- DataDisplay/Sheet/Default
+- DataDisplay/Sheet/Positions
+- DataDisplay/Sheet/Sizes
+- DataDisplay/Sheet/Variants
+- DataDisplay/Sheet/DraggableBottomSheet
+- DataDisplay/Sheet/MusicPlayer
+- DataDisplay/Sheet/CustomSnapPoints
+- DataDisplay/Sheet/WithResistance
+- DataDisplay/Sheet/DraggableWithContent
+- DataDisplay/Sheet/WithForm
+- DataDisplay/Sheet/WithList
+- DataDisplay/Sheet/Glass
+- DataDisplay/Sheet/Gradient
+- DataDisplay/Sheet/WithEffects
+- DataDisplay/Sheet/Swipeable
+- DataDisplay/Sheet/Persistent
+- DataDisplay/Sheet/Loading
+- DataDisplay/Sheet/NoOverlay
+- DataDisplay/Sheet/CustomHeader
+- DataDisplay/Sheet/FullHeight
+- DataDisplay/Sheet/Settings
+- DataDisplay/Sheet/AllVariants
+- DataDisplay/Sheet/AllSizes
+- DataDisplay/Sheet/AllStates
+- DataDisplay/Sheet/InteractiveStates
+- DataDisplay/Sheet/Responsive
 
 ### Test Status
 

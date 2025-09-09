@@ -10,51 +10,52 @@ const meta: Meta<typeof Chip> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Compact tag/label component with optional avatar, selection, and deletion functionality. Supports keyboard navigation and accessibility features.'
-      }
-    }
+        component:
+          'Compact tag/label component with optional avatar, selection, and deletion functionality. Supports keyboard navigation and accessibility features.',
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {
     label: {
       control: 'text',
-      description: 'Text content displayed in the chip'
+      description: 'Text content displayed in the chip',
     },
     variant: {
       control: 'select',
       options: ['filled', 'outlined'],
-      description: 'Visual style variant'
+      description: 'Visual style variant',
     },
     size: {
       control: 'select',
       options: ['small', 'medium'],
-      description: 'Size of the chip'
+      description: 'Size of the chip',
     },
     color: {
       control: 'text',
-      description: 'Theme color token'
+      description: 'Theme color token',
     },
     avatarSrc: {
       control: 'text',
-      description: 'Source URL for avatar image'
+      description: 'Source URL for avatar image',
     },
     selected: {
       control: 'boolean',
-      description: 'Current selection state'
+      description: 'Current selection state',
     },
     selectable: {
       control: 'boolean',
-      description: 'Enables selection toggle capability'
+      description: 'Enables selection toggle capability',
     },
     deletable: {
       control: 'boolean',
-      description: 'Shows delete button'
+      description: 'Shows delete button',
     },
     disabled: {
       control: 'boolean',
-      description: 'Disables all interactions'
-    }
-  }
+      description: 'Disables all interactions',
+    },
+  },
 };
 
 export default meta;
@@ -62,81 +63,81 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    label: 'Default Chip'
-  }
+    label: 'Default Chip',
+  },
 };
 
 export const Outlined: Story = {
   args: {
     label: 'Outlined Chip',
-    variant: 'outlined'
-  }
+    variant: 'outlined',
+  },
 };
 
 export const WithAvatar: Story = {
   args: {
     label: 'Avatar Chip',
-    avatarSrc: 'https://mui.com/static/images/avatar/1.jpg'
-  }
+    avatarSrc: 'https://mui.com/static/images/avatar/1.jpg',
+  },
 };
 
 export const WithIcon: Story = {
   args: {
     label: 'Icon Chip',
-    icon: <Face />
-  }
+    icon: <Face />,
+  },
 };
 
 export const Selectable: Story = {
   args: {
     label: 'Selectable',
     selectable: true,
-    selected: false
-  }
+    selected: false,
+  },
 };
 
 export const Selected: Story = {
   args: {
     label: 'Selected',
     selectable: true,
-    selected: true
-  }
+    selected: true,
+  },
 };
 
 export const Deletable: Story = {
   args: {
     label: 'Deletable',
     deletable: true,
-    onDelete: () => {}
-  }
+    onDelete: () => {},
+  },
 };
 
 export const Disabled: Story = {
   args: {
     label: 'Disabled',
-    disabled: true
-  }
+    disabled: true,
+  },
 };
 
 export const SmallSize: Story = {
   args: {
     label: 'Small',
-    size: 'small'
-  }
+    size: 'small',
+  },
 };
 
 export const MediumSize: Story = {
   args: {
     label: 'Medium',
-    size: 'medium'
-  }
+    size: 'medium',
+  },
 };
 
 export const LargeSize: Story = {
   args: {
     label: 'Large',
-    size: 'medium'
-  }
+    size: 'medium',
+  },
 };
 
 export const AllSizes: Story = {
@@ -146,7 +147,7 @@ export const AllSizes: Story = {
       <Chip label="Medium" size="md" />
       <Chip label="Large" size="lg" />
     </div>
-  )
+  ),
 };
 
 export const AllVariants: Story = {
@@ -155,7 +156,7 @@ export const AllVariants: Story = {
       <Chip label="Filled" variant="filled" />
       <Chip label="Outlined" variant="outlined" />
     </div>
-  )
+  ),
 };
 
 export const AllStates: Story = {
@@ -168,7 +169,7 @@ export const AllStates: Story = {
       <Chip label="With Avatar" avatarSrc="https://mui.com/static/images/avatar/1.jpg" />
       <Chip label="With Icon" icon={<Star />} />
     </div>
-  )
+  ),
 };
 
 export const InteractiveStates: Story = {
@@ -179,7 +180,7 @@ export const InteractiveStates: Story = {
       <Chip label="Deletable" deletable onDelete={() => {}} />
       <Chip label="Combined" selectable deletable onClick={() => {}} onDelete={() => {}} />
     </div>
-  )
+  ),
 };
 
 export const Responsive: Story = {
@@ -207,40 +208,44 @@ export const Responsive: Story = {
       viewports: {
         mobile: {
           name: 'Mobile',
-          styles: { width: '375px', height: '667px' }
+          styles: { width: '375px', height: '667px' },
         },
         tablet: {
-          name: 'Tablet', 
-          styles: { width: '768px', height: '1024px' }
-        }
-      }
-    }
-  }
+          name: 'Tablet',
+          styles: { width: '768px', height: '1024px' },
+        },
+      },
+    },
+  },
 };
 
 export const LongContent: Story = {
   args: {
     label: 'This is a very long chip label that demonstrates text truncation behavior',
     deletable: true,
-    onDelete: () => {}
-  }
+    onDelete: () => {},
+  },
 };
 
 export const GlassEffect: Story = {
   render: () => (
-    <div 
-      style={{ 
+    <div
+      style={{
         background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
         padding: '40px',
-        borderRadius: '12px'
+        borderRadius: '12px',
       }}
     >
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
         <Chip label="Glass Filled" variant="filled" />
         <Chip label="Glass Outlined" variant="outlined" />
-        <Chip label="Glass Avatar" variant="outlined" avatarSrc="https://mui.com/static/images/avatar/1.jpg" />
+        <Chip
+          label="Glass Avatar"
+          variant="outlined"
+          avatarSrc="https://mui.com/static/images/avatar/1.jpg"
+        />
         <Chip label="Glass Deletable" variant="outlined" deletable onDelete={() => {}} />
       </div>
     </div>
-  )
+  ),
 };

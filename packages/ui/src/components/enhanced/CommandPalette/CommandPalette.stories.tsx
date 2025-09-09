@@ -5,7 +5,7 @@ import React from 'react';
 
 import { CommandPalette, Command } from './CommandPalette';
 
-const meta = {
+const meta: Meta<typeof CommandPalette> = {
   title: 'Enhanced/CommandPalette',
   component: CommandPalette,
   parameters: {
@@ -40,7 +40,7 @@ const meta = {
       description: 'Show recently used commands',
     },
   },
-} satisfies Meta<typeof CommandPalette>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

@@ -43,7 +43,7 @@ export * from './components/typography/Paragraph';
 export * from './components/typography/Code';
 export * from './components/typography/Blockquote';
 
-// Data Display Components
+// DataDisplay Components
 export * from './components/data-display/Alert';
 export * from './components/data-display/AlertDialog';
 export * from './components/data-display/Avatar';

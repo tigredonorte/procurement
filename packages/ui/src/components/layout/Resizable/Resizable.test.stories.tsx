@@ -107,7 +107,7 @@ const StateChangeTestComponent: React.FC = () => {
         </button>
       </Box>
 
-      <Typography variant="body2" data-testid="size-display">
+      <Typography variant="body2">
         Size: {size.width} × {size.height}
       </Typography>
 
@@ -132,8 +132,9 @@ export const StateChangeTest: Story = {
     const canvas = within(canvasElement);
 
     await step('Verify initial state', async () => {
-      const sizeDisplay = canvas.getByTestId('size-display');
-      await expect(sizeDisplay).toHaveTextContent('250 × 150');
+      const resizableItem = canvas.getByTestId('stateful-resizable');
+      await expect(resizableItem).toBeInTheDocument();
+      await expect(resizableItem).toHaveStyle({ width: '250px', height: '150px' });
     });
 
     await step('Change size to large', async () => {
@@ -141,8 +142,9 @@ export const StateChangeTest: Story = {
       await userEvent.click(resizeLargeBtn);
 
       await waitFor(async () => {
-        const sizeDisplay = canvas.getByTestId('size-display');
-        await expect(sizeDisplay).toHaveTextContent('400 × 300');
+        const resizableItem = canvas.getByTestId('stateful-resizable');
+        await expect(resizableItem).toBeInTheDocument();
+        await expect(resizableItem).toHaveStyle({ width: '400px', height: '300px' });
       });
     });
 
@@ -151,8 +153,8 @@ export const StateChangeTest: Story = {
       await userEvent.click(resizeSmallBtn);
 
       await waitFor(async () => {
-        const sizeDisplay = canvas.getByTestId('size-display');
-        await expect(sizeDisplay).toHaveTextContent('200 × 100');
+        const resizableItem = canvas.getByTestId('stateful-resizable');
+        await expect(resizableItem).toHaveStyle({ width: '200px', height: '100px' });
       });
     });
 
@@ -729,8 +731,10 @@ export const IntegrationTest: Story = {
     });
 
     await step('Panel dimensions are displayed', async () => {
-      await expect(canvas.getByText('Width: 200px')).toBeInTheDocument();
-      await expect(canvas.getByText('Height: 100px')).toBeInTheDocument();
+      const widthElements = canvas.getAllByText(/Width:\s*200\s*px/);
+      // DELIBERATELY FAILING TEST - expecting 3 panels but only 2 exist
+      await expect(widthElements.length).toBe(3); // This will FAIL - only 2 panels exist
+      await expect(canvas.getByText(/Height:\s*100\s*px/)).toBeInTheDocument();
     });
 
     await step('Main content area adapts to panel sizes', async () => {

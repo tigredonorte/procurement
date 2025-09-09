@@ -1,30 +1,31 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  Typography, 
-  Stack, 
-  Box, 
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Typography,
+  Stack,
+  Box,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Grid
+  Grid,
 } from '@mui/material';
 
 import { Skeleton } from './Skeleton';
 
-const meta = {
+const meta: Meta<typeof Skeleton> = {
   title: 'Layout/Skeleton',
   component: Skeleton,
   parameters: {
     layout: 'padded',
     docs: {
       description: {
-        component: 'Beautiful loading placeholder component with glassmorphism effects and customizable animations. Supports multiple variants, intensities, and advanced visual effects.'
-      }
-    }
+        component:
+          'Beautiful loading placeholder component with glassmorphism effects and customizable animations. Supports multiple variants, intensities, and advanced visual effects.',
+      },
+    },
   },
   tags: ['autodocs', 'component:Skeleton'],
   argTypes: {
@@ -72,7 +73,7 @@ const meta = {
       description: 'Custom border radius in pixels',
     },
   },
-} satisfies Meta<typeof Skeleton>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -89,23 +90,27 @@ export const Default: Story = {
     docs: {
       description: {
         story: 'Basic text skeleton with default pulse animation.',
-      }
-    }
-  }
+      },
+    },
+  },
 };
 
 export const AllVariants: Story = {
   render: () => (
     <Stack spacing={4}>
       <Box>
-        <Typography variant="h6" gutterBottom>Text Skeleton</Typography>
+        <Typography variant="h6" gutterBottom>
+          Text Skeleton
+        </Typography>
         <Skeleton variant="text" />
         <Skeleton variant="text" width="60%" />
         <Skeleton variant="text" width="40%" />
       </Box>
 
       <Box>
-        <Typography variant="h6" gutterBottom>Circular Skeleton</Typography>
+        <Typography variant="h6" gutterBottom>
+          Circular Skeleton
+        </Typography>
         <Stack direction="row" spacing={2}>
           <Skeleton variant="circular" width={40} height={40} />
           <Skeleton variant="circular" width={60} height={60} />
@@ -114,7 +119,9 @@ export const AllVariants: Story = {
       </Box>
 
       <Box>
-        <Typography variant="h6" gutterBottom>Rectangular Skeleton</Typography>
+        <Typography variant="h6" gutterBottom>
+          Rectangular Skeleton
+        </Typography>
         <Stack spacing={2}>
           <Skeleton variant="rectangular" height={60} />
           <Skeleton variant="rectangular" width="75%" height={40} />
@@ -123,7 +130,9 @@ export const AllVariants: Story = {
       </Box>
 
       <Box>
-        <Typography variant="h6" gutterBottom>Wave Animation</Typography>
+        <Typography variant="h6" gutterBottom>
+          Wave Animation
+        </Typography>
         <Skeleton variant="wave" height={60} />
         <Skeleton variant="wave" width="80%" height={40} />
       </Box>
@@ -135,21 +144,27 @@ export const AnimationTypes: Story = {
   render: () => (
     <Grid container spacing={3}>
       <Grid item xs={4}>
-        <Typography variant="h6" gutterBottom>Pulse Animation</Typography>
+        <Typography variant="h6" gutterBottom>
+          Pulse Animation
+        </Typography>
         <Skeleton animation="pulse" height={60} />
         <Skeleton animation="pulse" width="80%" />
         <Skeleton animation="pulse" width="60%" />
       </Grid>
 
       <Grid item xs={4}>
-        <Typography variant="h6" gutterBottom>Wave Animation</Typography>
+        <Typography variant="h6" gutterBottom>
+          Wave Animation
+        </Typography>
         <Skeleton animation="wave" height={60} />
         <Skeleton animation="wave" width="80%" />
         <Skeleton animation="wave" width="60%" />
       </Grid>
 
       <Grid item xs={4}>
-        <Typography variant="h6" gutterBottom>No Animation</Typography>
+        <Typography variant="h6" gutterBottom>
+          No Animation
+        </Typography>
         <Skeleton animation={false} height={60} />
         <Skeleton animation={false} width="80%" />
         <Skeleton animation={false} width="60%" />
@@ -162,17 +177,23 @@ export const MultipleSkeleton: Story = {
   render: () => (
     <Stack spacing={4}>
       <Box>
-        <Typography variant="h6" gutterBottom>Multiple Text Lines</Typography>
+        <Typography variant="h6" gutterBottom>
+          Multiple Text Lines
+        </Typography>
         <Skeleton variant="text" count={5} />
       </Box>
 
       <Box>
-        <Typography variant="h6" gutterBottom>Multiple Rectangles</Typography>
+        <Typography variant="h6" gutterBottom>
+          Multiple Rectangles
+        </Typography>
         <Skeleton variant="rectangular" height={40} count={3} spacing={2} />
       </Box>
 
       <Box>
-        <Typography variant="h6" gutterBottom>Custom Spacing</Typography>
+        <Typography variant="h6" gutterBottom>
+          Custom Spacing
+        </Typography>
         <Skeleton variant="text" count={4} spacing={3} />
       </Box>
     </Stack>
@@ -256,9 +277,7 @@ export const DashboardSkeleton: Story = {
         </Grid>
         <Grid item xs={12} md={4}>
           <Card>
-            <CardHeader
-              title={<Skeleton variant="text" width="60%" />}
-            />
+            <CardHeader title={<Skeleton variant="text" width="60%" />} />
             <CardContent>
               <Stack spacing={2}>
                 {Array.from({ length: 6 }).map((_, index) => (
@@ -283,14 +302,16 @@ export const TableSkeleton: Story = {
   render: () => (
     <Box>
       {/* Table Header */}
-      <Box sx={{ 
-        display: 'grid', 
-        gridTemplateColumns: '1fr 1fr 1fr 1fr', 
-        gap: 2, 
-        p: 2,
-        borderBottom: 1,
-        borderColor: 'divider'
-      }}>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr 1fr 1fr',
+          gap: 2,
+          p: 2,
+          borderBottom: 1,
+          borderColor: 'divider',
+        }}
+      >
         <Skeleton variant="text" width="80%" />
         <Skeleton variant="text" width="60%" />
         <Skeleton variant="text" width="70%" />
@@ -299,14 +320,17 @@ export const TableSkeleton: Story = {
 
       {/* Table Rows */}
       {Array.from({ length: 8 }).map((_, index) => (
-        <Box key={index} sx={{ 
-          display: 'grid', 
-          gridTemplateColumns: '1fr 1fr 1fr 1fr', 
-          gap: 2, 
-          p: 2,
-          borderBottom: 1,
-          borderColor: 'divider'
-        }}>
+        <Box
+          key={index}
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr 1fr 1fr',
+            gap: 2,
+            p: 2,
+            borderBottom: 1,
+            borderColor: 'divider',
+          }}
+        >
           <Skeleton variant="text" />
           <Skeleton variant="text" width="70%" />
           <Skeleton variant="rectangular" width={80} height={20} />
@@ -321,21 +345,27 @@ export const IntensityLevels: Story = {
   render: () => (
     <Stack spacing={4}>
       <Box>
-        <Typography variant="h6" gutterBottom>Low Intensity</Typography>
+        <Typography variant="h6" gutterBottom>
+          Low Intensity
+        </Typography>
         <Skeleton variant="rectangular" height={60} intensity="low" />
         <Skeleton variant="text" intensity="low" />
         <Skeleton variant="text" width="80%" intensity="low" />
       </Box>
 
       <Box>
-        <Typography variant="h6" gutterBottom>Medium Intensity (Default)</Typography>
+        <Typography variant="h6" gutterBottom>
+          Medium Intensity (Default)
+        </Typography>
         <Skeleton variant="rectangular" height={60} intensity="medium" />
         <Skeleton variant="text" intensity="medium" />
         <Skeleton variant="text" width="80%" intensity="medium" />
       </Box>
 
       <Box>
-        <Typography variant="h6" gutterBottom>High Intensity</Typography>
+        <Typography variant="h6" gutterBottom>
+          High Intensity
+        </Typography>
         <Skeleton variant="rectangular" height={60} intensity="high" />
         <Skeleton variant="text" intensity="high" />
         <Skeleton variant="text" width="80%" intensity="high" />
@@ -345,24 +375,27 @@ export const IntensityLevels: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Different intensity levels control the opacity and prominence of skeleton elements.',
-      }
-    }
-  }
+        story:
+          'Different intensity levels control the opacity and prominence of skeleton elements.',
+      },
+    },
+  },
 };
 
 export const GlassmorphismEffect: Story = {
   render: () => (
-    <Box sx={{ 
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', 
-      p: 4, 
-      borderRadius: 2,
-      minHeight: 300 
-    }}>
+    <Box
+      sx={{
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        p: 4,
+        borderRadius: 2,
+        minHeight: 300,
+      }}
+    >
       <Typography variant="h6" gutterBottom sx={{ color: 'white', mb: 3 }}>
         Glassmorphism Skeleton Effects
       </Typography>
-      
+
       <Stack spacing={3}>
         <Box>
           <Typography variant="subtitle1" sx={{ color: 'white', mb: 1 }}>
@@ -370,21 +403,21 @@ export const GlassmorphismEffect: Story = {
           </Typography>
           <Skeleton variant="rectangular" height={60} />
         </Box>
-        
+
         <Box>
           <Typography variant="subtitle1" sx={{ color: 'white', mb: 1 }}>
             Glassmorphism Skeleton
           </Typography>
           <Skeleton variant="rectangular" height={60} glassmorphism />
         </Box>
-        
+
         <Box>
           <Typography variant="subtitle1" sx={{ color: 'white', mb: 1 }}>
             Glassmorphism with Custom Radius
           </Typography>
           <Skeleton variant="rectangular" height={60} glassmorphism borderRadius={20} />
         </Box>
-        
+
         <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
           <Skeleton variant="circular" width={50} height={50} glassmorphism />
           <Box sx={{ flex: 1 }}>
@@ -398,36 +431,45 @@ export const GlassmorphismEffect: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Glassmorphism effect adds beautiful glass-like transparency with blur effects, perfect for modern UI designs.',
-      }
-    }
-  }
+        story:
+          'Glassmorphism effect adds beautiful glass-like transparency with blur effects, perfect for modern UI designs.',
+      },
+    },
+  },
 };
 
 export const ShimmerAnimation: Story = {
   render: () => (
     <Stack spacing={4}>
       <Box>
-        <Typography variant="h6" gutterBottom>Standard Animation</Typography>
+        <Typography variant="h6" gutterBottom>
+          Standard Animation
+        </Typography>
         <Skeleton variant="rectangular" height={80} borderRadius={8} />
         <Skeleton variant="text" />
         <Skeleton variant="text" width="60%" />
       </Box>
 
       <Box>
-        <Typography variant="h6" gutterBottom>Shimmer Animation</Typography>
+        <Typography variant="h6" gutterBottom>
+          Shimmer Animation
+        </Typography>
         <Skeleton variant="rectangular" height={80} shimmer borderRadius={8} />
         <Skeleton variant="text" shimmer />
         <Skeleton variant="text" width="60%" shimmer />
       </Box>
 
       <Box>
-        <Typography variant="h6" gutterBottom>Glassmorphism + Shimmer</Typography>
-        <Box sx={{ 
-          background: 'linear-gradient(45deg, #f093fb 0%, #f5576c 100%)', 
-          p: 3, 
-          borderRadius: 2 
-        }}>
+        <Typography variant="h6" gutterBottom>
+          Glassmorphism + Shimmer
+        </Typography>
+        <Box
+          sx={{
+            background: 'linear-gradient(45deg, #f093fb 0%, #f5576c 100%)',
+            p: 3,
+            borderRadius: 2,
+          }}
+        >
           <Skeleton variant="rectangular" height={80} glassmorphism shimmer borderRadius={12} />
           <Box sx={{ mt: 2 }}>
             <Skeleton variant="text" glassmorphism shimmer />
@@ -440,10 +482,11 @@ export const ShimmerAnimation: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Shimmer animation adds a moving highlight effect that creates a premium loading experience.',
-      }
-    }
-  }
+        story:
+          'Shimmer animation adds a moving highlight effect that creates a premium loading experience.',
+      },
+    },
+  },
 };
 
 export const AdvancedProfileCard: Story = {
@@ -451,10 +494,7 @@ export const AdvancedProfileCard: Story = {
     <Grid container spacing={3}>
       <Grid item xs={12} md={6}>
         <Card>
-          <CardHeader
-            title="Regular Skeleton"
-            sx={{ pb: 1 }}
-          />
+          <CardHeader title="Regular Skeleton" sx={{ pb: 1 }} />
           <CardContent>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
               <Skeleton variant="circular" width={60} height={60} sx={{ mr: 2 }} />
@@ -471,17 +511,14 @@ export const AdvancedProfileCard: Story = {
 
       <Grid item xs={12} md={6}>
         <Card>
-          <CardHeader
-            title="Enhanced Skeleton"
-            sx={{ pb: 1 }}
-          />
+          <CardHeader title="Enhanced Skeleton" sx={{ pb: 1 }} />
           <CardContent>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-              <Skeleton 
-                variant="circular" 
-                width={60} 
-                height={60} 
-                sx={{ mr: 2 }} 
+              <Skeleton
+                variant="circular"
+                width={60}
+                height={60}
+                sx={{ mr: 2 }}
                 shimmer
                 intensity="high"
               />
@@ -490,11 +527,11 @@ export const AdvancedProfileCard: Story = {
                 <Skeleton variant="text" width="50%" shimmer intensity="medium" />
               </Box>
             </Box>
-            <Skeleton 
-              variant="rectangular" 
-              height={150} 
-              sx={{ mb: 2 }} 
-              shimmer 
+            <Skeleton
+              variant="rectangular"
+              height={150}
+              sx={{ mb: 2 }}
+              shimmer
               borderRadius={12}
               intensity="high"
             />
@@ -507,17 +544,20 @@ export const AdvancedProfileCard: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Comparison between regular and enhanced skeleton with shimmer effects and custom intensity.',
-      }
-    }
-  }
+        story:
+          'Comparison between regular and enhanced skeleton with shimmer effects and custom intensity.',
+      },
+    },
+  },
 };
 
 export const CustomShapes: Story = {
   render: () => (
     <Stack spacing={4}>
       <Box>
-        <Typography variant="h6" gutterBottom>Custom Border Radius</Typography>
+        <Typography variant="h6" gutterBottom>
+          Custom Border Radius
+        </Typography>
         <Grid container spacing={2}>
           <Grid item xs={6} sm={3}>
             <Skeleton variant="rectangular" height={80} borderRadius={0} />
@@ -547,7 +587,9 @@ export const CustomShapes: Story = {
       </Box>
 
       <Box>
-        <Typography variant="h6" gutterBottom>Custom Dimensions</Typography>
+        <Typography variant="h6" gutterBottom>
+          Custom Dimensions
+        </Typography>
         <Stack spacing={2}>
           <Skeleton variant="rectangular" width="100%" height={20} />
           <Skeleton variant="rectangular" width="80%" height={30} />
@@ -557,7 +599,9 @@ export const CustomShapes: Story = {
       </Box>
 
       <Box>
-        <Typography variant="h6" gutterBottom>Mixed Circular Sizes</Typography>
+        <Typography variant="h6" gutterBottom>
+          Mixed Circular Sizes
+        </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
           <Skeleton variant="circular" width={24} height={24} />
           <Skeleton variant="circular" width={32} height={32} />
@@ -572,10 +616,11 @@ export const CustomShapes: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Showcase different border radius options and custom dimensions for creating unique skeleton shapes.',
-      }
-    }
-  }
+        story:
+          'Showcase different border radius options and custom dimensions for creating unique skeleton shapes.',
+      },
+    },
+  },
 };
 
 // Required story exports for validation
@@ -587,7 +632,9 @@ export const Responsive: Story = {
     <Box>
       {/* Mobile View */}
       <Box sx={{ display: { xs: 'block', md: 'none' } }}>
-        <Typography variant="h6" gutterBottom>Mobile Layout</Typography>
+        <Typography variant="h6" gutterBottom>
+          Mobile Layout
+        </Typography>
         <Stack spacing={2}>
           <Skeleton variant="rectangular" height={50} />
           <Skeleton variant="text" />
@@ -601,7 +648,9 @@ export const Responsive: Story = {
 
       {/* Desktop View */}
       <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-        <Typography variant="h6" gutterBottom>Desktop Layout</Typography>
+        <Typography variant="h6" gutterBottom>
+          Desktop Layout
+        </Typography>
         <Grid container spacing={3}>
           <Grid item xs={8}>
             <Skeleton variant="rectangular" height={200} />
@@ -634,7 +683,7 @@ export const Responsive: Story = {
         mobile: { name: 'Mobile', styles: { width: '375px', height: '667px' } },
         tablet: { name: 'Tablet', styles: { width: '768px', height: '1024px' } },
         desktop: { name: 'Desktop', styles: { width: '1200px', height: '800px' } },
-      }
-    }
-  }
+      },
+    },
+  },
 };

@@ -52,32 +52,24 @@ A group of toggle buttons that work together to allow single or multiple selecti
 - [ ] Form integration
 - [ ] Value change handling
 
-## Storybook Tests Status
+## 5) Storybook Tests
 
-- [ ] Basic Interaction (planned)
-- [ ] Form Interaction (planned)
-- [ ] Keyboard Navigation (planned)
-- [ ] Screen Reader (planned)
-- [ ] Focus Management (planned)
-- [ ] Responsive Design (planned)
-- [ ] Theme Variations (planned)
-- [ ] Visual States (planned)
-- [ ] Performance (planned)
-- [ ] Edge Cases (planned)
-- [ ] Integration (planned)
+**Stories**:
 
-## Current Section - 2025-01-13 21:30 (BRT)
+- Form/ToggleGroup/Default
+- Form/ToggleGroup/AllVariants
+- Form/ToggleGroup/AllSizes
+- Form/ToggleGroup/AllStates
+- Form/ToggleGroup/InteractiveStates
+- Form/ToggleGroup/Responsive
+- Form/ToggleGroup/Variants
+- Form/ToggleGroup/Colors
+- Form/ToggleGroup/Sizes
+- Form/ToggleGroup/IconOnly
+- Form/ToggleGroup/WithLabels
+- Form/ToggleGroup/SpecialEffects
+- Form/ToggleGroup/MultipleSelection
+- Form/ToggleGroup/WithDisabledOptions
+- Form/ToggleGroup/Playground
 
-### Current Task: Initial track.md file creation
-
-- Track.md file structure created
-- Component overview documented
-- Parameters identified
-- Testing scenarios outlined
-
-### Next Steps:
-
-- Read existing component implementation
-- Verify current lint/type status
-- Update status based on actual component state
-- Begin systematic verification process
+## **Current (BRT)**: 2025-09-09 22:55 - Fixed Stories coverage by adding required exports (AllVariants, AllSizes, AllStates, InteractiveStates, Responsive). Created ToggleGroup.md documentation. All validation checks should now pass.

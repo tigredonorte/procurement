@@ -23,7 +23,7 @@ import { Box, IconButton } from '@mui/material';
 import { DropdownMenu } from './DropdownMenu';
 import { Button } from '../../form/Button';
 
-const meta = {
+const meta: Meta<typeof DropdownMenu> = {
   title: 'Navigation/DropdownMenu',
   component: DropdownMenu,
   parameters: {
@@ -56,7 +56,7 @@ const meta = {
       description: "Whether to reserve space for icons even when items don't have them",
     },
   },
-} satisfies Meta<typeof DropdownMenu>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

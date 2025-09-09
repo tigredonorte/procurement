@@ -8,7 +8,10 @@ import { EmptyState } from './EmptyState';
 const SearchIcon = () => (
   <SvgIcon sx={{ fontSize: 64 }}>
     <svg viewBox="0 0 24 24">
-      <path fill="currentColor" d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+      <path
+        fill="currentColor"
+        d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+      />
     </svg>
   </SvgIcon>
 );
@@ -16,7 +19,10 @@ const SearchIcon = () => (
 const ErrorIcon = () => (
   <SvgIcon sx={{ fontSize: 64, color: 'error.main' }}>
     <svg viewBox="0 0 24 24">
-      <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+      <path
+        fill="currentColor"
+        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+      />
     </svg>
   </SvgIcon>
 );
@@ -26,10 +32,11 @@ const meta: Meta<typeof EmptyState> = {
   component: EmptyState,
   parameters: {
     layout: 'centered',
-    docs: { 
-      description: { 
-        component: 'Friendly placeholder for "no data / no results / error" with illustration and actions.' 
-      } 
+    docs: {
+      description: {
+        component:
+          'Friendly placeholder for "no data / no results / error" with illustration and actions.',
+      },
     },
   },
   tags: ['autodocs'],
@@ -62,7 +69,8 @@ export const Illustrated: Story = {
   args: {
     variant: 'illustrated',
     title: 'No search results',
-    description: 'We couldn\'t find anything matching your search. Try adjusting your filters or search terms.',
+    description:
+      "We couldn't find anything matching your search. Try adjusting your filters or search terms.",
     illustration: <SearchIcon />,
   },
 };
@@ -98,7 +106,7 @@ export const WithActions: Story = {
 export const NoResults: Story = {
   args: {
     title: 'No results found',
-    description: 'We couldn\'t find any results for your search criteria.',
+    description: "We couldn't find any results for your search criteria.",
     illustration: <SearchIcon />,
     primaryAction: {
       label: 'Clear filters',
@@ -114,7 +122,8 @@ export const NoResults: Story = {
 export const NoPermissions: Story = {
   args: {
     title: 'Access denied',
-    description: 'You don\'t have permission to view this content. Contact your administrator for access.',
+    description:
+      "You don't have permission to view this content. Contact your administrator for access.",
     helpLink: {
       label: 'Contact support',
       href: '#',
@@ -149,11 +158,7 @@ export const AllVariants: Story = {
         description="Empty state with a larger illustration."
         illustration={<SearchIcon />}
       />
-      <EmptyState
-        variant="minimal"
-        title="Minimal variant"
-        description="Compact empty state."
-      />
+      <EmptyState variant="minimal" title="Minimal variant" description="Compact empty state." />
       <EmptyState
         variant="action"
         title="Action variant"
@@ -171,10 +176,7 @@ export const AllSizes: Story = {
   render: () => (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4, width: '100%' }}>
       <Box sx={{ width: 300 }}>
-        <EmptyState
-          title="Small container"
-          description="Empty state in a narrow container."
-        />
+        <EmptyState title="Small container" description="Empty state in a narrow container." />
       </Box>
       <Box sx={{ width: 600 }}>
         <EmptyState
@@ -206,10 +208,7 @@ export const AllSizes: Story = {
 export const AllStates: Story = {
   render: () => (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4, width: '100%' }}>
-      <EmptyState
-        title="Loading state"
-        description="Content is being loaded..."
-      />
+      <EmptyState title="Loading state" description="Content is being loaded..." />
       <EmptyState
         title="Error state"
         description="Something went wrong. Please try again."
@@ -219,10 +218,7 @@ export const AllStates: Story = {
           onClick: fn(),
         }}
       />
-      <EmptyState
-        title="Success state"
-        description="All done! No more items to display."
-      />
+      <EmptyState title="Success state" description="All done! No more items to display." />
     </Box>
   ),
 };
@@ -255,7 +251,8 @@ export const Responsive: Story = {
   args: {
     variant: 'action',
     title: 'Responsive layout',
-    description: 'This empty state adapts to different screen sizes. Buttons stack vertically on mobile.',
+    description:
+      'This empty state adapts to different screen sizes. Buttons stack vertically on mobile.',
     illustration: <SearchIcon />,
     primaryAction: {
       label: 'Primary Action',

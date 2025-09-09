@@ -3,7 +3,7 @@ import { Stack, FormGroup } from '@mui/material';
 
 import { Checkbox } from './Checkbox';
 
-const meta = {
+const meta: Meta<typeof Checkbox> = {
   title: 'Form/Checkbox',
   component: Checkbox,
   parameters: {
@@ -36,7 +36,7 @@ const meta = {
       control: { type: 'boolean' },
     },
   },
-} satisfies Meta<typeof Checkbox>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -94,20 +94,12 @@ export const Sizes: Story = {
 export const WithHelperText: Story = {
   render: () => (
     <Stack spacing={2}>
-      <Checkbox 
-        label="Terms and Conditions" 
+      <Checkbox
+        label="Terms and Conditions"
         helperText="Please read and accept our terms and conditions"
       />
-      <Checkbox 
-        label="Newsletter" 
-        helperText="Subscribe to our weekly newsletter"
-        defaultChecked
-      />
-      <Checkbox 
-        label="Required Field" 
-        helperText="This field is required"
-        error
-      />
+      <Checkbox label="Newsletter" helperText="Subscribe to our weekly newsletter" defaultChecked />
+      <Checkbox label="Required Field" helperText="This field is required" error />
     </Stack>
   ),
 };
@@ -155,13 +147,13 @@ export const AnimationEffects: Story = {
 export const Accessibility: Story = {
   render: () => (
     <Stack spacing={2}>
-      <Checkbox 
+      <Checkbox
         label="Accessible checkbox"
         data-testid="accessible-checkbox"
         aria-describedby="checkbox-description"
       />
       <div id="checkbox-description">This checkbox has proper accessibility attributes</div>
-      <Checkbox 
+      <Checkbox
         label="Required field"
         required
         error
@@ -192,7 +184,6 @@ export const Playground: Story = {
 
 // Required story exports for validation
 export const AllVariants: Story = {
-  name: 'All Variants',
   render: () => (
     <Stack spacing={3}>
       <Stack direction="row" spacing={2} alignItems="center">
@@ -205,7 +196,6 @@ export const AllVariants: Story = {
 };
 
 export const AllSizes: Story = {
-  name: 'All Sizes',
   render: () => (
     <Stack direction="row" spacing={2} alignItems="center">
       <Checkbox size="small" label="Small" defaultChecked />
@@ -216,7 +206,6 @@ export const AllSizes: Story = {
 };
 
 export const AllStates: Story = {
-  name: 'All States',
   render: () => (
     <Stack spacing={2}>
       <Stack direction="row" spacing={2}>
@@ -238,7 +227,6 @@ export const AllStates: Story = {
 };
 
 export const InteractiveStates: Story = {
-  name: 'Interactive States',
   render: () => (
     <Stack spacing={3}>
       <Stack direction="row" spacing={2}>
@@ -255,7 +243,6 @@ export const InteractiveStates: Story = {
 };
 
 export const Responsive: Story = {
-  name: 'Responsive',
   parameters: {
     viewport: {
       viewports: {

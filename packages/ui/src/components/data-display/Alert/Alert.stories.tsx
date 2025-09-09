@@ -1,18 +1,25 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Star, Warning as MuiWarning, Notifications, Security, CheckCircle } from '@mui/icons-material';
+import {
+  Star,
+  Warning as MuiWarning,
+  Notifications,
+  Security,
+  CheckCircle,
+} from '@mui/icons-material';
 import { Stack, Box, Typography, Button } from '@mui/material';
 import React from 'react';
 
 import { Alert } from './Alert';
 
-const meta = {
+const meta: Meta<typeof Alert> = {
   title: 'DataDisplay/Alert',
   component: Alert,
   parameters: {
     layout: 'padded',
     docs: {
       description: {
-        component: 'A beautiful and versatile Alert component with multiple variants, animations, and accessibility features. Supports info, success, warning, danger, glass, and gradient styles with optional glow and pulse effects.',
+        component:
+          'A beautiful and versatile Alert component with multiple variants, animations, and accessibility features. Supports info, success, warning, danger, glass, and gradient styles with optional glow and pulse effects.',
       },
     },
   },
@@ -90,7 +97,7 @@ const meta = {
       },
     },
   },
-} satisfies Meta<typeof Alert>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -142,7 +149,8 @@ export const WithTitle: Story = {
   args: {
     variant: 'success',
     title: 'Payment Successful',
-    description: 'Your payment has been processed successfully. You will receive a confirmation email shortly.',
+    description:
+      'Your payment has been processed successfully. You will receive a confirmation email shortly.',
   },
 };
 
@@ -236,25 +244,16 @@ export const Interactive: Story = {
         title="Interactive Demo"
         glow
         closable
-        onClose={() => { /** do nothing */}}
+        onClose={() => {
+          /** do nothing */
+        }}
       >
         Click the close button to dismiss this alert.
       </Alert>
-      <Alert
-        variant="warning"
-        pulse
-        icon={<MuiWarning />}
-        title="Attention"
-      >
+      <Alert variant="warning" pulse icon={<MuiWarning />} title="Attention">
         This alert pulses to grab your attention.
       </Alert>
-      <Alert
-        variant="glass"
-        glow
-        pulse
-        title="Combined Effects"
-        closable
-      >
+      <Alert variant="glass" glow pulse title="Combined Effects" closable>
         Glass morphism with glow and pulse effects combined.
       </Alert>
     </Stack>
@@ -316,7 +315,8 @@ export const LongContent: Story = {
   args: {
     variant: 'info',
     title: 'Terms of Service Update',
-    description: 'We have updated our terms of service to better protect your privacy and improve our services. These changes include enhanced data protection measures, clearer explanations of how we use your information, and new rights regarding your personal data. Please review the updated terms carefully as they affect your use of our services.',
+    description:
+      'We have updated our terms of service to better protect your privacy and improve our services. These changes include enhanced data protection measures, clearer explanations of how we use your information, and new rights regarding your personal data. Please review the updated terms carefully as they affect your use of our services.',
     closable: true,
   },
 };
@@ -383,66 +383,66 @@ export const AccessibilityFocus: Story = {
 const RealWorldExamplesComponent = () => {
   const [showWelcome, setShowWelcome] = React.useState(true);
   const [showNotification, setShowNotification] = React.useState(true);
-    
-    return (
-      <Stack spacing={2}>
-        {showWelcome && (
-          <Alert
-            variant="gradient"
-            color="primary"
-            title="Welcome Back!"
-            description="You have 3 new messages and 5 pending tasks"
-            icon={<Star />}
-            closable
-            onClose={() => setShowWelcome(false)}
-          />
-        )}
-        
-        {showNotification && (
-          <Alert
-            variant="glass"
-            title="Cookie Notice"
-            description="We use cookies to enhance your experience"
-            closable
-            onClose={() => setShowNotification(false)}
-          >
-            <Box sx={{ mt: 2, display: 'flex', gap: 1 }}>
-              <Button size="small" variant="contained">
-                Accept All
-              </Button>
-              <Button size="small" variant="outlined">
-                Manage Preferences
-              </Button>
-            </Box>
-          </Alert>
-        )}
-        
+
+  return (
+    <Stack spacing={2}>
+      {showWelcome && (
         <Alert
-          variant="success"
-          title="Payment Successful"
-          description="Transaction ID: #TXN-2024-001234"
-          icon={<CheckCircle />}
-          glow
-        >
-          <Typography variant="caption" sx={{ opacity: 0.8, display: 'block', mt: 1 }}>
-            You will receive a confirmation email shortly
-          </Typography>
-        </Alert>
-        
+          variant="gradient"
+          color="primary"
+          title="Welcome Back!"
+          description="You have 3 new messages and 5 pending tasks"
+          icon={<Star />}
+          closable
+          onClose={() => setShowWelcome(false)}
+        />
+      )}
+
+      {showNotification && (
         <Alert
-          variant="warning"
-          title="Subscription Expiring Soon"
-          description="Your premium subscription expires in 7 days"
-          pulse
+          variant="glass"
+          title="Cookie Notice"
+          description="We use cookies to enhance your experience"
+          closable
+          onClose={() => setShowNotification(false)}
         >
-          <Box sx={{ mt: 2 }}>
-            <Button size="small" variant="contained" color="warning" fullWidth>
-              Renew Subscription
+          <Box sx={{ mt: 2, display: 'flex', gap: 1 }}>
+            <Button size="small" variant="contained">
+              Accept All
+            </Button>
+            <Button size="small" variant="outlined">
+              Manage Preferences
             </Button>
           </Box>
         </Alert>
-      </Stack>
-    );
+      )}
+
+      <Alert
+        variant="success"
+        title="Payment Successful"
+        description="Transaction ID: #TXN-2024-001234"
+        icon={<CheckCircle />}
+        glow
+      >
+        <Typography variant="caption" sx={{ opacity: 0.8, display: 'block', mt: 1 }}>
+          You will receive a confirmation email shortly
+        </Typography>
+      </Alert>
+
+      <Alert
+        variant="warning"
+        title="Subscription Expiring Soon"
+        description="Your premium subscription expires in 7 days"
+        pulse
+      >
+        <Box sx={{ mt: 2 }}>
+          <Button size="small" variant="contained" color="warning" fullWidth>
+            Renew Subscription
+          </Button>
+        </Box>
+      </Alert>
+    </Stack>
+  );
 };
 
 export const RealWorldExamples: Story = {
@@ -457,7 +457,9 @@ export const MultipleAlerts: Story = {
         {Array.from({ length: 10 }, (_, i) => (
           <Alert
             key={i}
-            variant={(['info', 'success', 'warning', 'danger', 'glass', 'gradient'] as const)[i % 6]}
+            variant={
+              (['info', 'success', 'warning', 'danger', 'glass', 'gradient'] as const)[i % 6]
+            }
             title={`Alert ${i + 1}`}
             description={`This is alert number ${i + 1} in the list`}
             closable={i % 2 === 0}
@@ -474,9 +476,7 @@ export const MultipleAlerts: Story = {
 export const MinimalContent: Story = {
   render: () => (
     <Stack spacing={2}>
-      <Alert variant="info">
-        Simple alert with just text content
-      </Alert>
+      <Alert variant="info">Simple alert with just text content</Alert>
       <Alert variant="success" showIcon={false}>
         Alert without icon
       </Alert>
@@ -517,7 +517,14 @@ export const InteractiveStates: Story = {
       <Alert variant="success" title="Closable Alert" description="Click the X to close" closable />
       <Alert variant="warning" title="Glow Effect" description="Alert with glow effect" glow />
       <Alert variant="danger" title="Pulse Effect" description="Alert with pulse animation" pulse />
-      <Alert variant="glass" title="Combined Effects" description="Closable with glow and pulse" closable glow pulse />
+      <Alert
+        variant="glass"
+        title="Combined Effects"
+        description="Closable with glow and pulse"
+        closable
+        glow
+        pulse
+      />
     </Stack>
   ),
 };
@@ -526,24 +533,24 @@ export const Responsive: Story = {
   render: () => (
     <Box sx={{ width: '100%' }}>
       <Stack spacing={2}>
-        <Alert 
-          variant="info" 
-          title="Responsive Alert" 
+        <Alert
+          variant="info"
+          title="Responsive Alert"
           description="This alert adapts to different screen sizes and container widths"
           closable
         />
         <Box sx={{ maxWidth: 400 }}>
-          <Alert 
-            variant="success" 
-            title="Narrow Container" 
+          <Alert
+            variant="success"
+            title="Narrow Container"
             description="Alert in a constrained width container"
             closable
           />
         </Box>
         <Box sx={{ maxWidth: 200 }}>
-          <Alert 
-            variant="warning" 
-            title="Very Narrow" 
+          <Alert
+            variant="warning"
+            title="Very Narrow"
             description="Alert in very narrow space"
             showIcon={false}
           />

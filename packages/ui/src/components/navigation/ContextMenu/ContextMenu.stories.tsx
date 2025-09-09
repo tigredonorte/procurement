@@ -4,7 +4,7 @@ import { Box, Paper, Typography, Card, CardContent } from '@mui/material';
 
 import { ContextMenu } from './ContextMenu';
 
-const meta = {
+const meta: Meta<typeof ContextMenu> = {
   title: 'Navigation/ContextMenu',
   component: ContextMenu,
   parameters: {
@@ -33,7 +33,7 @@ const meta = {
       description: 'Whether the context menu is disabled',
     },
   },
-} satisfies Meta<typeof ContextMenu>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -407,6 +407,205 @@ export const MultipleMenus: Story = {
       <Typography variant="caption" color="text.secondary" textAlign="center">
         Right-click on any of the above cards to see different menu variants
       </Typography>
+    </Box>
+  ),
+};
+
+// Required story exports for validation
+export const AllVariants: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
+      <Typography variant="h6">All Variants</Typography>
+      <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+        {(['default', 'glass', 'dark'] as const).map((variant) => (
+          <ContextMenu key={variant} items={basicMenuItems} variant={variant} size="md">
+            <Paper
+              elevation={1}
+              sx={{
+                width: 120,
+                height: 80,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'context-menu',
+                ...(variant === 'glass' && {
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  color: 'white',
+                }),
+                ...(variant === 'dark' && {
+                  backgroundColor: 'grey.100',
+                }),
+              }}
+            >
+              <Typography variant="caption">{variant}</Typography>
+            </Paper>
+          </ContextMenu>
+        ))}
+      </Box>
+    </Box>
+  ),
+};
+
+export const AllSizes: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
+      <Typography variant="h6">All Sizes</Typography>
+      <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+        {(['sm', 'md', 'lg'] as const).map((size) => (
+          <ContextMenu key={size} items={basicMenuItems} variant="default" size={size}>
+            <Paper
+              elevation={1}
+              sx={{
+                width: size === 'sm' ? 80 : size === 'md' ? 120 : 160,
+                height: size === 'sm' ? 60 : size === 'md' ? 80 : 100,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'context-menu',
+              }}
+            >
+              <Typography variant="caption">{size}</Typography>
+            </Paper>
+          </ContextMenu>
+        ))}
+      </Box>
+    </Box>
+  ),
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
+      <Typography variant="h6">All States</Typography>
+      <Box sx={{ display: 'flex', gap: 2 }}>
+        <ContextMenu items={basicMenuItems} variant="default" size="md" disabled={false}>
+          <Paper
+            elevation={1}
+            sx={{
+              width: 120,
+              height: 80,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'context-menu',
+            }}
+          >
+            <Typography variant="caption">Enabled</Typography>
+          </Paper>
+        </ContextMenu>
+        <ContextMenu items={basicMenuItems} variant="default" size="md" disabled={true}>
+          <Paper
+            elevation={1}
+            sx={{
+              width: 120,
+              height: 80,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'not-allowed',
+              backgroundColor: 'action.disabledBackground',
+              opacity: 0.6,
+            }}
+          >
+            <Typography variant="caption" color="text.disabled">
+              Disabled
+            </Typography>
+          </Paper>
+        </ContextMenu>
+      </Box>
+    </Box>
+  ),
+};
+
+export const InteractiveStates: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
+      <Typography variant="h6">Interactive States</Typography>
+      <Typography variant="caption" color="text.secondary">
+        Right-click to see hover and focus states
+      </Typography>
+      <Box sx={{ display: 'flex', gap: 2 }}>
+        <ContextMenu items={basicMenuItems} variant="default" size="md">
+          <Paper
+            elevation={1}
+            sx={{
+              width: 120,
+              height: 80,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'context-menu',
+              transition: 'all 0.2s',
+              '&:hover': {
+                elevation: 2,
+                backgroundColor: 'action.hover',
+              },
+            }}
+          >
+            <Typography variant="caption">Hover Me</Typography>
+          </Paper>
+        </ContextMenu>
+        <ContextMenu items={advancedMenuItems} variant="glass" size="md">
+          <Paper
+            elevation={1}
+            sx={{
+              width: 120,
+              height: 80,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'context-menu',
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              color: 'white',
+              transition: 'all 0.2s',
+              '&:hover': {
+                transform: 'scale(1.02)',
+              },
+            }}
+          >
+            <Typography variant="caption">Focus Me</Typography>
+          </Paper>
+        </ContextMenu>
+      </Box>
+    </Box>
+  ),
+};
+
+export const Responsive: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
+      <Typography variant="h6">Responsive Design</Typography>
+      <Typography variant="caption" color="text.secondary">
+        Context menu adapts to different screen sizes
+      </Typography>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: {
+            xs: '1fr',
+            sm: 'repeat(2, 1fr)',
+            md: 'repeat(3, 1fr)',
+          },
+          gap: 2,
+        }}
+      >
+        {[1, 2, 3, 4, 5, 6].map((item) => (
+          <ContextMenu key={item} items={basicMenuItems} variant="default" size="md">
+            <Paper
+              elevation={1}
+              sx={{
+                height: 80,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'context-menu',
+              }}
+            >
+              <Typography variant="caption">Item {item}</Typography>
+            </Paper>
+          </ContextMenu>
+        ))}
+      </Box>
     </Box>
   ),
 };

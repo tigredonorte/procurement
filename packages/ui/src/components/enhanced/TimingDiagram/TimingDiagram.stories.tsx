@@ -4,7 +4,7 @@ import React from 'react';
 
 import { TimingDiagram } from './TimingDiagram';
 
-const meta = {
+const meta: Meta<typeof TimingDiagram> = {
   title: 'Enhanced/TimingDiagram',
   component: TimingDiagram,
   parameters: {
@@ -43,7 +43,7 @@ const meta = {
       description: 'Diagram height in pixels',
     },
   },
-} satisfies Meta<typeof TimingDiagram>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

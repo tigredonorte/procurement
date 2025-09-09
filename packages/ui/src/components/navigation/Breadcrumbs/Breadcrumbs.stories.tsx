@@ -20,7 +20,7 @@ import { Button, Typography } from '@mui/material';
 import { Breadcrumbs } from './Breadcrumbs';
 import { BreadcrumbItem } from './Breadcrumbs.types';
 
-const meta = {
+const meta: Meta<typeof Breadcrumbs> = {
   title: 'Navigation/Breadcrumbs',
   component: Breadcrumbs,
   parameters: {
@@ -129,7 +129,7 @@ A sophisticated breadcrumb navigation component with glass morphism effects, smo
       </Box>
     ),
   ],
-} satisfies Meta<typeof Breadcrumbs>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -219,7 +219,7 @@ export const SeparatorTypes: Story = {
       <Box>
         <Typography variant="caption" color="text.secondary" gutterBottom>
           Default Separator
-          </Typography>
+        </Typography>
         <Breadcrumbs items={items} separatorType="arrow" />
       </Box>
       <Box>
@@ -396,7 +396,7 @@ export const DarkMode: Story = {
   ],
 };
 
-// Responsive behavior - Required story export  
+// Responsive behavior - Required story export
 export const Responsive: Story = {
   args: {
     items: [
@@ -521,29 +521,31 @@ export const AllStates: Story = {
         <Typography variant="caption" color="text.secondary" gutterBottom>
           Hover State (simulate)
         </Typography>
-        <Breadcrumbs 
-          items={items.map(item => ({
+        <Breadcrumbs
+          items={items.map((item) => ({
             ...item,
-            sx: { '&:hover': { backgroundColor: 'action.hover' } }
+            sx: { '&:hover': { backgroundColor: 'action.hover' } },
           }))}
-          variant="glass" 
+          variant="glass"
         />
       </Box>
       <Box>
         <Typography variant="caption" color="text.secondary" gutterBottom>
           Focus State
         </Typography>
-        <Breadcrumbs 
-          items={items} 
+        <Breadcrumbs
+          items={items}
           variant="elevated"
-          sx={{ '& .MuiBreadcrumbs-ol > li:first-of-type a': { outline: '2px solid primary.main' } }}
+          sx={{
+            '& .MuiBreadcrumbs-ol > li:first-of-type a': { outline: '2px solid primary.main' },
+          }}
         />
       </Box>
       <Box>
         <Typography variant="caption" color="text.secondary" gutterBottom>
           Collapsed State
         </Typography>
-        <Breadcrumbs 
+        <Breadcrumbs
           items={[
             { label: 'Home', href: '#' },
             { label: 'Products', href: '#' },
@@ -551,7 +553,7 @@ export const AllStates: Story = {
             { label: 'Computers', href: '#' },
             { label: 'Laptops', href: '#' },
             { label: 'Gaming', href: '#' },
-            { label: 'Current' }
+            { label: 'Current' },
           ]}
           variant="glass"
           maxItems={3}
@@ -588,18 +590,18 @@ export const InteractiveStates: Story = {
           transition: 'all 0.2s ease-in-out',
           ...(hoveredIndex === index && {
             backgroundColor: 'action.hover',
-            transform: 'scale(1.02)'
+            transform: 'scale(1.02)',
           }),
           ...(focusedIndex === index && {
             outline: '2px solid',
             outlineColor: 'primary.main',
-            outlineOffset: 2
+            outlineOffset: 2,
           }),
           ...(activeIndex === index && {
             backgroundColor: 'action.selected',
-            transform: 'scale(0.98)'
-          })
-        }
+            transform: 'scale(0.98)',
+          }),
+        },
       }));
 
       return (
@@ -607,7 +609,7 @@ export const InteractiveStates: Story = {
           <Typography variant="body2" color="text.secondary">
             Hover, focus, and click on breadcrumb items to see interactive states
           </Typography>
-          <Breadcrumbs 
+          <Breadcrumbs
             items={interactiveItems}
             variant="glass"
             separatorType="chevron"

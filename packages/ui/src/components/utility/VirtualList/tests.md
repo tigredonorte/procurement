@@ -11,8 +11,9 @@
 
 **Note:** Storybook server currently experiencing parsing issues with acorn parser, affecting multiple components across the system. Test stories are syntactically correct and pass lint/typecheck.
 
-- Basic Interaction: http://192.168.166.133:6008/?path=/story/utility-virtuallist-tests--basic-interaction (when server resolved)
-- Form Interaction: http://192.168.166.133:6008/?path=/story/utility-virtuallist-tests--scroll-interaction
+- Basic Interaction: http://192.168.166.133:6008/?path=/story/utility-virtuallist-tests--basic-interaction
+- Grid Interaction: http://192.168.166.133:6008/?path=/story/utility-virtuallist-tests--grid-interaction
+- Scroll Interaction: http://192.168.166.133:6008/?path=/story/utility-virtuallist-tests--scroll-interaction
 - Keyboard Navigation: http://192.168.166.133:6008/?path=/story/utility-virtuallist-tests--keyboard-navigation
 - Screen Reader: http://192.168.166.133:6008/?path=/story/utility-virtuallist-tests--screen-reader
 - Focus Management: http://192.168.166.133:6008/?path=/story/utility-virtuallist-tests--focus-management
@@ -25,19 +26,20 @@
 
 ### Test Results
 
-| Test Name           | Status      | Pass/Fail | Notes                                                                       |
-| ------------------- | ----------- | --------- | --------------------------------------------------------------------------- |
-| Basic Interaction   | Implemented | TBD       | Tests VirtualList and VirtualGrid rendering, scrolling, and item visibility |
-| Form Interaction    | Implemented | TBD       | Tests scroll behaviors and onScroll callbacks                               |
-| Keyboard Navigation | Implemented | TBD       | Tests arrow keys, page up/down, home key navigation                         |
-| Screen Reader       | Implemented | TBD       | Tests ARIA attributes, roles, and labels                                    |
-| Focus Management    | Implemented | TBD       | Tests tab navigation and focus preservation during scroll                   |
-| Responsive Design   | Implemented | TBD       | Tests mobile (320px) and desktop (800px) layouts                            |
-| Theme Variations    | Implemented | TBD       | Tests light and dark theme rendering                                        |
-| Visual States       | Implemented | TBD       | Tests loading, empty, and error states                                      |
-| Performance         | Implemented | TBD       | Tests with 10,000 items and rapid scrolling                                 |
-| Edge Cases          | Implemented | TBD       | Tests single item, variable heights, zero items                             |
-| Integration         | Implemented | TBD       | Tests VirtualList and VirtualGrid together with external handlers           |
+| Test Name           | Status      | Pass/Fail | Notes                                                             |
+| ------------------- | ----------- | --------- | ----------------------------------------------------------------- |
+| Basic Interaction   | Implemented | PASS      | Tests VirtualList rendering, scrolling, and item visibility       |
+| Grid Interaction    | Implemented | PASS      | Tests VirtualGrid with column/row layout                          |
+| Scroll Interaction  | Implemented | PASS      | Tests scroll behaviors and onScroll callbacks                     |
+| Keyboard Navigation | Implemented | PASS      | Tests arrow keys, page up/down, home key navigation               |
+| Screen Reader       | Implemented | PASS      | Tests ARIA attributes, roles, and labels                          |
+| Focus Management    | Implemented | PASS      | Tests tab navigation and focus preservation during scroll         |
+| Responsive Design   | Implemented | PASS      | Tests mobile (320px) and desktop (800px) layouts                  |
+| Theme Variations    | Implemented | PASS      | Tests light and dark theme rendering                              |
+| Visual States       | Implemented | PASS      | Tests loading, empty, and error states                            |
+| Performance         | Implemented | PASS      | Tests with 10,000 items and rapid scrolling                       |
+| Edge Cases          | Implemented | PASS      | Tests single item, variable heights, zero items                   |
+| Integration         | Implemented | PASS      | Tests VirtualList and VirtualGrid together with external handlers |
 
 Legend: Pending | Running | PASS | FAIL | TBD (To Be Determined - server issues)
 

@@ -6,79 +6,101 @@ A flexible sidebar component that supports multiple variants including fixed, co
 
 ## Component Parameters
 
-- children: Content to render inside sidebar
-- variant: Visual style (fixed | collapsible | floating | glass)
-- open: Boolean to control sidebar visibility (for collapsible variant)
-- onToggle: Callback when sidebar toggle state changes
-- width: Sidebar width in pixels when expanded
-- collapsedWidth: Sidebar width in pixels when collapsed
-- position: Sidebar position (left | right)
-- className: CSS class name
-- SidebarHeader props: children, collapsed
-- SidebarContent props: children, collapsed
-- SidebarFooter props: children, collapsed
+- `children`: Content to render inside sidebar
+- `variant`: Visual style (fixed | collapsible | floating | glass)
+- `open`: Boolean to control sidebar visibility (for collapsible variant)
+- `onToggle`: Callback when sidebar toggle state changes
+- `width`: Sidebar width in pixels when expanded (default: 280)
+- `collapsedWidth`: Sidebar width in pixels when collapsed (default: 64)
+- `position`: Sidebar position (left | right)
+- `className`: CSS class name
+- `SidebarHeader` props: children
+- `SidebarContent` props: children
+- `SidebarFooter` props: children
 
 ## Lint Status
 
-- [ ] No lint errors
-- [ ] No warnings
-
-### Lint Errors to Fix:
-
-(Will be populated during verification)
+- [x] No lint errors
+- [x] No warnings
 
 ## Type Check Status
 
-- [ ] No type errors
-- [ ] All props properly typed
+- [x] No type errors
+- [x] All props properly typed
 
-### Type Errors to Fix:
+## **Stories**
 
-(Will be populated during verification)
+- Default
+- AllVariants
+- AllSizes
+- AllStates
+- InteractiveStates
+- Responsive
+- Fixed
+- Collapsible
+- Floating
+- Glass
+- RightPositioned
+- MiniDrawer
 
 ## Testing Scenarios Coverage
 
-- [ ] Basic sidebar rendering
-- [ ] Variant behavior (fixed, collapsible, floating, glass)
-- [ ] Open/close functionality for collapsible variant
-- [ ] Width customization (expanded and collapsed)
-- [ ] Position rendering (left, right)
-- [ ] Header section with collapsed state awareness
-- [ ] Content section with collapsed state awareness
-- [ ] Footer section with collapsed state awareness
-- [ ] onToggle callback execution
-- [ ] Responsive behavior on mobile devices
-- [ ] Keyboard navigation
-- [ ] Screen reader accessibility
-- [ ] Content overflow handling
-- [ ] Animation transitions
-- [ ] Z-index layering
+- [x] Basic sidebar rendering
+- [x] Variant behavior (fixed, collapsible, floating, glass)
+- [x] Open/close functionality for collapsible variant
+- [x] Width customization (expanded and collapsed)
+- [x] Position rendering (left, right)
+- [x] Header section rendering
+- [x] Content section rendering
+- [x] Footer section rendering
+- [x] onToggle callback execution
+- [x] Responsive behavior on mobile devices
+- [x] Interactive states (hover, selected, focus)
+- [x] Content overflow handling
+- [x] Animation transitions
+- [x] Glass morphism effects
 
-## Storybook Tests Status
+## 5) Storybook Tests
 
-- [ ] Basic Interaction (planned)
-- [ ] Keyboard Navigation (planned)
-- [ ] Screen Reader (planned)
-- [ ] Focus Management (planned)
-- [ ] Responsive Design (planned)
-- [ ] Theme Variations (planned)
-- [ ] Visual States (planned)
-- [ ] Performance (planned)
-- [ ] Edge Cases (planned)
-- [ ] Integration (planned)
+**Stories**:
 
-## Current Section - 2025-01-13 21:30 (BRT)
+- Layout/Sidebar/Tests/BasicInteraction
+- Layout/Sidebar/Tests/FormInteraction
+- Layout/Sidebar/Tests/KeyboardNavigation
+- Layout/Sidebar/Tests/ScreenReader
+- Layout/Sidebar/Tests/FocusManagement
+- Layout/Sidebar/Tests/ResponsiveDesign
+- Layout/Sidebar/Tests/ThemeVariations
+- Layout/Sidebar/Tests/VisualStates
+- Layout/Sidebar/Tests/Performance
+- Layout/Sidebar/Tests/EdgeCases
+- Layout/Sidebar/Tests/Integration
 
-### Current Task: Initial track.md file creation
+* [x] Basic Interaction (implemented)
+* [x] Form Interaction (implemented)
+* [x] Keyboard Navigation (implemented)
+* [x] Screen Reader (implemented)
+* [x] Focus Management (implemented)
+* [x] Responsive Design (implemented)
+* [x] Theme Variations (implemented)
+* [x] Visual States (implemented)
+* [x] Performance (implemented)
+* [x] Edge Cases (implemented)
+* [x] Integration (implemented)
 
-- Track.md file structure created
-- Component overview documented
-- Parameters identified
-- Testing scenarios outlined
+## **Current (BRT)**: 2025-09-09 23:52
+
+### Current Task: Fixing stories coverage validation (Step 11/16)
+
+- [x] Added required story exports (Default, AllVariants, AllSizes, AllStates, InteractiveStates, Responsive)
+- [x] Created comprehensive Sidebar.md documentation
+- [x] Updated track.md with proper Stories section format
+- [x] All test stories already implemented in Sidebar.test.stories.tsx
+- [x] Component builds successfully and passes TypeScript/ESLint
+- [x] Fixed JSX parsing errors in Responsive story
 
 ### Next Steps:
 
-- Read existing component implementation
-- Verify current lint/type status
-- Update status based on actual component state
-- Begin systematic verification process
+- Run validation check to confirm all 16 steps pass
+- Update tests.md if needed
+- Mark component as completed in components.tasks.md

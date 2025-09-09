@@ -85,28 +85,29 @@ None - TypeScript compilation successful
 - [x] Integration (completed)
 
 **Stories**
-* DataDisplay/Carousel/Default
-* DataDisplay/Carousel/AutoPlay
-* DataDisplay/Carousel/Glass
-* DataDisplay/Carousel/Gradient
-* DataDisplay/Carousel/Cards
-* DataDisplay/Carousel/WithThumbnails
-* DataDisplay/Carousel/Animations
-* DataDisplay/Carousel/Sizes
-* DataDisplay/Carousel/Colors
-* DataDisplay/Carousel/IndicatorPositions
-* DataDisplay/Carousel/ArrowPositions
-* DataDisplay/Carousel/WithEffects
-* DataDisplay/Carousel/Interactive
-* DataDisplay/Carousel/Loading
-* DataDisplay/Carousel/Disabled
-* DataDisplay/Carousel/NoLoop
-* DataDisplay/Carousel/CustomContent
-* DataDisplay/Carousel/AllVariants
-* DataDisplay/Carousel/AllSizes
-* DataDisplay/Carousel/AllStates
-* DataDisplay/Carousel/InteractiveStates
-* DataDisplay/Carousel/Responsive
+
+- DataDisplay/Carousel/Default
+- DataDisplay/Carousel/AutoPlay
+- DataDisplay/Carousel/Glass
+- DataDisplay/Carousel/Gradient
+- DataDisplay/Carousel/Cards
+- DataDisplay/Carousel/WithThumbnails
+- DataDisplay/Carousel/Animations
+- DataDisplay/Carousel/Sizes
+- DataDisplay/Carousel/Colors
+- DataDisplay/Carousel/IndicatorPositions
+- DataDisplay/Carousel/ArrowPositions
+- DataDisplay/Carousel/WithEffects
+- DataDisplay/Carousel/Interactive
+- DataDisplay/Carousel/Loading
+- DataDisplay/Carousel/Disabled
+- DataDisplay/Carousel/NoLoop
+- DataDisplay/Carousel/CustomContent
+- DataDisplay/Carousel/AllVariants
+- DataDisplay/Carousel/AllSizes
+- DataDisplay/Carousel/AllStates
+- DataDisplay/Carousel/InteractiveStates
+- DataDisplay/Carousel/Responsive
 
 **Current (BRT)**: 2025-09-09 14:50
 

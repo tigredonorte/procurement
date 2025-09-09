@@ -6,7 +6,7 @@ import { Stack, ThemeProvider, createTheme } from '@mui/material';
 import { Alert } from './Alert';
 
 const meta: Meta<typeof Alert> = {
-  title: 'Data Display/Alert/Tests',
+  title: 'DataDisplay/Alert/Tests',
   component: Alert,
   parameters: {
     layout: 'padded',

@@ -17,7 +17,7 @@ import {
 import { Sheet } from './Sheet';
 
 const meta: Meta<typeof Sheet> = {
-  title: 'Data Display/Sheet/Tests',
+  title: 'DataDisplay/Sheet/Tests',
   component: Sheet,
   parameters: {
     layout: 'centered',
@@ -36,22 +36,13 @@ interface TestWrapperProps extends React.ComponentProps<typeof Sheet> {
 
 const TestWrapper: React.FC<TestWrapperProps> = ({ children, ...props }) => {
   const [open, setOpen] = useState(false);
-  
+
   return (
     <>
-      <Button 
-        variant="contained" 
-        onClick={() => setOpen(true)}
-        data-testid="open-sheet-button"
-      >
+      <Button variant="contained" onClick={() => setOpen(true)} data-testid="open-sheet-button">
         Open Sheet
       </Button>
-      <Sheet
-        {...props}
-        open={open}
-        onOpenChange={setOpen}
-        data-testid="test-sheet"
-      >
+      <Sheet {...props} open={open} onOpenChange={setOpen} data-testid="test-sheet">
         {children}
       </Sheet>
     </>
@@ -70,36 +61,41 @@ export const BasicInteraction: Story = {
     onOpen: fn(),
     onClick: fn(),
   },
-  render: (args) => <TestWrapper {...args}>
-    <Typography data-testid="sheet-content">Sheet content for testing</Typography>
-  </TestWrapper>,
+  render: (args) => (
+    <TestWrapper {...args}>
+      <Typography data-testid="sheet-content">Sheet content for testing</Typography>
+    </TestWrapper>
+  ),
   play: async ({ canvasElement, step, args }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Initial render verification', async () => {
       const openButton = canvas.getByTestId('open-sheet-button');
       await expect(openButton).toBeInTheDocument();
     });
-    
+
     await step('Open sheet interaction', async () => {
       const openButton = canvas.getByTestId('open-sheet-button');
       await userEvent.click(openButton);
-      
+
       // Wait for sheet to open with animation
-      await waitFor(() => {
-        const content = canvas.getByTestId('sheet-content');
-        expect(content).toBeVisible();
-      }, { timeout: 2000 });
-      
+      await waitFor(
+        () => {
+          const content = canvas.getByTestId('sheet-content');
+          expect(content).toBeVisible();
+        },
+        { timeout: 2000 },
+      );
+
       await expect(args.onOpen).toHaveBeenCalled();
     });
-    
+
     await step('Click on sheet content', async () => {
       const content = canvas.getByTestId('sheet-content');
       await userEvent.click(content);
       await expect(args.onClick).toHaveBeenCalled();
     });
-    
+
     await step('Close button interaction', async () => {
       const closeButton = canvas.getByRole('button', { name: /close/i });
       await userEvent.click(closeButton);
@@ -118,7 +114,7 @@ export const FormInteraction: Story = {
   render: (args) => {
     const FormContent = () => {
       const [value, setValue] = useState('');
-      
+
       return (
         <Stack spacing={2}>
           <TextField
@@ -131,22 +127,22 @@ export const FormInteraction: Story = {
             }}
             fullWidth
           />
-          <Button
-            data-testid="submit-button"
-            variant="contained"
-            onClick={() => args.onSubmit?.()}
-          >
+          <Button data-testid="submit-button" variant="contained" onClick={() => args.onSubmit?.()}>
             Submit
           </Button>
         </Stack>
       );
     };
-    
-    return <TestWrapper {...args}><FormContent /></TestWrapper>;
+
+    return (
+      <TestWrapper {...args}>
+        <FormContent />
+      </TestWrapper>
+    );
   },
   play: async ({ canvasElement, args, step }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Open sheet', async () => {
       const openButton = canvas.getByTestId('open-sheet-button');
       await userEvent.click(openButton);
@@ -154,19 +150,19 @@ export const FormInteraction: Story = {
         expect(canvas.getByTestId('text-input')).toBeVisible();
       });
     });
-    
+
     await step('Type in input field', async () => {
       const input = canvas.getByTestId('text-input');
       await userEvent.type(input, 'Test input value');
       await expect(args.onChange).toHaveBeenCalled();
     });
-    
+
     await step('Clear input field', async () => {
       const input = canvas.getByTestId('text-input');
       await userEvent.clear(input);
       await expect(input).toHaveValue('');
     });
-    
+
     await step('Submit form', async () => {
       const submitButton = canvas.getByTestId('submit-button');
       await userEvent.click(submitButton);
@@ -181,14 +177,10 @@ export const StateChangeTest: Story = {
     const StateComponent = () => {
       const [open, setOpen] = useState(false);
       const [snapPoint, setSnapPoint] = useState(0.5);
-      
+
       return (
         <>
-          <Button
-            data-testid="open-button"
-            variant="contained"
-            onClick={() => setOpen(true)}
-          >
+          <Button data-testid="open-button" variant="contained" onClick={() => setOpen(true)}>
             Open Draggable Sheet
           </Button>
           <Sheet
@@ -209,21 +201,21 @@ export const StateChangeTest: Story = {
         </>
       );
     };
-    
+
     return <StateComponent />;
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Verify initial state', async () => {
       const openButton = canvas.getByTestId('open-button');
       await expect(openButton).toBeInTheDocument();
     });
-    
+
     await step('Open draggable sheet', async () => {
       const openButton = canvas.getByTestId('open-button');
       await userEvent.click(openButton);
-      
+
       await waitFor(() => {
         const indicator = canvas.getByTestId('snap-indicator');
         expect(indicator).toHaveTextContent('Current snap: 50%');
@@ -273,36 +265,36 @@ export const KeyboardNavigation: Story = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Open sheet', async () => {
       const openButton = canvas.getByTestId('open-sheet-button');
       await userEvent.click(openButton);
-      
+
       await waitFor(() => {
         expect(canvas.getByTestId('first-focusable')).toBeVisible();
       });
     });
-    
+
     await step('Tab navigation forward', async () => {
       const firstElement = canvas.getByTestId('first-focusable');
       const secondElement = canvas.getByTestId('second-focusable');
-      
+
       firstElement.focus();
       await expect(firstElement).toHaveFocus();
-      
+
       await userEvent.tab();
       await expect(secondElement).toHaveFocus();
     });
-    
+
     await step('Tab navigation backward', async () => {
       await userEvent.tab({ shift: true });
       const firstElement = canvas.getByTestId('first-focusable');
       await expect(firstElement).toHaveFocus();
     });
-    
+
     await step('Escape key handling', async () => {
       await userEvent.keyboard('{Escape}');
-      
+
       // Sheet should close
       await waitFor(() => {
         const content = canvas.queryByTestId('first-focusable');
@@ -326,10 +318,7 @@ export const ScreenReaderTest: Story = {
         This sheet contains application settings
       </div>
       <Stack spacing={2}>
-        <FormControlLabel
-          control={<Switch />}
-          label="Enable notifications"
-        />
+        <FormControlLabel control={<Switch />} label="Enable notifications" />
         <div role="status" aria-live="polite" data-testid="live-region">
           Settings updated
         </div>
@@ -338,22 +327,22 @@ export const ScreenReaderTest: Story = {
   ),
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Open sheet', async () => {
       const openButton = canvas.getByTestId('open-sheet-button');
       await userEvent.click(openButton);
-      
+
       await waitFor(() => {
         expect(canvas.getByTestId('description-element')).toBeVisible();
       });
     });
-    
+
     await step('Verify ARIA descriptions', async () => {
       const description = canvas.getByTestId('description-element');
       await expect(description).toBeInTheDocument();
       await expect(description).toHaveAttribute('id', 'sheet-description');
     });
-    
+
     await step('Verify live regions', async () => {
       const liveRegion = canvas.getByTestId('live-region');
       await expect(liveRegion).toHaveAttribute('aria-live', 'polite');
@@ -368,7 +357,7 @@ export const FocusManagement: Story = {
     const FocusComponent = () => {
       const [open, setOpen] = useState(false);
       const triggerRef = React.useRef<HTMLButtonElement>(null);
-      
+
       return (
         <>
           <Button
@@ -394,47 +383,43 @@ export const FocusManagement: Story = {
               <Button data-testid="first-modal-element" autoFocus>
                 First Element (Auto Focus)
               </Button>
-              <Button data-testid="second-modal-element">
-                Second Element
-              </Button>
-              <Button data-testid="last-modal-element">
-                Last Element
-              </Button>
+              <Button data-testid="second-modal-element">Second Element</Button>
+              <Button data-testid="last-modal-element">Last Element</Button>
             </Stack>
           </Sheet>
         </>
       );
     };
-    
+
     return <FocusComponent />;
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Open sheet and verify auto focus', async () => {
       const triggerButton = canvas.getByTestId('trigger-button');
       await userEvent.click(triggerButton);
-      
+
       await waitFor(() => {
         const firstElement = canvas.getByTestId('first-modal-element');
         expect(firstElement).toHaveFocus();
       });
     });
-    
+
     await step('Tab through sheet elements', async () => {
       await userEvent.tab();
       const secondElement = canvas.getByTestId('second-modal-element');
       await expect(secondElement).toHaveFocus();
-      
+
       await userEvent.tab();
       const lastElement = canvas.getByTestId('last-modal-element');
       await expect(lastElement).toHaveFocus();
     });
-    
+
     await step('Close and verify focus restoration', async () => {
       const closeButton = canvas.getByRole('button', { name: /close/i });
       await userEvent.click(closeButton);
-      
+
       await waitFor(() => {
         const triggerButton = canvas.getByTestId('trigger-button');
         expect(triggerButton).toHaveFocus();
@@ -454,11 +439,14 @@ export const ResponsiveDesign: Story = {
   },
   render: (args) => (
     <TestWrapper {...args}>
-      <Box data-testid="responsive-container" sx={{
-        display: 'flex',
-        flexDirection: { xs: 'column', sm: 'row' },
-        gap: 2,
-      }}>
+      <Box
+        data-testid="responsive-container"
+        sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', sm: 'row' },
+          gap: 2,
+        }}
+      >
         <Typography>Responsive content</Typography>
         <Button variant="contained">Action</Button>
       </Box>
@@ -492,20 +480,20 @@ export const ResponsiveDesign: Story = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Open sheet', async () => {
       const openButton = canvas.getByTestId('open-sheet-button');
       await userEvent.click(openButton);
-      
+
       await waitFor(() => {
         expect(canvas.getByTestId('responsive-container')).toBeVisible();
       });
     });
-    
+
     await step('Verify responsive layout', async () => {
       const container = canvas.getByTestId('responsive-container');
       const computedStyle = window.getComputedStyle(container);
-      
+
       if (window.innerWidth <= 600) {
         await expect(computedStyle.flexDirection).toBe('column');
       } else {
@@ -525,11 +513,14 @@ export const ThemeVariations: Story = {
   },
   render: (args) => (
     <TestWrapper {...args}>
-      <Box data-testid="themed-component" sx={{
-        p: 2,
-        bgcolor: 'background.paper',
-        color: 'text.primary',
-      }}>
+      <Box
+        data-testid="themed-component"
+        sx={{
+          p: 2,
+          bgcolor: 'background.paper',
+          color: 'text.primary',
+        }}
+      >
         <Typography>Theme-aware content</Typography>
       </Box>
     </TestWrapper>
@@ -545,20 +536,20 @@ export const ThemeVariations: Story = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Open sheet', async () => {
       const openButton = canvas.getByTestId('open-sheet-button');
       await userEvent.click(openButton);
-      
+
       await waitFor(() => {
         expect(canvas.getByTestId('themed-component')).toBeVisible();
       });
     });
-    
+
     await step('Verify theme colors', async () => {
       const element = canvas.getByTestId('themed-component');
       const computedStyle = window.getComputedStyle(element);
-      
+
       // Check if colors are applied
       await expect(computedStyle.backgroundColor).toMatch(/rgb/);
       await expect(computedStyle.color).toMatch(/rgb/);
@@ -573,7 +564,7 @@ export const VisualStates: Story = {
       const [open, setOpen] = useState(false);
       const [loading, setLoading] = useState(false);
       const [disabled, setDisabled] = useState(false);
-      
+
       return (
         <>
           <Stack direction="row" spacing={2}>
@@ -624,21 +615,21 @@ export const VisualStates: Story = {
         </>
       );
     };
-    
+
     return <StatesComponent />;
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Test normal state', async () => {
       const openButton = canvas.getByTestId('open-normal');
       await userEvent.click(openButton);
-      
+
       await waitFor(() => {
         const sheet = canvas.getByRole('presentation');
         expect(sheet).toBeVisible();
       });
-      
+
       // Close sheet
       await userEvent.keyboard('{Escape}');
       await waitFor(() => {
@@ -646,24 +637,24 @@ export const VisualStates: Story = {
         expect(content).not.toBeVisible();
       });
     });
-    
+
     await step('Test loading state', async () => {
       const openButton = canvas.getByTestId('open-loading');
       await userEvent.click(openButton);
-      
+
       await waitFor(() => {
         const spinner = canvas.getByRole('progressbar');
         expect(spinner).toBeVisible();
       });
-      
+
       // Close sheet
       await userEvent.keyboard('{Escape}');
     });
-    
+
     await step('Test disabled state', async () => {
       const openButton = canvas.getByTestId('open-disabled');
       await userEvent.click(openButton);
-      
+
       await waitFor(() => {
         const sheet = canvas.getByRole('presentation');
         expect(sheet).toBeVisible();
@@ -687,17 +678,14 @@ export const PerformanceTest: Story = {
       name: `Item ${i}`,
       description: `Description for item ${i}`,
     }));
-    
+
     return (
       <TestWrapper {...args}>
         <Box data-testid="scroll-container" sx={{ maxHeight: 400, overflow: 'auto' }}>
           <List>
             {items.map((item) => (
               <ListItem key={item.id} data-testid={`item-${item.id}`}>
-                <ListItemText
-                  primary={item.name}
-                  secondary={item.description}
-                />
+                <ListItemText primary={item.name} secondary={item.description} />
               </ListItem>
             ))}
           </List>
@@ -707,39 +695,39 @@ export const PerformanceTest: Story = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Open sheet', async () => {
       const openButton = canvas.getByTestId('open-sheet-button');
       await userEvent.click(openButton);
-      
+
       await waitFor(() => {
         expect(canvas.getByTestId('scroll-container')).toBeVisible();
       });
     });
-    
+
     await step('Measure render time', async () => {
       const startTime = window.performance.now();
       const elements = canvas.getAllByTestId(/item-/);
       const endTime = window.performance.now();
-      
+
       const renderTime = endTime - startTime;
       // Log render time for debugging (can be removed in production)
       // console.log(`Render time for ${elements.length} items: ${renderTime}ms`);
-      
+
       // Assert reasonable render time and elements are rendered
       await expect(elements.length).toBeGreaterThan(0);
       await expect(renderTime).toBeLessThan(1000);
     });
-    
+
     await step('Test scroll performance', async () => {
       const scrollContainer = canvas.getByTestId('scroll-container');
-      
+
       // Simulate rapid scrolling
       for (let i = 0; i < 5; i++) {
         scrollContainer.scrollTop = i * 50;
-        await new Promise(resolve => window.setTimeout(resolve, 50));
+        await new Promise((resolve) => window.setTimeout(resolve, 50));
       }
-      
+
       // Verify no janky behavior
       await expect(scrollContainer).toBeInTheDocument();
     });
@@ -755,17 +743,13 @@ export const EdgeCases: Story = {
       const [open, setOpen] = useState(false);
       const [emptyOpen, setEmptyOpen] = useState(false);
       const [longTextOpen, setLongTextOpen] = useState(false);
-      
+
       const longText = 'Lorem ipsum '.repeat(100);
-      
+
       return (
         <>
           <Stack direction="row" spacing={2}>
-            <Button
-              data-testid="open-empty"
-              variant="outlined"
-              onClick={() => setEmptyOpen(true)}
-            >
+            <Button data-testid="open-empty" variant="outlined" onClick={() => setEmptyOpen(true)}>
               Empty Content
             </Button>
             <Button
@@ -775,22 +759,18 @@ export const EdgeCases: Story = {
             >
               Long Text
             </Button>
-            <Button
-              data-testid="open-invalid"
-              variant="outlined"
-              onClick={() => setOpen(true)}
-            >
+            <Button data-testid="open-invalid" variant="outlined" onClick={() => setOpen(true)}>
               Invalid Props
             </Button>
           </Stack>
-          
+
           <Sheet
             open={emptyOpen}
             onOpenChange={setEmptyOpen}
             title="Empty Sheet"
             data-testid="empty-sheet"
           />
-          
+
           <Sheet
             open={longTextOpen}
             onOpenChange={setLongTextOpen}
@@ -808,7 +788,7 @@ export const EdgeCases: Story = {
               {longText}
             </Typography>
           </Sheet>
-          
+
           <Sheet
             open={open}
             onOpenChange={setOpen}
@@ -818,51 +798,49 @@ export const EdgeCases: Story = {
             position={'invalid' as 'top'}
             data-testid="invalid-sheet"
           >
-            <Typography data-testid="component">
-              Sheet with invalid props
-            </Typography>
+            <Typography data-testid="component">Sheet with invalid props</Typography>
           </Sheet>
         </>
       );
     };
-    
+
     return <EdgeCaseComponent />;
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Empty content handling', async () => {
       const openButton = canvas.getByTestId('open-empty');
       await userEvent.click(openButton);
-      
+
       await waitFor(() => {
         const sheet = canvas.getByRole('presentation');
         expect(sheet).toBeVisible();
       });
-      
+
       // Close empty sheet
       await userEvent.keyboard('{Escape}');
     });
-    
+
     await step('Long text overflow', async () => {
       const openButton = canvas.getByTestId('open-long');
       await userEvent.click(openButton);
-      
+
       await waitFor(() => {
         const textElement = canvas.getByTestId('text-content');
         expect(textElement).toBeVisible();
         const computedStyle = window.getComputedStyle(textElement);
         expect(computedStyle.textOverflow).toBe('ellipsis');
       });
-      
+
       // Close sheet
       await userEvent.keyboard('{Escape}');
     });
-    
+
     await step('Invalid props handling', async () => {
       const openButton = canvas.getByTestId('open-invalid');
       await userEvent.click(openButton);
-      
+
       await waitFor(() => {
         const component = canvas.getByTestId('component');
         expect(component).toBeVisible();
@@ -880,7 +858,7 @@ export const IntegrationTest: Story = {
       const [mainOpen, setMainOpen] = useState(false);
       const [nestedOpen, setNestedOpen] = useState(false);
       const [message, setMessage] = useState('Initial');
-      
+
       return (
         <>
           <Button
@@ -890,17 +868,10 @@ export const IntegrationTest: Story = {
           >
             Open Main Sheet
           </Button>
-          
-          <Sheet
-            open={mainOpen}
-            onOpenChange={setMainOpen}
-            title="Main Sheet"
-            position="right"
-          >
+
+          <Sheet open={mainOpen} onOpenChange={setMainOpen} title="Main Sheet" position="right">
             <Stack spacing={2}>
-              <Typography data-testid="receiver-component">
-                Status: {message}
-              </Typography>
+              <Typography data-testid="receiver-component">Status: {message}</Typography>
               <Button
                 variant="contained"
                 onClick={() => {
@@ -912,7 +883,7 @@ export const IntegrationTest: Story = {
               </Button>
             </Stack>
           </Sheet>
-          
+
           <Sheet
             open={nestedOpen}
             onOpenChange={setNestedOpen}
@@ -920,33 +891,31 @@ export const IntegrationTest: Story = {
             position="bottom"
             size="sm"
           >
-            <Typography>
-              This is a nested sheet
-            </Typography>
+            <Typography>This is a nested sheet</Typography>
           </Sheet>
         </>
       );
     };
-    
+
     return <IntegrationComponent />;
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Open main sheet', async () => {
       const trigger = canvas.getByTestId('trigger-component');
       await userEvent.click(trigger);
-      
+
       await waitFor(() => {
         const receiver = canvas.getByTestId('receiver-component');
         expect(receiver).toHaveTextContent('Status: Initial');
       });
     });
-    
+
     await step('Communication between sheets', async () => {
       const nestedButton = canvas.getByRole('button', { name: /open nested/i });
       await userEvent.click(nestedButton);
-      
+
       await waitFor(() => {
         const receiver = canvas.getByTestId('receiver-component');
         expect(receiver).toHaveTextContent('Status: Updated');
@@ -970,27 +939,25 @@ export const DraggableInteraction: Story = {
   },
   render: (args) => (
     <TestWrapper {...args} title="Draggable Test" showHandle>
-      <Typography data-testid="draggable-content">
-        Drag the handle to resize
-      </Typography>
+      <Typography data-testid="draggable-content">Drag the handle to resize</Typography>
     </TestWrapper>
   ),
   play: async ({ canvasElement, step, args }) => {
     const canvas = within(canvasElement);
-    
+
     await step('Open draggable sheet', async () => {
       const openButton = canvas.getByTestId('open-sheet-button');
       await userEvent.click(openButton);
-      
+
       await waitFor(() => {
         expect(canvas.getByTestId('draggable-content')).toBeVisible();
       });
     });
-    
+
     await step('Verify initial snap point', async () => {
       await expect(args.onSnapPointChange).toHaveBeenCalledWith(0.5);
     });
-    
+
     // Note: Actual drag gestures are difficult to simulate in Storybook tests
     // This would require more sophisticated testing with Playwright
   },

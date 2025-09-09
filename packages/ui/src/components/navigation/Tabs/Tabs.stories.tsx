@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import { 
-  Box, 
-  Typography, 
-  Paper, 
+import {
+  Box,
+  Typography,
+  Paper,
   List,
   ListItem,
   ListItemText,
@@ -51,14 +51,15 @@ import {
 import { Tabs } from './Tabs';
 import type { TabItem } from './Tabs.types';
 
-const meta = {
+const meta: Meta<typeof Tabs> = {
   title: 'Navigation/Tabs',
   component: Tabs,
   parameters: {
     layout: 'centered',
     docs: {
       description: {
-        component: 'A comprehensive tabs component with multiple variants including default, pills, underline, and enclosed styles.',
+        component:
+          'A comprehensive tabs component with multiple variants including default, pills, underline, and enclosed styles.',
       },
     },
   },
@@ -109,7 +110,7 @@ const meta = {
       description: 'Whether to show loading state',
     },
   },
-} satisfies Meta<typeof Tabs>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -117,7 +118,9 @@ type Story = StoryObj<typeof meta>;
 // Sample content components
 const DashboardContent = () => (
   <Box sx={{ p: 3 }}>
-    <Typography variant="h5" gutterBottom>Dashboard Overview</Typography>
+    <Typography variant="h5" gutterBottom>
+      Dashboard Overview
+    </Typography>
     <Grid container spacing={3}>
       {[
         { title: 'Total Users', value: '12,345', icon: <Person />, color: 'primary.main' },
@@ -129,9 +132,7 @@ const DashboardContent = () => (
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <Box sx={{ color: item.color, mr: 1 }}>
-                  {item.icon}
-                </Box>
+                <Box sx={{ color: item.color, mr: 1 }}>{item.icon}</Box>
                 <Typography variant="subtitle2" color="text.secondary">
                   {item.title}
                 </Typography>
@@ -149,7 +150,9 @@ const DashboardContent = () => (
 
 const SettingsContent = () => (
   <Box sx={{ p: 3, maxWidth: 600 }}>
-    <Typography variant="h5" gutterBottom>Settings</Typography>
+    <Typography variant="h5" gutterBottom>
+      Settings
+    </Typography>
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
       <TextField fullWidth label="Application Name" defaultValue="My Application" />
       <TextField fullWidth label="Description" multiline rows={3} />
@@ -167,8 +170,12 @@ const SettingsContent = () => (
         <FormControlLabel control={<Checkbox defaultChecked />} label="Show advanced options" />
       </Box>
       <Box sx={{ display: 'flex', gap: 2 }}>
-        <Button variant="contained" startIcon={<Save />}>Save Changes</Button>
-        <Button variant="outlined" startIcon={<Cancel />}>Cancel</Button>
+        <Button variant="contained" startIcon={<Save />}>
+          Save Changes
+        </Button>
+        <Button variant="outlined" startIcon={<Cancel />}>
+          Cancel
+        </Button>
       </Box>
     </Box>
   </Box>
@@ -182,14 +189,16 @@ const ProfileContent = () => (
       </Avatar>
       <Box>
         <Typography variant="h5">John Doe</Typography>
-        <Typography variant="body2" color="text.secondary">Senior Developer</Typography>
+        <Typography variant="body2" color="text.secondary">
+          Senior Developer
+        </Typography>
         <Box sx={{ mt: 1, display: 'flex', gap: 1 }}>
           <Chip size="small" label="Admin" color="primary" />
           <Chip size="small" label="Verified" color="success" />
         </Box>
       </Box>
     </Box>
-    
+
     <List>
       <ListItem>
         <Email sx={{ mr: 2, color: 'text.secondary' }} />
@@ -204,7 +213,7 @@ const ProfileContent = () => (
         <ListItemText primary="San Francisco, CA" secondary="Current location" />
       </ListItem>
     </List>
-    
+
     <Button variant="contained" startIcon={<Edit />} sx={{ mt: 2 }}>
       Edit Profile
     </Button>
@@ -213,18 +222,38 @@ const ProfileContent = () => (
 
 const NotificationsContent = () => (
   <Box sx={{ p: 3 }}>
-    <Typography variant="h5" gutterBottom>Recent Notifications</Typography>
+    <Typography variant="h5" gutterBottom>
+      Recent Notifications
+    </Typography>
     <List>
       {[
-        { icon: <Info color="info" />, title: 'System Update', message: 'New features are available', time: '2 minutes ago' },
-        { icon: <CheckCircle color="success" />, title: 'Task Completed', message: 'Your report has been generated', time: '1 hour ago' },
-        { icon: <Warning color="warning" />, title: 'Storage Warning', message: '80% of storage is used', time: '3 hours ago' },
-        { icon: <Error color="error" />, title: 'Failed Login', message: 'Someone tried to access your account', time: '1 day ago' },
+        {
+          icon: <Info color="info" />,
+          title: 'System Update',
+          message: 'New features are available',
+          time: '2 minutes ago',
+        },
+        {
+          icon: <CheckCircle color="success" />,
+          title: 'Task Completed',
+          message: 'Your report has been generated',
+          time: '1 hour ago',
+        },
+        {
+          icon: <Warning color="warning" />,
+          title: 'Storage Warning',
+          message: '80% of storage is used',
+          time: '3 hours ago',
+        },
+        {
+          icon: <Error color="error" />,
+          title: 'Failed Login',
+          message: 'Someone tried to access your account',
+          time: '1 day ago',
+        },
       ].map((notification, i) => (
         <ListItem key={i} alignItems="flex-start">
-          <Box sx={{ mr: 2, mt: 0.5 }}>
-            {notification.icon}
-          </Box>
+          <Box sx={{ mr: 2, mt: 0.5 }}>{notification.icon}</Box>
           <ListItemText
             primary={notification.title}
             secondary={
@@ -245,21 +274,22 @@ const NotificationsContent = () => (
 );
 
 // Interactive wrapper component
-const TabsWrapper = ({ initialTab = 'dashboard', items, ...props }: { initialTab?: string; items: TabItem[]; [key: string]: unknown }) => {
+const TabsWrapper = ({
+  initialTab = 'dashboard',
+  items,
+  ...props
+}: {
+  initialTab?: string;
+  items: TabItem[];
+  [key: string]: unknown;
+}) => {
   const [activeTab, setActiveTab] = useState(initialTab);
-  
+
   const handleChange = (event: React.SyntheticEvent, tabId: string) => {
     setActiveTab(tabId);
   };
-  
-  return (
-    <Tabs
-      {...props}
-      value={activeTab}
-      onChange={handleChange}
-      items={items}
-    />
-  );
+
+  return <Tabs {...props} value={activeTab} onChange={handleChange} items={items} />;
 };
 
 const basicTabItems = [
@@ -372,28 +402,44 @@ export const WithBadges: Story = {
         id: 'home',
         label: 'Home',
         icon: <Home />,
-        content: <Box sx={{ p: 3 }}><Typography>Home content</Typography></Box>,
+        content: (
+          <Box sx={{ p: 3 }}>
+            <Typography>Home content</Typography>
+          </Box>
+        ),
       },
       {
         id: 'messages',
         label: 'Messages',
         icon: <Email />,
         badge: 12,
-        content: <Box sx={{ p: 3 }}><Typography>Messages content</Typography></Box>,
+        content: (
+          <Box sx={{ p: 3 }}>
+            <Typography>Messages content</Typography>
+          </Box>
+        ),
       },
       {
         id: 'notifications',
         label: 'Notifications',
         icon: <Notifications />,
         badge: 99,
-        content: <Box sx={{ p: 3 }}><Typography>Notifications content</Typography></Box>,
+        content: (
+          <Box sx={{ p: 3 }}>
+            <Typography>Notifications content</Typography>
+          </Box>
+        ),
       },
       {
         id: 'tasks',
         label: 'Tasks',
         icon: <Work />,
         badge: 5,
-        content: <Box sx={{ p: 3 }}><Typography>Tasks content</Typography></Box>,
+        content: (
+          <Box sx={{ p: 3 }}>
+            <Typography>Tasks content</Typography>
+          </Box>
+        ),
       },
     ];
     return (
@@ -406,12 +452,13 @@ export const WithBadges: Story = {
 
 const ClosableTabsComponent = () => {
   const [tabs, setTabs] = useState([
-      {
-        id: 'file1',
-        label: 'Component.tsx',
-        icon: <Code />,
-        closable: true,
-        content: <Box sx={{ p: 3, fontFamily: 'monospace' }}>
+    {
+      id: 'file1',
+      label: 'Component.tsx',
+      icon: <Code />,
+      closable: true,
+      content: (
+        <Box sx={{ p: 3, fontFamily: 'monospace' }}>
           <Typography variant="body2" component="pre">
             {`import React from 'react';
 
@@ -419,60 +466,65 @@ const Component = () => {
   return <div>Hello World</div>;
 };`}
           </Typography>
-        </Box>,
-      },
-      {
-        id: 'file2',
-        label: 'styles.css',
-        icon: <Palette />,
-        closable: true,
-        content: <Box sx={{ p: 3, fontFamily: 'monospace' }}>
+        </Box>
+      ),
+    },
+    {
+      id: 'file2',
+      label: 'styles.css',
+      icon: <Palette />,
+      closable: true,
+      content: (
+        <Box sx={{ p: 3, fontFamily: 'monospace' }}>
           <Typography variant="body2" component="pre">
             {`.container {
   display: flex;
   align-items: center;
 }`}
           </Typography>
-        </Box>,
-      },
-      {
-        id: 'file3',
-        label: 'README.md',
-        icon: <BugReport />,
-        closable: true,
-        content: <Box sx={{ p: 3 }}>
+        </Box>
+      ),
+    },
+    {
+      id: 'file3',
+      label: 'README.md',
+      icon: <BugReport />,
+      closable: true,
+      content: (
+        <Box sx={{ p: 3 }}>
           <Typography variant="h6"># Project Title</Typography>
           <Typography variant="body2" sx={{ mt: 2 }}>
             This is a sample README file for the project documentation.
           </Typography>
-        </Box>,
-      },
-    ]);
-    const [activeTab, setActiveTab] = useState('file1');
-    
-    const handleTabClose = (tabId: string) => {
-      const newTabs = tabs.filter(tab => tab.id !== tabId);
-      setTabs(newTabs);
-      if (activeTab === tabId && newTabs.length > 0) {
-        setActiveTab(newTabs[0].id);
-      }
-    };
-    
-    const handleChange = (event: React.SyntheticEvent, tabId: string) => {
-      setActiveTab(tabId);
-    };
-    
-    return (
-      <Paper elevation={2} sx={{ width: 700, minHeight: 400 }}>
-        <Tabs
-          variant="enclosed"
-          value={activeTab}
-          onChange={handleChange}
-          items={tabs}
-          onTabClose={handleTabClose}
-        />
-      </Paper>
-    );
+        </Box>
+      ),
+    },
+  ]);
+  const [activeTab, setActiveTab] = useState('file1');
+
+  const handleTabClose = (tabId: string) => {
+    const newTabs = tabs.filter((tab) => tab.id !== tabId);
+    setTabs(newTabs);
+    if (activeTab === tabId && newTabs.length > 0) {
+      setActiveTab(newTabs[0].id);
+    }
+  };
+
+  const handleChange = (event: React.SyntheticEvent, tabId: string) => {
+    setActiveTab(tabId);
+  };
+
+  return (
+    <Paper elevation={2} sx={{ width: 700, minHeight: 400 }}>
+      <Tabs
+        variant="enclosed"
+        value={activeTab}
+        onChange={handleChange}
+        items={tabs}
+        onTabClose={handleTabClose}
+      />
+    </Paper>
+  );
 };
 
 export const ClosableTabs: Story = {
@@ -554,25 +606,41 @@ export const ScrollableTabs: Story = {
         id: 'analytics',
         label: 'Analytics',
         icon: <BarChart />,
-        content: <Box sx={{ p: 3 }}><Typography>Analytics content</Typography></Box>,
+        content: (
+          <Box sx={{ p: 3 }}>
+            <Typography>Analytics content</Typography>
+          </Box>
+        ),
       },
       {
         id: 'reports',
         label: 'Reports',
         icon: <Timeline />,
-        content: <Box sx={{ p: 3 }}><Typography>Reports content</Typography></Box>,
+        content: (
+          <Box sx={{ p: 3 }}>
+            <Typography>Reports content</Typography>
+          </Box>
+        ),
       },
       {
         id: 'security',
         label: 'Security',
         icon: <Security />,
-        content: <Box sx={{ p: 3 }}><Typography>Security content</Typography></Box>,
+        content: (
+          <Box sx={{ p: 3 }}>
+            <Typography>Security content</Typography>
+          </Box>
+        ),
       },
       {
         id: 'logs',
         label: 'System Logs',
         icon: <Code />,
-        content: <Box sx={{ p: 3 }}><Typography>System logs content</Typography></Box>,
+        content: (
+          <Box sx={{ p: 3 }}>
+            <Typography>System logs content</Typography>
+          </Box>
+        ),
       },
     ];
     return (
@@ -626,7 +694,9 @@ export const AllVariantsComparison: Story = {
         { title: 'Enclosed', variant: 'enclosed' },
       ].map(({ title, variant }) => (
         <Box key={variant}>
-          <Typography variant="h6" gutterBottom>{title}</Typography>
+          <Typography variant="h6" gutterBottom>
+            {title}
+          </Typography>
           <Paper elevation={1} sx={{ minHeight: 300 }}>
             <TabsWrapper
               variant={variant}
@@ -656,7 +726,9 @@ export const AdminDashboard: Story = {
         badge: 1250,
         content: (
           <Box sx={{ p: 3 }}>
-            <Typography variant="h5" gutterBottom>User Management</Typography>
+            <Typography variant="h5" gutterBottom>
+              User Management
+            </Typography>
             <Typography>Manage user accounts, roles, and permissions.</Typography>
           </Box>
         ),
@@ -674,7 +746,9 @@ export const AdminDashboard: Story = {
         badge: 3,
         content: (
           <Box sx={{ p: 3 }}>
-            <Typography variant="h5" gutterBottom>Security Center</Typography>
+            <Typography variant="h5" gutterBottom>
+              Security Center
+            </Typography>
             <Typography>Monitor security events and configure security settings.</Typography>
           </Box>
         ),
@@ -685,13 +759,15 @@ export const AdminDashboard: Story = {
         icon: <Code />,
         content: (
           <Box sx={{ p: 3 }}>
-            <Typography variant="h5" gutterBottom>System Logs</Typography>
+            <Typography variant="h5" gutterBottom>
+              System Logs
+            </Typography>
             <Typography>View and analyze system activity logs.</Typography>
           </Box>
         ),
       },
     ];
-    
+
     return (
       <Box sx={{ width: 1000, minHeight: 600 }}>
         <TabsWrapper
@@ -704,4 +780,238 @@ export const AdminDashboard: Story = {
       </Box>
     );
   },
+};
+// Required story exports for validation
+export const AllVariants: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4, width: 900 }}>
+      {[
+        { title: 'Default', variant: 'default' },
+        { title: 'Pills', variant: 'pills' },
+        { title: 'Underline', variant: 'underline' },
+        { title: 'Enclosed', variant: 'enclosed' },
+      ].map(({ title, variant }) => (
+        <Box key={variant}>
+          <Typography variant="h6" gutterBottom>
+            {title}
+          </Typography>
+          <Paper elevation={1} sx={{ minHeight: 300 }}>
+            <TabsWrapper
+              variant={variant as 'default' | 'pills' | 'underline' | 'enclosed'}
+              items={basicTabItems.slice(0, 3)}
+              initialTab="dashboard"
+            />
+          </Paper>
+        </Box>
+      ))}
+    </Box>
+  ),
+};
+
+export const AllSizes: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4, width: 800 }}>
+      {[
+        { title: 'Small', size: 'sm' },
+        { title: 'Medium', size: 'md' },
+        { title: 'Large', size: 'lg' },
+      ].map(({ title, size }) => (
+        <Box key={size}>
+          <Typography variant="h6" gutterBottom>
+            {title}
+          </Typography>
+          <Paper elevation={1} sx={{ minHeight: 300, p: size === 'sm' ? 1 : 2 }}>
+            <TabsWrapper
+              variant="pills"
+              size={size as 'sm' | 'md' | 'lg'}
+              items={basicTabItems.slice(0, 3)}
+              initialTab="dashboard"
+            />
+          </Paper>
+        </Box>
+      ))}
+    </Box>
+  ),
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4, width: 800 }}>
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Normal State
+        </Typography>
+        <Paper elevation={1} sx={{ minHeight: 300, p: 2 }}>
+          <TabsWrapper variant="pills" items={basicTabItems.slice(0, 3)} initialTab="dashboard" />
+        </Paper>
+      </Box>
+
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Disabled Tabs
+        </Typography>
+        <Paper elevation={1} sx={{ minHeight: 300, p: 2 }}>
+          <TabsWrapper
+            variant="pills"
+            items={[
+              basicTabItems[0],
+              { ...basicTabItems[1], disabled: true },
+              { ...basicTabItems[2], disabled: true },
+            ]}
+            initialTab="dashboard"
+          />
+        </Paper>
+      </Box>
+
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Loading State
+        </Typography>
+        <Paper elevation={1} sx={{ minHeight: 300, p: 2 }}>
+          <TabsWrapper
+            variant="pills"
+            items={basicTabItems.slice(0, 3)}
+            initialTab="dashboard"
+            loading
+          />
+        </Paper>
+      </Box>
+
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          With Badges
+        </Typography>
+        <Paper elevation={1} sx={{ minHeight: 300, p: 2 }}>
+          <TabsWrapper
+            variant="pills"
+            items={[
+              basicTabItems[0],
+              { ...basicTabItems[1], badge: 5 },
+              { ...basicTabItems[2], badge: 99 },
+            ]}
+            initialTab="dashboard"
+          />
+        </Paper>
+      </Box>
+    </Box>
+  ),
+};
+
+export const InteractiveStates: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4, width: 800 }}>
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Hover & Focus States
+        </Typography>
+        <Typography variant="body2" color="text.secondary" gutterBottom>
+          Hover over tabs to see hover states, use Tab key to navigate and see focus states
+        </Typography>
+        <Paper elevation={1} sx={{ minHeight: 300, p: 2 }}>
+          <TabsWrapper variant="default" items={basicTabItems.slice(0, 4)} initialTab="dashboard" />
+        </Paper>
+      </Box>
+
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Active & Selected States
+        </Typography>
+        <Typography variant="body2" color="text.secondary" gutterBottom>
+          Click tabs to see active/selected states with different variants
+        </Typography>
+        <Paper elevation={1} sx={{ minHeight: 300, p: 2 }}>
+          <TabsWrapper
+            variant="underline"
+            items={basicTabItems.slice(0, 4)}
+            initialTab="settings"
+          />
+        </Paper>
+      </Box>
+
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Closable Tabs
+        </Typography>
+        <Typography variant="body2" color="text.secondary" gutterBottom>
+          Tabs with close buttons - click X to close tabs
+        </Typography>
+        <Paper elevation={1} sx={{ minHeight: 300 }}>
+          <ClosableTabsComponent />
+        </Paper>
+      </Box>
+    </Box>
+  ),
+};
+
+export const Responsive: Story = {
+  render: () => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Mobile (320px)
+        </Typography>
+        <Box sx={{ width: 320, border: '1px solid #ddd', borderRadius: 1 }}>
+          <TabsWrapper
+            variant="pills"
+            items={basicTabItems.slice(0, 3)}
+            initialTab="dashboard"
+            fullWidth
+          />
+        </Box>
+      </Box>
+
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Tablet (768px)
+        </Typography>
+        <Box sx={{ width: 768, border: '1px solid #ddd', borderRadius: 1 }}>
+          <TabsWrapper variant="underline" items={basicTabItems} initialTab="dashboard" centered />
+        </Box>
+      </Box>
+
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Desktop (1200px)
+        </Typography>
+        <Box sx={{ width: 1200, border: '1px solid #ddd', borderRadius: 1 }}>
+          <TabsWrapper
+            variant="default"
+            items={[
+              ...basicTabItems,
+              ...basicTabItems.map((item) => ({
+                ...item,
+                id: item.id + '_2',
+                label: item.label + ' 2',
+              })),
+            ]}
+            initialTab="dashboard"
+            scrollable
+            showDividers
+          />
+        </Box>
+      </Box>
+
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Vertical Layout (Responsive)
+        </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            width: 800,
+            minHeight: 400,
+            border: '1px solid #ddd',
+            borderRadius: 1,
+          }}
+        >
+          <TabsWrapper
+            variant="pills"
+            orientation="vertical"
+            items={basicTabItems.slice(0, 4)}
+            initialTab="dashboard"
+          />
+        </Box>
+      </Box>
+    </Box>
+  ),
 };

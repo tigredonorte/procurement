@@ -232,10 +232,10 @@ export const AllSizes: Story = {
       <LightboxWrapper items={[sampleImages[0]]} triggerText="Single Item" />
       <LightboxWrapper items={sampleImages.slice(0, 2)} triggerText="Two Items" />
       <LightboxWrapper items={sampleImages} triggerText="Multiple Items" />
-      <LightboxWrapper 
-        items={[...sampleImages, ...sampleImages, ...sampleImages]} 
+      <LightboxWrapper
+        items={[...sampleImages, ...sampleImages, ...sampleImages]}
         thumbnails={true}
-        triggerText="Large Gallery" 
+        triggerText="Large Gallery"
       />
     </Box>
   ),
@@ -247,18 +247,18 @@ export const AllStates: Story = {
       <Typography variant="h6">All States</Typography>
       <LightboxWrapper items={sampleImages} triggerText="Normal State" />
       <LightboxWrapper items={[]} triggerText="Empty State" />
-      <LightboxWrapper 
-        items={sampleImages} 
-        showControls={false} 
+      <LightboxWrapper
+        items={sampleImages}
+        showControls={false}
         showCaptions={false}
-        triggerText="Minimal State" 
+        triggerText="Minimal State"
       />
-      <LightboxWrapper 
-        items={sampleImages} 
+      <LightboxWrapper
+        items={sampleImages}
         thumbnails={true}
         autoplay={true}
         loop={true}
-        triggerText="Full Featured State" 
+        triggerText="Full Featured State"
       />
     </Box>
   ),
@@ -271,21 +271,17 @@ export const InteractiveStates: Story = {
       <Typography variant="body2" color="text.secondary">
         Open any lightbox to test navigation, zoom, and touch gestures
       </Typography>
-      <LightboxWrapper 
-        items={sampleImages} 
-        zoomable={true}
-        triggerText="Zoomable Images" 
-      />
-      <LightboxWrapper 
-        items={sampleImages} 
+      <LightboxWrapper items={sampleImages} zoomable={true} triggerText="Zoomable Images" />
+      <LightboxWrapper
+        items={sampleImages}
         showControls={true}
         loop={true}
-        triggerText="With Navigation" 
+        triggerText="With Navigation"
       />
-      <LightboxWrapper 
-        items={sampleImages} 
+      <LightboxWrapper
+        items={sampleImages}
         thumbnails={true}
-        triggerText="With Thumbnail Navigation" 
+        triggerText="With Thumbnail Navigation"
       />
     </Box>
   ),
@@ -303,14 +299,16 @@ export const Responsive: Story = {
   },
   render: () => (
     <Box sx={{ p: 2 }}>
-      <Typography variant="h6" gutterBottom>Responsive Lightbox</Typography>
+      <Typography variant="h6" gutterBottom>
+        Responsive Lightbox
+      </Typography>
       <Typography variant="body2" color="text.secondary" paragraph>
         Resize viewport or use viewport controls to test responsiveness
       </Typography>
-      <LightboxWrapper 
-        items={sampleImages} 
+      <LightboxWrapper
+        items={sampleImages}
         thumbnails={true}
-        triggerText="Open Responsive Lightbox" 
+        triggerText="Open Responsive Lightbox"
       />
     </Box>
   ),

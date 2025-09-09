@@ -138,10 +138,7 @@ const cardItems: CarouselItem[] = [
             $29/mo
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            • Unlimited projects
-            • Priority support
-            • Advanced analytics
-            • Custom integrations
+            • Unlimited projects • Priority support • Advanced analytics • Custom integrations
           </Typography>
         </CardContent>
       </Card>
@@ -159,10 +156,7 @@ const cardItems: CarouselItem[] = [
             $99/mo
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            • Everything in Premium
-            • Team collaboration
-            • API access
-            • White-label options
+            • Everything in Premium • Team collaboration • API access • White-label options
           </Typography>
         </CardContent>
       </Card>
@@ -180,10 +174,7 @@ const cardItems: CarouselItem[] = [
             Custom
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            • Custom solutions
-            • Dedicated support
-            • SLA guarantee
-            • On-premise deployment
+            • Custom solutions • Dedicated support • SLA guarantee • On-premise deployment
           </Typography>
         </CardContent>
       </Card>
@@ -253,15 +244,21 @@ export const Animations: Story = {
   render: () => (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
       <Box>
-        <Typography variant="h6" gutterBottom>Slide Animation</Typography>
+        <Typography variant="h6" gutterBottom>
+          Slide Animation
+        </Typography>
         <Carousel items={imageItems} animation="slide" height={250} />
       </Box>
       <Box>
-        <Typography variant="h6" gutterBottom>Fade Animation</Typography>
+        <Typography variant="h6" gutterBottom>
+          Fade Animation
+        </Typography>
         <Carousel items={imageItems} animation="fade" height={250} />
       </Box>
       <Box>
-        <Typography variant="h6" gutterBottom>Zoom Animation</Typography>
+        <Typography variant="h6" gutterBottom>
+          Zoom Animation
+        </Typography>
         <Carousel items={imageItems} animation="zoom" height={250} />
       </Box>
     </Box>
@@ -291,13 +288,7 @@ export const Colors: Story = {
           <Typography variant="h6" gutterBottom>
             Color: {color}
           </Typography>
-          <Carousel
-            items={contentItems}
-            color={color}
-            variant="gradient"
-            gradient
-            height={200}
-          />
+          <Carousel items={contentItems} color={color} variant="gradient" gradient height={200} />
         </Box>
       ))}
     </Box>
@@ -357,24 +348,24 @@ export const WithEffects: Story = {
 };
 
 const InteractiveComponent = () => {
-const [clickedItem, setClickedItem] = React.useState<string>('');
-    
-    return (
-      <Box>
-        <Carousel
-          items={imageItems}
-          onClick={(item, index) => {
-            setClickedItem(`Clicked: ${item.title} (index: ${index})`);
-          }}
-          height={400}
-        />
-        {clickedItem && (
-          <Typography variant="body2" sx={{ mt: 2, textAlign: 'center' }}>
-            {clickedItem}
-          </Typography>
-        )}
-      </Box>
-    );
+  const [clickedItem, setClickedItem] = React.useState<string>('');
+
+  return (
+    <Box>
+      <Carousel
+        items={imageItems}
+        onClick={(item, index) => {
+          setClickedItem(`Clicked: ${item.title} (index: ${index})`);
+        }}
+        height={400}
+      />
+      {clickedItem && (
+        <Typography variant="body2" sx={{ mt: 2, textAlign: 'center' }}>
+          {clickedItem}
+        </Typography>
+      )}
+    </Box>
+  );
 };
 
 export const Interactive: Story = {
@@ -420,9 +411,7 @@ export const CustomContent: Story = {
             <Typography variant="body2" color="text.secondary" paragraph>
               This has completely transformed how we work. The features are intuitive and powerful.
             </Typography>
-            <Typography variant="subtitle2">
-              - John Doe, CEO
-            </Typography>
+            <Typography variant="subtitle2">- John Doe, CEO</Typography>
           </Box>
         ),
       },
@@ -436,9 +425,7 @@ export const CustomContent: Story = {
             <Typography variant="body2" color="text.secondary" paragraph>
               The team is responsive and helpful. They go above and beyond to ensure success.
             </Typography>
-            <Typography variant="subtitle2">
-              - Jane Smith, CTO
-            </Typography>
+            <Typography variant="subtitle2">- Jane Smith, CTO</Typography>
           </Box>
         ),
       },
@@ -461,22 +448,24 @@ export const CustomContent: Story = {
 export const AllVariants: Story = {
   render: () => (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-      {(['default', 'glass', 'gradient', 'elevated', 'minimal', 'cards'] as const).map((variant) => (
-        <Box key={variant}>
-          <Typography variant="h6" gutterBottom>
-            Variant: {variant}
-          </Typography>
-          <Carousel
-            items={imageItems.slice(0, 3)}
-            variant={variant}
-            height={250}
-            showArrows={true}
-            showIndicators={true}
-            {...(variant === 'glass' && { glass: true, glow: true })}
-            {...(variant === 'gradient' && { gradient: true, color: 'primary' })}
-          />
-        </Box>
-      ))}
+      {(['default', 'glass', 'gradient', 'elevated', 'minimal', 'cards'] as const).map(
+        (variant) => (
+          <Box key={variant}>
+            <Typography variant="h6" gutterBottom>
+              Variant: {variant}
+            </Typography>
+            <Carousel
+              items={imageItems.slice(0, 3)}
+              variant={variant}
+              height={250}
+              showArrows={true}
+              showIndicators={true}
+              {...(variant === 'glass' && { glass: true, glow: true })}
+              {...(variant === 'gradient' && { gradient: true, color: 'primary' })}
+            />
+          </Box>
+        ),
+      )}
     </Box>
   ),
 };
@@ -489,8 +478,8 @@ export const AllSizes: Story = {
           <Typography variant="h6" gutterBottom>
             Size: {size.toUpperCase()}
           </Typography>
-          <Carousel 
-            items={imageItems.slice(0, 3)} 
+          <Carousel
+            items={imageItems.slice(0, 3)}
             size={size}
             showArrows={true}
             showIndicators={true}
@@ -526,11 +515,11 @@ export const AllStates: Story = {
         <Typography variant="h6" gutterBottom>
           AutoPlay State
         </Typography>
-        <Carousel 
-          items={imageItems.slice(0, 3)} 
-          autoPlay={true} 
+        <Carousel
+          items={imageItems.slice(0, 3)}
+          autoPlay={true}
           autoPlayInterval={2000}
-          height={250} 
+          height={250}
         />
       </Box>
     </Box>
@@ -540,7 +529,7 @@ export const AllStates: Story = {
 const InteractiveStatesComponent = () => {
   const [activeIndex, setActiveIndex] = React.useState(0);
   const [clickInfo, setClickInfo] = React.useState('');
-  
+
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
@@ -559,9 +548,7 @@ const InteractiveStatesComponent = () => {
         pauseOnHover={true}
       />
       <Box sx={{ mt: 2, display: 'flex', gap: 2, alignItems: 'center' }}>
-        <Typography variant="body2">
-          Current Index: {activeIndex}
-        </Typography>
+        <Typography variant="body2">Current Index: {activeIndex}</Typography>
         {clickInfo && (
           <Typography variant="body2" color="primary">
             {clickInfo}
@@ -613,8 +600,7 @@ export const Responsive: Story = {
         • Mobile (xs): Height 200px, no arrows, no thumbnails
         <br />
         • Tablet (sm): Height 300px, with arrows
-        <br />
-        • Desktop (md+): Height 400px+, with thumbnails
+        <br />• Desktop (md+): Height 400px+, with thumbnails
       </Typography>
     </Box>
   ),

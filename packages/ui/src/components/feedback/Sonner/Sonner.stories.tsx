@@ -4,7 +4,7 @@ import React from 'react';
 
 import { Toaster, toast } from './Sonner';
 
-const meta = {
+const meta: Meta<typeof Toaster> = {
   title: 'Feedback/Sonner',
   component: Toaster,
   parameters: {
@@ -48,7 +48,7 @@ const meta = {
       description: 'Show close button on toasts',
     },
   },
-} satisfies Meta<typeof Toaster>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -549,27 +549,28 @@ export const AllSizes: Story = {
     <>
       <Toaster />
       <Stack spacing={2}>
-        <Button 
-          variant="outlined" 
-          onClick={() => toast('Compact', { duration: 3000 })}
-        >
+        <Button variant="outlined" onClick={() => toast('Compact', { duration: 3000 })}>
           Default Size
         </Button>
-        <Button 
-          variant="outlined" 
-          onClick={() => toast('Toast with description', { 
-            description: 'This is additional information',
-            duration: 3000 
-          })}
+        <Button
+          variant="outlined"
+          onClick={() =>
+            toast('Toast with description', {
+              description: 'This is additional information',
+              duration: 3000,
+            })
+          }
         >
           With Description
         </Button>
-        <Button 
-          variant="outlined" 
-          onClick={() => toast('Toast with action', { 
-            action: { label: 'Undo', onClick: () => {} },
-            duration: 3000 
-          })}
+        <Button
+          variant="outlined"
+          onClick={() =>
+            toast('Toast with action', {
+              action: { label: 'Undo', onClick: () => {} },
+              duration: 3000,
+            })
+          }
         >
           With Action
         </Button>
@@ -586,8 +587,8 @@ export const AllStates: Story = {
         <Button variant="outlined" onClick={() => toast('Normal state toast')}>
           Normal
         </Button>
-        <Button 
-          variant="outlined" 
+        <Button
+          variant="outlined"
           onClick={() => {
             const id = toast.loading('Processing...');
             window.setTimeout(() => toast.success('Complete!', { id }), 2000);
@@ -595,8 +596,8 @@ export const AllStates: Story = {
         >
           Loading → Success
         </Button>
-        <Button 
-          variant="outlined" 
+        <Button
+          variant="outlined"
           onClick={() => {
             const id = toast.loading('Processing...');
             window.setTimeout(() => toast.error('Failed!', { id }), 2000);
@@ -604,10 +605,7 @@ export const AllStates: Story = {
         >
           Loading → Error
         </Button>
-        <Button 
-          variant="outlined" 
-          onClick={() => toast('Hoverable toast', { duration: 10000 })}
-        >
+        <Button variant="outlined" onClick={() => toast('Hoverable toast', { duration: 10000 })}>
           Hover to Pause
         </Button>
       </Stack>
@@ -620,39 +618,41 @@ export const InteractiveStates: Story = {
     <>
       <Toaster closeButton richColors />
       <Stack spacing={2}>
-        <Button 
-          variant="contained" 
-          onClick={() => toast('Click to dismiss', {
-            duration: Infinity,
-            onClick: (t) => toast.dismiss(t.id),
-          })}
+        <Button
+          variant="contained"
+          onClick={() =>
+            toast('Click to dismiss', {
+              duration: Infinity,
+              onClick: (t) => toast.dismiss(t.id),
+            })
+          }
         >
           Clickable Toast
         </Button>
-        <Button 
-          variant="contained" 
-          onClick={() => toast('Toast with action', {
-            action: {
-              label: 'Undo',
-              onClick: () => toast.success('Undone!'),
-            },
-          })}
+        <Button
+          variant="contained"
+          onClick={() =>
+            toast('Toast with action', {
+              action: {
+                label: 'Undo',
+                onClick: () => toast.success('Undone!'),
+              },
+            })
+          }
         >
           With Action Button
         </Button>
-        <Button 
-          variant="contained" 
-          onClick={() => toast('Dismissible toast', {
-            duration: 10000,
-          })}
+        <Button
+          variant="contained"
+          onClick={() =>
+            toast('Dismissible toast', {
+              duration: 10000,
+            })
+          }
         >
           With Close Button
         </Button>
-        <Button 
-          variant="outlined" 
-          color="error" 
-          onClick={() => toast.dismiss()}
-        >
+        <Button variant="outlined" color="error" onClick={() => toast.dismiss()}>
           Dismiss All
         </Button>
       </Stack>
@@ -672,16 +672,18 @@ export const Responsive: Story = {
         <Button variant="contained" onClick={() => toast('Mobile responsive toast')}>
           Show Toast (Mobile)
         </Button>
-        <Button 
-          variant="contained" 
-          onClick={() => toast.success('Success notification', {
-            description: 'This adapts to screen size',
-          })}
+        <Button
+          variant="contained"
+          onClick={() =>
+            toast.success('Success notification', {
+              description: 'This adapts to screen size',
+            })
+          }
         >
           With Description
         </Button>
-        <Button 
-          variant="contained" 
+        <Button
+          variant="contained"
           onClick={() => {
             toast('First toast');
             toast('Second toast');
