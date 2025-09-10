@@ -43,38 +43,143 @@ type Story = StoryObj<typeof Command>;
 
 const sampleItems: CommandItem[] = [
   // Navigation
-  { id: '1', label: 'Home', icon: <HomeIcon />, shortcut: '⌘H', category: 'Navigation', action: () => {/* Home action */}, description: 'Navigate to home page' },
-  { id: '2', label: 'Settings', icon: <SettingsIcon />, shortcut: '⌘,', category: 'Navigation', action: () => {/* Settings action */}, description: 'Open application settings' },
-  { id: '3', label: 'Profile', icon: <PersonIcon />, shortcut: '⌘P', category: 'Navigation', action: () => {/* Profile action */}, description: 'View user profile' },
-  
-  // Actions  
-  { id: '4', label: 'Search', icon: <SearchIcon />, shortcut: '⌘K', category: 'Actions', action: () => {/* Search action */}, description: 'Open search dialog' },
-  { id: '5', label: 'Add New Item', icon: <AddIcon />, shortcut: '⌘N', category: 'Actions', action: () => {/* Add action */}, description: 'Create a new item' },
-  { id: '6', label: 'Edit', icon: <EditIcon />, shortcut: '⌘E', category: 'Actions', action: () => {/* Edit action */}, description: 'Edit current selection' },
-  { id: '7', label: 'Delete', icon: <DeleteIcon />, shortcut: '⌘⌫', category: 'Actions', action: () => {/* Delete action */}, description: 'Delete current selection', keywords: ['remove', 'trash'] },
-  
+  {
+    id: '1',
+    label: 'Home',
+    icon: <HomeIcon />,
+    shortcut: '⌘H',
+    category: 'Navigation',
+    action: () => {
+      /* Home action */
+    },
+    description: 'Navigate to home page',
+  },
+  {
+    id: '2',
+    label: 'Settings',
+    icon: <SettingsIcon />,
+    shortcut: '⌘,',
+    category: 'Navigation',
+    action: () => {
+      /* Settings action */
+    },
+    description: 'Open application settings',
+  },
+  {
+    id: '3',
+    label: 'Profile',
+    icon: <PersonIcon />,
+    shortcut: '⌘P',
+    category: 'Navigation',
+    action: () => {
+      /* Profile action */
+    },
+    description: 'View user profile',
+  },
+
+  // Actions
+  {
+    id: '4',
+    label: 'Search',
+    icon: <SearchIcon />,
+    shortcut: '⌘K',
+    category: 'Actions',
+    action: () => {
+      /* Search action */
+    },
+    description: 'Open search dialog',
+  },
+  {
+    id: '5',
+    label: 'Add New Item',
+    icon: <AddIcon />,
+    shortcut: '⌘N',
+    category: 'Actions',
+    action: () => {
+      /* Add action */
+    },
+    description: 'Create a new item',
+  },
+  {
+    id: '6',
+    label: 'Edit',
+    icon: <EditIcon />,
+    shortcut: '⌘E',
+    category: 'Actions',
+    action: () => {
+      /* Edit action */
+    },
+    description: 'Edit current selection',
+  },
+  {
+    id: '7',
+    label: 'Delete',
+    icon: <DeleteIcon />,
+    shortcut: '⌘⌫',
+    category: 'Actions',
+    action: () => {
+      /* Delete action */
+    },
+    description: 'Delete current selection',
+    keywords: ['remove', 'trash'],
+  },
+
   // File Operations
-  { id: '8', label: 'Save', icon: <SaveIcon />, shortcut: '⌘S', category: 'File', action: () => {/* Save action */}, description: 'Save current document' },
-  { id: '9', label: 'Open File', icon: <FileOpenIcon />, shortcut: '⌘O', category: 'File', action: () => {/* Open action */}, description: 'Open existing file' },
-  { id: '10', label: 'New Folder', icon: <FolderIcon />, shortcut: '⇧⌘N', category: 'File', action: () => {/* Folder action */}, description: 'Create new folder' },
-  
+  {
+    id: '8',
+    label: 'Save',
+    icon: <SaveIcon />,
+    shortcut: '⌘S',
+    category: 'File',
+    action: () => {
+      /* Save action */
+    },
+    description: 'Save current document',
+  },
+  {
+    id: '9',
+    label: 'Open File',
+    icon: <FileOpenIcon />,
+    shortcut: '⌘O',
+    category: 'File',
+    action: () => {
+      /* Open action */
+    },
+    description: 'Open existing file',
+  },
+  {
+    id: '10',
+    label: 'New Folder',
+    icon: <FolderIcon />,
+    shortcut: '⇧⌘N',
+    category: 'File',
+    action: () => {
+      /* Folder action */
+    },
+    description: 'Create new folder',
+  },
+
   // Disabled item for testing
-  { id: '11', label: 'Disabled Action', icon: <EditIcon />, shortcut: '⌘D', category: 'Actions', disabled: true, description: 'This action is currently disabled' },
+  {
+    id: '11',
+    label: 'Disabled Action',
+    icon: <EditIcon />,
+    shortcut: '⌘D',
+    category: 'Actions',
+    disabled: true,
+    description: 'This action is currently disabled',
+  },
 ];
 
 const CommandWrapper: React.FC<CommandProps> = (props) => {
   const [open, setOpen] = useState(false);
-  
+
   return (
     <>
       <Button variant="contained" onClick={() => setOpen(true)}>
         Open Command Palette
       </Button>
-      <Command
-        {...props}
-        open={open}
-        onOpenChange={setOpen}
-      />
+      <Command {...props} open={open} onOpenChange={setOpen} />
     </>
   );
 };
@@ -147,29 +252,26 @@ export const Empty: Story = {
 };
 
 const SizesComponent = () => {
-const [openSize, setOpenSize] = useState<string | null>(null);
-    
-    return (
-      <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-        {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
-          <React.Fragment key={size}>
-            <Button
-              variant="outlined"
-              onClick={() => setOpenSize(size)}
-            >
-              Size: {size.toUpperCase()}
-            </Button>
-            <Command
-              open={openSize === size}
-              onOpenChange={(open) => !open && setOpenSize(null)}
-              items={sampleItems}
-              size={size}
-              placeholder={`Command palette (${size})`}
-            />
-          </React.Fragment>
-        ))}
-      </Box>
-    );
+  const [openSize, setOpenSize] = useState<string | null>(null);
+
+  return (
+    <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+      {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
+        <React.Fragment key={size}>
+          <Button variant="outlined" onClick={() => setOpenSize(size)}>
+            Size: {size.toUpperCase()}
+          </Button>
+          <Command
+            open={openSize === size}
+            onOpenChange={(open) => !open && setOpenSize(null)}
+            items={sampleItems}
+            size={size}
+            placeholder={`Command palette (${size})`}
+          />
+        </React.Fragment>
+      ))}
+    </Box>
+  );
 };
 
 export const Sizes: Story = {
@@ -177,32 +279,28 @@ export const Sizes: Story = {
 };
 
 const ColorsComponent = () => {
-const [openColor, setOpenColor] = useState<string | null>(null);
-    const colors = ['primary', 'secondary', 'success', 'error', 'warning', 'info'] as const;
-    
-    return (
-      <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-        {colors.map((color) => (
-          <React.Fragment key={color}>
-            <Button
-              variant="contained"
-              color={color}
-              onClick={() => setOpenColor(color)}
-            >
-              {color}
-            </Button>
-            <Command
-              open={openColor === color}
-              onOpenChange={(open) => !open && setOpenColor(null)}
-              items={sampleItems}
-              color={color}
-              variant="glass"
-              glow
-            />
-          </React.Fragment>
-        ))}
-      </Box>
-    );
+  const [openColor, setOpenColor] = useState<string | null>(null);
+  const colors = ['primary', 'secondary', 'success', 'error', 'warning', 'info'] as const;
+
+  return (
+    <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+      {colors.map((color) => (
+        <React.Fragment key={color}>
+          <Button variant="contained" color={color} onClick={() => setOpenColor(color)}>
+            {color}
+          </Button>
+          <Command
+            open={openColor === color}
+            onOpenChange={(open) => !open && setOpenColor(null)}
+            items={sampleItems}
+            color={color}
+            variant="glass"
+            glow
+          />
+        </React.Fragment>
+      ))}
+    </Box>
+  );
 };
 
 export const Colors: Story = {
@@ -228,11 +326,11 @@ export const CustomFilter: Story = {
 
 export const WithKeywords: Story = {
   render: (args) => {
-    const itemsWithKeywords: CommandItem[] = sampleItems.map(item => ({
+    const itemsWithKeywords: CommandItem[] = sampleItems.map((item) => ({
       ...item,
       keywords: item.category ? [item.category.toLowerCase(), 'command'] : ['command'],
     }));
-    
+
     return <CommandWrapper {...args} items={itemsWithKeywords} />;
   },
   args: {
@@ -241,40 +339,40 @@ export const WithKeywords: Story = {
 };
 
 const InteractiveComponent = () => {
-const [open, setOpen] = useState(false);
-    const [lastAction, setLastAction] = useState<string>('');
-    
-    const interactiveItems: CommandItem[] = sampleItems.map(item => ({
-      ...item,
-      action: () => {
-        setLastAction(`Executed: ${item.label}`);
-      }
-    }));
-    
-    return (
-      <Box sx={{ textAlign: 'center' }}>
-        <Button variant="contained" onClick={() => setOpen(true)}>
-          Open Interactive Command
-        </Button>
-        {lastAction && (
-          <Typography variant="body2" sx={{ mt: 2 }}>
-            Last action: {lastAction}
-          </Typography>
-        )}
-        <Command
-          open={open}
-          onOpenChange={setOpen}
-          items={interactiveItems}
-          onSelect={(item) => {
-            if (item.action) {
-              item.action();
-            }
-            setOpen(false);
-          }}
-        />
-      </Box>
-    );
-  };
+  const [open, setOpen] = useState(false);
+  const [lastAction, setLastAction] = useState<string>('');
+
+  const interactiveItems: CommandItem[] = sampleItems.map((item) => ({
+    ...item,
+    action: () => {
+      setLastAction(`Executed: ${item.label}`);
+    },
+  }));
+
+  return (
+    <Box sx={{ textAlign: 'center' }}>
+      <Button variant="contained" onClick={() => setOpen(true)}>
+        Open Interactive Command
+      </Button>
+      {lastAction && (
+        <Typography variant="body2" sx={{ mt: 2 }}>
+          Last action: {lastAction}
+        </Typography>
+      )}
+      <Command
+        open={open}
+        onOpenChange={setOpen}
+        items={interactiveItems}
+        onSelect={(item) => {
+          if (item.action) {
+            item.action();
+          }
+          setOpen(false);
+        }}
+      />
+    </Box>
+  );
+};
 
 export const Interactive: Story = {
   render: () => <InteractiveComponent />,
@@ -287,21 +385,22 @@ export const LongText: Story = {
       {
         id: '1',
         label: 'This is a very long command label that might overflow in narrow containers',
-        description: 'This is an extremely long description that tests how the component handles text overflow and wrapping in the description area. It should be truncated or wrapped appropriately.',
+        description:
+          'This is an extremely long description that tests how the component handles text overflow and wrapping in the description area. It should be truncated or wrapped appropriately.',
         shortcut: '⌘⇧⌥⌃L',
         category: 'Long Text Examples',
         icon: <EditIcon />,
       },
       {
-        id: '2', 
+        id: '2',
         label: 'Another super long command name that tests the component limits',
         description: 'Short desc',
         shortcut: '⌘L',
         category: 'Very Long Category Name That Tests Overflow',
         icon: <SaveIcon />,
-      }
+      },
     ];
-    
+
     return <CommandWrapper {...args} items={longTextItems} />;
   },
   args: {
@@ -319,9 +418,11 @@ export const ManyItems: Story = {
       shortcut: `⌘${i + 1}`,
       category: `Category ${Math.floor(i / 10) + 1}`,
       icon: <SearchIcon />,
-      action: () => {/* Command action */},
+      action: () => {
+        /* Command action */
+      },
     }));
-    
+
     return <CommandWrapper {...args} items={manyItems} />;
   },
   args: {
@@ -360,7 +461,7 @@ export const DisabledItems: Story = {
       ...item,
       disabled: index % 2 === 0, // Disable every other item
     }));
-    
+
     return <CommandWrapper {...args} items={disabledItems} />;
   },
   args: {
@@ -378,7 +479,8 @@ export const AccessibilityTest: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Test keyboard navigation: Use Tab, Arrow keys, Enter, and Escape. Component should be fully keyboard accessible.',
+        story:
+          'Test keyboard navigation: Use Tab, Arrow keys, Enter, and Escape. Component should be fully keyboard accessible.',
       },
     },
   },
@@ -403,20 +505,46 @@ export const HighContrast: Story = {
 };
 
 // Required exports for validation
+export const AllVariants: Story = {
+  render: function AllVariantsComponent() {
+    const [openVariant, setOpenVariant] = useState<string | null>(null);
+    const variants = ['default', 'glass', 'gradient', 'minimal', 'elevated'] as const;
+
+    return (
+      <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+        {variants.map((variant) => (
+          <React.Fragment key={variant}>
+            <Button variant="outlined" onClick={() => setOpenVariant(variant)}>
+              Variant: {variant}
+            </Button>
+            <Command
+              open={openVariant === variant}
+              onOpenChange={(open) => !open && setOpenVariant(null)}
+              items={sampleItems}
+              variant={variant}
+              placeholder={`Command palette (${variant})`}
+              showCategories={true}
+              showShortcuts={true}
+              glow={variant === 'glass'}
+            />
+          </React.Fragment>
+        ))}
+      </Box>
+    );
+  },
+};
+
 export const AllSizes = Sizes;
 export const AllStates: Story = {
   render: function AllStatesComponent() {
     const [openState, setOpenState] = useState<string | null>(null);
     const states = ['default', 'loading', 'empty', 'disabled'] as const;
-    
+
     return (
       <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
         {states.map((state) => (
           <React.Fragment key={state}>
-            <Button
-              variant="outlined"
-              onClick={() => setOpenState(state)}
-            >
+            <Button variant="outlined" onClick={() => setOpenState(state)}>
               State: {state}
             </Button>
             <Command
@@ -445,8 +573,8 @@ export const Responsive: Story = {
       viewports: {
         mobile: { name: 'Mobile', styles: { width: '375px', height: '667px' } },
         tablet: { name: 'Tablet', styles: { width: '768px', height: '1024px' } },
-        desktop: { name: 'Desktop', styles: { width: '1920px', height: '1080px' } }
-      }
+        desktop: { name: 'Desktop', styles: { width: '1920px', height: '1080px' } },
+      },
     },
   },
 };

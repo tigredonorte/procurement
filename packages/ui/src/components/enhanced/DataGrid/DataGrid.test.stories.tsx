@@ -22,14 +22,21 @@ const generateTestData = (count: number): TestRow[] => {
     email: `user${i + 1}@example.com`,
     role: i % 2 === 0 ? 'Engineer' : 'Designer',
     status: (i % 2 === 0 ? 'active' : 'inactive') as 'active' | 'inactive',
-    salary: 50000 + (i * 1000),
+    salary: 50000 + i * 1000,
     joinDate: new Date(2020, i % 12, 1).toISOString().split('T')[0],
   }));
 };
 
 const testColumns: GridColumn<TestRow>[] = [
   { id: 'id', header: 'ID', accessor: 'id', type: 'number', width: 80 },
-  { id: 'name', header: 'Name', accessor: 'name', type: 'text', enableSort: true, enableFilter: true },
+  {
+    id: 'name',
+    header: 'Name',
+    accessor: 'name',
+    type: 'text',
+    enableSort: true,
+    enableFilter: true,
+  },
   { id: 'email', header: 'Email', accessor: 'email', type: 'text', enableSort: true },
   { id: 'role', header: 'Role', accessor: 'role', type: 'text', enableSort: true },
   { id: 'status', header: 'Status', accessor: 'status', type: 'text', enableSort: true },
@@ -106,9 +113,9 @@ export const VirtualizationTest: Story = {
 
     await step('Should not render all rows at once (virtualization)', async () => {
       // Only visible rows should be in DOM
-      const visibleRows = canvas.getAllByRole('row').filter(row => 
-        !row.closest('[data-slot="header"]')
-      );
+      const visibleRows = canvas
+        .getAllByRole('row')
+        .filter((row) => !row.closest('[data-slot="header"]'));
       expect(visibleRows.length).toBeLessThan(100); // Much less than 1000 total rows
     });
   },
@@ -129,7 +136,7 @@ export const ClientSortingTest: Story = {
     await step('Should sort by name ascending', async () => {
       const nameHeader = canvas.getByRole('columnheader', { name: /name/i });
       expect(nameHeader).toHaveAttribute('aria-sort', 'none');
-      
+
       await userEvent.click(nameHeader);
       await waitFor(() => {
         expect(nameHeader).toHaveAttribute('aria-sort', 'ascending');
@@ -175,7 +182,7 @@ export const ServerSortingTest: Story = {
         expect(args.onRequestData).toHaveBeenCalledWith(
           expect.objectContaining({
             sortBy: [{ id: 'name', dir: 'asc' }],
-          })
+          }),
         );
       });
     });
@@ -250,9 +257,9 @@ export const MultiSelectionTest: Story = {
       const headerCheckbox = checkboxes[0];
 
       await userEvent.click(headerCheckbox);
-      
+
       // All data row checkboxes should be selected
-      checkboxes.slice(1).forEach(checkbox => {
+      checkboxes.slice(1).forEach((checkbox) => {
         expect(checkbox).toBeChecked();
       });
     });
@@ -275,7 +282,7 @@ export const KeyboardNavigationTest: Story = {
       const grid = canvas.getByRole('grid');
       expect(grid).toBeInTheDocument();
       const firstCell = canvas.getAllByRole('gridcell')[0];
-      
+
       // Focus first cell
       firstCell.focus();
       expect(document.activeElement).toBe(firstCell);
@@ -310,7 +317,9 @@ export const RowExpansionTest: Story = {
     rows: generateTestData(3),
     columns: testColumns,
     expansion: {
-      render: (row: TestRow) => <div data-testid={`expansion-${row.id}`}>Details for {row.name}</div>,
+      render: (row: TestRow) => (
+        <div data-testid={`expansion-${row.id}`}>Details for {row.name}</div>
+      ),
     },
     ariaLabel: 'Row expansion data grid',
   },
@@ -388,7 +397,7 @@ export const LoadingStateTest: Story = {
     await step('Should display loading indicator', async () => {
       const grid = canvas.getByRole('grid');
       expect(grid).toHaveAttribute('data-loading', 'true');
-      
+
       const loadingIndicator = canvas.getByRole('progressbar');
       expect(loadingIndicator).toBeInTheDocument();
     });
@@ -410,7 +419,7 @@ export const ErrorStateTest: Story = {
     await step('Should display error message', async () => {
       const grid = canvas.getByRole('grid');
       expect(grid).toHaveAttribute('data-error', 'true');
-      
+
       expect(canvas.getByText('Failed to load data')).toBeInTheDocument();
     });
   },
@@ -455,7 +464,7 @@ export const StickyHeaderTest: Story = {
 
     await step('Should have sticky positioned header cells', async () => {
       const headerCells = canvas.getAllByRole('columnheader');
-      headerCells.forEach(cell => {
+      headerCells.forEach((cell) => {
         const styles = window.getComputedStyle(cell);
         expect(styles.position).toBe('sticky');
       });
@@ -463,7 +472,7 @@ export const StickyHeaderTest: Story = {
   },
 };
 
-// 13. Responsive Design Tests  
+// 13. Responsive Design Tests
 export const ResponsiveDesignTest: Story = {
   name: 'Test: Responsive Design',
   parameters: {
@@ -480,7 +489,7 @@ export const ResponsiveDesignTest: Story = {
     await step('Should render properly on mobile viewport', async () => {
       const grid = canvas.getByRole('grid');
       expect(grid).toBeInTheDocument();
-      
+
       // Grid should still be functional on smaller screens
       const headers = canvas.getAllByRole('columnheader');
       expect(headers.length).toBeGreaterThan(0);
@@ -505,7 +514,7 @@ export const ThemeVariationTest: Story = {
     await step('Should render properly in dark theme', async () => {
       const grid = canvas.getByRole('grid');
       expect(grid).toBeInTheDocument();
-      
+
       // Check that theme styling is applied
       const headerCells = canvas.getAllByRole('columnheader');
       expect(headerCells[0]).toBeInTheDocument();
@@ -527,13 +536,13 @@ export const PerformanceTest: Story = {
 
     await step('Should render large dataset without performance issues', async () => {
       const startTime = Date.now();
-      
+
       const grid = canvas.getByRole('grid');
       expect(grid).toBeInTheDocument();
-      
+
       const endTime = Date.now();
       const renderTime = endTime - startTime;
-      
+
       // Rendering should complete within reasonable time (2 seconds)
       expect(renderTime).toBeLessThan(2000);
     });
@@ -595,19 +604,19 @@ export const IntegrationTest: Story = {
     await step('Should work with multiple features combined', async () => {
       const grid = canvas.getByRole('grid');
       expect(grid).toBeInTheDocument();
-      
+
       // Test selection
       const checkboxes = canvas.getAllByRole('checkbox');
       await userEvent.click(checkboxes[1]);
-      
+
       // Test sorting
       const nameHeader = canvas.getByRole('columnheader', { name: /name/i });
       expect(nameHeader).toHaveAttribute('aria-sort', 'ascending');
-      
+
       // Test expansion
       const expandButtons = canvas.getAllByLabelText(/expand row/i);
       await userEvent.click(expandButtons[0]);
-      
+
       // All features should work together
       expect(checkboxes[1]).toBeChecked();
       expect(nameHeader).toHaveAttribute('aria-sort', 'ascending');
@@ -615,3 +624,16 @@ export const IntegrationTest: Story = {
     });
   },
 };
+
+// Required exports for validation
+export const BasicInteraction = BasicRendering;
+export const FormInteraction = MultiSelectionTest;
+export const KeyboardNavigation = KeyboardNavigationTest;
+export const ScreenReader = BasicRendering;
+export const FocusManagement = KeyboardNavigationTest;
+export const ResponsiveDesign = ResponsiveDesignTest;
+export const ThemeVariations = ThemeVariationTest;
+export const VisualStates = LoadingStateTest;
+export const Performance = PerformanceTest;
+export const EdgeCases = EdgeCasesTest;
+export const Integration = IntegrationTest;

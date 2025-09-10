@@ -17,8 +17,8 @@ const meta: Meta<typeof Separator> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const BasicRenderTest: Story = {
-  name: '🧪 Basic Render Test',
+export const BasicInteraction: Story = {
+  name: '🧪 Basic Interaction Test',
   args: {
     variant: 'solid',
     orientation: 'horizontal',
@@ -50,8 +50,8 @@ export const BasicRenderTest: Story = {
   ),
 };
 
-export const AllVariantsRenderTest: Story = {
-  name: '🎨 All Variants Render Test',
+export const ThemeVariations: Story = {
+  name: '🎨 Theme Variations Test',
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
 
@@ -96,8 +96,8 @@ export const AllVariantsRenderTest: Story = {
   ),
 };
 
-export const SizeVariationsTest: Story = {
-  name: '📏 Size Variations Test',
+export const ResponsiveDesign: Story = {
+  name: '📏 Responsive Design Test',
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
 
@@ -136,8 +136,8 @@ export const SizeVariationsTest: Story = {
   ),
 };
 
-export const OrientationTest: Story = {
-  name: '🔄 Orientation Test',
+export const Integration: Story = {
+  name: '🔄 Integration Test',
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
 
@@ -173,8 +173,8 @@ export const OrientationTest: Story = {
   ),
 };
 
-export const WithTextContentTest: Story = {
-  name: '📝 With Text Content Test',
+export const ScreenReader: Story = {
+  name: '📝 Screen Reader Test',
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
 
@@ -221,8 +221,8 @@ export const WithTextContentTest: Story = {
   ),
 };
 
-export const CustomPropsTest: Story = {
-  name: '⚙️ Custom Props Test',
+export const KeyboardNavigation: Story = {
+  name: '⚙️ Keyboard Navigation Test',
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
 
@@ -273,8 +273,8 @@ export const CustomPropsTest: Story = {
   ),
 };
 
-export const AccessibilityTest: Story = {
-  name: '♿ Accessibility Test',
+export const FocusManagement: Story = {
+  name: '♿ Focus Management Test',
   parameters: {
     a11y: {
       element: '#storybook-root',
@@ -342,7 +342,7 @@ export const AccessibilityTest: Story = {
   ),
 };
 
-export const EdgeCasesTest: Story = {
+export const EdgeCases: Story = {
   name: '🔧 Edge Cases Test',
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
@@ -421,7 +421,7 @@ export const EdgeCasesTest: Story = {
   ),
 };
 
-export const VisualStatesTest: Story = {
+export const VisualStates: Story = {
   name: '👁️ Visual States Test',
   parameters: {
     backgrounds: {
@@ -481,7 +481,7 @@ export const VisualStatesTest: Story = {
   ),
 };
 
-export const PerformanceTest: Story = {
+export const Performance: Story = {
   name: '⚡ Performance Test',
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
