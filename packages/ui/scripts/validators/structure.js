@@ -6,7 +6,10 @@ export function assertFolderStructure(componentDirAbs, componentName) {
   const required = [
     `${componentName}.tsx`,
     `${componentName}.stories.tsx`,
+    `${componentName}.test.stories.tsx`,
     `${componentName}.types.ts`,
+    `tests.md`,
+    `track.md`,
     'index.ts', // or index.tsx
   ];
 
