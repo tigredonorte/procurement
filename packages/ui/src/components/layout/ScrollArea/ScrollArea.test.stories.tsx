@@ -30,7 +30,7 @@ const generateContent = (lines: number) => (
 );
 
 // Test 1: Basic Interaction Test
-export const BasicInteractionTest: Story = {
+export const BasicInteraction: Story = {
   args: {
     width: 400,
     height: 300,
@@ -83,7 +83,7 @@ export const BasicInteractionTest: Story = {
 };
 
 // Test 2: Form Interaction Test
-export const FormInteractionTest: Story = {
+export const FormInteraction: Story = {
   args: {
     width: 400,
     height: 300,
@@ -139,7 +139,7 @@ export const FormInteractionTest: Story = {
 };
 
 // Test 3: Keyboard Navigation Test
-export const KeyboardNavigationTest: Story = {
+export const KeyboardNavigation: Story = {
   args: {
     width: 400,
     height: 300,
@@ -193,7 +193,7 @@ export const KeyboardNavigationTest: Story = {
 };
 
 // Test 4: Screen Reader Test
-export const ScreenReaderTest: Story = {
+export const ScreenReader: Story = {
   args: {
     width: 400,
     height: 300,
@@ -228,7 +228,7 @@ export const ScreenReaderTest: Story = {
 };
 
 // Test 5: Focus Management Test
-export const FocusManagementTest: Story = {
+export const FocusManagement: Story = {
   args: {
     width: 400,
     height: 300,
@@ -273,7 +273,7 @@ export const FocusManagementTest: Story = {
 };
 
 // Test 6: Responsive Design Test
-export const ResponsiveDesignTest: Story = {
+export const ResponsiveDesign: Story = {
   args: {
     width: '100%',
     maxWidth: 600,
@@ -308,7 +308,7 @@ export const ResponsiveDesignTest: Story = {
 };
 
 // Test 7: Theme Variations Test
-export const ThemeVariationsTest: Story = {
+export const ThemeVariations: Story = {
   args: {
     width: 400,
     height: 200,
@@ -349,7 +349,7 @@ export const ThemeVariationsTest: Story = {
 };
 
 // Test 8: Visual States Test
-export const VisualStatesTest: Story = {
+export const VisualStates: Story = {
   args: {
     width: 400,
     height: 200,
@@ -394,7 +394,7 @@ export const VisualStatesTest: Story = {
 };
 
 // Test 9: Performance Test
-export const PerformanceTest: Story = {
+export const Performance: Story = {
   args: {
     width: 400,
     height: 300,
@@ -448,7 +448,7 @@ export const PerformanceTest: Story = {
 };
 
 // Test 10: Edge Cases Test
-export const EdgeCasesTest: Story = {
+export const EdgeCases: Story = {
   args: {
     width: 400,
     height: 300,
@@ -503,7 +503,7 @@ export const EdgeCasesTest: Story = {
 };
 
 // Test 11: Integration Test
-export const IntegrationTest: Story = {
+export const Integration: Story = {
   args: {
     width: 600,
     height: 400,
@@ -511,7 +511,7 @@ export const IntegrationTest: Story = {
     variant: 'overlay',
     onScroll: fn(),
   },
-  render: function IntegrationTestRender(args) {
+  render: function IntegrationRender(args) {
     const [scrollPosition, setScrollPosition] = React.useState(0);
 
     return (

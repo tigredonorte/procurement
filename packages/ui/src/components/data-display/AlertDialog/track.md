@@ -123,3 +123,17 @@ A customizable alert dialog component for confirmations, warnings, and notificat
 - AllStates ✓
 - InteractiveStates ✓
 - Responsive ✓
+
+## Missing things
+
+### Documentation
+
+- Missing required AlertDialog.md documentation file as per component guidelines
+
+### Tests
+
+- All tests are properly implemented with real assertions
+
+### Implementation
+
+- Implementation is correct and follows design guidelines
