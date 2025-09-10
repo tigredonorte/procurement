@@ -1,0 +1,39 @@
+{
+  "name": "@procurement/ai-script-checks",
+  "version": "0.1.0",
+  "description": "AI-powered script validation and component checking tools",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint src/index.ts",
+    "test": "jest",
+    "check:component": "node dist/check-component.js",
+    "validate:all": "node dist/validate-all.js"
+  },
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "glob": "^8.0.3",
+    "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.0.0",
+    "@types/jest": "^29.5.0",
+    "@types/node": "^20.0.0",
+    "@types/yargs": "^17.0.24",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.45.0",
+    "jest": "^29.5.0",
+    "ts-jest": "^29.1.0",
+    "typescript": "^5.1.6"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
