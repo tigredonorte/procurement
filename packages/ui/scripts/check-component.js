@@ -65,10 +65,17 @@ function defineChecks(category, component, componentDir, storybookUrl) {
     const PKG_UI = process.cwd();
 
     return [
-        { name: 'docs', description: "Docs catalog check", func: () => assertComponentListedInDocs(component) },
-        { name: 'tasks', description: "components.tasks.md entry check", func: () => assertTasksEntry(component, /*expectFreshIfWorking*/ true) },
         { name: 'scope', description: "Change-scope guard", func: () => assertAllowedChangeScope() },
-        { name: 'storybook-ping', description: "Storybook reachability", func: () => pingStorybook(storybookUrl) },
+        { name: 'structure', description: "Folder structure", func: () => assertFolderStructure(componentDir, component) },
+        { name: 'export', description: "Barrel export", func: () => assertFolderBarrelExport(componentDir, component) },
+        { name: 'tokens', description: "Design tokens usage", func: () => assertDesignTokensUsage(componentDir) },
+        { name: 'tasks', description: "components.tasks.md entry check", func: () => assertTasksEntry(component, /*expectFreshIfWorking*/ true) },
+        { name: 'docs', description: "Docs catalog check", func: () => assertComponentListedInDocs(component) },
+        { name: 'track', description: "track.md validation", func: () => {
+            const track = loadTrack(componentDir);
+            assertTrackFreshness(track.current);
+            checkStoriesDeclaredExist(componentDir, track.stories);
+        }},
         { name: 'tsc', description: "TypeScript check (scoped)", func: () => {
             if (!fileExists(componentDir)) {
                 console.error(`Component directory not found: ${componentDir}`);
@@ -108,17 +115,10 @@ function defineChecks(category, component, componentDir, storybookUrl) {
             run(`npx tsup "${entry}" --config tsup.config.ts`);
         }},
         { name: 'lint-verify', description: "ESLint verify (scoped)", func: () => run(`npx eslint "src/components/${category}/${component}/**/*.{ts,tsx}" --max-warnings 0`) },
-        { name: 'structure', description: "Folder structure", func: () => assertFolderStructure(componentDir, component) },
-        { name: 'export', description: "Barrel export", func: () => assertFolderBarrelExport(componentDir, component) },
+        { name: 'storybook-ping', description: "Storybook reachability", func: () => pingStorybook(storybookUrl) },
         { name: 'stories-coverage', description: "Stories coverage", func: () => assertStoriesCoverage(componentDir, category, component) },
-        { name: 'tokens', description: "Design tokens usage", func: () => assertDesignTokensUsage(componentDir) },
         { name: 'responsive', description: "Responsive story present", func: () => assertResponsiveStories(componentDir) },
         { name: 'a11y', description: "Accessibility coverage", func: () => assertA11yCoverage(componentDir) },
-        { name: 'track', description: "track.md validation", func: () => {
-            const track = loadTrack(componentDir);
-            assertTrackFreshness(track.current);
-            checkStoriesDeclaredExist(componentDir, track.stories);
-        }},
         // { name: 'storybook-tests', description: "Storybook tests", func: () => runStorybookTestsFailFast(storybookUrl, `component:${component}`) },
         { name: 'bypass', description: "Test-bypass pattern scan", func: () => scanForBypassPatterns() },
     ];

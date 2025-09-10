@@ -3,6 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import { exec } from 'child_process';
 import { promisify } from 'util';
+import { pingStorybook } from './guards/storybook.js';
 
 const execAsync = promisify(exec);
 
@@ -411,11 +412,17 @@ function generateStatusReport(results) {
   return content;
 }
 
+async function preScriptAsserts() {
+  const storybookUrl = 'http://192.168.166.133:6008';
+  await pingStorybook(storybookUrl)
+}
+
 // Run checks in parallel with controlled concurrency
 async function runChecksInParallel(components, maxConcurrency = 8) {
   const results = [];
   let completedCount = 0;
   
+  await preScriptAsserts();
   console.log(`Running checks with max concurrency: ${maxConcurrency}`);
   
   for (let i = 0; i < components.length; i += maxConcurrency) {
