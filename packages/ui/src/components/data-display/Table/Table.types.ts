@@ -9,15 +9,25 @@ export interface SortConfig {
   direction: 'asc' | 'desc';
 }
 
+export interface FilterConfig {
+  [key: string]: {
+    value: unknown;
+    operator?: 'equals' | 'contains' | 'startsWith' | 'endsWith' | 'gt' | 'lt' | 'gte' | 'lte';
+  };
+}
+
 export interface ColumnConfig {
   key: string;
   label: string;
   sortable?: boolean;
+  filterable?: boolean;
   width?: number | string;
   minWidth?: number;
   priority?: number; // 1 = highest priority, higher numbers = lower priority
   align?: 'left' | 'center' | 'right';
   render?: (value: unknown, rowData: Record<string, unknown>) => React.ReactNode;
+  filterType?: 'text' | 'number' | 'select' | 'date' | 'boolean';
+  filterOptions?: { label: string; value: unknown }[];
 }
 
 export interface VirtualScrollConfig {
@@ -136,6 +146,21 @@ export interface TableProps extends Omit<MuiTableProps, 'variant'> {
   onSortChange?: (key: string, direction: 'asc' | 'desc') => void;
   
   /**
+   * Whether columns are filterable
+   */
+  filterable?: boolean;
+  
+  /**
+   * Current filter configuration
+   */
+  filterConfig?: FilterConfig;
+  
+  /**
+   * Callback when filter changes
+   */
+  onFilterChange?: (filterConfig: FilterConfig) => void;
+  
+  /**
    * Column configuration for advanced features
    */
   columns?: ColumnConfig[];
@@ -250,6 +275,7 @@ export type TableVariant = 'default' | 'striped' | 'glass' | 'minimal' | 'gradie
 // Component prop interfaces for internal use
 export interface TableHeaderProps {
   columns: ColumnConfig[];
+  data: Record<string, unknown>[];
   sortable?: boolean;
   sortConfig?: SortConfig;
   onSortChange?: (key: string, direction: 'asc' | 'desc') => void;

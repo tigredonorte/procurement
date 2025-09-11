@@ -551,6 +551,9 @@ export const AnimatedIcon: FC<AnimatedIconProps> = ({
   style,
   'aria-label': ariaLabel,
   onClick,
+  tabIndex,
+  onFocus,
+  onBlur,
 }) => {
   const config = sizeConfigs[size];
 
@@ -577,6 +580,9 @@ export const AnimatedIcon: FC<AnimatedIconProps> = ({
       role="img"
       aria-label={ariaLabel || `Animated ${variant} icon`}
       onClick={onClick}
+      tabIndex={tabIndex}
+      onFocus={onFocus}
+      onBlur={onBlur}
     >
       {children}
     </AnimationContainer>

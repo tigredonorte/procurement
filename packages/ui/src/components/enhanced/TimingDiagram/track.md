@@ -88,3 +88,28 @@ omega-26
 - Final validation run to confirm all checks pass
 - Component ready for production use
 - Network timing visualization fully functional with comprehensive test coverage
+
+## Missing things
+
+### Tests Status: **OK** ✅
+Tests are comprehensive and properly verify:
+- Actual timing value calculations and percentages
+- Segment width proportions match data ratios
+- Waterfall offset positioning (cumulative)
+- Timing label formatting (ms vs seconds)
+- Edge cases with zero/missing values
+- All three layout variants (waterfall, stacked, horizontal)
+
+### Implementation Status: **OK** ✅
+Implementation is complete with:
+- Proper calculation functions (calculatePercentages, formatTime)
+- Three distinct layout variants
+- Animations and transitions
+- Tooltips and accessibility
+- Legend display
+- Responsive design
+
+### Minor Improvements (non-critical):
+1. **Animation timing validation**: Tests verify animated prop but don't check actual animation duration/speed
+2. **Color testing approach**: Tests convert hex colors to RGB for validation instead of direct hex comparison
+3. **Shimmer effect timing**: No test verification of the 2s shimmer animation cycle

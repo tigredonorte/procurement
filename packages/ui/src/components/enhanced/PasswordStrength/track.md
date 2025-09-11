@@ -94,3 +94,39 @@ None - component builds successfully with TypeScript.
 - Complete remaining validation steps
 - Address any track.md story requirements
 - Finalize component for production use
+
+## Missing things
+
+### Test Coverage Issues
+
+1. **Strength Calculation Tests**: Tests verify that strength values change (e.g., `expect(strengthValue).toBeLessThan(40)` for weak passwords), but don't verify the actual calculation algorithm correctness. They should test specific expected strength values for known passwords.
+
+2. **Requirements Validation**: Tests check for presence of CheckIcon/CloseIcon but don't verify each specific requirement (uppercase, lowercase, numbers, special chars) is correctly evaluated.
+
+3. **Variant-Specific Behavior**: 
+   - Circular variant: No tests for the actual circular progress rendering or percentage display
+   - Steps variant: No tests verifying correct number of active/completed steps based on strength
+   - Tests only check that variants can be switched, not their visual behavior
+
+4. **Custom Requirements**: No tests for custom requirement configurations (e.g., different minLength, disabled requirements)
+
+5. **Suggestions Feature**: `showSuggestions` prop exists but tests don't verify suggestion content or display logic
+
+6. **Animation Testing**: `animated` prop is unused in implementation (line 223 has eslint-disable comment) and not tested
+
+7. **Edge Cases Incomplete**:
+   - Unicode password test doesn't verify how non-ASCII characters affect strength calculation
+   - No tests for passwords with spaces, quotes, or other special edge cases
+   - No tests for extremely long passwords (>100 chars)
+
+8. **Color/Theme Testing**: Tests don't verify that colors change appropriately with strength levels (error→warning→info→success)
+
+9. **Accessibility**: Screen reader test only checks element existence, doesn't verify ARIA labels or announcements
+
+10. **Performance**: Performance test only types rapidly but doesn't measure or assert on performance metrics
+
+### Implementation Issues
+
+1. **Unused Prop**: `animated` prop is accepted but never used in the component (ESLint disabled on line 223)
+
+2. **Missing ARIA Labels**: Progress bars and strength indicators lack proper ARIA labels for accessibility

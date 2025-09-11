@@ -4,6 +4,12 @@
 
 The Slider component allows users to select values from a range by dragging a handle along a track. It supports single and multi-value selection, step intervals, and comprehensive accessibility features.
 
+## Missing things
+
+1. **Test Export Naming Convention Issue**: All test story exports in `Slider.test.stories.tsx` are missing the "Test" suffix. Current exports: `BasicInteraction`, `FormInteraction`, `KeyboardNavigation`, etc. Should be: `BasicInteractionTest`, `FormInteractionTest`, `KeyboardNavigationTest`, etc.
+
+2. **Test Naming Convention**: Test story names use emojis and "Test" in the name property (e.g., '🧪 Basic Interaction Test') but the export names don't follow the convention of having "Test" suffix.
+
 ## Component Parameters
 
 - `value`: Current slider value(s)

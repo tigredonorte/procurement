@@ -19,24 +19,7 @@ import {
   CheckCircle as SuccessIcon,
 } from '@mui/icons-material';
 
-// Types
-export interface PasswordRequirements {
-  minLength?: number;
-  uppercase?: boolean;
-  lowercase?: boolean;
-  numbers?: boolean;
-  special?: boolean;
-}
-
-export interface PasswordStrengthProps {
-  value: string;
-  showRequirements?: boolean;
-  requirements?: PasswordRequirements;
-  showStrengthLabel?: boolean;
-  showSuggestions?: boolean;
-  variant?: 'linear' | 'circular' | 'steps';
-  animated?: boolean;
-}
+import { PasswordRequirements, PasswordStrengthProps } from './PasswordStrength.types';
 
 // Default requirements
 const defaultRequirements: PasswordRequirements = {
@@ -69,7 +52,9 @@ const slideInAnimation = keyframes`
 `;
 
 // Styled components
-const StrengthContainer = styled(Box)(({ theme }) => ({
+const StrengthContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'animated',
+})<{ animated?: boolean }>(({ theme, animated }) => ({
   width: '100%',
   padding: theme.spacing(2),
   background: `linear-gradient(135deg, ${alpha(theme.palette.background.paper, 0.8)} 0%, ${alpha(theme.palette.background.paper, 0.6)} 100%)`,
@@ -77,9 +62,12 @@ const StrengthContainer = styled(Box)(({ theme }) => ({
   WebkitBackdropFilter: 'blur(10px)',
   border: `1px solid ${alpha(theme.palette.divider, 0.18)}`,
   borderRadius: theme.shape.borderRadius * 2,
+  transition: animated ? 'all 0.3s ease' : 'none',
 }));
 
-const StrengthBar = styled(LinearProgress)<{ strength: number }>(({ theme, strength }) => {
+const StrengthBar = styled(LinearProgress, {
+  shouldForwardProp: (prop) => prop !== 'strength' && prop !== 'animated',
+})<{ strength: number; animated?: boolean }>(({ theme, strength, animated }) => {
   const getColor = () => {
     if (strength <= 20) return theme.palette.error.main;
     if (strength <= 40) return theme.palette.warning.main;
@@ -100,13 +88,15 @@ const StrengthBar = styled(LinearProgress)<{ strength: number }>(({ theme, stren
     '& .MuiLinearProgress-bar': {
       borderRadius: 4,
       background: getGradient(),
-      transition: 'all 0.3s ease',
+      transition: animated ? 'all 0.3s ease' : 'none',
       boxShadow: `0 2px 8px ${alpha(getColor(), 0.3)}`,
     },
   };
 });
 
-const RequirementItem = styled(Box)<{ met: boolean }>(({ theme, met }) => ({
+const RequirementItem = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'met' && prop !== 'animated',
+})<{ met: boolean; animated?: boolean }>(({ theme, met, animated }) => ({
   display: 'flex',
   alignItems: 'center',
   gap: theme.spacing(1),
@@ -115,15 +105,17 @@ const RequirementItem = styled(Box)<{ met: boolean }>(({ theme, met }) => ({
   background: met
     ? alpha(theme.palette.success.main, 0.08)
     : alpha(theme.palette.action.disabled, 0.04),
-  transition: 'all 0.3s ease',
-  animation: `${slideInAnimation} 0.3s ease`,
+  transition: animated ? 'all 0.3s ease' : 'none',
+  animation: animated ? `${slideInAnimation} 0.3s ease` : 'none',
   '& svg': {
     fontSize: '1rem',
     color: met ? theme.palette.success.main : theme.palette.text.disabled,
   },
 }));
 
-const StrengthLabel = styled(Chip)<{ strength: number }>(({ theme, strength }) => {
+const StrengthLabel = styled(Chip, {
+  shouldForwardProp: (prop) => prop !== 'strength' && prop !== 'animated',
+})<{ strength: number; animated?: boolean }>(({ theme, strength, animated }) => {
   const getColor = () => {
     if (strength <= 20) return theme.palette.error;
     if (strength <= 40) return theme.palette.warning;
@@ -139,7 +131,7 @@ const StrengthLabel = styled(Chip)<{ strength: number }>(({ theme, strength }) =
     color: palette.main,
     border: `1px solid ${alpha(palette.main, 0.3)}`,
     fontWeight: 600,
-    animation: `${pulseAnimation} 2s ease infinite`,
+    animation: animated ? `${pulseAnimation} 2s ease infinite` : 'none',
   };
 });
 
@@ -149,8 +141,10 @@ const StepsContainer = styled(Box)(({ theme }) => ({
   marginTop: theme.spacing(2),
 }));
 
-const Step = styled(Box)<{ active: boolean; completed: boolean }>(
-  ({ theme, active, completed }) => ({
+const Step = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'active' && prop !== 'completed' && prop !== 'animated',
+})<{ active: boolean; completed: boolean; animated?: boolean }>(
+  ({ theme, active, completed, animated }) => ({
     flex: 1,
     height: 6,
     borderRadius: 3,
@@ -159,7 +153,7 @@ const Step = styled(Box)<{ active: boolean; completed: boolean }>(
       : active
         ? `linear-gradient(90deg, ${theme.palette.warning.main} 0%, ${theme.palette.warning.light} 100%)`
         : alpha(theme.palette.action.disabled, 0.2),
-    transition: 'all 0.3s ease',
+    transition: animated ? 'all 0.3s ease' : 'none',
     boxShadow: completed ? `0 2px 8px ${alpha(theme.palette.success.main, 0.3)}` : 'none',
   }),
 );
@@ -219,7 +213,8 @@ export const PasswordStrength: FC<PasswordStrengthProps> = ({
   showStrengthLabel = true,
   showSuggestions = false,
   variant = 'linear',
-  animated = true, // eslint-disable-line @typescript-eslint/no-unused-vars
+  animated = true,
+  'data-testid': dataTestId,
 }) => {
   const theme = useTheme();
 
@@ -303,19 +298,19 @@ export const PasswordStrength: FC<PasswordStrengthProps> = ({
         return (
           <StepsContainer>
             {Array.from({ length: steps }, (_, i) => (
-              <Step key={i} active={i === activeStep - 1} completed={i < activeStep - 1} />
+              <Step key={i} active={i === activeStep - 1} completed={i < activeStep - 1} animated={animated} />
             ))}
           </StepsContainer>
         );
       }
 
       default:
-        return <StrengthBar variant="determinate" value={strength} strength={strength} />;
+        return <StrengthBar variant="determinate" value={strength} strength={strength} animated={animated} />;
     }
   };
 
   return (
-    <StrengthContainer>
+    <StrengthContainer animated={animated} data-testid={dataTestId}>
       <Stack spacing={2}>
         {showStrengthLabel && (
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -328,6 +323,7 @@ export const PasswordStrength: FC<PasswordStrengthProps> = ({
                 icon={getStrengthIcon(strength)}
                 size="small"
                 strength={strength}
+                animated={animated}
               />
             </Fade>
           </Box>
@@ -342,7 +338,7 @@ export const PasswordStrength: FC<PasswordStrengthProps> = ({
                 Requirements:
               </Typography>
               {requirements.minLength && (
-                <RequirementItem met={requirementChecks.length}>
+                <RequirementItem met={requirementChecks.length} animated={animated}>
                   {requirementChecks.length ? <CheckIcon /> : <CloseIcon />}
                   <Typography variant="caption">
                     At least {requirements.minLength} characters
@@ -350,25 +346,25 @@ export const PasswordStrength: FC<PasswordStrengthProps> = ({
                 </RequirementItem>
               )}
               {requirements.uppercase && (
-                <RequirementItem met={requirementChecks.uppercase}>
+                <RequirementItem met={requirementChecks.uppercase} animated={animated}>
                   {requirementChecks.uppercase ? <CheckIcon /> : <CloseIcon />}
                   <Typography variant="caption">One uppercase letter</Typography>
                 </RequirementItem>
               )}
               {requirements.lowercase && (
-                <RequirementItem met={requirementChecks.lowercase}>
+                <RequirementItem met={requirementChecks.lowercase} animated={animated}>
                   {requirementChecks.lowercase ? <CheckIcon /> : <CloseIcon />}
                   <Typography variant="caption">One lowercase letter</Typography>
                 </RequirementItem>
               )}
               {requirements.numbers && (
-                <RequirementItem met={requirementChecks.numbers}>
+                <RequirementItem met={requirementChecks.numbers} animated={animated}>
                   {requirementChecks.numbers ? <CheckIcon /> : <CloseIcon />}
                   <Typography variant="caption">One number</Typography>
                 </RequirementItem>
               )}
               {requirements.special && (
-                <RequirementItem met={requirementChecks.special}>
+                <RequirementItem met={requirementChecks.special} animated={animated}>
                   {requirementChecks.special ? <CheckIcon /> : <CloseIcon />}
                   <Typography variant="caption">One special character</Typography>
                 </RequirementItem>

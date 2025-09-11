@@ -315,8 +315,9 @@ const useResponsive = (
 };
 
 // Enhanced Table Header Component
-const EnhancedTableHeader: React.FC<TableHeaderProps> = ({
+const EnhancedTableHeader: React.FC<TableHeaderProps> = React.memo(({
   columns,
+  data,
   sortable,
   sortConfig,
   onSortChange,
@@ -324,18 +325,24 @@ const EnhancedTableHeader: React.FC<TableHeaderProps> = ({
   selectedRows = [],
   onSelectAll,
 }) => {
-  const handleSort = (columnKey: string) => {
-    if (!sortable || !onSortChange) return;
-    
-    const direction = 
-      sortConfig?.key === columnKey && sortConfig.direction === 'asc' ? 'desc' : 'asc';
-    onSortChange(columnKey, direction);
-  };
+  const handleSort = useCallback(
+    (columnKey: string) => {
+      if (!sortable || !onSortChange) return;
+      
+      const direction = 
+        sortConfig?.key === columnKey && sortConfig.direction === 'asc' ? 'desc' : 'asc';
+      onSortChange(columnKey, direction);
+    },
+    [sortable, onSortChange, sortConfig]
+  );
 
-  const handleSelectAll = (event: React.ChangeEvent<globalThis.HTMLInputElement>) => {
-    if (!onSelectAll) return;
-    onSelectAll(event.target.checked);
-  };
+  const handleSelectAll = useCallback(
+    (event: React.ChangeEvent<globalThis.HTMLInputElement>) => {
+      if (!onSelectAll) return;
+      onSelectAll(event.target.checked);
+    },
+    [onSelectAll]
+  );
 
   return (
     <TableHead>
@@ -343,8 +350,8 @@ const EnhancedTableHeader: React.FC<TableHeaderProps> = ({
         {selectable && (
           <TableCell padding="checkbox">
             <Checkbox
-              indeterminate={selectedRows.length > 0 && selectedRows.length < columns.length}
-              checked={selectedRows.length > 0}
+              indeterminate={selectedRows.length > 0 && selectedRows.length < data.length}
+              checked={selectedRows.length === data.length && data.length > 0}
               onChange={handleSelectAll}
               inputProps={{ 'aria-label': 'select all' }}
             />
@@ -358,6 +365,11 @@ const EnhancedTableHeader: React.FC<TableHeaderProps> = ({
               minWidth: column.minWidth,
               width: column.width,
             }}
+            aria-sort={
+              sortable && column.sortable !== false && sortConfig?.key === column.key
+                ? sortConfig.direction === 'asc' ? 'ascending' : 'descending'
+                : undefined
+            }
           >
             {sortable && column.sortable !== false ? (
               <TableSortLabel
@@ -365,6 +377,7 @@ const EnhancedTableHeader: React.FC<TableHeaderProps> = ({
                 direction={sortConfig?.key === column.key ? sortConfig.direction : 'asc'}
                 onClick={() => handleSort(column.key)}
                 data-testid="sort-indicator"
+                aria-label={`Sort by ${column.label}`}
               >
                 {column.label}
               </TableSortLabel>
@@ -376,10 +389,12 @@ const EnhancedTableHeader: React.FC<TableHeaderProps> = ({
       </TableRow>
     </TableHead>
   );
-};
+});
 
-// Enhanced Table Body Component
-const EnhancedTableBody: React.FC<TableBodyProps> = ({
+EnhancedTableHeader.displayName = 'EnhancedTableHeader';
+
+// Enhanced Table Body Component  
+const EnhancedTableBody: React.FC<TableBodyProps> = React.memo(({
   data,
   columns,
   selectedRows = [],
@@ -396,20 +411,32 @@ const EnhancedTableBody: React.FC<TableBodyProps> = ({
   rowHeight,
   overscan = 5,
 }) => {
-  const getRowKey = (rowData: Record<string, unknown>, index: number): string | number => {
-    return rowKeyExtractor ? rowKeyExtractor(rowData, index) : (rowData.id as string | number) || index;
-  };
+  const getRowKey = useCallback(
+    (rowData: Record<string, unknown>, index: number): string | number => {
+      return rowKeyExtractor ? rowKeyExtractor(rowData, index) : (rowData.id as string | number) || index;
+    },
+    [rowKeyExtractor]
+  );
 
-  const isRowSelected = (rowKey: string | number) => {
-    return selectedRows.includes(rowKey);
-  };
+  const isRowSelected = useCallback(
+    (rowKey: string | number) => {
+      return selectedRows.includes(rowKey);
+    },
+    [selectedRows]
+  );
 
-  const handleRowSelection = (rowKey: string | number) => {
-    if (!onSelectionChange) return;
-    onSelectionChange(rowKey, !isRowSelected(rowKey));
-  };
+  const handleRowSelection = useCallback(
+    (event: React.MouseEvent | React.ChangeEvent, rowKey: string | number) => {
+      // Stop propagation to prevent row click conflict
+      event.stopPropagation();
+      if (!onSelectionChange) return;
+      const isSelected = selectedRows.includes(rowKey);
+      onSelectionChange(rowKey, !isSelected);
+    },
+    [onSelectionChange, selectedRows]
+  );
 
-  const renderTableRow = (rowData: Record<string, unknown>, index: number, offsetY: number = 0) => {
+  const renderTableRow = useCallback((rowData: Record<string, unknown>, index: number, offsetY: number = 0) => {
     const rowKey = getRowKey(rowData, index);
     const selected = isRowSelected(rowKey);
 
@@ -438,8 +465,9 @@ const EnhancedTableBody: React.FC<TableBodyProps> = ({
           <TableCell padding="checkbox">
             <Checkbox
               checked={selected}
-              onChange={() => handleRowSelection(rowKey)}
-              inputProps={{ 'aria-label': `select row ${index}` }}
+              onChange={(event) => handleRowSelection(event, rowKey)}
+              onClick={(event) => event.stopPropagation()}
+              inputProps={{ 'aria-label': `select row ${index + 1}` }}
             />
           </TableCell>
         )}
@@ -458,7 +486,7 @@ const EnhancedTableBody: React.FC<TableBodyProps> = ({
         })}
       </TableRow>
     );
-  };
+  }, [getRowKey, isRowSelected, renderRow, renderCell, columns, selectable, handleRowSelection, onRowClick, onRowFocus, onRowBlur, virtualScrolling, rowHeight]);
 
   const { visibleItems, handleScroll } = useVirtualScrolling(
     data, 
@@ -497,7 +525,9 @@ const EnhancedTableBody: React.FC<TableBodyProps> = ({
       {data.map((rowData, index) => renderTableRow(rowData, index))}
     </TableBody>
   );
-};
+});
+
+EnhancedTableBody.displayName = 'EnhancedTableBody';
 
 // Main Table Component
 export const Table = React.forwardRef<globalThis.HTMLTableElement, TableProps>(
@@ -607,6 +637,7 @@ export const Table = React.forwardRef<globalThis.HTMLTableElement, TableProps>(
             {columns && (
               <EnhancedTableHeader
                 columns={responsive ? visibleColumns : columns}
+                data={[]}
                 sortable={sortable}
                 sortConfig={sortConfig}
                 onSortChange={onSortChange}
@@ -642,6 +673,7 @@ export const Table = React.forwardRef<globalThis.HTMLTableElement, TableProps>(
             {columns && (
               <EnhancedTableHeader
                 columns={responsive ? visibleColumns : columns}
+                data={[]}
                 sortable={sortable}
                 sortConfig={sortConfig}
                 onSortChange={onSortChange}
@@ -690,6 +722,7 @@ export const Table = React.forwardRef<globalThis.HTMLTableElement, TableProps>(
             >
               <EnhancedTableHeader
                 columns={finalColumns}
+                data={data}
                 sortable={sortable}
                 sortConfig={sortConfig}
                 onSortChange={onSortChange}

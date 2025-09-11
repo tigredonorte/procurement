@@ -83,4 +83,13 @@ export interface AnimatedIconProps {
 
   /** Click handler */
   onClick?: (event: React.MouseEvent) => void;
+
+  /** Tab index for keyboard navigation */
+  tabIndex?: number;
+
+  /** Focus event handler */
+  onFocus?: (event: React.FocusEvent) => void;
+
+  /** Blur event handler */
+  onBlur?: (event: React.FocusEvent) => void;
 }

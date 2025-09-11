@@ -15,26 +15,10 @@ import {
 import { Phone as PhoneIcon, ArrowDropDown } from '@mui/icons-material';
 import { parsePhoneNumber, isValidPhoneNumber, CountryCode } from 'libphonenumber-js';
 
-// Types
-export interface PhoneInputProps {
-  variant?: 'glass' | 'outlined' | 'filled';
-  label?: string;
-  placeholder?: string;
-  icon?: React.ReactNode;
-  defaultValue?: string;
-  countryCode?: CountryCode;
-  floating?: boolean;
-  onChange?: (value: string, isValid: boolean, countryCode?: CountryCode) => void;
-  helper?: string;
-  error?: boolean;
-  errorMessage?: string;
-  disabled?: boolean;
-  required?: boolean;
-  fullWidth?: boolean;
-}
+import type { PhoneInputProps, CountryData } from './PhoneInput.types';
 
 // Country data
-const countries = [
+const countries: CountryData[] = [
   { code: 'US' as CountryCode, name: 'United States', dial: '+1', flag: '🇺🇸' },
   { code: 'GB' as CountryCode, name: 'United Kingdom', dial: '+44', flag: '🇬🇧' },
   { code: 'CA' as CountryCode, name: 'Canada', dial: '+1', flag: '🇨🇦' },
@@ -168,7 +152,7 @@ export const PhoneInput: FC<PhoneInputProps> = ({
     setAnchorEl(null);
   };
 
-  const handleCountrySelect = (country: (typeof countries)[0]) => {
+  const handleCountrySelect = (country: CountryData) => {
     setSelectedCountry(country);
     handleCountryClose();
 
@@ -215,7 +199,19 @@ export const PhoneInput: FC<PhoneInputProps> = ({
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <CountrySelector onClick={handleCountryClick}>
+              <CountrySelector 
+                onClick={handleCountryClick}
+                role="button"
+                aria-label="Select country"
+                aria-expanded={Boolean(anchorEl)}
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setAnchorEl(e.currentTarget as HTMLElement);
+                  }
+                }}
+              >
                 <Typography variant="h6" component="span" sx={{ mr: 0.5 }}>
                   {selectedCountry?.flag}
                 </Typography>

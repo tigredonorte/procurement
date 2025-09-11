@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import React, { createContext, useContext, useState, useCallback } from 'react';
 import {
   Alert,
   IconButton,
@@ -19,17 +19,12 @@ import {
   Info as InfoIcon,
 } from '@mui/icons-material';
 
-import { ToastProps, ToastContainerProps, ToastContextType } from './Toast.types';
+import { ToastProps, ToastContainerProps, ToastContextType, ToastItem } from './Toast.types';
 
 const ToastContext = createContext<ToastContextType | null>(null);
 
-interface ToastItem extends ToastProps {
-  id: string;
-  timestamp: number;
-}
-
 export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [, setToasts] = useState<ToastItem[]>([]);
+  const [toasts, setToasts] = useState<ToastItem[]>([]);
 
   const removeToast = useCallback((id: string) => {
     setToasts((prev) => prev.filter((toast) => toast.id !== id));
@@ -101,6 +96,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   );
 
   const contextValue: ToastContextType = {
+    toasts,
     addToast,
     removeToast,
     clearAllToasts,
@@ -204,15 +200,13 @@ export const ToastContainer: React.FC<ToastContainerProps> = ({
   gap = 8,
   className,
 }) => {
-  const [toasts] = useState<ToastItem[]>([]);
   const context = useContext(ToastContext);
+  
+  if (!context) {
+    throw new Error('ToastContainer must be used within a ToastProvider');
+  }
 
-  useEffect(() => {
-    if (context) {
-      // This is a simplified implementation - in a real app, you'd need to
-      // properly sync with the context state
-    }
-  }, [context]);
+  const { toasts, removeToast } = context;
 
   const getPositionStyles = (): React.CSSProperties => {
     const baseStyles: React.CSSProperties = {
@@ -261,7 +255,7 @@ export const ToastContainer: React.FC<ToastContainerProps> = ({
             style={{ pointerEvents: 'auto' }}
           >
             <Box>
-              <Toast {...toast} onClose={context?.removeToast} />
+              <Toast {...toast} onClose={removeToast} />
             </Box>
           </Slide>
         ))}

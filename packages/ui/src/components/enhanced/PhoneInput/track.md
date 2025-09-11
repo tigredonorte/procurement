@@ -96,6 +96,23 @@ An international phone number input component with country selection, automatic 
 - Track.md validator has regex issue with Stories section (system-wide validator bug)
 - All core functionality validated: TypeScript clean, ESLint clean, builds successfully
 
+## Missing things
+
+### Test Issues
+- **Weak assertions with conditionals**: Tests use weak assertions like `toBeTruthy()`, `toBeDefined()`, and `toBeLessThan()` instead of specific value checks (lines 219, 223, 250, 260, 299, 317, 333, 344, 345)
+- **Conditional logic in tests**: Line 333 has comment "Either filters out letters or keeps them" - tests should assert specific behavior
+- **Performance tests use arbitrary thresholds**: Lines 299, 317 use arbitrary time limits without clear rationale
+- **Missing proper value assertions**: Tests check if values exist rather than validating actual formatted output
+
+### Type Issues
+- **No duplicate type definitions found**: Types are properly organized in PhoneInput.types.ts and exported correctly
+
+### Implementation Issues
+- **No validation for phone number length limits**: Component accepts unlimited length input (test shows truncation at 20 chars but not enforced)
+- **Incomplete country list**: Only 15 countries supported, missing many common countries
+- **No support for custom country lists**: Countries are hardcoded in component
+- **Missing phone number parsing error handling**: Try-catch blocks just silently fail without user feedback
+
 ## Previous Sections
 
 ### 2025-01-13 21:30 BRT

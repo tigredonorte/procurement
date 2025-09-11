@@ -41,14 +41,19 @@ Legend: Pending | Running | PASS | FAIL
 
 ## Static Stories Status
 
-- [ ] Default story
-- [ ] All variants covered
-- [ ] Glass effect variant (if applicable)
-- [ ] Hover state story
-- [ ] Disabled state story
-- [ ] Loading state story (if applicable)
-- [ ] Error state story (if applicable)
-- [ ] Empty state story (if applicable)
+- [x] Default story
+- [x] All variants covered (AllVariants story)
+- [x] All sizes covered (AllSizes story) 
+- [x] All states covered (AllStates story)
+- [x] Interactive states covered (InteractiveStates story)
+- [x] Responsive story
+- [x] Long content handling (LongContent story)
+- [x] Custom styling (WithCustomStyling story)
+- [N/A] Glass effect variant (not applicable to Paragraph)
+- [N/A] Hover state story (not applicable to Paragraph)
+- [N/A] Disabled state story (not applicable to Paragraph)
+- [N/A] Loading state story (not applicable to Paragraph)
+- [N/A] Error state story (not applicable to Paragraph)
 
 ## Lint Status
 
