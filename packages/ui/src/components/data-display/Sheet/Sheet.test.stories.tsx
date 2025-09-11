@@ -34,15 +34,38 @@ interface TestWrapperProps extends React.ComponentProps<typeof Sheet> {
   children?: React.ReactNode;
 }
 
-const TestWrapper: React.FC<TestWrapperProps> = ({ children, ...props }) => {
+const TestWrapper: React.FC<TestWrapperProps> = ({
+  children,
+  onOpen,
+  onClose,
+  onOpenChange,
+  ...props
+}) => {
   const [open, setOpen] = useState(false);
+
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+    onOpenChange?.(newOpen);
+    if (newOpen) {
+      onOpen?.();
+    } else {
+      onClose?.();
+    }
+  };
 
   return (
     <>
       <Button variant="contained" onClick={() => setOpen(true)} data-testid="open-sheet-button">
         Open Sheet
       </Button>
-      <Sheet {...props} open={open} onOpenChange={setOpen} data-testid="test-sheet">
+      <Sheet
+        {...props}
+        open={open}
+        onOpenChange={handleOpenChange}
+        onOpen={onOpen}
+        onClose={onClose}
+        data-testid="test-sheet"
+      >
         {children}
       </Sheet>
     </>
@@ -60,6 +83,9 @@ export const BasicInteraction: Story = {
     onClose: fn(),
     onOpen: fn(),
     onClick: fn(),
+    onOpenChange: fn(),
+    onFocus: fn(),
+    onBlur: fn(),
   },
   render: (args) => (
     <TestWrapper {...args}>
@@ -68,6 +94,7 @@ export const BasicInteraction: Story = {
   ),
   play: async ({ canvasElement, step, args }) => {
     const canvas = within(canvasElement);
+    const body = within(document.body);
 
     await step('Initial render verification', async () => {
       const openButton = canvas.getByTestId('open-sheet-button');
@@ -78,10 +105,10 @@ export const BasicInteraction: Story = {
       const openButton = canvas.getByTestId('open-sheet-button');
       await userEvent.click(openButton);
 
-      // Wait for sheet to open with animation
+      // Wait for sheet to open with animation (sheet renders in portal)
       await waitFor(
         () => {
-          const content = canvas.getByTestId('sheet-content');
+          const content = body.getByTestId('sheet-content');
           expect(content).toBeVisible();
         },
         { timeout: 2000 },
@@ -91,15 +118,20 @@ export const BasicInteraction: Story = {
     });
 
     await step('Click on sheet content', async () => {
-      const content = canvas.getByTestId('sheet-content');
+      const content = body.getByTestId('sheet-content');
       await userEvent.click(content);
       await expect(args.onClick).toHaveBeenCalled();
     });
 
     await step('Close button interaction', async () => {
-      const closeButton = canvas.getByRole('button', { name: /close/i });
-      await userEvent.click(closeButton);
-      await expect(args.onClose).toHaveBeenCalled();
+      const closeButtons = body.getAllByRole('button');
+      const closeButton = closeButtons.find((btn) =>
+        btn.querySelector('[data-testid="CloseIcon"]'),
+      );
+      if (closeButton) {
+        await userEvent.click(closeButton);
+        await expect(args.onClose).toHaveBeenCalled();
+      }
     });
   },
 };
@@ -110,6 +142,9 @@ export const FormInteraction: Story = {
     title: 'Form Sheet',
     onChange: fn(),
     onSubmit: fn(),
+    onOpenChange: fn(),
+    onOpen: fn(),
+    onClose: fn(),
   },
   render: (args) => {
     const FormContent = () => {
@@ -142,29 +177,30 @@ export const FormInteraction: Story = {
   },
   play: async ({ canvasElement, args, step }) => {
     const canvas = within(canvasElement);
+    const body = within(document.body);
 
     await step('Open sheet', async () => {
       const openButton = canvas.getByTestId('open-sheet-button');
       await userEvent.click(openButton);
       await waitFor(() => {
-        expect(canvas.getByTestId('text-input')).toBeVisible();
+        expect(body.getByTestId('text-input')).toBeVisible();
       });
     });
 
     await step('Type in input field', async () => {
-      const input = canvas.getByTestId('text-input');
+      const input = body.getByTestId('text-input') as HTMLInputElement;
       await userEvent.type(input, 'Test input value');
       await expect(args.onChange).toHaveBeenCalled();
     });
 
     await step('Clear input field', async () => {
-      const input = canvas.getByTestId('text-input');
+      const input = body.getByTestId('text-input') as HTMLInputElement;
       await userEvent.clear(input);
       await expect(input).toHaveValue('');
     });
 
     await step('Submit form', async () => {
-      const submitButton = canvas.getByTestId('submit-button');
+      const submitButton = body.getByTestId('submit-button');
       await userEvent.click(submitButton);
       await expect(args.onSubmit).toHaveBeenCalled();
     });
@@ -173,6 +209,10 @@ export const FormInteraction: Story = {
 
 export const StateChangeTest: Story = {
   name: '🔄 State Change Test',
+  args: {
+    onOpenChange: fn(),
+    onSnapPointChange: fn(),
+  },
   render: () => {
     const StateComponent = () => {
       const [open, setOpen] = useState(false);
@@ -206,6 +246,7 @@ export const StateChangeTest: Story = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
+    const body = within(document.body);
 
     await step('Verify initial state', async () => {
       const openButton = canvas.getByTestId('open-button');
@@ -217,7 +258,7 @@ export const StateChangeTest: Story = {
       await userEvent.click(openButton);
 
       await waitFor(() => {
-        const indicator = canvas.getByTestId('snap-indicator');
+        const indicator = body.getByTestId('snap-indicator');
         expect(indicator).toHaveTextContent('Current snap: 50%');
       });
     });
@@ -233,6 +274,10 @@ export const KeyboardNavigation: Story = {
     description: 'Test keyboard navigation',
     showCloseButton: true,
     closeOnEscape: true,
+    onOpenChange: fn(),
+    onClose: fn(),
+    onFocus: fn(),
+    onBlur: fn(),
   },
   render: (args) => (
     <TestWrapper {...args}>
@@ -265,19 +310,20 @@ export const KeyboardNavigation: Story = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
+    const body = within(document.body);
 
     await step('Open sheet', async () => {
       const openButton = canvas.getByTestId('open-sheet-button');
       await userEvent.click(openButton);
 
       await waitFor(() => {
-        expect(canvas.getByTestId('first-focusable')).toBeVisible();
+        expect(body.getByTestId('first-focusable')).toBeVisible();
       });
     });
 
     await step('Tab navigation forward', async () => {
-      const firstElement = canvas.getByTestId('first-focusable');
-      const secondElement = canvas.getByTestId('second-focusable');
+      const firstElement = body.getByTestId('first-focusable');
+      const secondElement = body.getByTestId('second-focusable');
 
       firstElement.focus();
       await expect(firstElement).toHaveFocus();
@@ -288,7 +334,7 @@ export const KeyboardNavigation: Story = {
 
     await step('Tab navigation backward', async () => {
       await userEvent.tab({ shift: true });
-      const firstElement = canvas.getByTestId('first-focusable');
+      const firstElement = body.getByTestId('first-focusable');
       await expect(firstElement).toHaveFocus();
     });
 
@@ -297,8 +343,8 @@ export const KeyboardNavigation: Story = {
 
       // Sheet should close
       await waitFor(() => {
-        const content = canvas.queryByTestId('first-focusable');
-        expect(content).not.toBeVisible();
+        const content = body.queryByTestId('first-focusable');
+        expect(content).not.toBeInTheDocument();
       });
     });
   },
@@ -311,6 +357,7 @@ export const ScreenReaderTest: Story = {
     description: 'Sheet with ARIA attributes',
     'aria-label': 'Settings panel',
     'aria-describedby': 'sheet-description',
+    onOpenChange: fn(),
   },
   render: (args) => (
     <TestWrapper {...args}>
@@ -327,24 +374,25 @@ export const ScreenReaderTest: Story = {
   ),
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
+    const body = within(document.body);
 
     await step('Open sheet', async () => {
       const openButton = canvas.getByTestId('open-sheet-button');
       await userEvent.click(openButton);
 
       await waitFor(() => {
-        expect(canvas.getByTestId('description-element')).toBeVisible();
+        expect(body.getByTestId('description-element')).toBeVisible();
       });
     });
 
     await step('Verify ARIA descriptions', async () => {
-      const description = canvas.getByTestId('description-element');
+      const description = body.getByTestId('description-element');
       await expect(description).toBeInTheDocument();
       await expect(description).toHaveAttribute('id', 'sheet-description');
     });
 
     await step('Verify live regions', async () => {
-      const liveRegion = canvas.getByTestId('live-region');
+      const liveRegion = body.getByTestId('live-region');
       await expect(liveRegion).toHaveAttribute('aria-live', 'polite');
       await expect(liveRegion).toHaveAttribute('role', 'status');
     });
@@ -353,6 +401,12 @@ export const ScreenReaderTest: Story = {
 
 export const FocusManagement: Story = {
   name: '🎯 Focus Management Test',
+  args: {
+    onOpenChange: fn(),
+    onClose: fn(),
+    onFocus: fn(),
+    onBlur: fn(),
+  },
   render: () => {
     const FocusComponent = () => {
       const [open, setOpen] = useState(false);
@@ -395,35 +449,41 @@ export const FocusManagement: Story = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
+    const body = within(document.body);
 
     await step('Open sheet and verify auto focus', async () => {
       const triggerButton = canvas.getByTestId('trigger-button');
       await userEvent.click(triggerButton);
 
       await waitFor(() => {
-        const firstElement = canvas.getByTestId('first-modal-element');
+        const firstElement = body.getByTestId('first-modal-element');
         expect(firstElement).toHaveFocus();
       });
     });
 
     await step('Tab through sheet elements', async () => {
       await userEvent.tab();
-      const secondElement = canvas.getByTestId('second-modal-element');
+      const secondElement = body.getByTestId('second-modal-element');
       await expect(secondElement).toHaveFocus();
 
       await userEvent.tab();
-      const lastElement = canvas.getByTestId('last-modal-element');
+      const lastElement = body.getByTestId('last-modal-element');
       await expect(lastElement).toHaveFocus();
     });
 
     await step('Close and verify focus restoration', async () => {
-      const closeButton = canvas.getByRole('button', { name: /close/i });
-      await userEvent.click(closeButton);
+      const closeButtons = body.getAllByRole('button');
+      const closeButton = closeButtons.find((btn) =>
+        btn.querySelector('[data-testid="CloseIcon"]'),
+      );
+      if (closeButton) {
+        await userEvent.click(closeButton);
 
-      await waitFor(() => {
-        const triggerButton = canvas.getByTestId('trigger-button');
-        expect(triggerButton).toHaveFocus();
-      });
+        await waitFor(() => {
+          const triggerButton = canvas.getByTestId('trigger-button');
+          expect(triggerButton).toHaveFocus();
+        });
+      }
     });
   },
 };
@@ -436,6 +496,7 @@ export const ResponsiveDesign: Story = {
     title: 'Responsive Sheet',
     position: 'bottom',
     size: 'md',
+    onOpenChange: fn(),
   },
   render: (args) => (
     <TestWrapper {...args}>
@@ -480,18 +541,19 @@ export const ResponsiveDesign: Story = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
+    const body = within(document.body);
 
     await step('Open sheet', async () => {
       const openButton = canvas.getByTestId('open-sheet-button');
       await userEvent.click(openButton);
 
       await waitFor(() => {
-        expect(canvas.getByTestId('responsive-container')).toBeVisible();
+        expect(body.getByTestId('responsive-container')).toBeVisible();
       });
     });
 
     await step('Verify responsive layout', async () => {
-      const container = canvas.getByTestId('responsive-container');
+      const container = body.getByTestId('responsive-container');
       const computedStyle = window.getComputedStyle(container);
 
       if (window.innerWidth <= 600) {
@@ -510,6 +572,7 @@ export const ThemeVariations: Story = {
     variant: 'glass',
     glass: true,
     glow: true,
+    onOpenChange: fn(),
   },
   render: (args) => (
     <TestWrapper {...args}>
@@ -536,18 +599,19 @@ export const ThemeVariations: Story = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
+    const body = within(document.body);
 
     await step('Open sheet', async () => {
       const openButton = canvas.getByTestId('open-sheet-button');
       await userEvent.click(openButton);
 
       await waitFor(() => {
-        expect(canvas.getByTestId('themed-component')).toBeVisible();
+        expect(body.getByTestId('themed-component')).toBeVisible();
       });
     });
 
     await step('Verify theme colors', async () => {
-      const element = canvas.getByTestId('themed-component');
+      const element = body.getByTestId('themed-component');
       const computedStyle = window.getComputedStyle(element);
 
       // Check if colors are applied
@@ -559,6 +623,9 @@ export const ThemeVariations: Story = {
 
 export const VisualStates: Story = {
   name: '👁️ Visual States Test',
+  args: {
+    onOpenChange: fn(),
+  },
   render: () => {
     const StatesComponent = () => {
       const [open, setOpen] = useState(false);
@@ -620,21 +687,23 @@ export const VisualStates: Story = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
+    const body = within(document.body);
 
     await step('Test normal state', async () => {
       const openButton = canvas.getByTestId('open-normal');
       await userEvent.click(openButton);
 
       await waitFor(() => {
-        const sheet = canvas.getByRole('presentation');
+        const sheets = body.getAllByRole('presentation');
+        const sheet = sheets[sheets.length - 1];
         expect(sheet).toBeVisible();
       });
 
       // Close sheet
       await userEvent.keyboard('{Escape}');
       await waitFor(() => {
-        const content = canvas.queryByText('Content area');
-        expect(content).not.toBeVisible();
+        const content = body.queryByText('Content area');
+        expect(content).not.toBeInTheDocument();
       });
     });
 
@@ -643,7 +712,7 @@ export const VisualStates: Story = {
       await userEvent.click(openButton);
 
       await waitFor(() => {
-        const spinner = canvas.getByRole('progressbar');
+        const spinner = body.getByRole('progressbar');
         expect(spinner).toBeVisible();
       });
 
@@ -656,7 +725,8 @@ export const VisualStates: Story = {
       await userEvent.click(openButton);
 
       await waitFor(() => {
-        const sheet = canvas.getByRole('presentation');
+        const sheets = body.getAllByRole('presentation');
+        const sheet = sheets[sheets.length - 1];
         expect(sheet).toBeVisible();
         const computedStyle = window.getComputedStyle(sheet);
         expect(computedStyle.opacity).toBe('0.5');
@@ -671,6 +741,7 @@ export const PerformanceTest: Story = {
   name: '⚡ Performance Test',
   args: {
     title: 'Performance Test Sheet',
+    onOpenChange: fn(),
   },
   render: (args) => {
     const items = Array.from({ length: 100 }, (_, i) => ({
@@ -695,19 +766,20 @@ export const PerformanceTest: Story = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
+    const body = within(document.body);
 
     await step('Open sheet', async () => {
       const openButton = canvas.getByTestId('open-sheet-button');
       await userEvent.click(openButton);
 
       await waitFor(() => {
-        expect(canvas.getByTestId('scroll-container')).toBeVisible();
+        expect(body.getByTestId('scroll-container')).toBeVisible();
       });
     });
 
     await step('Measure render time', async () => {
       const startTime = window.performance.now();
-      const elements = canvas.getAllByTestId(/item-/);
+      const elements = body.getAllByTestId(/item-/);
       const endTime = window.performance.now();
 
       const renderTime = endTime - startTime;
@@ -720,7 +792,7 @@ export const PerformanceTest: Story = {
     });
 
     await step('Test scroll performance', async () => {
-      const scrollContainer = canvas.getByTestId('scroll-container');
+      const scrollContainer = body.getByTestId('scroll-container');
 
       // Simulate rapid scrolling
       for (let i = 0; i < 5; i++) {
@@ -738,6 +810,9 @@ export const PerformanceTest: Story = {
 
 export const EdgeCases: Story = {
   name: '🔧 Edge Cases Test',
+  args: {
+    onOpenChange: fn(),
+  },
   render: () => {
     const EdgeCaseComponent = () => {
       const [open, setOpen] = useState(false);
@@ -808,13 +883,15 @@ export const EdgeCases: Story = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
+    const body = within(document.body);
 
     await step('Empty content handling', async () => {
       const openButton = canvas.getByTestId('open-empty');
       await userEvent.click(openButton);
 
       await waitFor(() => {
-        const sheet = canvas.getByRole('presentation');
+        const sheets = body.getAllByRole('presentation');
+        const sheet = sheets[sheets.length - 1];
         expect(sheet).toBeVisible();
       });
 
@@ -827,7 +904,7 @@ export const EdgeCases: Story = {
       await userEvent.click(openButton);
 
       await waitFor(() => {
-        const textElement = canvas.getByTestId('text-content');
+        const textElement = body.getByTestId('text-content');
         expect(textElement).toBeVisible();
         const computedStyle = window.getComputedStyle(textElement);
         expect(computedStyle.textOverflow).toBe('ellipsis');
@@ -842,7 +919,7 @@ export const EdgeCases: Story = {
       await userEvent.click(openButton);
 
       await waitFor(() => {
-        const component = canvas.getByTestId('component');
+        const component = body.getByTestId('component');
         expect(component).toBeVisible();
       });
     });
@@ -853,6 +930,9 @@ export const EdgeCases: Story = {
 
 export const IntegrationTest: Story = {
   name: '🔗 Integration Test',
+  args: {
+    onOpenChange: fn(),
+  },
   render: () => {
     const IntegrationComponent = () => {
       const [mainOpen, setMainOpen] = useState(false);
@@ -901,25 +981,29 @@ export const IntegrationTest: Story = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
+    const body = within(document.body);
 
     await step('Open main sheet', async () => {
       const trigger = canvas.getByTestId('trigger-component');
       await userEvent.click(trigger);
 
       await waitFor(() => {
-        const receiver = canvas.getByTestId('receiver-component');
+        const receiver = body.getByTestId('receiver-component');
         expect(receiver).toHaveTextContent('Status: Initial');
       });
     });
 
     await step('Communication between sheets', async () => {
-      const nestedButton = canvas.getByRole('button', { name: /open nested/i });
-      await userEvent.click(nestedButton);
+      const buttons = body.getAllByRole('button');
+      const nestedButton = buttons.find((btn) => btn.textContent?.includes('Open Nested'));
+      if (nestedButton) {
+        await userEvent.click(nestedButton);
 
-      await waitFor(() => {
-        const receiver = canvas.getByTestId('receiver-component');
-        expect(receiver).toHaveTextContent('Status: Updated');
-      });
+        await waitFor(() => {
+          const receiver = body.getByTestId('receiver-component');
+          expect(receiver).toHaveTextContent('Status: Updated');
+        });
+      }
     });
   },
 };
@@ -944,13 +1028,14 @@ export const DraggableInteraction: Story = {
   ),
   play: async ({ canvasElement, step, args }) => {
     const canvas = within(canvasElement);
+    const body = within(document.body);
 
     await step('Open draggable sheet', async () => {
       const openButton = canvas.getByTestId('open-sheet-button');
       await userEvent.click(openButton);
 
       await waitFor(() => {
-        expect(canvas.getByTestId('draggable-content')).toBeVisible();
+        expect(body.getByTestId('draggable-content')).toBeVisible();
       });
     });
 

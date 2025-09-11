@@ -3,7 +3,7 @@ import React, { InputHTMLAttributes, ReactNode } from 'react';
 export type InputVariant = 'outlined' | 'filled' | 'glass' | 'underline' | 'gradient';
 export type InputSize = 'sm' | 'md' | 'lg';
 
-export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
+export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size' | 'color'> {
   variant?: InputVariant;
   size?: InputSize;
   label?: string;

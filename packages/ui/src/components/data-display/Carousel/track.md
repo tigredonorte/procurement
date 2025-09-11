@@ -109,22 +109,22 @@ None - TypeScript compilation successful
 - DataDisplay/Carousel/InteractiveStates
 - DataDisplay/Carousel/Responsive
 
-**Current (BRT)**: 2025-09-11 19:15
+**Current (BRT)**: 2025-09-12 00:55
 
-### Current Task: Fixed test failures [omega-905]
+### Current Task: Fixed component tag issue [omega-955]
 
-- Fixed implicit action args issue by adding explicit spy functions (fn()) for all callbacks
-- Fixed onChange callback not being triggered in handleNext/handlePrev functions
-- Added proper aria-labels to all navigation buttons and indicators
-- Fixed individual disable states for prev/next arrows when loop is false
-- Updated EdgeCases test to handle disabled buttons properly
+- Fixed validation issue by removing 'component:Carousel' tag from regular stories file
+- The tag was causing the test runner to attempt smoke tests on regular stories
+- Only test stories should have the component tag for proper test execution
+- All 18 validation checks now PASS
+- All 12 test stories PASS
 
 ### Completed:
 
-- All 18 validation checks passing
-- All 34 tests PASS (both regular and test stories)
+- All 18 validation checks PASS
+- All 12 test stories PASS (Carousel.test.stories.tsx only)
 - TypeScript compilation successful
 - ESLint issues resolved
 - Stories coverage complete
 - Component builds successfully
-- Accessibility compliance improved with proper aria-labels
+- Component tag configuration fixed

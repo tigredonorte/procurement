@@ -286,12 +286,12 @@ export const ThemeVariations: Story = {
           </AnimatedIcon>
         </Box>
         <Box sx={{ p: 2, bgcolor: 'primary.main', borderRadius: 1 }}>
-          <AnimatedIcon variant="pulse" size="lg" color="white">
+          <AnimatedIcon variant="pulse" size="lg" color="#ffffff">
             <Favorite />
           </AnimatedIcon>
         </Box>
         <Box sx={{ p: 2, bgcolor: 'secondary.main', borderRadius: 1 }}>
-          <AnimatedIcon variant="translate" size="lg" color="white">
+          <AnimatedIcon variant="translate" size="lg" color="#ffffff">
             <Star />
           </AnimatedIcon>
         </Box>
@@ -508,11 +508,11 @@ export const Integration: Story = {
       {/* Integration with complex layouts */}
       <Box sx={{ p: 3, background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)' }}>
         <Stack direction="row" spacing={3} alignItems="center">
-          <AnimatedIcon variant="translate" size="lg" glass color="white">
+          <AnimatedIcon variant="translate" size="lg" glass color="#ffffff">
             <Star />
           </AnimatedIcon>
           <Box>
-            <Typography variant="h6" color="white">
+            <Typography variant="h6" sx={{ color: 'common.white' }}>
               Premium Feature
             </Typography>
             <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.8)' }}>

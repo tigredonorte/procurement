@@ -1,5 +1,12 @@
 import React from 'react';
-import { TextField, alpha, styled, InputAdornment, keyframes, CircularProgress } from '@mui/material';
+import {
+  TextField,
+  alpha,
+  styled,
+  InputAdornment,
+  keyframes,
+  CircularProgress,
+} from '@mui/material';
 
 import { InputProps } from './Input.types';
 
@@ -20,9 +27,9 @@ const pulseAnimation = keyframes`
 `;
 
 const StyledTextField = styled(TextField, {
-  shouldForwardProp: (prop) => 
+  shouldForwardProp: (prop) =>
     !['customVariant', 'floating', 'glow', 'pulse', 'loading'].includes(prop as string),
-})<{ 
+})<{
   customVariant?: InputProps['variant'];
   floating?: boolean;
   glow?: boolean;
@@ -31,7 +38,7 @@ const StyledTextField = styled(TextField, {
 }>(({ theme, customVariant, floating, glow, pulse, loading }) => ({
   position: 'relative',
   opacity: loading ? 0.7 : 1,
-  
+
   // Glow effect
   ...(glow && {
     '& .MuiInputBase-root': {
@@ -41,7 +48,7 @@ const StyledTextField = styled(TextField, {
       },
     },
   }),
-  
+
   // Pulse animation
   ...(pulse && {
     '&::after': {
@@ -60,10 +67,10 @@ const StyledTextField = styled(TextField, {
       zIndex: -1,
     },
   }),
-  
+
   '& .MuiInputBase-root': {
     transition: 'all 0.3s ease',
-    
+
     ...(customVariant === 'glass' && {
       backgroundColor: alpha(theme.palette.background.paper, 0.1),
       backdropFilter: 'blur(20px)',
@@ -78,7 +85,7 @@ const StyledTextField = styled(TextField, {
         boxShadow: `0 0 0 2px ${alpha(theme.palette.primary.main, 0.1)}`,
       },
     }),
-    
+
     ...(customVariant === 'underline' && {
       '&:before': {
         borderBottomColor: alpha(theme.palette.divider, 0.42),
@@ -90,7 +97,7 @@ const StyledTextField = styled(TextField, {
         borderBottomColor: theme.palette.primary.main,
       },
     }),
-    
+
     ...(customVariant === 'gradient' && {
       background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.1)}, ${alpha(theme.palette.secondary.main, 0.1)})`,
       border: `2px solid transparent`,
@@ -122,7 +129,7 @@ const StyledTextField = styled(TextField, {
       },
     }),
   },
-  
+
   ...(floating && {
     '& .MuiInputLabel-root': {
       transform: 'translate(14px, 16px) scale(1)',
@@ -133,7 +140,7 @@ const StyledTextField = styled(TextField, {
       },
     },
   }),
-  
+
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
       borderColor: alpha(theme.palette.divider, 0.23),
@@ -149,7 +156,7 @@ const StyledTextField = styled(TextField, {
       borderColor: theme.palette.error.main,
     },
   },
-  
+
   '& .MuiFilledInput-root': {
     backgroundColor: alpha(theme.palette.action.hover, 0.04),
     '&:hover': {
@@ -168,43 +175,47 @@ const sizeMap = {
 };
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({
-    variant = 'outlined',
-    size = 'md',
-    label,
-    error,
-    helperText,
-    startAdornment,
-    endAdornment,
-    fullWidth = true,
-    floating = false,
-    glow = false,
-    pulse = false,
-    loading = false,
-    onClick,
-    onFocus,
-    onBlur,
-    'data-testid': dataTestId,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    color, // Extract color to prevent passing to MUI
-    ...props
-  }, ref) => {
-    
+  (
+    {
+      variant = 'outlined',
+      size = 'md',
+      label,
+      error,
+      helperText,
+      startAdornment,
+      endAdornment,
+      fullWidth = true,
+      floating = false,
+      glow = false,
+      pulse = false,
+      loading = false,
+      onClick,
+      onFocus,
+      onBlur,
+      'data-testid': dataTestId,
+      ...props
+    },
+    ref,
+  ) => {
     const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
       onFocus?.(e);
     };
-    
+
     const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
       onBlur?.(e);
     };
-    
-    const muiVariant = variant === 'glass' ? 'outlined' : 
-                       variant === 'underline' ? 'standard' : 
-                       variant === 'gradient' ? 'outlined' :
-                       variant;
-    
+
+    const muiVariant =
+      variant === 'glass'
+        ? 'outlined'
+        : variant === 'underline'
+          ? 'standard'
+          : variant === 'gradient'
+            ? 'outlined'
+            : variant;
+
     const sizeProps = sizeMap[size];
-    
+
     return (
       <StyledTextField
         ref={ref}
@@ -246,7 +257,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {...props}
       />
     );
-  }
+  },
 );
 
 Input.displayName = 'Input';

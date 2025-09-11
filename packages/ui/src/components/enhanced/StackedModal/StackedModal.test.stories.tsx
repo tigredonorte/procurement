@@ -52,6 +52,16 @@ export const BasicInteraction: Story = {
   play: async ({ canvasElement, step, args }) => {
     const canvas = within(canvasElement);
 
+    await step('Wait for modal to render', async () => {
+      await waitFor(
+        () => {
+          const modal = canvas.getByRole('dialog');
+          expect(modal).toBeInTheDocument();
+        },
+        { timeout: 5000 },
+      );
+    });
+
     await step('Initial render verification', async () => {
       const modal = canvas.getByRole('dialog');
       await expect(modal).toBeInTheDocument();
@@ -80,7 +90,7 @@ export const BasicInteraction: Story = {
   },
 };
 
-export const StackingBehaviorTest: Story = {
+export const StackingBehavior: Story = {
   name: '📚 Stacking Behavior Test',
   render: () => {
     const [firstOpen, setFirstOpen] = React.useState(true);
@@ -148,7 +158,7 @@ export const StackingBehaviorTest: Story = {
   },
 };
 
-export const GlassEffectTest: Story = {
+export const GlassEffect: Story = {
   name: '✨ Glass Effect Test',
   args: {
     open: true,
@@ -186,7 +196,7 @@ export const GlassEffectTest: Story = {
   },
 };
 
-export const LoadingStateTest: Story = {
+export const LoadingState: Story = {
   name: '⏳ Loading State Test',
   args: {
     open: true,
@@ -221,7 +231,7 @@ export const LoadingStateTest: Story = {
   },
 };
 
-export const ResponsiveDesignTest: Story = {
+export const ResponsiveDesign: Story = {
   name: '📱 Responsive Design Test',
   parameters: {
     viewport: {
@@ -281,7 +291,7 @@ export const ResponsiveDesignTest: Story = {
   },
 };
 
-export const KeyboardNavigationTest: Story = {
+export const KeyboardNavigation: Story = {
   name: '⌨️ Keyboard Navigation Test',
   args: {
     open: true,
@@ -335,7 +345,7 @@ export const KeyboardNavigationTest: Story = {
   },
 };
 
-export const ScreenReaderTest: Story = {
+export const ScreenReader: Story = {
   name: '🔊 Screen Reader Test',
   args: {
     open: true,
@@ -389,7 +399,7 @@ export const ScreenReaderTest: Story = {
   },
 };
 
-export const FocusManagementTest: Story = {
+export const FocusManagement: Story = {
   name: '🎯 Focus Management Test',
   args: {
     open: true,
@@ -439,7 +449,7 @@ export const FocusManagementTest: Story = {
   },
 };
 
-export const RTLSupportTest: Story = {
+export const RTLSupport: Story = {
   name: '🔄 RTL Support Test',
   args: {
     open: true,
@@ -481,7 +491,7 @@ export const RTLSupportTest: Story = {
   },
 };
 
-export const VisualStatesTest: Story = {
+export const VisualStates: Story = {
   name: '👁️ Visual States Test',
   render: () => (
     <TestWrapper>
@@ -537,7 +547,7 @@ export const VisualStatesTest: Story = {
   },
 };
 
-export const PerformanceTest: Story = {
+export const Performance: Story = {
   name: '⚡ Performance Test',
   render: () => {
     const modals = Array.from({ length: 5 }, (_, i) => ({
@@ -590,7 +600,7 @@ export const PerformanceTest: Story = {
   },
 };
 
-export const EdgeCasesTest: Story = {
+export const EdgeCases: Story = {
   name: '🔧 Edge Cases Test',
   render: () => (
     <TestWrapper>
@@ -641,7 +651,7 @@ export const EdgeCasesTest: Story = {
   },
 };
 
-export const IntegrationTest: Story = {
+export const Integration: Story = {
   name: '🔗 Integration Test',
   render: () => (
     <TestWrapper>

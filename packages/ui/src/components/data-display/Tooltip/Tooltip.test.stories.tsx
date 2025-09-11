@@ -19,6 +19,16 @@ const meta: Meta<typeof Tooltip> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+// Helper function to find tooltip by content or just the first visible one
+const findTooltipByContent = async (content?: string) => {
+  const tooltips = await within(document.body).findAllByRole('tooltip');
+  if (!content) {
+    // Return the last tooltip (innermost div with actual content)
+    return tooltips[tooltips.length - 1];
+  }
+  return tooltips.find((tip) => tip.textContent?.includes(content));
+};
+
 // 7.2 Interaction Tests
 export const BasicInteraction: Story = {
   name: '🧪 Basic Interaction Test',
@@ -51,7 +61,7 @@ export const BasicInteraction: Story = {
       // Wait for tooltip to appear
       await waitFor(
         async () => {
-          const tooltip = await canvas.findByRole('tooltip');
+          const tooltip = await findTooltipByContent('Test tooltip content');
           await expect(tooltip).toBeInTheDocument();
           await expect(tooltip).toHaveTextContent('Test tooltip content');
         },
@@ -66,7 +76,7 @@ export const BasicInteraction: Story = {
       // Wait for tooltip to disappear
       await waitFor(
         () => {
-          const tooltip = canvas.queryByRole('tooltip');
+          const tooltip = within(document.body).queryByRole('tooltip');
           expect(tooltip).not.toBeInTheDocument();
         },
         { timeout: 2000 },
@@ -100,7 +110,7 @@ export const ClickInteraction: Story = {
 
       await waitFor(
         async () => {
-          const tooltip = await canvas.findByRole('tooltip');
+          const tooltip = await findTooltipByContent('Click tooltip');
           await expect(tooltip).toBeInTheDocument();
           await expect(tooltip).toHaveTextContent('Click tooltip');
         },
@@ -114,7 +124,7 @@ export const ClickInteraction: Story = {
 
       await waitFor(
         () => {
-          const tooltip = canvas.queryByRole('tooltip');
+          const tooltip = within(document.body).queryByRole('tooltip');
           expect(tooltip).not.toBeInTheDocument();
         },
         { timeout: 2000 },
@@ -186,7 +196,7 @@ export const StateChangeTest: Story = {
 
       await waitFor(
         async () => {
-          const tooltip = await canvas.findByRole('tooltip');
+          const tooltip = await findTooltipByContent();
           await expect(tooltip).toBeInTheDocument();
           await expect(tooltip).toHaveTextContent(/dark/);
         },
@@ -205,7 +215,7 @@ export const StateChangeTest: Story = {
 
       await waitFor(
         async () => {
-          const tooltip = await canvas.findByRole('tooltip');
+          const tooltip = await findTooltipByContent();
           await expect(tooltip).toHaveTextContent(/Glow: true/);
         },
         { timeout: 2000 },
@@ -223,7 +233,7 @@ export const StateChangeTest: Story = {
 
       await waitFor(
         async () => {
-          const tooltip = await canvas.findByRole('tooltip');
+          const tooltip = await findTooltipByContent();
           await expect(tooltip).toHaveTextContent(/Pulse: true/);
         },
         { timeout: 2000 },
@@ -331,7 +341,7 @@ export const ScreenReaderTest: Story = {
       </Tooltip>
 
       <Box>
-        <Typography variant="subtitle2" id="field-label" sx={{ mb: 1 }}>
+        <Typography variant="subtitle2" id="field-label" data-testid="field-label" sx={{ mb: 1 }}>
           Important Setting
         </Typography>
         <Tooltip
@@ -376,7 +386,7 @@ export const ScreenReaderTest: Story = {
 
       await waitFor(
         async () => {
-          const tooltip = await canvas.findByRole('tooltip');
+          const tooltip = await findTooltipByContent();
           await expect(tooltip).toBeInTheDocument();
           await expect(tooltip).toHaveTextContent('This tooltip provides additional context');
         },
@@ -433,7 +443,7 @@ export const FocusManagement: Story = {
 
       await waitFor(
         async () => {
-          const tooltip = await canvas.findByRole('tooltip');
+          const tooltip = await findTooltipByContent();
           await expect(tooltip).toBeInTheDocument();
           // Focus should remain on trigger
           await expect(focusButton).toHaveFocus();
@@ -548,7 +558,7 @@ export const ResponsiveDesign: Story = {
 
         await waitFor(
           async () => {
-            const tooltip = await canvas.findByRole('tooltip');
+            const tooltip = await findTooltipByContent();
             await expect(tooltip).toBeInTheDocument();
           },
           { timeout: 2000 },
@@ -633,7 +643,7 @@ export const ThemeVariations: Story = {
 
         await waitFor(
           async () => {
-            const tooltip = await canvas.findByRole('tooltip');
+            const tooltip = await findTooltipByContent();
             await expect(tooltip).toBeInTheDocument();
           },
           { timeout: 2000 },
@@ -652,7 +662,7 @@ export const ThemeVariations: Story = {
 
         await waitFor(
           async () => {
-            const tooltip = await canvas.findByRole('tooltip');
+            const tooltip = await findTooltipByContent();
             await expect(tooltip).toBeInTheDocument();
           },
           { timeout: 2000 },
@@ -717,7 +727,7 @@ export const VisualStates: Story = {
 
       await waitFor(
         async () => {
-          const tooltip = await canvas.findByRole('tooltip');
+          const tooltip = await findTooltipByContent();
           await expect(tooltip).toBeInTheDocument();
           await expect(tooltip).toHaveTextContent('Normal state tooltip');
         },
@@ -738,7 +748,7 @@ export const VisualStates: Story = {
 
         await waitFor(
           async () => {
-            const tooltip = await canvas.findByRole('tooltip');
+            const tooltip = await findTooltipByContent();
             await expect(tooltip).toHaveTextContent('This button is disabled');
           },
           { timeout: 2000 },
@@ -754,7 +764,7 @@ export const VisualStates: Story = {
 
       await waitFor(
         async () => {
-          const tooltip = await canvas.findByRole('tooltip');
+          const tooltip = await findTooltipByContent();
           await expect(tooltip).toHaveTextContent('Small size tooltip');
         },
         { timeout: 2000 },
@@ -767,7 +777,7 @@ export const VisualStates: Story = {
 
       await waitFor(
         async () => {
-          const tooltip = await canvas.findByRole('tooltip');
+          const tooltip = await findTooltipByContent();
           await expect(tooltip).toHaveTextContent('Large size tooltip');
         },
         { timeout: 2000 },
@@ -782,7 +792,7 @@ export const VisualStates: Story = {
 
       await waitFor(
         async () => {
-          const tooltip = await canvas.findByRole('tooltip');
+          const tooltip = await findTooltipByContent();
           await expect(tooltip).toBeInTheDocument();
           // Check that tooltip contains the long text
           await expect(tooltip).toHaveTextContent(/very long tooltip text/);
@@ -943,7 +953,7 @@ export const EdgeCases: Story = {
 
       await waitFor(
         async () => {
-          const tooltip = await canvas.findByRole('tooltip');
+          const tooltip = await findTooltipByContent();
           await expect(tooltip).toBeInTheDocument();
           // Should contain the long text but be constrained by maxWidth
           await expect(tooltip).toHaveTextContent(/extremely long tooltip text/);
@@ -960,7 +970,7 @@ export const EdgeCases: Story = {
 
       await waitFor(
         async () => {
-          const tooltip = await canvas.findByRole('tooltip');
+          const tooltip = await findTooltipByContent();
           await expect(tooltip).toBeInTheDocument();
           await expect(tooltip).toHaveTextContent(/Special chars:/);
         },
@@ -976,7 +986,7 @@ export const EdgeCases: Story = {
 
       await waitFor(
         async () => {
-          const tooltip = await canvas.findByRole('tooltip');
+          const tooltip = await findTooltipByContent();
           await expect(tooltip).toBeInTheDocument();
           // Should contain the text but not execute HTML/scripts
           await expect(tooltip).toHaveTextContent(/HTML content test/);
@@ -1105,7 +1115,7 @@ export const IntegrationTest: Story = {
 
       await waitFor(
         async () => {
-          const tooltip = await canvas.findByRole('tooltip');
+          const tooltip = await findTooltipByContent();
           await expect(tooltip).toHaveTextContent('current: 1');
         },
         { timeout: 2000 },
@@ -1147,7 +1157,7 @@ export const IntegrationTest: Story = {
 
       await waitFor(
         async () => {
-          const tooltip = await canvas.findByRole('tooltip');
+          const tooltip = await findTooltipByContent();
           await expect(tooltip).toHaveTextContent('current: 0');
         },
         { timeout: 2000 },

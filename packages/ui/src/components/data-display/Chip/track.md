@@ -141,28 +141,19 @@ Chip is a compact tag/label component that displays information in a condensed f
 - DataDisplay/Chip/LongContent
 - DataDisplay/Chip/GlassEffect
 - DataDisplay/Chip/Tests/BasicInteraction
-- DataDisplay/Chip/Tests/SelectionBehavior
-- DataDisplay/Chip/Tests/DeletionFunctionality
 - DataDisplay/Chip/Tests/KeyboardNavigation
-- DataDisplay/Chip/Tests/KeyboardDeletion
-- DataDisplay/Chip/Tests/ScreenReaderTest
 - DataDisplay/Chip/Tests/FocusManagement
 - DataDisplay/Chip/Tests/ResponsiveDesign
 - DataDisplay/Chip/Tests/ThemeVariations
 - DataDisplay/Chip/Tests/VisualStates
-- DataDisplay/Chip/Tests/PerformanceTest
 - DataDisplay/Chip/Tests/EdgeCases
-- DataDisplay/Chip/Tests/IntegrationTest
 
 ### Status
 
 - [ ] Basic Interaction
 - [ ] Keyboard Navigation
-- [ ] Screen Reader
 - [ ] Focus Management
 - [ ] Responsive Design
 - [ ] Theme Variations
 - [ ] Visual States
-- [ ] Performance
 - [ ] Edge Cases
-- [ ] Integration

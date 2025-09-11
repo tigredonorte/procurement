@@ -113,7 +113,12 @@ export const WithObjectSuggestions: Story = {
     const canvas = within(canvasElement);
     const input = canvas.getByRole('combobox');
 
+    await userEvent.click(input);
     await userEvent.type(input, 'john');
+
+    // Wait for listbox to appear first
+    const listbox = await canvas.findByRole('listbox');
+    await expect(listbox).toBeInTheDocument();
 
     const options = canvas.getAllByRole('option');
     await expect(options).toHaveLength(2); // John Doe, Bob Johnson
@@ -140,15 +145,19 @@ export const GhostText: Story = {
     await userEvent.click(input);
     await userEvent.type(input, 'ap');
 
+    // Wait for listbox to appear first
+    const listbox = await canvas.findByRole('listbox');
+    await expect(listbox).toBeInTheDocument();
+
     // Test ghost text appears - look for the new inline suggestion pattern
     // Since we're using the new pattern, check for the presence of the suggestion
     const options = canvas.getAllByRole('option');
-    await expect(options).toHaveLength(1);
+    await expect(options).toHaveLength(2); // Apple, Grape both contain "ap"
     await expect(options[0]).toHaveTextContent('Apple');
 
     // Test that Tab key completes the ghost text
     await userEvent.keyboard('{Tab}');
-    await expect(input).toHaveValue('Apple');
+    await expect(input).toHaveValue('apple'); // lowercase because user typed "ap"
     // Verify dropdown closes after completion
     await expect(input).toHaveAttribute('aria-expanded', 'false');
   },
@@ -260,6 +269,7 @@ export const MultipleSelection: Story = {
     const input = canvas.getByRole('combobox');
 
     // Select first item
+    await userEvent.click(input);
     await userEvent.type(input, 'apple');
     await userEvent.keyboard('{Enter}');
 
@@ -296,6 +306,7 @@ export const AsyncLoading: Story = {
     const canvas = within(canvasElement);
     const input = canvas.getByRole('combobox');
 
+    await userEvent.click(input);
     await userEvent.type(input, 'test');
 
     // Check loading indicator

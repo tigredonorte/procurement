@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { userEvent, within, expect, waitFor } from 'storybook/test';
+import { userEvent, within, expect, waitFor } from '@storybook/test';
 import { useState, useEffect, useRef } from 'react';
 import { Button, Box, Typography, TextField, Stack } from '@mui/material';
 
@@ -17,6 +17,7 @@ const meta: Meta<typeof Toast> = {
     (Story) => (
       <ToastProvider>
         <Story />
+        <ToastContainer />
       </ToastProvider>
     ),
   ],
@@ -772,8 +773,6 @@ export const Integration: Story = {
           >
             Run Integration Test
           </Button>
-
-          <ToastContainer position="top-right" maxToasts={3} gap={12} />
         </Stack>
       </Box>
     );

@@ -413,8 +413,8 @@ export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
             onLoad={handleImageLoad}
             tabIndex={interactive || onClick ? 0 : undefined}
             role={interactive || onClick ? 'button' : undefined}
-            aria-label={alt || 'Avatar'}
             {...props}
+            aria-label={props['aria-label'] || alt || 'Avatar'}
           >
             {loading || imageLoading ? null : avatarContent}
           </StyledAvatar>

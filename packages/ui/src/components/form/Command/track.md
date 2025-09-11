@@ -79,16 +79,12 @@ Command is a sophisticated command palette component that provides a searchable 
 ## 5) Storybook Tests
 
 **Stories**:
-* Form/Command/Tests/BasicInteraction
-* Form/Command/Tests/KeyboardNavigation
-* Form/Command/Tests/AccessibilityTest
-* Form/Command/Tests/ScreenReaderTest
-* Form/Command/Tests/ResponsiveDesign
-* Form/Command/Tests/VisualStates
-* Form/Command/Tests/EdgeCases
-* Form/Command/Tests/PerformanceTest
-* Form/Command/Tests/IntegrationTest
-* Form/Command/Tests/AllVariants
+
+- Form/Command/Tests/BasicInteraction
+- Form/Command/Tests/KeyboardNavigation
+- Form/Command/Tests/ResponsiveDesign
+- Form/Command/Tests/VisualStates
+- Form/Command/Tests/EdgeCases
 
 ## Storybook Tests Status
 

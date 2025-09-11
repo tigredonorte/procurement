@@ -57,7 +57,9 @@ const LanguageBadge = styled(Box)(({ theme }) => ({
   letterSpacing: '0.05em',
 }));
 
-const EditorWrapper = styled(Box)<{ fullscreen: boolean }>(({ theme, fullscreen }) => ({
+const EditorWrapper = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'fullscreen',
+})<{ fullscreen: boolean }>(({ theme, fullscreen }) => ({
   position: 'relative',
   flex: 1,
   minHeight: 200,
@@ -264,7 +266,7 @@ export const CodeEditor: FC<CodeEditorProps> = ({
               </Typography>
             )}
           </Stack>
-          
+
           <Stack direction="row" spacing={1}>
             {!readOnly && (
               <Tooltip title="Format Code (Ctrl+Shift+F)">
@@ -273,7 +275,7 @@ export const CodeEditor: FC<CodeEditorProps> = ({
                 </IconButton>
               </Tooltip>
             )}
-            
+
             <Tooltip title={isWrapped ? 'Disable Word Wrap' : 'Enable Word Wrap'}>
               <IconButton
                 size="small"
@@ -283,7 +285,7 @@ export const CodeEditor: FC<CodeEditorProps> = ({
                 <WrapIcon fontSize="small" />
               </IconButton>
             </Tooltip>
-            
+
             <Tooltip title={isCopied ? 'Copied!' : 'Copy to Clipboard'}>
               <IconButton
                 size="small"
@@ -293,7 +295,7 @@ export const CodeEditor: FC<CodeEditorProps> = ({
                 <CopyIcon fontSize="small" />
               </IconButton>
             </Tooltip>
-            
+
             <Tooltip title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}>
               <IconButton size="small" onClick={handleFullscreenToggle}>
                 {isFullscreen ? (
@@ -306,12 +308,10 @@ export const CodeEditor: FC<CodeEditorProps> = ({
           </Stack>
         </Toolbar>
       )}
-      
+
       <EditorWrapper fullscreen={isFullscreen}>
-        {placeholder && !value && (
-          <PlaceholderOverlay>{placeholder}</PlaceholderOverlay>
-        )}
-        
+        {placeholder && !value && <PlaceholderOverlay>{placeholder}</PlaceholderOverlay>}
+
         <Editor
           height={isFullscreen ? '100vh' : height}
           language={language}

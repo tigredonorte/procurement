@@ -375,13 +375,14 @@ export const ScreenReader: Story = {
       await userEvent.click(trigger);
 
       await waitFor(() => {
-        const dialog = canvas.getByRole('dialog');
+        // Use document queries for portal-rendered content
+        const dialog = document.querySelector('[role="dialog"]');
         expect(dialog).toBeInTheDocument();
         expect(dialog).toHaveAttribute('aria-label', 'User menu popover');
         expect(dialog).toHaveAttribute('aria-describedby', 'popover-desc');
 
         // Verify menu items have proper roles and labels
-        const menuItems = canvas.getAllByRole('menuitem');
+        const menuItems = document.querySelectorAll('[role="menuitem"]');
         expect(menuItems).toHaveLength(2);
         expect(menuItems[0]).toHaveAttribute('aria-label', 'Navigate to profile settings');
         expect(menuItems[1]).toHaveAttribute('aria-label', 'Navigate to account settings');
@@ -389,14 +390,17 @@ export const ScreenReader: Story = {
     });
 
     await step('Should have proper heading structure for screen readers', async () => {
-      const title = canvas.getByText('Accessible Menu');
-      expect(title).toHaveAttribute('id', 'popover-title');
+      // Use document queries for portal-rendered content
+      const title = document.querySelector('#popover-title');
+      expect(title).toBeInTheDocument();
+      expect(title).toHaveTextContent('Accessible Menu');
 
-      const description = canvas.getByText('Navigate menu options using arrow keys');
-      expect(description).toHaveAttribute('id', 'popover-desc');
+      const description = document.querySelector('#popover-desc');
+      expect(description).toBeInTheDocument();
+      expect(description).toHaveTextContent('Navigate menu options using arrow keys');
 
-      const list = canvas.getByRole('list');
-      expect(list).toHaveAttribute('aria-labelledby', 'popover-title');
+      const list = document.querySelector('[aria-labelledby="popover-title"]');
+      expect(list).toBeInTheDocument();
 
       // Verify MUI Popover backdrop has proper role
       const backdrop = document.querySelector('.MuiBackdrop-root');
@@ -448,31 +452,34 @@ export const FocusManagement: Story = {
       await userEvent.click(trigger);
 
       await waitFor(() => {
-        const firstFocusable = canvas.getByTestId('first-focusable');
+        // Use document queries for portal-rendered content
+        const firstFocusable = document.querySelector('[data-testid="first-focusable"]');
         expect(firstFocusable).toBeInTheDocument();
 
         // Verify autoFocus worked
         expect(firstFocusable).toHaveFocus();
 
         // Verify all focusable elements are present
-        const secondFocusable = canvas.getByTestId('second-focusable');
-        const thirdFocusable = canvas.getByTestId('third-focusable');
+        const secondFocusable = document.querySelector('[data-testid="second-focusable"]');
+        const thirdFocusable = document.querySelector('[data-testid="third-focusable"]');
         expect(secondFocusable).toBeInTheDocument();
         expect(thirdFocusable).toBeInTheDocument();
       });
     });
 
     await step('Should cycle focus within popover', async () => {
-      // Tab through elements
+      // Tab through elements (use document queries for portal content)
       await userEvent.keyboard('{Tab}');
-      expect(canvas.getByTestId('second-focusable')).toHaveFocus();
+      const secondFocusable = document.querySelector('[data-testid="second-focusable"]');
+      expect(secondFocusable).toHaveFocus();
 
       await userEvent.keyboard('{Tab}');
-      expect(canvas.getByTestId('third-focusable')).toHaveFocus();
+      const thirdFocusable = document.querySelector('[data-testid="third-focusable"]');
+      expect(thirdFocusable).toHaveFocus();
 
       // Shift+Tab to go back
       await userEvent.keyboard('{Shift>}{Tab}{/Shift}');
-      expect(canvas.getByTestId('second-focusable')).toHaveFocus();
+      expect(secondFocusable).toHaveFocus();
     });
 
     await step('Should return focus to trigger when closed', async () => {
@@ -482,9 +489,9 @@ export const FocusManagement: Story = {
         const trigger = canvas.getByTestId('popover-trigger');
         expect(trigger).toHaveFocus();
 
-        // Verify popover content is removed
-        expect(canvas.queryByTestId('first-focusable')).not.toBeInTheDocument();
-        expect(canvas.queryByTestId('second-focusable')).not.toBeInTheDocument();
+        // Verify popover content is removed (check in document, not canvas)
+        expect(document.querySelector('[data-testid="first-focusable"]')).not.toBeInTheDocument();
+        expect(document.querySelector('[data-testid="second-focusable"]')).not.toBeInTheDocument();
       });
     });
 
@@ -602,12 +609,13 @@ export const ThemeVariations: Story = {
       // Test default variant
       await userEvent.click(triggers[0]);
       await waitFor(() => {
-        const content = canvas.getByTestId('default-content');
+        // Use document queries for portal-rendered content
+        const content = document.querySelector('[data-testid="default-content"]');
         expect(content).toBeInTheDocument();
         expect(content).toHaveTextContent('Default Theme');
 
         // Verify default variant styling
-        const paper = content.closest('.MuiPaper-root') as HTMLElement;
+        const paper = content?.closest('.MuiPaper-root') as HTMLElement;
         if (paper) {
           const computedStyle = window.getComputedStyle(paper);
           expect(computedStyle.borderRadius).toBeTruthy();
@@ -618,18 +626,19 @@ export const ThemeVariations: Story = {
 
       // Wait for animation
       await waitFor(() => {
-        expect(canvas.queryByTestId('default-content')).not.toBeInTheDocument();
+        expect(document.querySelector('[data-testid="default-content"]')).not.toBeInTheDocument();
       });
 
       // Test glass variant
       await userEvent.click(triggers[1]);
       await waitFor(() => {
-        const content = canvas.getByTestId('glass-content');
+        // Use document queries for portal-rendered content
+        const content = document.querySelector('[data-testid="glass-content"]');
         expect(content).toBeInTheDocument();
         expect(content).toHaveTextContent('Glass Theme');
 
         // Verify glass variant has backdrop filter
-        const paper = content.closest('.MuiPaper-root') as HTMLElement;
+        const paper = content?.closest('.MuiPaper-root') as HTMLElement;
         if (paper) {
           const computedStyle = window.getComputedStyle(paper);
           // Glass variant should have backdrop-filter
@@ -640,18 +649,19 @@ export const ThemeVariations: Story = {
 
       // Wait for animation
       await waitFor(() => {
-        expect(canvas.queryByTestId('glass-content')).not.toBeInTheDocument();
+        expect(document.querySelector('[data-testid="glass-content"]')).not.toBeInTheDocument();
       });
 
       // Test arrow variant
       await userEvent.click(triggers[2]);
       await waitFor(() => {
-        const content = canvas.getByTestId('arrow-content');
+        // Use document queries for portal-rendered content
+        const content = document.querySelector('[data-testid="arrow-content"]');
         expect(content).toBeInTheDocument();
         expect(content).toHaveTextContent('Arrow Theme');
 
         // Verify arrow variant styling
-        const paper = content.closest('.MuiPaper-root') as HTMLElement;
+        const paper = content?.closest('.MuiPaper-root') as HTMLElement;
         if (paper) {
           const computedStyle = window.getComputedStyle(paper);
           expect(computedStyle.boxShadow).toBeTruthy();
@@ -702,11 +712,12 @@ export const VisualStates: Story = {
       // Test glow effect
       await userEvent.click(triggers[0]);
       await waitFor(() => {
-        const content = canvas.getByTestId('glow-content');
+        // Use document queries for portal-rendered content
+        const content = document.querySelector('[data-testid="glow-content"]');
         expect(content).toBeInTheDocument();
 
         // Verify glow effect is applied (enhanced box-shadow)
-        const paper = content.closest('.MuiPaper-root') as HTMLElement;
+        const paper = content?.closest('.MuiPaper-root') as HTMLElement;
         if (paper) {
           const computedStyle = window.getComputedStyle(paper);
           expect(computedStyle.boxShadow).toContain('rgb');
@@ -717,17 +728,18 @@ export const VisualStates: Story = {
 
       // Wait for close animation
       await waitFor(() => {
-        expect(canvas.queryByTestId('glow-content')).not.toBeInTheDocument();
+        expect(document.querySelector('[data-testid="glow-content"]')).not.toBeInTheDocument();
       });
 
       // Test pulse effect
       await userEvent.click(triggers[1]);
       await waitFor(() => {
-        const content = canvas.getByTestId('pulse-content');
+        // Use document queries for portal-rendered content
+        const content = document.querySelector('[data-testid="pulse-content"]');
         expect(content).toBeInTheDocument();
 
         // Verify pulse animation is present
-        const paper = content.closest('.MuiPaper-root') as HTMLElement;
+        const paper = content?.closest('.MuiPaper-root') as HTMLElement;
         if (paper) {
           // Check for ::after pseudo element that creates pulse
           const computedStyle = window.getComputedStyle(paper, '::after');
@@ -738,17 +750,18 @@ export const VisualStates: Story = {
 
       // Wait for close animation
       await waitFor(() => {
-        expect(canvas.queryByTestId('pulse-content')).not.toBeInTheDocument();
+        expect(document.querySelector('[data-testid="pulse-content"]')).not.toBeInTheDocument();
       });
 
       // Test both effects combined
       await userEvent.click(triggers[2]);
       await waitFor(() => {
-        const content = canvas.getByTestId('both-effects-content');
+        // Use document queries for portal-rendered content
+        const content = document.querySelector('[data-testid="both-effects-content"]');
         expect(content).toBeInTheDocument();
 
         // Verify both effects are applied
-        const paper = content.closest('.MuiPaper-root') as HTMLElement;
+        const paper = content?.closest('.MuiPaper-root') as HTMLElement;
         if (paper) {
           const computedStyle = window.getComputedStyle(paper);
           // Should have glow shadow
@@ -813,31 +826,37 @@ export const Performance: Story = {
       // First open/close cycle
       await userEvent.click(trigger);
       await waitFor(() => {
-        expect(canvas.getByTestId('performance-content')).toBeInTheDocument();
+        expect(document.querySelector('[data-testid="performance-content"]')).toBeInTheDocument();
       });
       await userEvent.keyboard('{Escape}');
       await waitFor(() => {
-        expect(canvas.queryByTestId('performance-content')).not.toBeInTheDocument();
+        expect(
+          document.querySelector('[data-testid="performance-content"]'),
+        ).not.toBeInTheDocument();
       });
 
       // Second open/close cycle
       await userEvent.click(trigger);
       await waitFor(() => {
-        expect(canvas.getByTestId('performance-content')).toBeInTheDocument();
+        expect(document.querySelector('[data-testid="performance-content"]')).toBeInTheDocument();
       });
       await userEvent.keyboard('{Escape}');
       await waitFor(() => {
-        expect(canvas.queryByTestId('performance-content')).not.toBeInTheDocument();
+        expect(
+          document.querySelector('[data-testid="performance-content"]'),
+        ).not.toBeInTheDocument();
       });
 
       // Third open/close cycle
       await userEvent.click(trigger);
       await waitFor(() => {
-        expect(canvas.getByTestId('performance-content')).toBeInTheDocument();
+        expect(document.querySelector('[data-testid="performance-content"]')).toBeInTheDocument();
       });
       await userEvent.keyboard('{Escape}');
       await waitFor(() => {
-        expect(canvas.queryByTestId('performance-content')).not.toBeInTheDocument();
+        expect(
+          document.querySelector('[data-testid="performance-content"]'),
+        ).not.toBeInTheDocument();
       });
 
       // Check that renders didn't increase dramatically
@@ -922,15 +941,16 @@ export const EdgeCases: Story = {
       await userEvent.click(triggers[0]);
 
       await waitFor(() => {
-        const emptyContent = canvas.getByTestId('empty-content');
+        // Use document queries for portal-rendered content
+        const emptyContent = document.querySelector('[data-testid="empty-content"]');
         expect(emptyContent).toBeInTheDocument();
 
         // Verify minimum height is applied
-        const computedStyle = window.getComputedStyle(emptyContent);
+        const computedStyle = window.getComputedStyle(emptyContent as HTMLElement);
         expect(computedStyle.minHeight).toBe('50px');
 
         // Verify popover renders even with empty content
-        const paper = emptyContent.closest('.MuiPaper-root');
+        const paper = emptyContent?.closest('.MuiPaper-root');
         expect(paper).toBeInTheDocument();
       });
       await userEvent.keyboard('{Escape}');
@@ -941,18 +961,19 @@ export const EdgeCases: Story = {
       await userEvent.click(triggers[1]);
 
       await waitFor(() => {
-        const content = canvas.getByTestId('long-content');
+        // Use document queries for portal-rendered content
+        const content = document.querySelector('[data-testid="long-content"]') as HTMLElement;
         expect(content).toBeInTheDocument();
 
         // Verify maxWidth is applied
-        const paper = content.closest('.MuiPaper-root') as HTMLElement;
+        const paper = content?.closest('.MuiPaper-root') as HTMLElement;
         if (paper) {
           const computedStyle = window.getComputedStyle(paper);
           expect(computedStyle.maxWidth).toBe('200px');
         }
 
         // Verify text wraps properly
-        const contentHeight = content.offsetHeight;
+        const contentHeight = content?.offsetHeight;
         expect(contentHeight).toBeGreaterThan(50); // Should be taller due to wrapping
       });
       await userEvent.keyboard('{Escape}');
@@ -963,11 +984,12 @@ export const EdgeCases: Story = {
       await userEvent.click(triggers[2]);
 
       await waitFor(() => {
-        const content = canvas.getByTestId('no-max-width-content');
+        // Use document queries for portal-rendered content
+        const content = document.querySelector('[data-testid="no-max-width-content"]');
         expect(content).toBeInTheDocument();
 
         // Verify no maxWidth constraint is applied (should use default)
-        const paper = content.closest('.MuiPaper-root') as HTMLElement;
+        const paper = content?.closest('.MuiPaper-root') as HTMLElement;
         if (paper) {
           const computedStyle = window.getComputedStyle(paper);
           // When undefined, should use default maxWidth of 400px
@@ -982,11 +1004,12 @@ export const EdgeCases: Story = {
       await userEvent.click(triggers[3]);
 
       await waitFor(() => {
-        const content = canvas.getByTestId('zero-width-content');
+        // Use document queries for portal-rendered content
+        const content = document.querySelector('[data-testid="zero-width-content"]');
         expect(content).toBeInTheDocument();
 
         // Verify zero maxWidth is handled
-        const paper = content.closest('.MuiPaper-root') as HTMLElement;
+        const paper = content?.closest('.MuiPaper-root') as HTMLElement;
         if (paper) {
           const computedStyle = window.getComputedStyle(paper);
           expect(computedStyle.maxWidth).toBe('0px');
@@ -1002,18 +1025,39 @@ export const EdgeCases: Story = {
 // 11. Integration Tests
 const IntegrationTestComponent = () => {
   const [selectedItem, setSelectedItem] = React.useState<string>('');
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+  const isOpen = Boolean(anchorEl);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleItemClick = (option: string) => {
     setSelectedItem(option);
-    setIsOpen(false); // Close popover after selection
+    handleClose(); // Properly close popover after selection
   };
 
   return (
     <>
       <div>
         <Typography data-testid="selected-item">Selected: {selectedItem || 'None'}</Typography>
-        <PopoverTestWrapper onOpen={() => setIsOpen(true)} onClose={() => setIsOpen(false)}>
+        <Button variant="contained" onClick={handleClick} data-testid="popover-trigger">
+          Open Popover
+        </Button>
+        <Popover
+          open={isOpen}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          data-testid="popover"
+        >
           <div style={{ padding: 16 }}>
             <Typography variant="h6" gutterBottom>
               Select an Option
@@ -1031,7 +1075,7 @@ const IntegrationTestComponent = () => {
               ))}
             </List>
           </div>
-        </PopoverTestWrapper>
+        </Popover>
         <Typography data-testid="popover-state" style={{ display: 'none' }}>
           {isOpen ? 'open' : 'closed'}
         </Typography>
@@ -1060,20 +1104,29 @@ export const Integration: Story = {
 
       await waitFor(() => {
         expect(canvas.getByTestId('popover-state')).toHaveTextContent('open');
-        expect(canvas.getByTestId('option-option-1')).toBeInTheDocument();
-        expect(canvas.getByTestId('option-option-2')).toBeInTheDocument();
-        expect(canvas.getByTestId('option-option-3')).toBeInTheDocument();
+        // Use document queries for portal-rendered content
+        expect(document.querySelector('[data-testid="option-option-1"]')).toBeInTheDocument();
+        expect(document.querySelector('[data-testid="option-option-2"]')).toBeInTheDocument();
+        expect(document.querySelector('[data-testid="option-option-3"]')).toBeInTheDocument();
       });
 
       // Click an option
-      await userEvent.click(canvas.getByTestId('option-option-2'));
+      const option2 = document.querySelector('[data-testid="option-option-2"]') as HTMLElement;
+      await userEvent.click(option2);
 
       // Should update external state and close popover
       await waitFor(() => {
         expect(canvas.getByTestId('selected-item')).toHaveTextContent('Selected: Option 2');
         expect(canvas.getByTestId('popover-state')).toHaveTextContent('closed');
-        expect(canvas.queryByTestId('option-option-1')).not.toBeInTheDocument();
       });
+
+      // Wait for popover content to be removed from DOM
+      await waitFor(
+        () => {
+          expect(document.querySelector('[data-testid="option-option-1"]')).not.toBeInTheDocument();
+        },
+        { timeout: 2000 },
+      );
     });
 
     await step('Should maintain state across multiple interactions', async () => {
@@ -1085,7 +1138,8 @@ export const Integration: Story = {
         expect(canvas.getByTestId('popover-state')).toHaveTextContent('open');
       });
 
-      await userEvent.click(canvas.getByTestId('option-option-3'));
+      const option3 = document.querySelector('[data-testid="option-option-3"]') as HTMLElement;
+      await userEvent.click(option3);
 
       await waitFor(() => {
         expect(canvas.getByTestId('selected-item')).toHaveTextContent('Selected: Option 3');
@@ -1096,10 +1150,12 @@ export const Integration: Story = {
       await userEvent.click(trigger);
 
       await waitFor(() => {
-        expect(canvas.getByTestId('option-option-1')).toBeInTheDocument();
+        // Use document query for portal-rendered content
+        expect(document.querySelector('[data-testid="option-option-1"]')).toBeInTheDocument();
       });
 
-      await userEvent.click(canvas.getByTestId('option-option-1'));
+      const option1 = document.querySelector('[data-testid="option-option-1"]') as HTMLElement;
+      await userEvent.click(option1);
 
       await waitFor(() => {
         expect(canvas.getByTestId('selected-item')).toHaveTextContent('Selected: Option 1');

@@ -94,7 +94,9 @@ const TimelineContainer = styled(Box)<{ orientation: 'vertical' | 'horizontal' }
   }),
 );
 
-const TimelineItemContainer = styled(Box)<{
+const TimelineItemContainer = styled(Box, {
+  shouldForwardProp: (prop) => !['animated', 'alternating', 'index'].includes(prop as string),
+})<{
   animated: boolean;
   alternating: boolean;
   index: number;
@@ -118,7 +120,9 @@ const TimelineItemContainer = styled(Box)<{
   }),
 }));
 
-const TimelineConnector = styled(Box)<{
+const TimelineConnector = styled(Box, {
+  shouldForwardProp: (prop) => !['isLast'].includes(prop as string),
+})<{
   orientation: 'vertical' | 'horizontal';
   isLast: boolean;
 }>(({ theme, orientation, isLast }) => ({
@@ -139,53 +143,53 @@ const TimelineConnector = styled(Box)<{
       }),
 }));
 
-const TimelineDot = styled(Box)<{ dotColor?: string; hasIcon: boolean }>(
-  ({ theme, dotColor, hasIcon }) => ({
-    width: 40,
-    height: 40,
-    borderRadius: '50%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: dotColor
-      ? `linear-gradient(135deg, ${dotColor} 0%, ${alpha(dotColor, 0.8)} 100%)`
-      : `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.light} 100%)`,
-    boxShadow: `0 4px 12px ${alpha(dotColor || theme.palette.primary.main, 0.3)}`,
-    border: `2px solid ${theme.palette.background.paper}`,
-    zIndex: 1,
-    flexShrink: 0,
-    animation: `${pulseAnimation} 2s ease infinite`,
-    '& svg': {
-      fontSize: hasIcon ? '1.2rem' : '0.8rem',
-      color: theme.palette.background.paper,
-    },
-  }),
-);
+const TimelineDot = styled(Box, {
+  shouldForwardProp: (prop) => !['dotColor', 'hasIcon'].includes(prop as string),
+})<{ dotColor?: string; hasIcon: boolean }>(({ theme, dotColor, hasIcon }) => ({
+  width: 40,
+  height: 40,
+  borderRadius: '50%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  background: dotColor
+    ? `linear-gradient(135deg, ${dotColor} 0%, ${alpha(dotColor, 0.8)} 100%)`
+    : `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.light} 100%)`,
+  boxShadow: `0 4px 12px ${alpha(dotColor || theme.palette.primary.main, 0.3)}`,
+  border: `2px solid ${theme.palette.background.paper}`,
+  zIndex: 1,
+  flexShrink: 0,
+  animation: `${pulseAnimation} 2s ease infinite`,
+  '& svg': {
+    fontSize: hasIcon ? '1.2rem' : '0.8rem',
+    color: theme.palette.background.paper,
+  },
+}));
 
-const TimelineCard = styled(Card)<{ timelineVariant: 'default' | 'compact' | 'detailed' }>(
-  ({ theme, timelineVariant }) => ({
-    flex: 1,
-    background: `linear-gradient(135deg, ${alpha(theme.palette.background.paper, 0.9)} 0%, ${alpha(theme.palette.background.paper, 0.8)} 100%)`,
-    backdropFilter: 'blur(10px)',
-    WebkitBackdropFilter: 'blur(10px)',
-    border: `1px solid ${alpha(theme.palette.divider, 0.18)}`,
-    transition: theme.transitions.create(['transform', 'box-shadow']),
-    cursor: 'pointer',
-    '&:hover': {
-      transform: 'translateY(-2px)',
-      boxShadow: theme.shadows[8],
-    },
-    ...(timelineVariant === 'compact' && {
-      padding: theme.spacing(1.5),
-      '& .MuiCardContent-root': {
-        padding: 0,
-        '&:last-child': {
-          paddingBottom: 0,
-        },
+const TimelineCard = styled(Card, {
+  shouldForwardProp: (prop) => !['timelineVariant'].includes(prop as string),
+})<{ timelineVariant: 'default' | 'compact' | 'detailed' }>(({ theme, timelineVariant }) => ({
+  flex: 1,
+  background: `linear-gradient(135deg, ${alpha(theme.palette.background.paper, 0.9)} 0%, ${alpha(theme.palette.background.paper, 0.8)} 100%)`,
+  backdropFilter: 'blur(10px)',
+  WebkitBackdropFilter: 'blur(10px)',
+  border: `1px solid ${alpha(theme.palette.divider, 0.18)}`,
+  transition: theme.transitions.create(['transform', 'box-shadow']),
+  cursor: 'pointer',
+  '&:hover': {
+    transform: 'translateY(-2px)',
+    boxShadow: theme.shadows[8],
+  },
+  ...(timelineVariant === 'compact' && {
+    padding: theme.spacing(1.5),
+    '& .MuiCardContent-root': {
+      padding: 0,
+      '&:last-child': {
+        paddingBottom: 0,
       },
-    }),
+    },
   }),
-);
+}));
 
 const TimelineTimestamp = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.secondary,
@@ -254,7 +258,12 @@ export const Timeline: FC<TimelineProps> = ({
           )}
         </Box>
 
-        <TimelineCard timelineVariant={variant} onClick={() => handleItemClick(item)}>
+        <TimelineCard
+          timelineVariant={variant}
+          onClick={() => handleItemClick(item)}
+          role="article"
+          aria-label={`Timeline item: ${item.title}`}
+        >
           <CardContent>
             <Stack spacing={1}>
               <Box
@@ -274,6 +283,7 @@ export const Timeline: FC<TimelineProps> = ({
                   <IconButton
                     size="small"
                     onClick={(e) => handleExpandClick(item.id, e)}
+                    aria-label={isExpanded ? 'Collapse item details' : 'Expand item details'}
                     sx={{
                       transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
                       transition: 'transform 0.3s ease',

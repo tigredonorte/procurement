@@ -1,488 +1,488 @@
 {
-  "data-display/Tooltip": {
-    "hash": "965c75cf83b7a21f59a6b0c4d49b5939",
+  "data-display/Avatar": {
+    "hash": "797e8d98336153b654802a8663610d47",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596338319
+    "timestamp": 1757605938868
   },
-  "data-display/EmptyState": {
-    "hash": "e00388c253f8c2bca5138976213cae4a",
-    "status": "PASS",
-    "reason": "All checks passed",
-    "timestamp": 1757596328451
+  "data-display/Carousel": {
+    "hash": "f352be440b10373384c68bee7019d056",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757605938869
+  },
+  "data-display/HoverCard": {
+    "hash": "377c632974f5a52b6ee42d34de4c4ff9",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757605938882
+  },
+  "data-display/Sheet": {
+    "hash": "08c11544c347f589c34944a6585c05dc",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757605938885
+  },
+  "data-display/Badge": {
+    "hash": "b7cb2e4a63e0e698398fd6f58c03802f",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757605938888
+  },
+  "data-display/Tooltip": {
+    "hash": "f2f253e397f6c27fd022b6d67cdde557",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757605938889
+  },
+  "data-display/Banner": {
+    "hash": "c679a4c6d8787b86882c89b4cffda095",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757605938916
   },
   "data-display/Stepper": {
     "hash": "906c7a448942e69f85ca293d0dd49859",
-    "status": "PASS",
-    "reason": "All checks passed",
-    "timestamp": 1757596329681
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757605938918
+  },
+  "data-display/AlertDialog": {
+    "hash": "6d53b67c3e0125366efc5a50926b3b2b",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757605938926
+  },
+  "data-display/Alert": {
+    "hash": "e3424ef45e9808b581306eec9830fc58",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757605938927
+  },
+  "data-display/Lightbox": {
+    "hash": "feda0b8506521c121c9946c91e5507e9",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757605938944
+  },
+  "data-display/EmptyState": {
+    "hash": "e00388c253f8c2bca5138976213cae4a",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757605938945
   },
   "data-display/Chip": {
     "hash": "21ddc025e57888be555be088f51d2839",
-    "status": "PASS",
-    "reason": "All checks passed",
-    "timestamp": 1757596328051
-  },
-  "data-display/Alert": {
-    "hash": "39008e60c079bc929cd0cec2ab61b4e2",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596338383
-  },
-  "data-display/Avatar": {
-    "hash": "d1887d8a28fdf1692b761d4400f75e0b",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596338312
-  },
-  "data-display/Lightbox": {
-    "hash": "325ae6bd25b8b9710a597a4182db81ae",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596338496
-  },
-  "data-display/Banner": {
-    "hash": "9608364e640634b388f3d8af4fa8a078",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596338383
-  },
-  "data-display/Progress": {
-    "hash": "5073c1374ad6dbcc518ef9137fb2abf8",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596338506
-  },
-  "data-display/AlertDialog": {
-    "hash": "23d0ba931ff3284ee9256b25bd0848ee",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596338310
-  },
-  "data-display/Table": {
-    "hash": "6ab3e67c13d450c6e72fb6e3d1f31eb9",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596338507
-  },
-  "data-display/Badge": {
-    "hash": "5306689dd08f5b3f953146272db8560f",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596307947
-  },
-  "data-display/Carousel": {
-    "hash": "ad10c91e0887a8234853d72f742f227d",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596338311
-  },
-  "data-display/HoverCard": {
-    "hash": "7ebbcf4f13cfaa4223bec2e8f5ff9621",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596338314
+    "timestamp": 1757605938978
   },
   "enhanced/AddressAutocomplete": {
     "hash": "c03256737082bddb3594a12da9cdbee2",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596314062
+    "timestamp": 1757605938997
   },
-  "data-display/Sheet": {
-    "hash": "6da414fe21e0ec5d4239fc7ba39aec8a",
+  "data-display/Progress": {
+    "hash": "be67716b1fc4b0d3adec46bea81cbb3a",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596338312
+    "timestamp": 1757605939008
   },
-  "enhanced/AnimatedIcon": {
-    "hash": "39e7b40d289a33b3a3e3ed72939ae530",
+  "data-display/Table": {
+    "hash": "bcb1beebc1435c255db49e64e3a8abdf",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596352311
+    "timestamp": 1757605939012
   },
   "enhanced/CodeEditor": {
     "hash": "0b51c2cb2c22ff2553d474e2606de552",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596358426
+    "timestamp": 1757605983051
   },
-  "enhanced/LottieAnimation": {
-    "hash": "e07964456e023f2c825d0b7c2d4e3279",
+  "enhanced/AnimatedIcon": {
+    "hash": "e5e6b5a7b4c66b331742088ad857f7e1",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596373716
-  },
-  "enhanced/CommandPalette": {
-    "hash": "7fdffbe5876a7e7a02728724468ad15a",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596372104
-  },
-  "enhanced/WorkflowStep": {
-    "hash": "e4588e8532509673d3bdd4986393a6ae",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596382790
-  },
-  "enhanced/TimingDiagram": {
-    "hash": "d4859277c300dec51aaa1297bf28140a",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596382652
-  },
-  "enhanced/PhoneInput": {
-    "hash": "26ace1f000e420c137fc2895bd356f97",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596382503
-  },
-  "enhanced/PasswordStrength": {
-    "hash": "5dfed55d0c7804196334d0417daa5818",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596382502
-  },
-  "enhanced/RichTextEditor": {
-    "hash": "2313d9fd05c54639ee4f9b48e18d1627",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596382508
+    "timestamp": 1757605983060
   },
   "enhanced/DataGrid": {
     "hash": "bacf80ef065240e59256047fb68451c9",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596372482
+    "timestamp": 1757605983067
+  },
+  "enhanced/CommandPalette": {
+    "hash": "7fdffbe5876a7e7a02728724468ad15a",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757605983069
+  },
+  "enhanced/LottieAnimation": {
+    "hash": "e07964456e023f2c825d0b7c2d4e3279",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757605983092
   },
   "enhanced/MapPreview": {
     "hash": "fb1475c59c368fd7a195c1427bf3d452",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596382448
+    "timestamp": 1757605983174
   },
-  "enhanced/Timeline": {
-    "hash": "968a29dbfa1c98fabee8ab0bc13097c7",
+  "enhanced/PasswordStrength": {
+    "hash": "5dfed55d0c7804196334d0417daa5818",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596382613
+    "timestamp": 1757605983203
   },
-  "feedback/Modal": {
-    "hash": "39c9f89c2e5d51220fef96770e4c5c63",
+  "enhanced/PhoneInput": {
+    "hash": "26ace1f000e420c137fc2895bd356f97",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596382791
+    "timestamp": 1757605983224
   },
-  "enhanced/TutorialOverlay": {
-    "hash": "3d89fe008736838632d1c7a2d1fe57fe",
+  "enhanced/RichTextEditor": {
+    "hash": "2313d9fd05c54639ee4f9b48e18d1627",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596382674
-  },
-  "feedback/Dialog": {
-    "hash": "693c858d61b30b6f935e025aad8a1613",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596382679
+    "timestamp": 1757605983240
   },
   "enhanced/StackedModal": {
     "hash": "25bf963c671fdf2036b6dd53cf9664f2",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596382528
+    "timestamp": 1757605983258
   },
-  "feedback/Sonner": {
-    "hash": "e913c219328f1624451f013d79349792",
+  "enhanced/Timeline": {
+    "hash": "968a29dbfa1c98fabee8ab0bc13097c7",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596396409
+    "timestamp": 1757605983287
   },
-  "feedback/Toast": {
-    "hash": "182131f89812d9a5d78556558ee27926",
+  "feedback/Dialog": {
+    "hash": "693c858d61b30b6f935e025aad8a1613",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596401766
+    "timestamp": 1757605983366
   },
-  "form/Button": {
-    "hash": "2dd35effc3c340d44a4bd51ef741090b",
+  "enhanced/TimingDiagram": {
+    "hash": "d4859277c300dec51aaa1297bf28140a",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596416864
+    "timestamp": 1757605983373
   },
-  "form/Checkbox": {
-    "hash": "8cece714593ffd17634c2775a1c38d4d",
+  "enhanced/TutorialOverlay": {
+    "hash": "3d89fe008736838632d1c7a2d1fe57fe",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596426796
+    "timestamp": 1757605983405
   },
-  "form/Autocomplete": {
-    "hash": "5ec37341e1a3493a239dcbddce7b4567",
+  "enhanced/WorkflowStep": {
+    "hash": "e4588e8532509673d3bdd4986393a6ae",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596396738
+    "timestamp": 1757605983440
   },
-  "form/Calendar": {
-    "hash": "beae6c5965aa94137dfa0d035ccaa230",
+  "feedback/Modal": {
+    "hash": "39c9f89c2e5d51220fef96770e4c5c63",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596418046
+    "timestamp": 1757605983453
   },
   "form/Input": {
     "hash": "073b837c2238da973d5c561b533c4e5a",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596404496
-  },
-  "form/Form": {
-    "hash": "1405c8fe37680e93d89e751a6b36a4ad",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596426919
-  },
-  "form/Slider": {
-    "hash": "6ce646dd6f1b6b33fa1d9ca6045fc798",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596427198
-  },
-  "form/InputOTP": {
-    "hash": "30279aab95dda601878419f02fc8241e",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596426936
-  },
-  "form/Switch": {
-    "hash": "b4cb6c0548e1349a5d7fc0ce0a98f106",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596427239
+    "timestamp": 1757606008720
   },
   "form/RadioGroup": {
     "hash": "77e90a19d4b2c0498f80a74308d9211a",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596405170
+    "timestamp": 1757606009332
   },
-  "form/Select": {
-    "hash": "940b99d751f30881566b6a90ee85f432",
+  "form/Autocomplete": {
+    "hash": "5ec37341e1a3493a239dcbddce7b4567",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596427251
+    "timestamp": 1757606011799
+  },
+  "feedback/Toast": {
+    "hash": "182131f89812d9a5d78556558ee27926",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757606025900
+  },
+  "feedback/Sonner": {
+    "hash": "e913c219328f1624451f013d79349792",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757606025901
+  },
+  "form/Button": {
+    "hash": "2dd35effc3c340d44a4bd51ef741090b",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757606026039
+  },
+  "form/Calendar": {
+    "hash": "beae6c5965aa94137dfa0d035ccaa230",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757606026061
+  },
+  "form/Checkbox": {
+    "hash": "8cece714593ffd17634c2775a1c38d4d",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757606026123
   },
   "form/Command": {
     "hash": "8d394a27f7cd18de69bacabd7046953a",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596426874
+    "timestamp": 1757606026176
+  },
+  "form/Form": {
+    "hash": "1405c8fe37680e93d89e751a6b36a4ad",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757606026206
+  },
+  "form/InputOTP": {
+    "hash": "30279aab95dda601878419f02fc8241e",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757606026253
   },
   "form/Label": {
     "hash": "a27d263bc3518cd32cb71aabc2348d90",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596427055
+    "timestamp": 1757606026365
   },
   "form/Menubar": {
-    "hash": "f1b9f7888fc140117e50dd6144c8477b",
+    "hash": "8eeeca15a16b353481a0f65817bea87b",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596427158
+    "timestamp": 1757606026417
+  },
+  "form/Select": {
+    "hash": "940b99d751f30881566b6a90ee85f432",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757606026424
+  },
+  "form/Slider": {
+    "hash": "016bbaac89eed19a60801371e2fa1ed3",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757606026440
+  },
+  "form/Switch": {
+    "hash": "b4cb6c0548e1349a5d7fc0ce0a98f106",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757606026453
   },
   "form/Textarea": {
     "hash": "0a780486c85e1772f148408ce410700d",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596440742
+    "timestamp": 1757606052683
   },
   "form/Toggle": {
     "hash": "622b975674748737a8c2a9e4f828231a",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596441063
-  },
-  "form/ToggleGroup": {
-    "hash": "4f6bc2fc59804f4fa742a6d99f93fec6",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596446800
-  },
-  "form/UploadButton": {
-    "hash": "525c9cba595859decfaf7050b3dce566",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596449538
-  },
-  "layout/Collapsible": {
-    "hash": "afad3475206518a5823443f916fa96c2",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596463073
-  },
-  "layout/Container": {
-    "hash": "c12d22d4bcd60f0713111d370e9d6486",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596471845
-  },
-  "layout/Sidebar": {
-    "hash": "bd7779fc12c06a6486ed55fbeacf5c4b",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596472098
-  },
-  "layout/Resizable": {
-    "hash": "70974d9daf411ff8985edda85285ec51",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596471967
-  },
-  "layout/Drawer": {
-    "hash": "98b9839ace78ae63cfa1c071ba9d7d6d",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596471963
-  },
-  "layout/Spacer": {
-    "hash": "65d75ce1ee13e0140d250e1e3f56c700",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596472284
-  },
-  "layout/Card": {
-    "hash": "0712b8547b84616d4ea93c042674666d",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596461891
-  },
-  "layout/Accordion": {
-    "hash": "1b031a188b8e5a87b9b2f648f6d98901",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596450198
-  },
-  "layout/Skeleton": {
-    "hash": "9cdb03b129f00cbae2d3297588bf3d03",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596472210
+    "timestamp": 1757606053295
   },
   "layout/ScrollArea": {
     "hash": "d8b6c4a5a0dd0a873cca0d7cfe49126a",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596446325
+    "timestamp": 1757606054097
   },
-  "navigation/Breadcrumbs": {
-    "hash": "78fa21997a8a507f2ebccff33c659171",
+  "form/ToggleGroup": {
+    "hash": "4f6bc2fc59804f4fa742a6d99f93fec6",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596472344
+    "timestamp": 1757606054707
+  },
+  "form/UploadButton": {
+    "hash": "525c9cba595859decfaf7050b3dce566",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757606069918
+  },
+  "layout/Accordion": {
+    "hash": "7c8dfa8505eff390c5aff4711e33ae8c",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757606069966
+  },
+  "layout/Collapsible": {
+    "hash": "afad3475206518a5823443f916fa96c2",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757606070095
+  },
+  "layout/Card": {
+    "hash": "0712b8547b84616d4ea93c042674666d",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757606070151
+  },
+  "layout/Container": {
+    "hash": "c12d22d4bcd60f0713111d370e9d6486",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757606070185
+  },
+  "layout/Drawer": {
+    "hash": "98b9839ace78ae63cfa1c071ba9d7d6d",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757606070186
+  },
+  "layout/Resizable": {
+    "hash": "70974d9daf411ff8985edda85285ec51",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757606070277
+  },
+  "layout/Skeleton": {
+    "hash": "9cdb03b129f00cbae2d3297588bf3d03",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757606070449
+  },
+  "layout/Sidebar": {
+    "hash": "bd7779fc12c06a6486ed55fbeacf5c4b",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757606070451
   },
   "navigation/ContextMenu": {
     "hash": "cc61955eb5981e146c13e15870a6af74",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596472370
+    "timestamp": 1757606070582
   },
-  "navigation/DropdownMenu": {
-    "hash": "5b3eb5d2f38997a1bb77ff4ce5871329",
+  "layout/Spacer": {
+    "hash": "65d75ce1ee13e0140d250e1e3f56c700",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596485240
+    "timestamp": 1757606070587
+  },
+  "navigation/Breadcrumbs": {
+    "hash": "78fa21997a8a507f2ebccff33c659171",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757606070597
   },
   "navigation/NavigationMenu": {
     "hash": "b1a25d60325733d646c24759c89fa848",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596462259
+    "timestamp": 1757606073632
   },
-  "utility/Portal": {
-    "hash": "72582d9461ddf250485261751b964ad6",
+  "navigation/DropdownMenu": {
+    "hash": "5b3eb5d2f38997a1bb77ff4ce5871329",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596516493
+    "timestamp": 1757606095529
   },
   "navigation/Pagination": {
     "hash": "198860f82616bd9bf6844b5c6c27cbf2",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596490827
-  },
-  "typography/Heading": {
-    "hash": "bf5ca4b39ba473809b6d7bbcb31d9d91",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596506391
-  },
-  "typography/Paragraph": {
-    "hash": "dedcca45c9d1d3d54dd65be7768d5103",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596506814
-  },
-  "typography/Blockquote": {
-    "hash": "1adf9d388f4c3f12f1d577623cbf753a",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596494030
+    "timestamp": 1757606096968
   },
   "navigation/Tabs": {
     "hash": "04292b7237a2e4fa73f8ac3d32847a05",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596491296
+    "timestamp": 1757606098650
   },
-  "typography/Text": {
-    "hash": "2fbb542a1ba1805071add03365d1ee25",
+  "typography/Blockquote": {
+    "hash": "1adf9d388f4c3f12f1d577623cbf753a",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596507567
+    "timestamp": 1757606112778
   },
   "typography/Code": {
     "hash": "5dec16c4139b5a9e319962bbae2a69a9",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596494717
+    "timestamp": 1757606112824
   },
-  "utility/Transition": {
-    "hash": "4ce33231767ba0c4abe5acd391a3c691",
+  "typography/Heading": {
+    "hash": "bf5ca4b39ba473809b6d7bbcb31d9d91",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596516615
+    "timestamp": 1757606112960
+  },
+  "typography/Paragraph": {
+    "hash": "dedcca45c9d1d3d54dd65be7768d5103",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757606113021
   },
   "utility/AspectRatio": {
     "hash": "d0203168b68bf77a35e2ee2e69fc476d",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596516345
+    "timestamp": 1757606113053
+  },
+  "typography/Text": {
+    "hash": "2fbb542a1ba1805071add03365d1ee25",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757606113072
   },
   "utility/InfiniteScroll": {
     "hash": "505ca38f72fb68cc1f078afbc60bdfe6",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596516467
+    "timestamp": 1757606113157
   },
-  "data-display/Popover": {
-    "hash": "e41c9aa9cedec324ecf4b044097a0ccf",
+  "utility/Portal": {
+    "hash": "72582d9461ddf250485261751b964ad6",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596516907
+    "timestamp": 1757606113315
+  },
+  "utility/Transition": {
+    "hash": "4ce33231767ba0c4abe5acd391a3c691",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757606113364
   },
   "utility/VirtualList": {
-    "hash": "c41bdf165074c0030a2c0552ac66feb1",
+    "hash": "7140e365da8661e08033b958b0833656",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596516716
+    "timestamp": 1757606113489
+  },
+  "data-display/Chart": {
+    "hash": "45c840af65931d55382b4b6b9f9607f6",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757606113531
+  },
+  "data-display/Popover": {
+    "hash": "7dbeb403989c4619f164df664ced9093",
+    "status": "FAIL",
+    "reason": "Phase 1: Initial validations",
+    "timestamp": 1757606113547
   },
   "layout/Separator": {
     "hash": "c3bc2bb66aec825a2248e0e9cd50b8b9",
     "status": "FAIL",
     "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596516944
-  },
-  "data-display/Chart": {
-    "hash": "554a05e8f695ad756ee94508add6e2fd",
-    "status": "FAIL",
-    "reason": "Phase 1: Initial validations",
-    "timestamp": 1757596516869
+    "timestamp": 1757606116495
   }
 }

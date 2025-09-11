@@ -1,19 +1,19 @@
 # Component Check Status Report
 
-Generated: 2025-09-11T13:15:16.947Z
+Generated: 2025-09-11T15:55:16.496Z
 
 ## Summary
 
-- ✅ Passed: 3/81
-- ❌ Failed: 78/81
+- ✅ Passed: 0/81
+- ❌ Failed: 81/81
 - 💾 Cached: 0/81
-- 📊 Success Rate: 3.7%
+- 📊 Success Rate: 0.0%
 
 ## Failure Analysis
 
 | Failure Reason               | Count |
 | ---------------------------- | ----- |
-| Phase 1: Initial validations | 78    |
+| Phase 1: Initial validations | 81    |
 
 ## Detailed Results
 
@@ -26,16 +26,16 @@ Generated: 2025-09-11T13:15:16.947Z
 | data-display | Banner              | ❌     | Phase 1: Initial validations | 30         |
 | data-display | Carousel            | ❌     | Phase 1: Initial validations | 30         |
 | data-display | Chart               | ❌     | Phase 1: Initial validations | 37         |
+| data-display | Chip                | ❌     | Phase 1: Initial validations | 30         |
+| data-display | EmptyState          | ❌     | Phase 1: Initial validations | 30         |
 | data-display | HoverCard           | ❌     | Phase 1: Initial validations | 30         |
 | data-display | Lightbox            | ❌     | Phase 1: Initial validations | 30         |
 | data-display | Popover             | ❌     | Phase 1: Initial validations | 37         |
 | data-display | Progress            | ❌     | Phase 1: Initial validations | 30         |
 | data-display | Sheet               | ❌     | Phase 1: Initial validations | 30         |
+| data-display | Stepper             | ❌     | Phase 1: Initial validations | 30         |
 | data-display | Table               | ❌     | Phase 1: Initial validations | 30         |
 | data-display | Tooltip             | ❌     | Phase 1: Initial validations | 30         |
-| data-display | Chip                | ✅     | All checks passed            | 30         |
-| data-display | EmptyState          | ✅     | All checks passed            | 30         |
-| data-display | Stepper             | ✅     | All checks passed            | 30         |
 | enhanced     | AddressAutocomplete | ❌     | Phase 1: Initial validations | 30         |
 | enhanced     | AnimatedIcon        | ❌     | Phase 1: Initial validations | 30         |
 | enhanced     | CodeEditor          | ❌     | Phase 1: Initial validations | 30         |
@@ -103,4 +103,4 @@ Generated: 2025-09-11T13:15:16.947Z
 
 ---
 
-_Last updated: 2025-09-11T13:15:16.947Z_
+_Last updated: 2025-09-11T15:55:16.496Z_

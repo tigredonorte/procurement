@@ -287,7 +287,7 @@ export const VisualEffects: Story = {
             <AnimatedIcon variant="pulse" size="lg" glow glowColor="#FFD700">
               <Star />
             </AnimatedIcon>
-            <Typography variant="subtitle1" sx={{ mt: 2, color: 'white' }}>
+            <Typography variant="subtitle1" sx={{ mt: 2, color: 'common.white' }}>
               Glow Effect
             </Typography>
             <Typography variant="caption" sx={{ color: 'gray' }}>
@@ -307,7 +307,7 @@ export const VisualEffects: Story = {
             <AnimatedIcon variant="rotate" size="lg" glass>
               <Diamond />
             </AnimatedIcon>
-            <Typography variant="subtitle1" sx={{ mt: 2, color: 'white' }}>
+            <Typography variant="subtitle1" sx={{ mt: 2, color: 'common.white' }}>
               Glass Morphism
             </Typography>
             <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.8)' }}>
@@ -363,7 +363,7 @@ export const VisualEffects: Story = {
             <AnimatedIcon variant="breathe" size="lg" holographic>
               <AutoAwesome />
             </AnimatedIcon>
-            <Typography variant="subtitle1" sx={{ mt: 2, color: 'white' }}>
+            <Typography variant="subtitle1" sx={{ mt: 2, color: 'common.white' }}>
               Holographic
             </Typography>
             <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.7)' }}>
@@ -418,7 +418,7 @@ export const CombinedEffects: Story = {
             <AnimatedIcon variant="spin" size="lg" glow glass glowColor="#ffffff">
               <Diamond />
             </AnimatedIcon>
-            <Typography variant="subtitle2" sx={{ mt: 2, color: 'white' }}>
+            <Typography variant="subtitle2" sx={{ mt: 2, color: 'common.white' }}>
               Glass + Glow + Spin
             </Typography>
           </Paper>
@@ -468,7 +468,7 @@ export const CombinedEffects: Story = {
             <AnimatedIcon variant="morph" size="lg" holographic glow>
               <AutoAwesome />
             </AnimatedIcon>
-            <Typography variant="subtitle2" sx={{ mt: 2, color: 'white' }}>
+            <Typography variant="subtitle2" sx={{ mt: 2, color: 'common.white' }}>
               Holographic + Glow + Morph
             </Typography>
           </Paper>
@@ -584,11 +584,11 @@ export const UseCases: Story = {
 
       <Paper sx={{ p: 3, background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
         <Stack direction="row" spacing={2} alignItems="center">
-          <AnimatedIcon variant="rotate" size="md" color="white" glass>
+          <AnimatedIcon variant="rotate" size="md" color="#ffffff" glass>
             <Refresh />
           </AnimatedIcon>
           <Box>
-            <Typography variant="h6" color="white">
+            <Typography variant="h6" sx={{ color: 'common.white' }}>
               Loading State
             </Typography>
             <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.9)' }}>
@@ -600,11 +600,11 @@ export const UseCases: Story = {
 
       <Paper sx={{ p: 3, background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' }}>
         <Stack direction="row" spacing={2} alignItems="center">
-          <AnimatedIcon variant="heartbeat" size="md" color="white" glow>
+          <AnimatedIcon variant="heartbeat" size="md" color="#ffffff" glow>
             <Favorite />
           </AnimatedIcon>
           <Box>
-            <Typography variant="h6" color="white">
+            <Typography variant="h6" sx={{ color: 'common.white' }}>
               Like Animation
             </Typography>
             <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.9)' }}>
@@ -646,11 +646,11 @@ export const UseCases: Story = {
 
       <Paper sx={{ p: 3, background: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)' }}>
         <Stack direction="row" spacing={2} alignItems="center">
-          <AnimatedIcon variant="float" size="md" color="white" ripple>
+          <AnimatedIcon variant="float" size="md" color="#ffffff" ripple>
             <Rocket />
           </AnimatedIcon>
           <Box>
-            <Typography variant="h6" color="white">
+            <Typography variant="h6" sx={{ color: 'common.white' }}>
               Launch Ready
             </Typography>
             <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.9)' }}>

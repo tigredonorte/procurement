@@ -10,7 +10,7 @@ const meta: Meta<typeof Banner> = {
     layout: 'fullscreen',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Banner'],
 };
 
 export default meta;

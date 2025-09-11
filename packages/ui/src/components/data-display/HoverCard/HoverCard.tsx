@@ -74,6 +74,17 @@ const slideInRight = keyframes`
   }
 `;
 
+const scaleIn = keyframes`
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+`;
+
 // Arrow component
 const ArrowContainer = styled('div')<{ placement: HoverCardPlacement; offset: number }>(({
   theme,
@@ -150,7 +161,7 @@ const StyledCard = styled(Card, {
   }),
   ...(animation === 'scale' && {
     transformOrigin: 'center',
-    animation: 'scaleIn 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+    animation: `${scaleIn} 0.2s cubic-bezier(0.4, 0, 0.2, 1)`,
   }),
   ...(animation === 'slide-up' && {
     animation: `${slideInUp} 0.3s cubic-bezier(0.4, 0, 0.2, 1)`,
@@ -253,20 +264,20 @@ const StyledCard = styled(Card, {
     }),
 }));
 
-const StyledPopover = styled(Popover)<{ customAnimation?: HoverCardAnimation }>(
-  ({ customAnimation }) => ({
+const StyledPopover = styled(Popover, {
+  shouldForwardProp: (prop) => prop !== 'customAnimation',
+})<{ customAnimation?: HoverCardAnimation }>(({ customAnimation }) => ({
+  '& .MuiPopover-paper': {
+    backgroundColor: 'transparent',
+    boxShadow: 'none',
+    overflow: 'visible',
+  },
+  ...(customAnimation === 'scale' && {
     '& .MuiPopover-paper': {
-      backgroundColor: 'transparent',
-      boxShadow: 'none',
-      overflow: 'visible',
+      transformOrigin: 'center',
     },
-    ...(customAnimation === 'scale' && {
-      '& .MuiPopover-paper': {
-        transformOrigin: 'center',
-      },
-    }),
   }),
-);
+}));
 
 const LoadingContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -426,11 +437,28 @@ export const HoverCard = React.forwardRef<HTMLDivElement, HoverCardProps>(
       closeCard();
     };
 
-    const handleClose = () => {
+    const handleClose = React.useCallback(() => {
       setIsOpen(false);
       setAnchorEl(null);
       onClose?.();
-    };
+    }, [onClose]);
+
+    // Handle escape key press
+    React.useEffect(() => {
+      const handleEscape = (event: globalThis.KeyboardEvent) => {
+        if (event.key === 'Escape' && isOpen) {
+          handleClose();
+        }
+      };
+
+      if (isOpen) {
+        document.addEventListener('keydown', handleEscape);
+      }
+
+      return () => {
+        document.removeEventListener('keydown', handleEscape);
+      };
+    }, [isOpen, handleClose]);
 
     React.useEffect(() => {
       return () => {
@@ -556,6 +584,9 @@ export const HoverCard = React.forwardRef<HTMLDivElement, HoverCardProps>(
           transformOrigin={getTransformOrigin(placement)}
           onMouseEnter={handlePopoverMouseEnter}
           onMouseLeave={handlePopoverMouseLeave}
+          disableAutoFocus={true}
+          disableEnforceFocus={true}
+          disableRestoreFocus={true}
           customAnimation={animation}
           slotProps={{
             paper: {
