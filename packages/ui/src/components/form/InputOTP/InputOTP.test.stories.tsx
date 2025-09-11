@@ -17,7 +17,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // Test 1: Basic Interaction
-export const BasicInteraction: Story = {
+export const BasicInteractionTest: Story = {
   args: {
     variant: 'numeric',
     length: 6,
@@ -65,7 +65,7 @@ export const BasicInteraction: Story = {
 };
 
 // Test 2: Form Interaction
-export const FormInteraction: Story = {
+export const FormInteractionTest: Story = {
   args: {
     variant: 'alphanumeric',
     length: 4,
@@ -100,7 +100,7 @@ export const FormInteraction: Story = {
 };
 
 // Test 3: Keyboard Navigation
-export const KeyboardNavigation: Story = {
+export const KeyboardNavigationTest: Story = {
   args: {
     variant: 'numeric',
     length: 6,
@@ -149,7 +149,7 @@ export const KeyboardNavigation: Story = {
 };
 
 // Test 4: Screen Reader
-export const ScreenReader: Story = {
+export const ScreenReaderTest: Story = {
   args: {
     variant: 'numeric',
     length: 4,
@@ -180,7 +180,7 @@ export const ScreenReader: Story = {
 };
 
 // Test 5: Focus Management
-export const FocusManagement: Story = {
+export const FocusManagementTest: Story = {
   args: {
     variant: 'numeric',
     length: 5,
@@ -221,7 +221,7 @@ export const FocusManagement: Story = {
 };
 
 // Test 6: Responsive Design
-export const ResponsiveDesign: Story = {
+export const ResponsiveDesignTest: Story = {
   args: {
     variant: 'numeric',
     length: 6,
@@ -254,7 +254,7 @@ export const ResponsiveDesign: Story = {
 };
 
 // Test 7: Theme Variations
-export const ThemeVariations: Story = {
+export const ThemeVariationsTest: Story = {
   args: {
     variant: 'numeric',
     length: 4,
@@ -285,7 +285,7 @@ export const ThemeVariations: Story = {
 };
 
 // Test 8: Visual States
-export const VisualStates: Story = {
+export const VisualStatesTest: Story = {
   args: {
     variant: 'masked',
     length: 6,
@@ -321,7 +321,7 @@ export const VisualStates: Story = {
 };
 
 // Test 9: Performance
-export const Performance: Story = {
+export const PerformanceTest: Story = {
   args: {
     variant: 'numeric',
     length: 8,
@@ -351,7 +351,7 @@ export const Performance: Story = {
 };
 
 // Test 10: Edge Cases
-export const EdgeCases: Story = {
+export const EdgeCasesTest: Story = {
   args: {
     variant: 'numeric',
     length: 6,
@@ -397,7 +397,7 @@ export const EdgeCases: Story = {
 };
 
 // Test 11: Integration
-export const Integration: Story = {
+export const IntegrationTest: Story = {
   args: {
     variant: 'numeric',
     length: 6,

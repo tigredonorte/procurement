@@ -163,6 +163,9 @@ export const SonnerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     promise,
   };
 
+  // Register this context globally for imperative API
+  useRegisterGlobalToast(contextValue);
+
   return (
     <SonnerContext.Provider value={contextValue}>
       {children}
@@ -397,27 +400,98 @@ const SonnerToaster: React.FC<{
   );
 };
 
-// Create a simple toast instance for use in stories
-const createToastInstance = () => {
-  const methods = {
-    toast: () => 'toast-placeholder',
-    success: () => 'success-placeholder',
-    error: () => 'error-placeholder',
-    warning: () => 'warning-placeholder',
-    info: () => 'info-placeholder',
-    loading: () => 'loading-placeholder',
-    dismiss: () => {
-      // Dismiss functionality placeholder
+// Global toast instance for imperative API
+let globalToastContext: SonnerContextType | null = null;
+
+// Hook to register the global context (used internally by SonnerProvider)
+export const useRegisterGlobalToast = (context: SonnerContextType) => {
+  React.useEffect(() => {
+    globalToastContext = context;
+    return () => {
+      globalToastContext = null;
+    };
+  }, [context]);
+};
+
+// Create a production-ready toast instance for imperative usage
+const createToastInstance = (): SonnerContextType => {
+  const warnNoProvider = () => {
+    // Use a more React-appropriate warning mechanism
+    if (typeof window !== 'undefined' && window.console && window.console.warn) {
+      window.console.warn('Sonner: No SonnerProvider found. Please wrap your app with SonnerProvider.');
+    }
+  };
+
+  const methods: SonnerContextType = {
+    toast: (message: React.ReactNode, options?: Partial<SonnerProps>) => {
+      if (!globalToastContext) {
+        warnNoProvider();
+        return 'no-provider';
+      }
+      return globalToastContext.toast(message, options);
     },
-    promise: async <T,>(promise: Promise<T>) => {
-      return promise;
+    success: (message: React.ReactNode, options?: Partial<SonnerProps>) => {
+      if (!globalToastContext) {
+        warnNoProvider();
+        return 'no-provider';
+      }
+      return globalToastContext.success(message, options);
+    },
+    error: (message: React.ReactNode, options?: Partial<SonnerProps>) => {
+      if (!globalToastContext) {
+        warnNoProvider();
+        return 'no-provider';
+      }
+      return globalToastContext.error(message, options);
+    },
+    warning: (message: React.ReactNode, options?: Partial<SonnerProps>) => {
+      if (!globalToastContext) {
+        warnNoProvider();
+        return 'no-provider';
+      }
+      return globalToastContext.warning(message, options);
+    },
+    info: (message: React.ReactNode, options?: Partial<SonnerProps>) => {
+      if (!globalToastContext) {
+        warnNoProvider();
+        return 'no-provider';
+      }
+      return globalToastContext.info(message, options);
+    },
+    loading: (message: React.ReactNode, options?: Partial<SonnerProps>) => {
+      if (!globalToastContext) {
+        warnNoProvider();
+        return 'no-provider';
+      }
+      return globalToastContext.loading(message, options);
+    },
+    dismiss: (id?: string) => {
+      if (!globalToastContext) {
+        warnNoProvider();
+        return;
+      }
+      globalToastContext.dismiss(id);
+    },
+    promise: async <T,>(
+      promiseToResolve: Promise<T>,
+      options: {
+        loading: React.ReactNode;
+        success: React.ReactNode | ((data: T) => React.ReactNode);
+        error: React.ReactNode | ((error: Error) => React.ReactNode);
+      },
+    ): Promise<T> => {
+      if (!globalToastContext) {
+        warnNoProvider();
+        throw new Error('No SonnerProvider found');
+      }
+      return globalToastContext.promise(promiseToResolve, options);
     },
   };
 
   return methods;
 };
 
-// Export toast instance for stories compatibility
+// Export toast instance for imperative API usage
 export const toast = createToastInstance();
 
 // Export Toaster as alias for SonnerProvider for stories compatibility

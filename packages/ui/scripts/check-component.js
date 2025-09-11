@@ -17,6 +17,7 @@ import { assertDesignTokensUsage } from './validators/tokens.js';
 import { assertResponsiveStories } from './validators/responsive.js';
 import { assertA11yCoverage } from './validators/a11y.js';
 import { assertFolderStructure } from './validators/structure.js';
+import { checkEslintBypass } from './validators/lint.js';
 
 // ---- Helpers ----
 

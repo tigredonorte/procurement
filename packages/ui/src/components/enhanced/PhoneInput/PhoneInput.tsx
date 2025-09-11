@@ -13,11 +13,11 @@ import {
   Typography,
 } from '@mui/material';
 import { Phone as PhoneIcon, ArrowDropDown } from '@mui/icons-material';
-import { parsePhoneNumber, isValidPhoneNumber, CountryCode } from 'libphonenumber-js';
+import { parsePhoneNumber, CountryCode } from 'libphonenumber-js';
 
 import type { PhoneInputProps, CountryData } from './PhoneInput.types';
 
-// Country data
+// Country data with expanded support
 const countries: CountryData[] = [
   { code: 'US' as CountryCode, name: 'United States', dial: '+1', flag: '🇺🇸' },
   { code: 'GB' as CountryCode, name: 'United Kingdom', dial: '+44', flag: '🇬🇧' },
@@ -34,7 +34,39 @@ const countries: CountryData[] = [
   { code: 'BR' as CountryCode, name: 'Brazil', dial: '+55', flag: '🇧🇷' },
   { code: 'MX' as CountryCode, name: 'Mexico', dial: '+52', flag: '🇲🇽' },
   { code: 'KR' as CountryCode, name: 'South Korea', dial: '+82', flag: '🇰🇷' },
-];
+  { code: 'SE' as CountryCode, name: 'Sweden', dial: '+46', flag: '🇸🇪' },
+  { code: 'NO' as CountryCode, name: 'Norway', dial: '+47', flag: '🇳🇴' },
+  { code: 'DK' as CountryCode, name: 'Denmark', dial: '+45', flag: '🇩🇰' },
+  { code: 'CH' as CountryCode, name: 'Switzerland', dial: '+41', flag: '🇨🇭' },
+  { code: 'AT' as CountryCode, name: 'Austria', dial: '+43', flag: '🇦🇹' },
+  { code: 'BE' as CountryCode, name: 'Belgium', dial: '+32', flag: '🇧🇪' },
+  { code: 'FI' as CountryCode, name: 'Finland', dial: '+358', flag: '🇫🇮' },
+  { code: 'IE' as CountryCode, name: 'Ireland', dial: '+353', flag: '🇮🇪' },
+  { code: 'PT' as CountryCode, name: 'Portugal', dial: '+351', flag: '🇵🇹' },
+  { code: 'GR' as CountryCode, name: 'Greece', dial: '+30', flag: '🇬🇷' },
+  { code: 'PL' as CountryCode, name: 'Poland', dial: '+48', flag: '🇵🇱' },
+  { code: 'CZ' as CountryCode, name: 'Czech Republic', dial: '+420', flag: '🇨🇿' },
+  { code: 'HU' as CountryCode, name: 'Hungary', dial: '+36', flag: '🇭🇺' },
+  { code: 'RU' as CountryCode, name: 'Russia', dial: '+7', flag: '🇷🇺' },
+  { code: 'ZA' as CountryCode, name: 'South Africa', dial: '+27', flag: '🇿🇦' },
+  { code: 'EG' as CountryCode, name: 'Egypt', dial: '+20', flag: '🇪🇬' },
+  { code: 'NG' as CountryCode, name: 'Nigeria', dial: '+234', flag: '🇳🇬' },
+  { code: 'KE' as CountryCode, name: 'Kenya', dial: '+254', flag: '🇰🇪' },
+  { code: 'AR' as CountryCode, name: 'Argentina', dial: '+54', flag: '🇦🇷' },
+  { code: 'CL' as CountryCode, name: 'Chile', dial: '+56', flag: '🇨🇱' },
+  { code: 'CO' as CountryCode, name: 'Colombia', dial: '+57', flag: '🇨🇴' },
+  { code: 'PE' as CountryCode, name: 'Peru', dial: '+51', flag: '🇵🇪' },
+  { code: 'MY' as CountryCode, name: 'Malaysia', dial: '+60', flag: '🇲🇾' },
+  { code: 'SG' as CountryCode, name: 'Singapore', dial: '+65', flag: '🇸🇬' },
+  { code: 'TH' as CountryCode, name: 'Thailand', dial: '+66', flag: '🇹🇭' },
+  { code: 'VN' as CountryCode, name: 'Vietnam', dial: '+84', flag: '🇻🇳' },
+  { code: 'PH' as CountryCode, name: 'Philippines', dial: '+63', flag: '🇵🇭' },
+  { code: 'ID' as CountryCode, name: 'Indonesia', dial: '+62', flag: '🇮🇩' },
+  { code: 'TR' as CountryCode, name: 'Turkey', dial: '+90', flag: '🇹🇷' },
+  { code: 'IL' as CountryCode, name: 'Israel', dial: '+972', flag: '🇮🇱' },
+  { code: 'AE' as CountryCode, name: 'United Arab Emirates', dial: '+971', flag: '🇦🇪' },
+  { code: 'SA' as CountryCode, name: 'Saudi Arabia', dial: '+966', flag: '🇸🇦' },
+].sort((a, b) => a.name.localeCompare(b.name));
 
 // Styled components
 const GlassTextField = styled(TextField)(({ theme }) => ({
@@ -85,25 +117,42 @@ const CountryMenu = styled(Menu)(({ theme }) => ({
   },
 }));
 
-// Helper functions
+// Helper functions with enhanced validation
 const formatPhoneNumber = (value: string, country: CountryCode): string => {
+  if (!value || value.trim() === '') return value;
+  
   try {
     const phoneNumber = parsePhoneNumber(value, country);
-    if (phoneNumber) {
+    if (phoneNumber && phoneNumber.isValid()) {
       return phoneNumber.formatInternational();
     }
   } catch {
-    // Invalid number, return as is
+    // Silently handle formatting errors
   }
   return value;
 };
 
 const validatePhoneNumber = (value: string, country: CountryCode): boolean => {
-  if (!value) return false;
+  if (!value || value.trim() === '') return false;
+  
   try {
-    return isValidPhoneNumber(value, country);
+    const phoneNumber = parsePhoneNumber(value, country);
+    return phoneNumber ? phoneNumber.isValid() : false;
   } catch {
+    // Silently handle validation errors
     return false;
+  }
+};
+
+// Enhanced helper to detect country from number
+const detectCountryFromNumber = (value: string): CountryCode | undefined => {
+  if (!value || !value.startsWith('+')) return undefined;
+  
+  try {
+    const phoneNumber = parsePhoneNumber(value);
+    return phoneNumber?.country;
+  } catch {
+    return undefined;
   }
 };
 
@@ -166,6 +215,17 @@ export const PhoneInput: FC<PhoneInputProps> = ({
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     setValue(newValue);
+    
+    // Auto-detect country if user types international format
+    if (newValue.startsWith('+')) {
+      const detectedCountry = detectCountryFromNumber(newValue);
+      if (detectedCountry) {
+        const detectedCountryData = countries.find(c => c.code === detectedCountry);
+        if (detectedCountryData && detectedCountryData.code !== selectedCountry?.code) {
+          setSelectedCountry(detectedCountryData);
+        }
+      }
+    }
   };
 
   const handleBlur = () => {
@@ -190,7 +250,10 @@ export const PhoneInput: FC<PhoneInputProps> = ({
         onBlur={handleBlur}
         error={error || (!isValid && value !== '' && !isFocused)}
         helperText={
-          errorMessage || (!isValid && value !== '' && !isFocused ? 'Invalid phone number' : helper)
+          errorMessage || 
+          (!isValid && value !== '' && !isFocused 
+            ? `Invalid phone number for ${selectedCountry?.name || 'selected country'}` 
+            : helper)
         }
         disabled={disabled}
         required={required}
