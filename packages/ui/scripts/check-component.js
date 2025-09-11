@@ -105,6 +105,7 @@ function defineChecks(category, component, componentDir, storybookUrl) {
                 } catch {}
             }
         }},
+        { name: 'lint-bypass',   description: "ESLint bypass pattern check",  func: () => checkEslintBypass(componentDir) },
         { name: 'lint-fix', description: "ESLint fix (scoped)", func: () => run(`npx eslint "src/components/${category}/${component}/**/*.{ts,tsx}" --fix`) },
         { name: 'build', description: "tsup build (scoped)", func: () => {
             const entry = ['index.tsx', 'index.ts'].map((f) => path.join(componentDir, f)).find((p) => cachedFileExists(p)) || null;
@@ -152,7 +153,7 @@ async function runChecksParallel(checks) {
         {
             name: 'Code formatting',
             parallel: false,
-            checks: ['lint-fix']
+            checks: ['lint-bypass', 'lint-fix']
         },
         {
             name: 'Build and verification',
