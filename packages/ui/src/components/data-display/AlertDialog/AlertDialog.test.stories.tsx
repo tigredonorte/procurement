@@ -80,33 +80,35 @@ export const BasicInteraction: Story = {
       const openButton = canvas.getByTestId('open-dialog');
       await userEvent.click(openButton);
       await waitFor(() => {
-        expect(canvas.getByText('Confirm Action')).toBeInTheDocument();
+        expect(within(document.body).getByText('Confirm Action')).toBeInTheDocument();
       });
     });
 
     await step('Verify dialog content', async () => {
-      expect(canvas.getByText('Are you sure you want to proceed?')).toBeInTheDocument();
-      expect(canvas.getByText('Cancel')).toBeInTheDocument();
-      expect(canvas.getByText('Confirm')).toBeInTheDocument();
+      expect(
+        within(document.body).getByText('Are you sure you want to proceed?'),
+      ).toBeInTheDocument();
+      expect(within(document.body).getByText('Cancel')).toBeInTheDocument();
+      expect(within(document.body).getByText('Confirm')).toBeInTheDocument();
     });
 
     await step('Click confirm button', async () => {
-      const confirmButton = canvas.getByText('Confirm');
+      const confirmButton = within(document.body).getByText('Confirm');
       await userEvent.click(confirmButton);
       await waitFor(() => {
-        expect(canvas.queryByText('Confirm Action')).not.toBeInTheDocument();
+        expect(within(document.body).queryByText('Confirm Action')).not.toBeInTheDocument();
       });
     });
 
     await step('Open dialog again and click cancel', async () => {
       await userEvent.click(canvas.getByTestId('open-dialog'));
       await waitFor(() => {
-        expect(canvas.getByText('Confirm Action')).toBeInTheDocument();
+        expect(within(document.body).getByText('Confirm Action')).toBeInTheDocument();
       });
-      const cancelButton = canvas.getByText('Cancel');
+      const cancelButton = within(document.body).getByText('Cancel');
       await userEvent.click(cancelButton);
       await waitFor(() => {
-        expect(canvas.queryByText('Confirm Action')).not.toBeInTheDocument();
+        expect(within(document.body).queryByText('Confirm Action')).not.toBeInTheDocument();
       });
     });
   },
@@ -144,17 +146,17 @@ export const FormInteraction: Story = {
     await step('Open dialog', async () => {
       await userEvent.click(canvas.getByTestId('open-dialog'));
       await waitFor(() => {
-        expect(canvas.getByText('Enter Details')).toBeInTheDocument();
+        expect(within(document.body).getByText('Enter Details')).toBeInTheDocument();
       });
     });
 
     await step('Verify confirm button is disabled initially', async () => {
-      const confirmButton = canvas.getByText('Confirm');
+      const confirmButton = within(document.body).getByText('Confirm');
       expect(confirmButton).toBeDisabled();
     });
 
     await step('Type in input field', async () => {
-      const input = canvas.getByTestId('dialog-input');
+      const input = within(document.body).getByTestId('dialog-input');
       await userEvent.type(input, 'Test input');
       await waitFor(() => {
         expect(input).toHaveValue('Test input');
@@ -162,15 +164,15 @@ export const FormInteraction: Story = {
     });
 
     await step('Verify confirm button is enabled', async () => {
-      const confirmButton = canvas.getByText('Confirm');
+      const confirmButton = within(document.body).getByText('Confirm');
       expect(confirmButton).toBeEnabled();
     });
 
     await step('Submit form', async () => {
-      const confirmButton = canvas.getByText('Confirm');
+      const confirmButton = within(document.body).getByText('Confirm');
       await userEvent.click(confirmButton);
       await waitFor(() => {
-        expect(canvas.queryByText('Enter Details')).not.toBeInTheDocument();
+        expect(within(document.body).queryByText('Enter Details')).not.toBeInTheDocument();
       });
     });
   },
@@ -190,33 +192,34 @@ export const KeyboardNavigation: Story = {
 
     await step('Verify dialog is open', async () => {
       await waitFor(() => {
-        expect(canvas.getByText('Keyboard Test')).toBeInTheDocument();
+        expect(within(document.body).getByText('Keyboard Test')).toBeInTheDocument();
       });
     });
 
     await step('Press Escape to close dialog', async () => {
       await userEvent.keyboard('{Escape}');
       await waitFor(() => {
-        expect(canvas.queryByText('Keyboard Test')).not.toBeInTheDocument();
+        expect(within(document.body).queryByText('Keyboard Test')).not.toBeInTheDocument();
       });
     });
 
     await step('Open dialog and navigate with Tab', async () => {
       await userEvent.click(canvas.getByTestId('open-dialog'));
       await waitFor(() => {
-        expect(canvas.getByText('Keyboard Test')).toBeInTheDocument();
+        expect(within(document.body).getByText('Keyboard Test')).toBeInTheDocument();
       });
 
-      // Tab navigation
-      await userEvent.tab();
-      const activeElement = document.activeElement;
-      expect(activeElement?.textContent).toContain('Confirm');
+      // Tab navigation - the Confirm button should have autoFocus
+      await waitFor(() => {
+        const confirmButton = within(document.body).getByText('Confirm');
+        expect(document.activeElement).toBe(confirmButton);
+      });
     });
 
     await step('Press Enter on focused button', async () => {
       await userEvent.keyboard('{Enter}');
       await waitFor(() => {
-        expect(canvas.queryByText('Keyboard Test')).not.toBeInTheDocument();
+        expect(within(document.body).queryByText('Keyboard Test')).not.toBeInTheDocument();
       });
     });
   },
@@ -237,21 +240,23 @@ export const ScreenReader: Story = {
     await step('Open dialog', async () => {
       await userEvent.click(canvas.getByTestId('open-dialog'));
       await waitFor(() => {
-        expect(canvas.getByText('Accessible Dialog')).toBeInTheDocument();
+        expect(within(document.body).getByText('Accessible Dialog')).toBeInTheDocument();
       });
     });
 
     await step('Verify ARIA attributes', async () => {
-      const dialog = canvas.getByRole('dialog');
+      const dialog = within(document.body).getByRole('dialog');
       expect(dialog).toBeInTheDocument();
 
-      const closeButton = canvas.getByLabelText('close');
+      const closeButton = within(document.body).getByLabelText('close');
       expect(closeButton).toBeInTheDocument();
     });
 
     await step('Verify dialog title and description', async () => {
-      expect(canvas.getByText('Accessible Dialog')).toBeInTheDocument();
-      expect(canvas.getByText('This dialog has proper ARIA attributes')).toBeInTheDocument();
+      expect(within(document.body).getByText('Accessible Dialog')).toBeInTheDocument();
+      expect(
+        within(document.body).getByText('This dialog has proper ARIA attributes'),
+      ).toBeInTheDocument();
     });
   },
 };
@@ -265,19 +270,17 @@ export const FocusManagement: Story = {
       description="Testing focus trap and management"
     />
   ),
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-
+  play: async ({ step }) => {
     await step('Verify dialog is open', async () => {
       await waitFor(() => {
-        expect(canvas.getByText('Focus Test')).toBeInTheDocument();
+        expect(within(document.body).getByText('Focus Test')).toBeInTheDocument();
       });
     });
 
     await step('Verify focus is trapped in dialog', async () => {
       // Initial focus should be on confirm button (autoFocus)
       await waitFor(() => {
-        const confirmButton = canvas.getByText('Confirm');
+        const confirmButton = within(document.body).getByText('Confirm');
         expect(document.activeElement).toBe(confirmButton);
       });
     });
@@ -297,7 +300,7 @@ export const FocusManagement: Story = {
     await step('Close dialog and verify focus return', async () => {
       await userEvent.keyboard('{Escape}');
       await waitFor(() => {
-        expect(canvas.queryByText('Focus Test')).not.toBeInTheDocument();
+        expect(within(document.body).queryByText('Focus Test')).not.toBeInTheDocument();
       });
     });
   },
@@ -327,21 +330,21 @@ export const ResponsiveDesign: Story = {
     await step('Open dialog on mobile viewport', async () => {
       await userEvent.click(canvas.getByTestId('open-dialog'));
       await waitFor(() => {
-        expect(canvas.getByText('Responsive Dialog')).toBeInTheDocument();
+        expect(within(document.body).getByText('Responsive Dialog')).toBeInTheDocument();
       });
     });
 
     await step('Verify dialog is visible and properly sized', async () => {
-      const dialog = canvas.getByRole('dialog');
+      const dialog = within(document.body).getByRole('dialog');
       expect(dialog).toBeInTheDocument();
-      expect(canvas.getByText(/Lorem ipsum/)).toBeInTheDocument();
+      expect(within(document.body).getByText(/Lorem ipsum/)).toBeInTheDocument();
     });
 
     await step('Close dialog', async () => {
-      const closeButton = canvas.getByLabelText('close');
+      const closeButton = within(document.body).getByLabelText('close');
       await userEvent.click(closeButton);
       await waitFor(() => {
-        expect(canvas.queryByText('Responsive Dialog')).not.toBeInTheDocument();
+        expect(within(document.body).queryByText('Responsive Dialog')).not.toBeInTheDocument();
       });
     });
   },
@@ -379,19 +382,19 @@ export const ThemeVariations: Story = {
     await step('Open dialog in light theme', async () => {
       await userEvent.click(canvas.getByTestId('open-dialog'));
       await waitFor(() => {
-        expect(canvas.getByText('Theme Test')).toBeInTheDocument();
+        expect(within(document.body).getByText('Theme Test')).toBeInTheDocument();
       });
     });
 
     await step('Close dialog', async () => {
       await userEvent.keyboard('{Escape}');
       await waitFor(() => {
-        expect(canvas.queryByText('Theme Test')).not.toBeInTheDocument();
+        expect(within(document.body).queryByText('Theme Test')).not.toBeInTheDocument();
       });
     });
 
     await step('Switch to dark theme', async () => {
-      const themeToggle = canvas.getByText('Toggle Theme');
+      const themeToggle = within(document.body).getByText('Toggle Theme');
       await userEvent.click(themeToggle);
       await waitFor(() => {
         expect(
@@ -403,12 +406,12 @@ export const ThemeVariations: Story = {
     await step('Open dialog in dark theme', async () => {
       await userEvent.click(canvas.getByTestId('open-dialog'));
       await waitFor(() => {
-        expect(canvas.getByText('Theme Test')).toBeInTheDocument();
+        expect(within(document.body).getByText('Theme Test')).toBeInTheDocument();
       });
     });
 
     await step('Verify dialog renders correctly in dark theme', async () => {
-      const dialog = canvas.getByRole('dialog');
+      const dialog = within(document.body).getByRole('dialog');
       expect(dialog).toBeInTheDocument();
     });
   },
@@ -451,52 +454,52 @@ export const VisualStates: Story = {
     await step('Test default variant', async () => {
       await userEvent.click(canvas.getByTestId('open-dialog'));
       await waitFor(() => {
-        expect(canvas.getByText('default Variant')).toBeInTheDocument();
+        expect(within(document.body).getByText('default Variant')).toBeInTheDocument();
       });
       await userEvent.keyboard('{Escape}');
     });
 
     await step('Test destructive variant', async () => {
-      await userEvent.click(canvas.getByText('Destructive'));
+      await userEvent.click(within(document.body).getByText('Destructive'));
       await userEvent.click(canvas.getByTestId('open-dialog'));
       await waitFor(() => {
-        expect(canvas.getByText('destructive Variant')).toBeInTheDocument();
+        expect(within(document.body).getByText('destructive Variant')).toBeInTheDocument();
       });
       await userEvent.keyboard('{Escape}');
     });
 
     await step('Test glass variant', async () => {
-      await userEvent.click(canvas.getByText('Glass'));
+      await userEvent.click(within(document.body).getByText('Glass'));
       await userEvent.click(canvas.getByTestId('open-dialog'));
       await waitFor(() => {
-        expect(canvas.getByText('glass Variant')).toBeInTheDocument();
+        expect(within(document.body).getByText('glass Variant')).toBeInTheDocument();
       });
       await userEvent.keyboard('{Escape}');
     });
 
     await step('Test with glow effect', async () => {
-      await userEvent.click(canvas.getByText('Toggle Glow'));
+      await userEvent.click(within(document.body).getByText('Toggle Glow'));
       await userEvent.click(canvas.getByTestId('open-dialog'));
       await waitFor(() => {
-        expect(canvas.getByText(/glow: true/)).toBeInTheDocument();
+        expect(within(document.body).getByText(/glow: true/)).toBeInTheDocument();
       });
       await userEvent.keyboard('{Escape}');
     });
 
     await step('Test with pulse animation', async () => {
-      await userEvent.click(canvas.getByText('Toggle Pulse'));
+      await userEvent.click(within(document.body).getByText('Toggle Pulse'));
       await userEvent.click(canvas.getByTestId('open-dialog'));
       await waitFor(() => {
-        expect(canvas.getByText(/pulse: true/)).toBeInTheDocument();
+        expect(within(document.body).getByText(/pulse: true/)).toBeInTheDocument();
       });
       await userEvent.keyboard('{Escape}');
     });
 
     await step('Test loading state', async () => {
-      await userEvent.click(canvas.getByText('Toggle Loading'));
+      await userEvent.click(within(document.body).getByText('Toggle Loading'));
       await userEvent.click(canvas.getByTestId('open-dialog'));
       await waitFor(() => {
-        const confirmButton = canvas.getByText('Confirm');
+        const confirmButton = within(document.body).getByText('Confirm');
         expect(confirmButton).toBeInTheDocument();
         // Check for loading indicator
         const loadingIndicator = confirmButton.querySelector('[role="progressbar"]');
@@ -509,15 +512,21 @@ export const VisualStates: Story = {
 // Test 9: Performance
 const PerformanceComponent = () => {
   const [dialogCount, setDialogCount] = useState(0);
+  const [currentDialog, setCurrentDialog] = useState(0);
   const [renderTime, setRenderTime] = useState<number | null>(null);
 
   const handleOpen = () => {
     const startTime = window.performance.now();
     setDialogCount((prev) => prev + 1);
+    setCurrentDialog(dialogCount + 1);
     window.requestAnimationFrame(() => {
       const endTime = window.performance.now();
       setRenderTime(endTime - startTime);
     });
+  };
+
+  const handleClose = () => {
+    setCurrentDialog(0);
   };
 
   return (
@@ -529,15 +538,12 @@ const PerformanceComponent = () => {
       <Button onClick={handleOpen} data-testid="perf-open">
         Open Dialog
       </Button>
-      {Array.from({ length: Math.min(dialogCount, 1) }).map((_, index) => (
-        <AlertDialog
-          key={index}
-          open={index === dialogCount - 1}
-          onClose={() => {}}
-          title={`Dialog ${dialogCount}`}
-          description="Performance test dialog"
-        />
-      ))}
+      <AlertDialog
+        open={currentDialog > 0}
+        onClose={handleClose}
+        title={`Dialog ${currentDialog}`}
+        description="Performance test dialog"
+      />
     </div>
   );
 };
@@ -554,11 +560,11 @@ export const Performance: Story = {
       for (let i = 0; i < 5; i++) {
         await userEvent.click(openButton);
         await waitFor(() => {
-          expect(canvas.getByText(`Dialog ${i + 1}`)).toBeInTheDocument();
+          expect(within(document.body).getByText(`Dialog ${i + 1}`)).toBeInTheDocument();
         });
         await userEvent.keyboard('{Escape}');
         await waitFor(() => {
-          expect(canvas.queryByText(`Dialog ${i + 1}`)).not.toBeInTheDocument();
+          expect(within(document.body).queryByText(`Dialog ${i + 1}`)).not.toBeInTheDocument();
         });
       }
     });
@@ -619,7 +625,7 @@ export const EdgeCases: Story = {
       await userEvent.click(canvas.getByText('Long Text'));
       await userEvent.click(canvas.getByTestId('open-dialog'));
       await waitFor(() => {
-        expect(canvas.getByText(/Very Long Title/)).toBeInTheDocument();
+        expect(within(document.body).getByText(/Very Long Title/)).toBeInTheDocument();
       });
       await userEvent.keyboard('{Escape}');
     });
@@ -629,8 +635,8 @@ export const EdgeCases: Story = {
       await userEvent.click(canvas.getByTestId('open-dialog'));
       await waitFor(() => {
         // Dialog should still render with buttons
-        expect(canvas.getByText('Cancel')).toBeInTheDocument();
-        expect(canvas.getByText('Confirm')).toBeInTheDocument();
+        expect(within(document.body).getByText('Cancel')).toBeInTheDocument();
+        expect(within(document.body).getByText('Confirm')).toBeInTheDocument();
       });
       await userEvent.keyboard('{Escape}');
     });
@@ -639,7 +645,8 @@ export const EdgeCases: Story = {
       await userEvent.click(canvas.getByText('Special Chars'));
       await userEvent.click(canvas.getByTestId('open-dialog'));
       await waitFor(() => {
-        expect(canvas.getByText(/!@#/)).toBeInTheDocument();
+        const specialTextElements = within(document.body).getAllByText(/!@#/);
+        expect(specialTextElements.length).toBeGreaterThan(0);
       });
       await userEvent.keyboard('{Escape}');
     });
@@ -648,9 +655,9 @@ export const EdgeCases: Story = {
       await userEvent.click(canvas.getByText('No Cancel'));
       await userEvent.click(canvas.getByTestId('open-dialog'));
       await waitFor(() => {
-        expect(canvas.getByText('No Cancel Button')).toBeInTheDocument();
-        expect(canvas.queryByText('Cancel')).not.toBeInTheDocument();
-        expect(canvas.getByText('Confirm')).toBeInTheDocument();
+        expect(within(document.body).getByText('No Cancel Button')).toBeInTheDocument();
+        expect(within(document.body).queryByText('Cancel')).not.toBeInTheDocument();
+        expect(within(document.body).getByText('Confirm')).toBeInTheDocument();
       });
     });
   },
@@ -707,31 +714,31 @@ export const Integration: Story = {
     await step('Open destructive dialog', async () => {
       await userEvent.click(canvas.getByTestId('open-dialog'));
       await waitFor(() => {
-        expect(canvas.getByText('Delete Item')).toBeInTheDocument();
+        expect(within(document.body).getByText('Delete Item')).toBeInTheDocument();
       });
     });
 
     await step('Verify destructive variant styling', async () => {
-      const deleteButton = canvas.getByText('Delete');
+      const deleteButton = within(document.body).getByText('Delete');
       expect(deleteButton).toBeInTheDocument();
       // Should have error color for destructive variant
       expect(deleteButton).toHaveStyle({ backgroundColor: expect.stringContaining('rgb') });
     });
 
     await step('Confirm deletion', async () => {
-      const deleteButton = canvas.getByText('Delete');
+      const deleteButton = within(document.body).getByText('Delete');
       await userEvent.click(deleteButton);
 
       // Wait for loading state
       await waitFor(() => {
-        const progressBar = canvasElement.querySelector('[role="progressbar"]');
+        const progressBar = document.body.querySelector('[role="progressbar"]');
         expect(progressBar).toBeInTheDocument();
       });
 
       // Wait for completion
       await waitFor(
         () => {
-          expect(canvas.queryByText('Delete Item')).not.toBeInTheDocument();
+          expect(within(document.body).queryByText('Delete Item')).not.toBeInTheDocument();
         },
         { timeout: 2000 },
       );

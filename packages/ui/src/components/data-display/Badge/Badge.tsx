@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Badge as MuiBadge, alpha, keyframes, IconButton, Zoom } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled, Theme } from '@mui/material/styles';
 import { Close as CloseIcon } from '@mui/icons-material';
 
 import { BadgeProps, BadgeSize, BadgeVariant } from './Badge.types';
@@ -59,7 +59,6 @@ const fadeInScaleAnimation = keyframes`
   }
 `;
 
-
 // Define glow pulse animation
 const glowPulseAnimation = keyframes`
   0% {
@@ -73,36 +72,36 @@ const glowPulseAnimation = keyframes`
   }
 `;
 
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const getColorFromTheme = (theme: any, color: string) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const colorMap: Record<string, any> = {
+const getColorFromTheme = (theme: Theme, color: string) => {
+  const colorMap: Record<string, ReturnType<typeof theme.palette.augmentColor>> = {
     primary: theme.palette.primary,
     secondary: theme.palette.secondary,
     success: theme.palette.success,
     warning: theme.palette.warning,
     error: theme.palette.error,
-    neutral: { 
-      main: theme.palette.grey[600], 
+    neutral: {
+      main: theme.palette.grey[600],
       light: theme.palette.grey[400],
       dark: theme.palette.grey[800],
-      contrastText: theme.palette.getContrastText(theme.palette.grey[600])
+      contrastText: theme.palette.getContrastText(theme.palette.grey[600]),
     },
   };
-  
+
   return colorMap[color] || theme.palette.primary;
 };
 
 const getSizeStyles = (size: BadgeSize) => {
-  const sizeMap: Record<BadgeSize, { 
-    minWidth: number; 
-    height: number; 
-    fontSize: string; 
-    padding: string;
-    dotSize: number;
-    iconSize: string;
-  }> = {
+  const sizeMap: Record<
+    BadgeSize,
+    {
+      minWidth: number;
+      height: number;
+      fontSize: string;
+      padding: string;
+      dotSize: number;
+      iconSize: string;
+    }
+  > = {
     xs: {
       minWidth: 14,
       height: 14,
@@ -111,63 +110,85 @@ const getSizeStyles = (size: BadgeSize) => {
       dotSize: 6,
       iconSize: '0.625rem',
     },
-    sm: { 
-      minWidth: 16, 
-      height: 16, 
-      fontSize: '0.625rem', 
+    sm: {
+      minWidth: 16,
+      height: 16,
+      fontSize: '0.625rem',
       padding: '0 4px',
       dotSize: 8,
       iconSize: '0.75rem',
     },
-    md: { 
-      minWidth: 20, 
-      height: 20, 
-      fontSize: '0.75rem', 
+    md: {
+      minWidth: 20,
+      height: 20,
+      fontSize: '0.75rem',
       padding: '0 6px',
       dotSize: 10,
       iconSize: '0.875rem',
     },
-    lg: { 
-      minWidth: 24, 
-      height: 24, 
-      fontSize: '0.875rem', 
+    lg: {
+      minWidth: 24,
+      height: 24,
+      fontSize: '0.875rem',
       padding: '0 8px',
       dotSize: 12,
       iconSize: '1rem',
     },
   };
-  
+
   return sizeMap[size] || sizeMap.md;
 };
 
 const getAnchorOrigin = (position: string) => {
-  const positionMap: Record<string, { vertical: 'top' | 'bottom'; horizontal: 'left' | 'right' }> = {
-    'top-right': { vertical: 'top', horizontal: 'right' },
-    'top-left': { vertical: 'top', horizontal: 'left' },
-    'bottom-right': { vertical: 'bottom', horizontal: 'right' },
-    'bottom-left': { vertical: 'bottom', horizontal: 'left' },
-  };
-  
+  const positionMap: Record<string, { vertical: 'top' | 'bottom'; horizontal: 'left' | 'right' }> =
+    {
+      'top-right': { vertical: 'top', horizontal: 'right' },
+      'top-left': { vertical: 'top', horizontal: 'left' },
+      'bottom-right': { vertical: 'bottom', horizontal: 'right' },
+      'bottom-left': { vertical: 'bottom', horizontal: 'left' },
+    };
+
   return positionMap[position] || positionMap['top-right'];
 };
 
 const StyledBadge = styled(MuiBadge, {
-  shouldForwardProp: (prop) => 
-    !['customVariant', 'customSize', 'customColor', 'glow', 'pulse', 'animate', 'shimmer', 'bounce', 'hasIcon'].includes(prop as string),
-})<{ 
+  shouldForwardProp: (prop) =>
+    ![
+      'customVariant',
+      'customSize',
+      'customColor',
+      'glow',
+      'pulse',
+      'animate',
+      'shimmer',
+      'bounce',
+      'hasIcon',
+    ].includes(prop as string),
+})<{
   customVariant?: BadgeVariant;
   customSize?: BadgeSize;
   customColor?: string;
-  glow?: boolean; 
+  glow?: boolean;
   pulse?: boolean;
   animate?: boolean;
   shimmer?: boolean;
   bounce?: boolean;
   hasIcon?: boolean;
-}>(({ theme, customVariant, customSize = 'md', customColor = 'primary', glow, pulse, animate, shimmer, bounce, hasIcon }) => {
+}>(({
+  theme,
+  customVariant,
+  customSize = 'md',
+  customColor = 'primary',
+  glow,
+  pulse,
+  animate,
+  shimmer,
+  bounce,
+  hasIcon,
+}) => {
   const colorPalette = getColorFromTheme(theme, customColor);
   const sizeStyles = getSizeStyles(customSize);
-  
+
   // Extract RGB values for CSS variable
   const getRgbValues = (color: string) => {
     // Simple hex to RGB conversion
@@ -185,7 +206,7 @@ const StyledBadge = styled(MuiBadge, {
     }
     return '255, 255, 255';
   };
-  
+
   return {
     '--glow-color': getRgbValues(colorPalette.main),
     '& .MuiBadge-badge': {
@@ -193,14 +214,16 @@ const StyledBadge = styled(MuiBadge, {
       fontWeight: 600,
       border: `2px solid ${theme.palette.background.paper}`,
       letterSpacing: '0.025em',
-      textTransform: customVariant === 'gradient' || customVariant === 'glass' ? 'uppercase' : 'none',
+      textTransform:
+        customVariant === 'gradient' || customVariant === 'glass' ? 'uppercase' : 'none',
       willChange: 'transform, opacity',
       backfaceVisibility: 'hidden',
-      
+
       // Base styles based on variant
       ...(customVariant === 'default' && {
         backgroundColor: colorPalette.main,
-        color: colorPalette.contrastText || theme.palette.getContrastText?.(colorPalette.main) || '#fff',
+        color:
+          colorPalette.contrastText || theme.palette.getContrastText?.(colorPalette.main) || '#fff',
         minWidth: sizeStyles.minWidth,
         height: sizeStyles.height,
         fontSize: sizeStyles.fontSize,
@@ -219,7 +242,8 @@ const StyledBadge = styled(MuiBadge, {
 
       ...(customVariant === 'count' && {
         backgroundColor: colorPalette.main,
-        color: colorPalette.contrastText || theme.palette.getContrastText?.(colorPalette.main) || '#fff',
+        color:
+          colorPalette.contrastText || theme.palette.getContrastText?.(colorPalette.main) || '#fff',
         minWidth: sizeStyles.minWidth,
         height: sizeStyles.height,
         fontSize: sizeStyles.fontSize,
@@ -318,9 +342,10 @@ const StyledBadge = styled(MuiBadge, {
       }),
 
       // Animation on mount
-      ...(animate && !bounce && {
-        animation: `${fadeInScaleAnimation} 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55)`,
-      }),
+      ...(animate &&
+        !bounce && {
+          animation: `${fadeInScaleAnimation} 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55)`,
+        }),
 
       // Bounce animation
       ...(bounce && {
@@ -329,9 +354,10 @@ const StyledBadge = styled(MuiBadge, {
 
       // Shimmer effect
       ...(shimmer && {
-        background: customVariant === 'gradient' 
-          ? `linear-gradient(135deg, ${colorPalette.main} 0%, ${colorPalette.dark || colorPalette.main} 100%)`
-          : colorPalette.main,
+        background:
+          customVariant === 'gradient'
+            ? `linear-gradient(135deg, ${colorPalette.main} 0%, ${colorPalette.dark || colorPalette.main} 100%)`
+            : colorPalette.main,
         backgroundSize: shimmer ? '1000px 100%' : 'auto',
         position: 'relative',
         overflow: 'hidden',
@@ -351,27 +377,30 @@ const StyledBadge = styled(MuiBadge, {
           animation: `${shimmerAnimation} 3s infinite`,
         },
       }),
-      
+
       // Glow effect
-      ...(glow && !pulse && {
-        boxShadow: `0 0 15px 3px ${alpha(colorPalette.main, 0.5)}`,
-        filter: 'brightness(1.1)',
-        '&:hover': {
-          boxShadow: `0 0 20px 4px ${alpha(colorPalette.main, 0.6)}`,
-        },
-      }),
+      ...(glow &&
+        !pulse && {
+          boxShadow: `0 0 15px 3px ${alpha(colorPalette.main, 0.5)}`,
+          filter: 'brightness(1.1)',
+          '&:hover': {
+            boxShadow: `0 0 20px 4px ${alpha(colorPalette.main, 0.6)}`,
+          },
+        }),
 
       // Pulse animation
-      ...(pulse && !glow && {
-        animation: `${pulseAnimation} 2s ease-in-out infinite`,
-      }),
+      ...(pulse &&
+        !glow && {
+          animation: `${pulseAnimation} 2s ease-in-out infinite`,
+        }),
 
       // Both glow and pulse
-      ...(glow && pulse && {
-        animation: `${glowPulseAnimation} 2s ease-in-out infinite, ${pulseAnimation} 2s ease-in-out infinite`,
-        filter: 'brightness(1.1)',
-      }),
-      
+      ...(glow &&
+        pulse && {
+          animation: `${glowPulseAnimation} 2s ease-in-out infinite, ${pulseAnimation} 2s ease-in-out infinite`,
+          filter: 'brightness(1.1)',
+        }),
+
       // Hover effects
       '&:not(.MuiBadge-dot):hover': {
         transform: 'scale(1.1)',
@@ -382,31 +411,34 @@ const StyledBadge = styled(MuiBadge, {
 });
 
 export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
-  ({
-    variant = 'default',
-    size = 'md',
-    color = 'primary',
-    glow = false,
-    pulse = false,
-    animate = true,
-    shimmer = false,
-    bounce = false,
-    max = 99,
-    showZero = false,
-    content,
-    position = 'top-right',
-    badgeContent,
-    children,
-    invisible,
-    closable = false,
-    onClose,
-    icon,
-    'aria-label': ariaLabel,
-    'aria-live': ariaLive = 'polite',
-    'aria-atomic': ariaAtomic = true,
-    className,
-    ...props
-  }, ref) => {
+  (
+    {
+      variant = 'default',
+      size = 'md',
+      color = 'primary',
+      glow = false,
+      pulse = false,
+      animate = true,
+      shimmer = false,
+      bounce = false,
+      max = 99,
+      showZero = false,
+      content,
+      position = 'top-right',
+      badgeContent,
+      children,
+      invisible,
+      closable = false,
+      onClose,
+      icon,
+      'aria-label': ariaLabel,
+      'aria-live': ariaLive = 'polite',
+      'aria-atomic': ariaAtomic = true,
+      className,
+      ...props
+    },
+    ref,
+  ) => {
     const [isVisible, setIsVisible] = useState(true);
     const [isAnimating, setIsAnimating] = useState(false);
 
@@ -417,7 +449,7 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
         return () => window.clearTimeout(timer);
       }
     }, [animate, bounce]);
-    
+
     // Determine the badge content
     const getBadgeContent = () => {
       if (content !== undefined) return content;
@@ -447,29 +479,39 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
     // Prepare badge content with icon and close button
     const prepareBadgeContent = () => {
       const baseContent = variant === 'count' ? formatCount(getBadgeContent()) : getBadgeContent();
-      
+
       if (variant === 'dot') return '';
-      
+
       const contentElements: React.ReactNode[] = [];
-      
+
       // Add icon if provided
       if (icon) {
         const sizeStyles = getSizeStyles(size);
         contentElements.push(
-          <span key="icon" style={{ fontSize: sizeStyles.iconSize, display: 'inline-flex', alignItems: 'center' }}>
+          <span
+            key="icon"
+            style={{ fontSize: sizeStyles.iconSize, display: 'inline-flex', alignItems: 'center' }}
+          >
             {icon}
-          </span>
+          </span>,
         );
       }
-      
+
       // Add main content
       if (baseContent !== null && baseContent !== undefined) {
         contentElements.push(<span key="content">{baseContent}</span>);
       }
-      
+
       // Add close button if closable
       if (closable && !variant.includes('dot')) {
-        const closeIconSize = size === 'xs' ? '0.5rem' : size === 'sm' ? '0.625rem' : size === 'md' ? '0.75rem' : '0.875rem';
+        const closeIconSize =
+          size === 'xs'
+            ? '0.5rem'
+            : size === 'sm'
+              ? '0.625rem'
+              : size === 'md'
+                ? '0.75rem'
+                : '0.875rem';
         contentElements.push(
           <IconButton
             key="close"
@@ -484,10 +526,10 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
             }}
           >
             <CloseIcon />
-          </IconButton>
+          </IconButton>,
         );
       }
-      
+
       return contentElements.length > 0 ? (
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: '2px' }}>
           {contentElements}
@@ -497,19 +539,20 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
 
     const finalBadgeContent = prepareBadgeContent();
     const anchorOrigin = getAnchorOrigin(position);
-    
+
     // Determine if badge should be invisible
-    const shouldBeInvisible = invisible || (variant === 'count' && finalBadgeContent === null) || !isVisible;
-    
+    const shouldBeInvisible =
+      invisible || (variant === 'count' && finalBadgeContent === null && !showZero) || !isVisible;
+
     // Build accessibility props
     const accessibilityProps: Record<string, string | boolean | undefined> = {
       'aria-label': ariaLabel,
       'aria-live': ariaLive,
       'aria-atomic': ariaAtomic,
     };
-    
+
     // Remove undefined values
-    Object.keys(accessibilityProps).forEach(key => {
+    Object.keys(accessibilityProps).forEach((key) => {
       if (accessibilityProps[key] === undefined) {
         delete accessibilityProps[key];
       }
@@ -536,8 +579,7 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
           slotProps={{
             badge: {
               ...accessibilityProps,
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            } as any,
+            },
           }}
           {...props}
         >
@@ -545,7 +587,7 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
         </StyledBadge>
       </Zoom>
     );
-  }
+  },
 );
 
 Badge.displayName = 'Badge';

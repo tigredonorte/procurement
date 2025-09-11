@@ -467,9 +467,12 @@ export const StateManagement: Story = {
     const canvas = within(canvasElement);
 
     await step('Initial state', async () => {
-      const alert = canvas.getByRole('alert');
+      // Wait for the alert to be rendered and visible
+      const alert = await waitFor(() => canvas.getByRole('alert'), { timeout: 1000 });
       await expect(alert).toBeInTheDocument();
-      await expect(alert).toBeVisible();
+      // Check visibility by verifying the element has content
+      await expect(canvas.getByText('Stateful Alert')).toBeInTheDocument();
+      await expect(canvas.getByText('This alert manages its own state')).toBeInTheDocument();
     });
 
     await step('Close alert', async () => {

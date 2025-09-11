@@ -63,21 +63,31 @@ export const Carousel: React.FC<CarouselProps> = ({
     setActiveIndex((prev) => {
       const next = prev + 1;
       if (next >= items.length) {
-        return loop ? 0 : prev;
+        const newIndex = loop ? 0 : prev;
+        if (newIndex !== prev) {
+          onChange?.(newIndex);
+        }
+        return newIndex;
       }
+      onChange?.(next);
       return next;
     });
-  }, [items.length, loop]);
+  }, [items.length, loop, onChange]);
 
   const handlePrev = useCallback(() => {
     setActiveIndex((prev) => {
       const next = prev - 1;
       if (next < 0) {
-        return loop ? items.length - 1 : 0;
+        const newIndex = loop ? items.length - 1 : 0;
+        if (newIndex !== prev) {
+          onChange?.(newIndex);
+        }
+        return newIndex;
       }
+      onChange?.(next);
       return next;
     });
-  }, [items.length, loop]);
+  }, [items.length, loop, onChange]);
 
   useEffect(() => {
     if (autoPlay && !isHovered && !disabled) {
@@ -381,7 +391,8 @@ export const Carousel: React.FC<CarouselProps> = ({
           onNext={handleNext}
           position={arrowPosition}
           color={color}
-          disabled={!loop && (activeIndex === 0 || activeIndex === items.length - 1)}
+          disablePrev={!loop && activeIndex === 0}
+          disableNext={!loop && activeIndex === items.length - 1}
         />
       )}
 
@@ -451,6 +462,9 @@ export const CarouselIndicators: React.FC<CarouselIndicatorsProps> = ({
       case 'lines':
         return (
           <Box
+            role="button"
+            tabIndex={0}
+            aria-label={`Go to slide ${index + 1}`}
             sx={{
               width: isActive ? 30 : 20,
               height: 3,
@@ -462,12 +476,21 @@ export const CarouselIndicators: React.FC<CarouselIndicatorsProps> = ({
               cursor: 'pointer',
             }}
             onClick={() => onSelect(index)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onSelect(index);
+              }
+            }}
           />
         );
 
       case 'numbers':
         return (
           <Box
+            role="button"
+            tabIndex={0}
+            aria-label={`Go to slide ${index + 1}`}
             sx={{
               width: 24,
               height: 24,
@@ -484,6 +507,12 @@ export const CarouselIndicators: React.FC<CarouselIndicatorsProps> = ({
               transition: theme.transitions.create(['all']),
             }}
             onClick={() => onSelect(index)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onSelect(index);
+              }
+            }}
           >
             {index + 1}
           </Box>
@@ -493,6 +522,7 @@ export const CarouselIndicators: React.FC<CarouselIndicatorsProps> = ({
         return (
           <IconButton
             size="small"
+            aria-label={`Go to slide ${index + 1}`}
             onClick={() => onSelect(index)}
             sx={{
               p: 0.5,
@@ -531,6 +561,8 @@ export const CarouselArrows: React.FC<CarouselArrowsProps> = ({
   onNext,
   position = 'overlay',
   disabled = false,
+  disablePrev = false,
+  disableNext = false,
   color = 'primary',
   size = 'medium',
   className,
@@ -591,9 +623,10 @@ export const CarouselArrows: React.FC<CarouselArrowsProps> = ({
     <>
       <IconButton
         onClick={onPrev}
-        disabled={disabled}
+        disabled={disabled || disablePrev}
         size={size}
         className={className}
+        aria-label="Previous slide"
         sx={{
           ...getArrowStyles(),
           left: leftPosition,
@@ -605,7 +638,8 @@ export const CarouselArrows: React.FC<CarouselArrowsProps> = ({
 
       <IconButton
         onClick={onNext}
-        disabled={disabled}
+        disabled={disabled || disableNext}
+        aria-label="Next slide"
         size={size}
         className={className}
         sx={{

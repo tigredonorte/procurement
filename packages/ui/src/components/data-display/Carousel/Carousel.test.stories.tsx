@@ -64,6 +64,10 @@ export const BasicInteraction: Story = {
     showIndicators: true,
     width: 600,
     height: 400,
+    onFocus: fn(),
+    onBlur: fn(),
+    onClick: fn(),
+    onChange: fn(),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -124,6 +128,10 @@ export const NavigationControls: Story = {
     showThumbnails: true,
     width: 600,
     height: 400,
+    onFocus: fn(),
+    onBlur: fn(),
+    onClick: fn(),
+    onChange: fn(),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -175,6 +183,10 @@ export const Autoplay: Story = {
     showIndicators: true,
     width: 600,
     height: 400,
+    onFocus: fn(),
+    onBlur: fn(),
+    onClick: fn(),
+    onChange: fn(),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -225,6 +237,10 @@ export const KeyboardNavigation: Story = {
     showIndicators: true,
     width: 600,
     height: 400,
+    onFocus: fn(),
+    onBlur: fn(),
+    onClick: fn(),
+    onChange: fn(),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -262,6 +278,10 @@ export const ScreenReader: Story = {
     showIndicators: true,
     width: 600,
     height: 400,
+    onFocus: fn(),
+    onBlur: fn(),
+    onClick: fn(),
+    onChange: fn(),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -338,6 +358,10 @@ export const ResponsiveDesign: Story = {
     showIndicators: true,
     width: '100%',
     height: 400,
+    onFocus: fn(),
+    onBlur: fn(),
+    onClick: fn(),
+    onChange: fn(),
   },
   parameters: {
     viewport: {
@@ -379,6 +403,10 @@ export const ThemeVariations: Story = {
     showIndicators: true,
     width: 600,
     height: 400,
+    onFocus: fn(),
+    onBlur: fn(),
+    onClick: fn(),
+    onChange: fn(),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -412,6 +440,10 @@ export const VisualStates: Story = {
     showIndicators: true,
     width: 600,
     height: 400,
+    onFocus: fn(),
+    onBlur: fn(),
+    onClick: fn(),
+    onChange: fn(),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -468,6 +500,10 @@ export const Performance: Story = {
     showArrows: true,
     width: 600,
     height: 400,
+    onFocus: fn(),
+    onBlur: fn(),
+    onClick: fn(),
+    onChange: fn(),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -533,6 +569,10 @@ export const EdgeCases: Story = {
     showIndicators: true,
     width: 600,
     height: 400,
+    onFocus: fn(),
+    onBlur: fn(),
+    onClick: fn(),
+    onChange: fn(),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -558,9 +598,17 @@ export const EdgeCases: Story = {
       .getAllByRole('button')
       .find((btn) => btn.querySelector('[data-testid="ArrowForwardIosIcon"]'));
 
-    if (nextButton) {
+    if (nextButton && !nextButton.hasAttribute('disabled')) {
       await userEvent.click(nextButton);
-      await userEvent.click(nextButton);
+      // Wait for transition
+      await waitFor(() => {
+        expect(canvas.queryByText('Slide without image')).toBeInTheDocument();
+      });
+
+      // Try to click again if not disabled
+      if (!nextButton.hasAttribute('disabled')) {
+        await userEvent.click(nextButton);
+      }
 
       // At last slide, next should be disabled when loop is false
       // Note: Component may need to implement this logic
@@ -584,6 +632,8 @@ export const Integration: Story = {
     pauseOnHover: true,
     onClick: fn(),
     onChange: fn(),
+    onFocus: fn(),
+    onBlur: fn(),
     width: 700,
     height: 450,
   },
