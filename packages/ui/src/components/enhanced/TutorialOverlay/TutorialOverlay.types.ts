@@ -1,19 +1,3 @@
-// DOM types for ESLint compatibility
-export type DOMRect = {
-  top: number;
-  left: number;
-  right: number;
-  bottom: number;
-  width: number;
-  height: number;
-};
-
-export type KeyboardEvent = {
-  key: string;
-  preventDefault: () => void;
-  stopPropagation: () => void;
-};
-
 // Component types
 export interface TutorialStep {
   id: string;

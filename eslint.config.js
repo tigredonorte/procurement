@@ -34,6 +34,11 @@ export default [
         HTMLSpanElement: 'readonly',
         HTMLFormElement: 'readonly',
         HTMLInputElement: 'readonly',
+        HTMLUListElement: 'readonly',
+        google: 'readonly',
+        NodeJS: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
       },
     },
     plugins: {

@@ -11,7 +11,7 @@ const meta: Meta<typeof WorkflowStep> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:WorkflowStep'],
 };
 
 export default meta;
@@ -44,17 +44,17 @@ export const BasicInteraction: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Check that all steps are rendered
     expect(canvas.getByText('Step One')).toBeInTheDocument();
     expect(canvas.getByText('Step Two')).toBeInTheDocument();
     expect(canvas.getByText('Step Three')).toBeInTheDocument();
     expect(canvas.getByText('Step Four')).toBeInTheDocument();
-    
+
     // Check step descriptions are present
     expect(canvas.getByText('First step description')).toBeInTheDocument();
     expect(canvas.getByText('Second step description')).toBeInTheDocument();
-    
+
     // Check proper ARIA attributes
     const progressBar = canvas.getByRole('progressbar');
     expect(progressBar).toHaveAttribute('aria-valuenow', '1');
@@ -73,20 +73,25 @@ export const StateChangeTest: Story = {
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Find the second step indicator (should be pending initially)
-    const step2Button = canvas.getAllByRole('button')[1];
+    // Since both indicator and content are buttons, we need to find the specific one
+    // Button index 2 should be the second step indicator (0=step1 indicator, 1=step1 content, 2=step2 indicator)
+    const step2Button = canvas.getAllByRole('button')[2];
     expect(step2Button).toBeInTheDocument();
-    
+
     // Click on step 2
     await userEvent.click(step2Button);
-    
+
     // Verify the click callback was called
     await waitFor(() => {
-      expect(args.onStepClick).toHaveBeenCalledWith(1, expect.objectContaining({
-        title: 'Step Two',
-        description: 'Second step description',
-      }));
+      expect(args.onStepClick).toHaveBeenCalledWith(
+        1,
+        expect.objectContaining({
+          title: 'Step Two',
+          description: 'Second step description',
+        }),
+      );
     });
   },
 };
@@ -100,32 +105,38 @@ export const KeyboardNavigation: Story = {
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     const stepButtons = canvas.getAllByRole('button');
-    expect(stepButtons).toHaveLength(3);
-    
-    // Focus on first step
+    expect(stepButtons).toHaveLength(6); // 3 steps * 2 buttons each (indicator + content)
+
+    // Focus on first step indicator (index 0)
     stepButtons[0].focus();
     expect(stepButtons[0]).toHaveFocus();
-    
+
     // Press Enter key
     await userEvent.keyboard('{Enter}');
-    
+
     // Verify callback was called
     await waitFor(() => {
-      expect(args.onStepClick).toHaveBeenCalledWith(0, expect.objectContaining({
-        title: 'Profile',
-      }));
+      expect(args.onStepClick).toHaveBeenCalledWith(
+        0,
+        expect.objectContaining({
+          title: 'Profile',
+        }),
+      );
     });
-    
-    // Test Space key on second step
-    stepButtons[1].focus();
+
+    // Test Space key on second step indicator (index 2)
+    stepButtons[2].focus();
     await userEvent.keyboard(' ');
-    
+
     await waitFor(() => {
-      expect(args.onStepClick).toHaveBeenCalledWith(1, expect.objectContaining({
-        title: 'Settings',
-      }));
+      expect(args.onStepClick).toHaveBeenCalledWith(
+        1,
+        expect.objectContaining({
+          title: 'Settings',
+        }),
+      );
     });
   },
 };
@@ -137,22 +148,22 @@ export const ScreenReaderTest: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Check main progressbar has proper ARIA labeling
     const progressBar = canvas.getByRole('progressbar');
     expect(progressBar).toHaveAttribute('aria-valuetext', 'Step 2 of 4: Step Two');
-    
+
     // Check individual step indicators have proper ARIA labels
     const stepIndicators = canvas.getAllByLabelText(/Step \d+:/);
     expect(stepIndicators).toHaveLength(4);
-    
+
     expect(stepIndicators[0]).toHaveAttribute('aria-label', 'Step 1: Step One');
     expect(stepIndicators[1]).toHaveAttribute('aria-label', 'Step 2: Step Two');
     expect(stepIndicators[1]).toHaveAttribute('aria-current', 'step');
-    
+
     // Check that completed steps don't have aria-current
     expect(stepIndicators[0]).not.toHaveAttribute('aria-current');
-    
+
     // Check that pending steps don't have aria-current
     expect(stepIndicators[2]).not.toHaveAttribute('aria-current');
   },
@@ -166,21 +177,21 @@ export const FocusManagement: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     const stepButtons = canvas.getAllByRole('button');
-    
+
     // Check all buttons are focusable
-    stepButtons.forEach(button => {
+    stepButtons.forEach((button) => {
       expect(button).toHaveAttribute('tabIndex', '0');
     });
-    
+
     // Test focus navigation
     await userEvent.tab();
     expect(stepButtons[0]).toHaveFocus();
-    
+
     await userEvent.tab();
     expect(stepButtons[1]).toHaveFocus();
-    
+
     // Check focus outline is visible
     expect(stepButtons[1]).toHaveFocus();
   },
@@ -193,17 +204,17 @@ export const ResponsiveDesign: Story = {
     orientation: 'horizontal',
   },
   parameters: {
-    viewport: { 
+    viewport: {
       defaultViewport: 'mobile1',
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Check component renders properly on mobile
     expect(canvas.getByText('Step One')).toBeInTheDocument();
     expect(canvas.getByText('Step Two')).toBeInTheDocument();
-    
+
     // Check that progress connectors are present
     const progressBar = canvas.getByRole('progressbar');
     expect(progressBar).toBeInTheDocument();
@@ -219,11 +230,11 @@ export const ThemeVariations: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Check that steps render with theme colors
     const progressBar = canvas.getByRole('progressbar');
     expect(progressBar).toBeInTheDocument();
-    
+
     // Check step titles are visible
     expect(canvas.getByText('Step Two')).toBeInTheDocument();
     expect(canvas.getByText('Second step description')).toBeInTheDocument();
@@ -237,16 +248,16 @@ export const VisualStates: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Check all different states are rendered
     expect(canvas.getByText('Validation')).toBeInTheDocument(); // completed
     expect(canvas.getByText('Processing')).toBeInTheDocument(); // error
     expect(canvas.getByText('Complete')).toBeInTheDocument(); // pending
-    
+
     // Check descriptions are present
     expect(canvas.getByText('Validate data')).toBeInTheDocument();
     expect(canvas.getByText('Process request')).toBeInTheDocument();
-    
+
     // Verify error step has proper status
     const stepIndicators = canvas.getAllByLabelText(/Step \d+:/);
     expect(stepIndicators[1]).toHaveAttribute('aria-label', 'Step 2: Processing');
@@ -255,21 +266,25 @@ export const VisualStates: Story = {
 
 export const PerformanceTest: Story = {
   args: {
-    steps: Array.from({ length: 20 }, (_, i) => ({
-      title: `Step ${i + 1}`,
-      description: `Description for step ${i + 1}`,
-      status: i < 5 ? 'completed' : i === 5 ? 'current' : 'pending',
-    } as WorkflowStepItem)),
+    steps: Array.from(
+      { length: 20 },
+      (_, i) =>
+        ({
+          title: `Step ${i + 1}`,
+          description: `Description for step ${i + 1}`,
+          status: i < 5 ? 'completed' : i === 5 ? 'current' : 'pending',
+        }) as WorkflowStepItem,
+    ),
     currentStep: 5,
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Check that many steps render efficiently
     expect(canvas.getByText('Step 1')).toBeInTheDocument();
     expect(canvas.getByText('Step 6')).toBeInTheDocument(); // current
     expect(canvas.getByText('Step 20')).toBeInTheDocument();
-    
+
     // Check progress bar works with many steps
     const progressBar = canvas.getByRole('progressbar');
     expect(progressBar).toHaveAttribute('aria-valuenow', '5');
@@ -280,17 +295,25 @@ export const PerformanceTest: Story = {
 export const EdgeCases: Story = {
   args: {
     steps: [
-      { title: 'Very Long Step Title That Might Cause Overflow Issues', description: 'This is a very long description that should handle text overflow properly', status: 'current' },
+      {
+        title: 'Very Long Step Title That Might Cause Overflow Issues',
+        description: 'This is a very long description that should handle text overflow properly',
+        status: 'current',
+      },
     ],
     currentStep: 0,
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Check long text is handled properly
-    expect(canvas.getByText('Very Long Step Title That Might Cause Overflow Issues')).toBeInTheDocument();
-    expect(canvas.getByText('This is a very long description that should handle text overflow properly')).toBeInTheDocument();
-    
+    expect(
+      canvas.getByText('Very Long Step Title That Might Cause Overflow Issues'),
+    ).toBeInTheDocument();
+    expect(
+      canvas.getByText('This is a very long description that should handle text overflow properly'),
+    ).toBeInTheDocument();
+
     // Check single step doesn't break the component
     const progressBar = canvas.getByRole('progressbar');
     expect(progressBar).toHaveAttribute('aria-valuemax', '0');
@@ -313,24 +336,27 @@ export const IntegrationTest: Story = {
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Test all features working together
     expect(canvas.getByRole('progressbar')).toBeInTheDocument();
-    
+
     // Check step numbers are displayed
     expect(canvas.getByText('1')).toBeInTheDocument();
     expect(canvas.getByText('2')).toBeInTheDocument();
-    
-    // Check interaction works
+
+    // Check interaction works - click on third step indicator (index 4: 2 buttons per step * 2 = 4)
     const stepButtons = canvas.getAllByRole('button');
-    await userEvent.click(stepButtons[2]);
-    
+    await userEvent.click(stepButtons[4]);
+
     await waitFor(() => {
-      expect(args.onStepClick).toHaveBeenCalledWith(2, expect.objectContaining({
-        title: 'Step Three',
-      }));
+      expect(args.onStepClick).toHaveBeenCalledWith(
+        2,
+        expect.objectContaining({
+          title: 'Step Three',
+        }),
+      );
     });
-    
+
     // Verify all step content is present
     expect(canvas.getByText('Step One')).toBeInTheDocument();
     expect(canvas.getByText('First step description')).toBeInTheDocument();

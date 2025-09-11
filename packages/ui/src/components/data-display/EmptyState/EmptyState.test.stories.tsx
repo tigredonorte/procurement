@@ -23,7 +23,7 @@ const meta: Meta<typeof EmptyState> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:EmptyState'],
 };
 
 export default meta;

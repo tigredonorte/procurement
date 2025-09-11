@@ -364,7 +364,9 @@ const StyledDialog = styled(Dialog, {
   }),
 );
 
-const StyledDialogTitle = styled(DialogTitle)<{ rtl?: boolean }>(({ theme, rtl }) => ({
+const StyledDialogTitle = styled(DialogTitle, {
+  shouldForwardProp: (prop) => !['rtl'].includes(prop as string),
+})<{ rtl?: boolean }>(({ theme, rtl }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',

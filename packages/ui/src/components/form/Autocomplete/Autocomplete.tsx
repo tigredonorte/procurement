@@ -1,4 +1,3 @@
-/// <reference lib="dom" />
 import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
 import {
   TextField,
@@ -121,8 +120,7 @@ export const Autocomplete = <T = AutocompleteOption,>({
 
   // Refs
   const inputRef = useRef<HTMLInputElement>(null);
-  // eslint-disable-next-line no-undef
-  const listRef = useRef<HTMLUListElement>(null);
+  const listRef = useRef<HTMLUListElement | null>(null);
   const debounceRef = useRef<number>();
 
   // Debounced onChange

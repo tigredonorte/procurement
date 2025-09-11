@@ -26,16 +26,13 @@
 | Test Name           | Status    | Pass/Fail | Notes                                         |
 | ------------------- | --------- | --------- | --------------------------------------------- |
 | Basic Interaction   | Completed | PASS      | Command palette opens, searches, and executes |
-| Form Interaction    | Completed | PASS      | Fuzzy search and form handling working        |
 | Keyboard Navigation | Completed | PASS      | Arrow keys, Enter, Escape all functional      |
 | Screen Reader       | Completed | PASS      | ARIA attributes and accessibility complete    |
 | Focus Management    | Completed | PASS      | Focus handling and restoration working        |
 | Responsive Design   | Completed | PASS      | Adapts to different viewport sizes            |
 | Theme Variations    | Completed | PASS      | Glass effects and theme integration working   |
 | Visual States       | Completed | PASS      | Hover, selected, empty states all working     |
-| Performance         | Completed | PASS      | Handles large datasets efficiently            |
 | Edge Cases          | Completed | PASS      | Special characters and edge cases handled     |
-| Integration         | Completed | PASS      | Recent commands and callbacks working         |
 
 Legend: Pending | Running | PASS | FAIL
 

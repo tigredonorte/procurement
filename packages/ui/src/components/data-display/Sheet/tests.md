@@ -3,7 +3,7 @@
 ## Test Files Status
 
 - [x] Sheet.test.stories.tsx created
-- [ ] All test categories implemented
+- [x] All test categories implemented
 
 ## Storybook Tests Status
 
@@ -23,19 +23,19 @@
 
 ### Test Results
 
-| Test Name           | Status  | Pass/Fail | Notes       |
-| ------------------- | ------- | --------- | ----------- |
-| Basic Interaction   | Pending | -         | Not started |
-| Form Interaction    | Pending | -         | Not started |
-| Keyboard Navigation | Pending | -         | Not started |
-| Screen Reader       | Pending | -         | Not started |
-| Focus Management    | Pending | -         | Not started |
-| Responsive Design   | Pending | -         | Not started |
-| Theme Variations    | Pending | -         | Not started |
-| Visual States       | Pending | -         | Not started |
-| Performance         | Pending | -         | Not started |
-| Edge Cases          | Pending | -         | Not started |
-| Integration         | Pending | -         | Not started |
+| Test Name           | Status  | Pass/Fail | Notes                        |
+| ------------------- | ------- | --------- | ---------------------------- |
+| Basic Interaction   | Running | FAIL      | Portal rendering issue fixed |
+| Form Interaction    | Running | FAIL      | Portal rendering issue fixed |
+| Keyboard Navigation | Running | FAIL      | Portal rendering issue fixed |
+| Screen Reader       | Running | FAIL      | Portal rendering issue fixed |
+| Focus Management    | Running | FAIL      | Portal rendering issue fixed |
+| Responsive Design   | Running | FAIL      | Portal rendering issue fixed |
+| Theme Variations    | Running | FAIL      | Portal rendering issue fixed |
+| Visual States       | Running | FAIL      | Portal rendering issue fixed |
+| Performance         | Running | FAIL      | Portal rendering issue fixed |
+| Edge Cases          | Running | PASS      | Working correctly            |
+| Integration         | Running | PASS      | Working correctly            |
 
 Legend: Pending | Running | PASS | FAIL
 

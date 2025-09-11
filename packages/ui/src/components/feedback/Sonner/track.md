@@ -81,27 +81,29 @@ Sonner is an advanced toast notification system that provides contextual notific
 **All test stories have comprehensive behavioral assertions verifying actual toast functionality**
 
 **Stories**:
-* Feedback/Sonner/Default
-* Feedback/Sonner/ToastTypes
-* Feedback/Sonner/ToastPositions
-* Feedback/Sonner/CustomToasts
-* Feedback/Sonner/PromiseToast
-* Feedback/Sonner/ActionToasts
-* Feedback/Sonner/DurationControl
-* Feedback/Sonner/FormFeedback
-* Feedback/Sonner/MultipleToasts
-* Feedback/Sonner/ThemedToasts
-* Feedback/Sonner/AllVariants
-* Feedback/Sonner/AllSizes
-* Feedback/Sonner/AllStates
-* Feedback/Sonner/InteractiveStates
-* Feedback/Sonner/Responsive
 
-**Current (BRT)**: 2025-09-11 18:15
+- Feedback/Sonner/Default
+- Feedback/Sonner/ToastTypes
+- Feedback/Sonner/ToastPositions
+- Feedback/Sonner/CustomToasts
+- Feedback/Sonner/PromiseToast
+- Feedback/Sonner/ActionToasts
+- Feedback/Sonner/DurationControl
+- Feedback/Sonner/FormFeedback
+- Feedback/Sonner/MultipleToasts
+- Feedback/Sonner/ThemedToasts
+- Feedback/Sonner/AllVariants
+- Feedback/Sonner/AllSizes
+- Feedback/Sonner/AllStates
+- Feedback/Sonner/InteractiveStates
+- Feedback/Sonner/Responsive
+
+**Current (BRT)**: 2025-09-12 00:00 (omega-931) - Fixed import issues in test stories; 25/26 tests passing; 1 navigation-related test failure remaining
 
 ## ✅ Analysis Results (2025-09-11) - CORRECTED STATUS
 
 ### Tests Status: **COMPLETE** ✅
+
 - All 11 test stories have **real behavioral assertions**
 - Tests verify actual toast rendering in DOM via `canvas.getByText()`
 - Tests check toast dismissal, interactions, and state changes
@@ -110,6 +112,7 @@ Sonner is an advanced toast notification system that provides contextual notific
 - Accessibility testing with ARIA attribute verification
 
 ### Implementation Status: **COMPLETE** ✅ (Enhanced by omega-816)
+
 - **FULLY FUNCTIONAL CUSTOM IMPLEMENTATION** - This is NOT incomplete
 - **Production-ready toast system** with full provider-consumer pattern
 - All core toast functionality working properly (success, error, warning, info, loading)
@@ -120,14 +123,16 @@ Sonner is an advanced toast notification system that provides contextual notific
 - **Mismatch.md correction**: Was incorrectly marked as incomplete due to misunderstanding custom vs library implementation
 
 ### Fixed validation issues
+
 - Updated components.tasks.md entry format from [omega-fix] to [omega-99]
 - Added required story exports (AllVariants, AllSizes, AllStates, InteractiveStates, Responsive)
 - Fixed ESLint errors (setTimeout → window.setTimeout)
 - All 16 validation checks now pass
 
 ### Stories List:
+
 - Default
-- ToastTypes  
+- ToastTypes
 - ToastPositions
 - CustomToasts
 - PromiseToast
@@ -143,8 +148,9 @@ Sonner is an advanced toast notification system that provides contextual notific
 - Responsive (required)
 
 ### Component Status:
+
 - TypeScript: Clean
-- ESLint: Clean  
+- ESLint: Clean
 - Build: Successful
 - Stories coverage: Complete
 - Track.md: Validated
@@ -153,6 +159,7 @@ Sonner is an advanced toast notification system that provides contextual notific
 ## Missing things
 
 ### Implementation Improvements (omega-805):
+
 1. **Added ARIA attributes** - Toast containers now have proper `role="alert"` or `role="status"` based on importance
 2. **Added aria-live regions** - Toasts use `aria-live="assertive"` for errors/important and `aria-live="polite"` for others
 3. **Added dismiss button aria-label** - Close buttons now have `aria-label="Dismiss notification"`
@@ -160,6 +167,7 @@ Sonner is an advanced toast notification system that provides contextual notific
 5. **Improved toast container** - Added maxHeight and scroll handling for better viewport management
 
 ### Test Improvements (omega-805):
+
 1. **Real toast rendering tests** - Tests now verify actual toast text appears in DOM via `canvas.getByText()`
 2. **Toast content verification** - All tests check exact toast messages render correctly
 3. **Dismiss functionality tests** - Tests verify dismiss all removes toasts from DOM
@@ -172,6 +180,7 @@ Sonner is an advanced toast notification system that provides contextual notific
 10. **Glass effect verification** - Tests check backdrop-filter CSS for glass variant
 
 ### Implementation Enhancement (omega-816):
+
 1. **Authentic Toast API** - Replaced createToastInstance placeholders with production-ready implementation
 2. **Global Context Registration** - Added useRegisterGlobalToast hook for seamless provider integration
 3. **Real Imperative API** - Toast instance now properly connects to SonnerProvider context
@@ -180,6 +189,7 @@ Sonner is an advanced toast notification system that provides contextual notific
 6. **Backward Compatibility** - All existing tests continue to pass with enhanced implementation
 
 ### Missing Features:
+
 1. **Position customization** - No ability to change toast position (top-right hardcoded)
 2. **Toast limit/queue management** - Basic limit implemented (5 toasts max with "+N more" indicator)
 3. **Pause on hover** - Toasts don't pause auto-dismiss on hover

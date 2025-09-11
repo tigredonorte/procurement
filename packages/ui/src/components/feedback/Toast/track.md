@@ -83,9 +83,16 @@ Toast is a lightweight notification component that displays temporary messages t
 - [ ] Edge Cases (planned)
 - [ ] Integration (planned)
 
-**Current (BRT)**: 2025-09-09 19:45
+**Current (BRT)**: 2025-09-11 23:59
 
-### Task Completed - omega-3
+### Task In Progress - omega-932
+
+- Fixed ToastContainer rendering in test decorators to ensure toasts appear in DOM
+- Fixed import path from 'storybook/test' to '@storybook/test'
+- Removed duplicate ToastContainer from Integration test story
+- Improved test stability by adding proper ToastContainer to decorators
+
+### Previous Work - omega-3
 
 - Fixed ESLint errors in Toast.test.stories.tsx (removed redundant story name properties)
 - Updated track.md format to pass validation (added colon to **Stories**: and proper spacing)
@@ -95,6 +102,7 @@ Toast is a lightweight notification component that displays temporary messages t
 ## Missing things
 
 ### Context Sync Issue
+
 - **Status**: OK - ToastContainer properly syncs with context
 - ToastContainer correctly uses `useContext(ToastContext)` at line 203
 - Properly retrieves `toasts` and `removeToast` from context at line 209
@@ -102,6 +110,7 @@ Toast is a lightweight notification component that displays temporary messages t
 - Each toast receives the `removeToast` callback from context at line 258
 
 ### Test Coverage
+
 - **Status**: Comprehensive
 - Tests cover all major functionality including:
   - Basic interaction (add/remove/clear)
@@ -117,6 +126,7 @@ Toast is a lightweight notification component that displays temporary messages t
   - Integration with ToastContainer component
 
 ### Implementation Quality
+
 - **Status**: OK
 - Provider-consumer pattern properly implemented
 - Context provides all necessary methods (addToast, removeToast, clearAllToasts, promise)

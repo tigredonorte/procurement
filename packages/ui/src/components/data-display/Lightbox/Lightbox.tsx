@@ -396,8 +396,8 @@ export const Lightbox = React.forwardRef<LightboxRef, LightboxProps>(
             backdropFilter: 'blur(2px)',
           },
         }}
+        aria-label="Lightbox"
         aria-labelledby="lightbox-title"
-        aria-describedby="lightbox-description"
         role="dialog"
         aria-modal="true"
         className={className}

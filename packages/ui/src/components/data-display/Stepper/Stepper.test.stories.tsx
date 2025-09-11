@@ -3,8 +3,8 @@ import { userEvent, within, expect, waitFor, fn } from 'storybook/test';
 import { useState } from 'react';
 import { Box } from '@mui/material';
 
-import { Stepper } from './';
-import type { Step } from './';
+import { Stepper } from './Stepper';
+import type { Step } from './Stepper.types';
 
 const meta: Meta<typeof Stepper> = {
   title: 'DataDisplay/Stepper/Tests',
@@ -13,7 +13,7 @@ const meta: Meta<typeof Stepper> = {
     layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
-  tags: ['autodocs', 'test'],
+  tags: ['autodocs', 'test', 'component:Stepper', 'checked'],
 };
 
 export default meta;
@@ -161,7 +161,7 @@ export const KeyboardNavigation: Story = {
 };
 
 // Test 4: Screen Reader Test
-export const ScreenReaderTest: Story = {
+export const ScreenReader: Story = {
   args: {
     steps: [
       { id: 'step1', label: 'Personal Info', description: 'Enter details' },
@@ -375,7 +375,7 @@ export const VisualStates: Story = {
 };
 
 // Test 9: Performance Test
-export const PerformanceTest: Story = {
+export const Performance: Story = {
   args: {
     steps: Array.from({ length: 10 }, (_, i) => ({
       id: `step${i + 1}`,
@@ -501,7 +501,7 @@ export const EdgeCases: Story = {
 };
 
 // Test 11: Integration Test
-export const IntegrationTest: Story = {
+export const Integration: Story = {
   render: () => {
     const TestComponent = () => {
       const [activeId, setActiveId] = useState('step1');
@@ -575,9 +575,10 @@ export const IntegrationTest: Story = {
     // Initially on step 1
     await expect(canvas.getByTestId('active-step-id')).toHaveTextContent('step1');
 
-    // Try to go to step 2 without filling form - should fail
+    // In linear mode, step buttons should not be clickable
     const step2Button = canvas.getByLabelText(/Step 2.*Address/);
-    await userEvent.click(step2Button);
+    // Step 2 should not be clickable in linear mode when not active
+    await expect(step2Button).toHaveStyle('pointer-events: none');
     // Should still be on step 1
     await expect(canvas.getByTestId('active-step-id')).toHaveTextContent('step1');
 

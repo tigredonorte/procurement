@@ -29,13 +29,13 @@
 | Controlled State    | Completed | PASS      | State management verified            |
 | Keyboard Navigation | Completed | PASS      | Keyboard accessible                  |
 | Screen Reader       | Completed | PASS      | ARIA attributes present              |
-| Focus Management    | Completed | PASS      | Focus maintained properly            |
+| Focus Management    | Running   | FAIL      | Test execution error - investigating |
 | Responsive Design   | Completed | PASS      | Works on all viewports               |
 | Theme Variations    | Completed | PASS      | Light/dark themes supported          |
-| Visual States       | Completed | PASS      | All variants render correctly        |
+| Visual States       | Running   | FAIL      | Test execution error - investigating |
 | Performance         | Completed | PASS      | Handles multiple instances well      |
 | Edge Cases          | Completed | PASS      | Loading, empty, long content handled |
-| Integration         | Completed | PASS      | Works with other components          |
+| Integration         | Running   | FAIL      | Test execution error - investigating |
 
 Legend: Pending | Running | PASS | FAIL
 
@@ -85,12 +85,14 @@ None
 
 ### Broken Tests
 
-None
+- FocusManagement - Test execution error
+- VisualStates - Test execution error
+- Integration - Test execution error
 
 ## Overall Component Status
 
-- [x] All tests passing
+- [ ] All tests passing (29/32 passing, 3 failing)
 - [x] Lint clean
 - [x] TypeCheck clean
 - [x] Stories working
-- [x] Ready for production
+- [ ] Ready for production (needs test fixes)

@@ -143,9 +143,9 @@ export const LargeSize: Story = {
 export const AllSizes: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-      <Chip label="Small" size="sm" />
-      <Chip label="Medium" size="md" />
-      <Chip label="Large" size="lg" />
+      <Chip label="Small" size="small" />
+      <Chip label="Medium" size="medium" />
+      <Chip label="Large" size="medium" />
     </div>
   ),
 };
@@ -188,17 +188,17 @@ export const Responsive: Story = {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
         {Array.from({ length: 10 }, (_, i) => (
-          <Chip key={i} label={`Tag ${i + 1}`} size="sm" />
+          <Chip key={i} label={`Tag ${i + 1}`} size="small" />
         ))}
       </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
         {Array.from({ length: 8 }, (_, i) => (
-          <Chip key={i} label={`Category ${i + 1}`} size="md" deletable onDelete={() => {}} />
+          <Chip key={i} label={`Category ${i + 1}`} size="medium" deletable onDelete={() => {}} />
         ))}
       </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
         {Array.from({ length: 5 }, (_, i) => (
-          <Chip key={i} label={`Filter ${i + 1}`} size="lg" selectable />
+          <Chip key={i} label={`Filter ${i + 1}`} size="medium" selectable />
         ))}
       </div>
     </div>

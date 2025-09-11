@@ -230,7 +230,7 @@ async function runComponentCheck(category, componentName, useCache = true) {
             };
         }
         
-        console.log(`❌ ${category}/${componentName}: FAIL - ${reason}`);
+        console.log(`❌ ${category}/${componentName}: FAIL - ${reason}`, errorOutput);
         return { status: 'FAIL', reason };
     }
 }
@@ -421,7 +421,7 @@ async function execute() {
     
     // Determine concurrency
     const cpuCount = os.cpus().length;
-    const defaultConcurrency = Math.max(4, Math.min(cpuCount, 16));
+    const defaultConcurrency = Math.max(4, Math.min(cpuCount, 4));
     const maxConcurrency = parseInt(process.env.CHECK_CONCURRENCY) || defaultConcurrency;
     
     console.log(`System CPUs: ${cpuCount}, Using concurrency: ${maxConcurrency}`);

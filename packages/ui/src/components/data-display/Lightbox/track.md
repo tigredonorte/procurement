@@ -2,8 +2,8 @@
 
 **Component**: `Lightbox`
 **Category**: `data-display` (modal media viewer)
-**Status**: completed [omega-57]
-**Current (BRT)**: 2025-09-09 10:30
+**Status**: completed [omega-960]
+**Current (BRT)**: 2025-09-11 21:15
 
 ---
 

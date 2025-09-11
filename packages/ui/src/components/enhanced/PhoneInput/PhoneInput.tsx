@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, useRef } from 'react';
 import {
   Box,
   TextField,
@@ -120,7 +120,7 @@ const CountryMenu = styled(Menu)(({ theme }) => ({
 // Helper functions with enhanced validation
 const formatPhoneNumber = (value: string, country: CountryCode): string => {
   if (!value || value.trim() === '') return value;
-  
+
   try {
     const phoneNumber = parsePhoneNumber(value, country);
     if (phoneNumber && phoneNumber.isValid()) {
@@ -134,7 +134,7 @@ const formatPhoneNumber = (value: string, country: CountryCode): string => {
 
 const validatePhoneNumber = (value: string, country: CountryCode): boolean => {
   if (!value || value.trim() === '') return false;
-  
+
   try {
     const phoneNumber = parsePhoneNumber(value, country);
     return phoneNumber ? phoneNumber.isValid() : false;
@@ -147,7 +147,7 @@ const validatePhoneNumber = (value: string, country: CountryCode): boolean => {
 // Enhanced helper to detect country from number
 const detectCountryFromNumber = (value: string): CountryCode | undefined => {
   if (!value || !value.startsWith('+')) return undefined;
-  
+
   try {
     const phoneNumber = parsePhoneNumber(value);
     return phoneNumber?.country;
@@ -181,6 +181,12 @@ export const PhoneInput: FC<PhoneInputProps> = ({
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isValid, setIsValid] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+  const onChangeRef = useRef(onChange);
+
+  // Update ref when onChange changes
+  useEffect(() => {
+    onChangeRef.current = onChange;
+  }, [onChange]);
 
   useEffect(() => {
     if (!selectedCountry) return;
@@ -188,10 +194,10 @@ export const PhoneInput: FC<PhoneInputProps> = ({
     const valid = validatePhoneNumber(value, selectedCountry.code);
     setIsValid(valid);
 
-    if (onChange) {
-      onChange(value, valid, selectedCountry.code);
+    if (onChangeRef.current) {
+      onChangeRef.current(value, valid, selectedCountry.code);
     }
-  }, [value, selectedCountry, onChange]);
+  }, [value, selectedCountry]);
 
   const handleCountryClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -215,12 +221,12 @@ export const PhoneInput: FC<PhoneInputProps> = ({
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     setValue(newValue);
-    
+
     // Auto-detect country if user types international format
     if (newValue.startsWith('+')) {
       const detectedCountry = detectCountryFromNumber(newValue);
       if (detectedCountry) {
-        const detectedCountryData = countries.find(c => c.code === detectedCountry);
+        const detectedCountryData = countries.find((c) => c.code === detectedCountry);
         if (detectedCountryData && detectedCountryData.code !== selectedCountry?.code) {
           setSelectedCountry(detectedCountryData);
         }
@@ -250,9 +256,9 @@ export const PhoneInput: FC<PhoneInputProps> = ({
         onBlur={handleBlur}
         error={error || (!isValid && value !== '' && !isFocused)}
         helperText={
-          errorMessage || 
-          (!isValid && value !== '' && !isFocused 
-            ? `Invalid phone number for ${selectedCountry?.name || 'selected country'}` 
+          errorMessage ||
+          (!isValid && value !== '' && !isFocused
+            ? `Invalid phone number for ${selectedCountry?.name || 'selected country'}`
             : helper)
         }
         disabled={disabled}
@@ -262,7 +268,7 @@ export const PhoneInput: FC<PhoneInputProps> = ({
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <CountrySelector 
+              <CountrySelector
                 onClick={handleCountryClick}
                 role="button"
                 aria-label="Select country"

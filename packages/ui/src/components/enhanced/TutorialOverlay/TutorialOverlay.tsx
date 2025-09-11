@@ -21,7 +21,7 @@ import {
   CheckCircle as CompleteIcon,
 } from '@mui/icons-material';
 
-import type { TutorialOverlayProps, DOMRect, KeyboardEvent } from './TutorialOverlay.types';
+import type { TutorialOverlayProps } from './TutorialOverlay.types';
 
 // Animation keyframes
 const pulseAnimation = keyframes`
@@ -67,25 +67,27 @@ const Backdrop = styled(Box)(() => ({
   backdropFilter: 'blur(2px)',
 }));
 
-const Spotlight = styled(Box)<{ bounds: DOMRect; padding: number }>(({ bounds, padding }) => ({
-  position: 'absolute',
-  top: bounds.top - padding,
-  left: bounds.left - padding,
-  width: bounds.width + padding * 2,
-  height: bounds.height + padding * 2,
-  borderRadius: 8,
-  border: '2px solid rgba(255, 255, 255, 0.5)',
-  animation: `${pulseAnimation} 2s infinite`,
-  pointerEvents: 'none',
-  '&::before': {
-    content: '""',
+const Spotlight = styled(Box)<{ bounds: globalThis.DOMRect; padding: number }>(
+  ({ bounds, padding }) => ({
     position: 'absolute',
-    inset: -2,
+    top: bounds.top - padding,
+    left: bounds.left - padding,
+    width: bounds.width + padding * 2,
+    height: bounds.height + padding * 2,
     borderRadius: 8,
-    background: 'transparent',
-    boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.7)',
-  },
-}));
+    border: '2px solid rgba(255, 255, 255, 0.5)',
+    animation: `${pulseAnimation} 2s infinite`,
+    pointerEvents: 'none',
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      inset: -2,
+      borderRadius: 8,
+      background: 'transparent',
+      boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.7)',
+    },
+  }),
+);
 
 const TooltipContainer = styled(Paper)<{ placement: string }>(({ theme, placement }) => ({
   position: 'absolute',
@@ -175,7 +177,7 @@ const StepDot = styled(Box)<{ active?: boolean; completed?: boolean }>(
 );
 
 // Helper function to get element bounds
-const getElementBounds = (selector: string): DOMRect | null => {
+const getElementBounds = (selector: string): globalThis.DOMRect | null => {
   const element = document.querySelector(selector);
   if (!element) return null;
   return element.getBoundingClientRect();
@@ -183,8 +185,8 @@ const getElementBounds = (selector: string): DOMRect | null => {
 
 // Helper function to calculate tooltip position
 const calculateTooltipPosition = (
-  targetBounds: DOMRect,
-  tooltipBounds: DOMRect,
+  targetBounds: globalThis.DOMRect,
+  tooltipBounds: globalThis.DOMRect,
   placement: string,
   padding = 16,
 ) => {
@@ -263,7 +265,7 @@ export const TutorialOverlay: FC<TutorialOverlayProps> = ({
   animated = true,
 }) => {
   const [currentStep, setCurrentStep] = useState(initialStep);
-  const [targetBounds, setTargetBounds] = useState<DOMRect | null>(null);
+  const [targetBounds, setTargetBounds] = useState<globalThis.DOMRect | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
   const [actualPlacement, setActualPlacement] = useState<string>('bottom');
   const [isVisible, setIsVisible] = useState(false);
@@ -324,7 +326,7 @@ export const TutorialOverlay: FC<TutorialOverlayProps> = ({
     if (currentStepId && onStepComplete) {
       onStepComplete(currentStepId);
     }
-    
+
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else if (onComplete) {
@@ -352,7 +354,7 @@ export const TutorialOverlay: FC<TutorialOverlayProps> = ({
   useEffect(() => {
     if (!allowKeyboardNavigation || !active) return;
 
-    const handleKeyPress = (e: KeyboardEvent) => {
+    const handleKeyPress = (e: globalThis.KeyboardEvent) => {
       switch (e.key) {
         case 'ArrowLeft':
           handlePrev();
@@ -404,10 +406,10 @@ export const TutorialOverlay: FC<TutorialOverlayProps> = ({
               <Box
                 sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}
               >
-                <Typography 
+                <Typography
                   id={`tutorial-title-${currentStep}`}
-                  variant="h6" 
-                  fontWeight="bold" 
+                  variant="h6"
+                  fontWeight="bold"
                   sx={{ flex: 1 }}
                 >
                   {currentStepData.title}
@@ -419,9 +421,9 @@ export const TutorialOverlay: FC<TutorialOverlayProps> = ({
                 )}
               </Box>
 
-              <Typography 
+              <Typography
                 id={`tutorial-content-${currentStep}`}
-                variant="body2" 
+                variant="body2"
                 color="text.secondary"
               >
                 {currentStepData.content}
@@ -460,11 +462,7 @@ export const TutorialOverlay: FC<TutorialOverlayProps> = ({
               <Stack direction="row" spacing={1} justifyContent="space-between">
                 <Stack direction="row" spacing={1}>
                   {allowSkip && (
-                    <Button
-                      size="small"
-                      onClick={handleSkip}
-                      variant="text"
-                    >
+                    <Button size="small" onClick={handleSkip} variant="text">
                       Skip
                     </Button>
                   )}

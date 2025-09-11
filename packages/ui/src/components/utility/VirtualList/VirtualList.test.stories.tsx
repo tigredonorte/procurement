@@ -769,7 +769,6 @@ export const Performance: Story = {
     for (let i = 0; i < 10; i++) {
       await userEvent.scroll(performanceList, { deltaY: 500 });
       await new Promise<void>((resolve) => {
-        // eslint-disable-next-line no-undef
         setTimeout(resolve, 10);
       });
     }

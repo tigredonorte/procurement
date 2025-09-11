@@ -1010,7 +1010,6 @@ export const Integration: Story = {
 
           // Simulate data loading when accordion expands
           if (isExpanded && panel === 'panel2' && !data.loaded) {
-            // eslint-disable-next-line no-undef
             setTimeout(() => {
               setData({
                 loaded: true,
@@ -1284,7 +1283,7 @@ export const PerformanceTest: Story = {
 
         if (summary) {
           await userEvent.click(summary);
-          // eslint-disable-next-line no-undef
+
           await new Promise((resolve) => setTimeout(resolve, 50));
           await userEvent.click(summary);
         }
