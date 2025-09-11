@@ -71,7 +71,7 @@ const EndContent = () => (
 // Interaction Tests
 // ====================================
 
-export const BasicInteraction: Story = {
+export const TestBasicInteraction: Story = {
   name: '🧪 Basic Interaction Test',
   args: {
     items: basicMenuItems,
@@ -110,7 +110,7 @@ export const BasicInteraction: Story = {
   },
 };
 
-export const FormInteraction: Story = {
+export const TestFormInteraction: Story = {
   name: '🧪 Form Interaction Test',
   args: {
     items: [
@@ -152,7 +152,7 @@ export const FormInteraction: Story = {
   },
 };
 
-export const KeyboardNavigation: Story = {
+export const TestKeyboardNavigation: Story = {
   name: '🧪 Keyboard Navigation Test',
   args: {
     items: basicMenuItems,
@@ -192,7 +192,7 @@ export const KeyboardNavigation: Story = {
   },
 };
 
-export const ScreenReader: Story = {
+export const TestScreenReader: Story = {
   name: '🧪 Screen Reader Test',
   args: {
     items: basicMenuItems,
@@ -224,7 +224,7 @@ export const ScreenReader: Story = {
   },
 };
 
-export const FocusManagement: Story = {
+export const TestFocusManagement: Story = {
   name: '🧪 Focus Management Test',
   args: {
     items: basicMenuItems,
@@ -261,7 +261,7 @@ export const FocusManagement: Story = {
   },
 };
 
-export const ResponsiveDesign: Story = {
+export const TestResponsiveDesign: Story = {
   name: '🧪 Responsive Design Test',
   args: {
     items: basicMenuItems,
@@ -294,7 +294,7 @@ export const ResponsiveDesign: Story = {
   },
 };
 
-export const ThemeVariations: Story = {
+export const TestThemeVariations: Story = {
   name: '🧪 Theme Variations Test',
   render: () => (
     <Box>
@@ -340,7 +340,7 @@ export const ThemeVariations: Story = {
   },
 };
 
-export const VisualStates: Story = {
+export const TestVisualStates: Story = {
   name: '🧪 Visual States Test',
   render: () => (
     <Box>
@@ -383,7 +383,7 @@ export const VisualStates: Story = {
   },
 };
 
-export const Performance: Story = {
+export const TestPerformance: Story = {
   name: '🧪 Performance Test',
   args: {
     items: Array.from({ length: 20 }, (_, i) => ({
@@ -429,7 +429,7 @@ export const Performance: Story = {
   },
 };
 
-export const EdgeCases: Story = {
+export const TestEdgeCases: Story = {
   name: '🧪 Edge Cases Test',
   render: () => (
     <Box>
@@ -469,7 +469,7 @@ export const EdgeCases: Story = {
   },
 };
 
-export const Integration: Story = {
+export const TestIntegration: Story = {
   name: '🧪 Integration Test',
   render: () => (
     <Box>

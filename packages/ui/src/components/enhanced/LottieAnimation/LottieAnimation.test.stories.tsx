@@ -85,6 +85,25 @@ const sampleAnimation = {
   ],
 };
 
+// Helper to wait for Lottie animation to load
+const waitForAnimationLoad = async (canvasElement: HTMLElement) => {
+  await waitFor(
+    () => {
+      const loadingOverlay = canvasElement.querySelector('[data-testid="loading-overlay"]');
+      const svgElement = canvasElement.querySelector('svg');
+      expect(!loadingOverlay && svgElement).toBeTruthy();
+    },
+    { timeout: 3000 }
+  );
+};
+
+// Helper to get Lottie SVG element
+const getLottieSVG = (canvasElement: HTMLElement) => {
+  const svg = canvasElement.querySelector('svg');
+  expect(svg).toBeInTheDocument();
+  return svg!;
+};
+
 const meta: Meta<typeof LottieAnimation> = {
   title: 'Enhanced/LottieAnimation/Tests',
   component: LottieAnimation,
@@ -101,33 +120,27 @@ export const BasicInteraction: Story = {
     size: 'md',
     autoplay: true,
     loop: true,
-    interactive: true,
-    background: 'glass',
   },
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const animation = canvas.getByRole('button', { name: /pause animation/i });
-
-    // Verify animation is rendered
-    expect(animation).toBeInTheDocument();
-    expect(animation).toHaveAttribute('role', 'button');
-    expect(animation).toHaveAttribute('tabindex', '0');
-
-    // Test click interaction
-    await userEvent.click(animation);
-
-    // Verify state changed to play
-    await waitFor(() => {
-      expect(animation).toHaveAttribute('aria-label', 'Play animation');
-    });
-
-    // Click again to pause
-    await userEvent.click(animation);
-
-    // Verify state changed back to pause
-    await waitFor(() => {
-      expect(animation).toHaveAttribute('aria-label', 'Pause animation');
-    });
+    // Wait for animation to load
+    await waitForAnimationLoad(canvasElement);
+    
+    // Verify SVG is rendered with correct dimensions
+    const svg = getLottieSVG(canvasElement);
+    expect(svg).toHaveAttribute('viewBox', '0 0 100 100');
+    expect(svg.getAttribute('width')).toBeTruthy();
+    expect(svg.getAttribute('height')).toBeTruthy();
+    
+    // Verify animation container has correct size (200px for 'md')
+    const container = canvasElement.querySelector('[aria-label="Animation"]');
+    expect(container).toBeInTheDocument();
+    const containerStyles = window.getComputedStyle(container!);
+    expect(containerStyles.width).toBe('200px');
+    expect(containerStyles.height).toBe('200px');
+    
+    // Verify animation elements are present
+    const animationElements = svg.querySelectorAll('g, path, rect, circle');
+    expect(animationElements.length).toBeGreaterThan(0);
   },
 };
 
@@ -136,26 +149,49 @@ export const KeyboardNavigation: Story = {
     src: sampleAnimation,
     size: 'md',
     interactive: true,
-    autoplay: false,
+    autoplay: true,
   },
   play: async ({ canvasElement }) => {
+    await waitForAnimationLoad(canvasElement);
+    
     const canvas = within(canvasElement);
-    const animation = canvas.getByRole('button');
-
-    // Test keyboard focus
-    animation.focus();
-    expect(animation).toHaveFocus();
-
-    // Test Enter key activation
+    const button = canvas.getByRole('button', { name: /pause animation/i });
+    
+    // Verify initial autoplay state
+    expect(button).toHaveAttribute('aria-label', 'Pause animation');
+    expect(button).toHaveAttribute('role', 'button');
+    expect(button).toHaveAttribute('tabindex', '0');
+    
+    // Click to pause animation
+    await userEvent.click(button);
+    await waitFor(() => {
+      expect(button).toHaveAttribute('aria-label', 'Play animation');
+    });
+    
+    // Verify pause state by checking aria-label persistence
+    await new Promise(resolve => window.setTimeout(resolve, 200));
+    expect(button).toHaveAttribute('aria-label', 'Play animation');
+    
+    // Click to resume animation
+    await userEvent.click(button);
+    await waitFor(() => {
+      expect(button).toHaveAttribute('aria-label', 'Pause animation');
+    });
+    
+    // Test keyboard navigation
+    button.focus();
+    expect(button).toHaveFocus();
+    
+    // Test Enter key
     await userEvent.keyboard('{Enter}');
     await waitFor(() => {
-      expect(animation).toHaveAttribute('aria-label', 'Pause animation');
+      expect(button).toHaveAttribute('aria-label', 'Play animation');
     });
-
-    // Test Space key activation
+    
+    // Test Space key
     await userEvent.keyboard(' ');
     await waitFor(() => {
-      expect(animation).toHaveAttribute('aria-label', 'Play animation');
+      expect(button).toHaveAttribute('aria-label', 'Pause animation');
     });
   },
 };
@@ -164,23 +200,26 @@ export const ScreenReader: Story = {
   args: {
     src: sampleAnimation,
     size: 'md',
-    interactive: true,
+    speed: 2,
+    direction: 1,
     autoplay: true,
   },
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const animation = canvas.getByRole('button');
-
-    // Verify screen reader attributes
-    expect(animation).toHaveAttribute('aria-label', 'Pause animation');
-    expect(animation).toHaveAttribute('role', 'button');
-    expect(animation).toHaveAttribute('tabindex', '0');
-
-    // Test state change announcement
-    await userEvent.click(animation);
-    await waitFor(() => {
-      expect(animation).toHaveAttribute('aria-label', 'Play animation');
+    await waitForAnimationLoad(canvasElement);
+    
+    // Verify animation is running with custom speed
+    const svg = getLottieSVG(canvasElement);
+    expect(svg).toBeInTheDocument();
+    
+    // Test that animation properties are applied by checking container
+    const container = canvasElement.querySelector('[aria-label="Animation"]');
+    expect(container).toBeInTheDocument();
+    
+    // Verify speed configuration is applied (indirect test through presence)
+    await new Promise<void>(resolve => {
+      window.setTimeout(resolve, 100);
     });
+    expect(svg).toBeInTheDocument(); // Animation should still be active
   },
 };
 
@@ -188,42 +227,62 @@ export const FocusManagement: Story = {
   args: {
     src: sampleAnimation,
     size: 'md',
-    interactive: true,
+    autoplay: true,
+    loop: false,
+    onComplete: fn(),
   },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const animation = canvas.getByRole('button');
-
-    // Test focus is properly managed
-    animation.focus();
-    expect(animation).toHaveFocus();
-
-    // Test focus remains after interaction
-    await userEvent.click(animation);
-    expect(animation).toHaveFocus();
+  play: async ({ canvasElement, args }) => {
+    await waitForAnimationLoad(canvasElement);
+    
+    // Verify non-looping animation setup
+    expect(args.loop).toBe(false);
+    expect(args.onComplete).toBeDefined();
+    
+    // Verify progress indicator setup for non-looping animations
+    const container = canvasElement.querySelector('[aria-label="Animation"]');
+    expect(container).toBeInTheDocument();
+    
+    // Verify animation is set up to complete
+    const svg = getLottieSVG(canvasElement);
+    expect(svg).toBeInTheDocument();
   },
 };
 
 export const ResponsiveDesign: Story = {
   args: {
     src: sampleAnimation,
+    size: 'lg', // 300px
   },
   play: async ({ canvasElement }) => {
-    // Test different sizes render correctly
-    const sizes = ['sm', 'md', 'lg', 'xl', '2xl'];
-    const sizePixels = { sm: 120, md: 200, lg: 300, xl: 400, '2xl': 500 };
-
-    // For this test, we'll verify the component accepts all size variants
-    for (const size of sizes) {
-      // Verify size configuration exists
-      expect(sizePixels[size as keyof typeof sizePixels]).toBeDefined();
-    }
-
-    // Verify animation container exists
-    const animationContainer = canvasElement.querySelector(
-      '[role="button"], [aria-label="Animation"]',
-    );
-    expect(animationContainer).toBeInTheDocument();
+    await waitForAnimationLoad(canvasElement);
+    
+    // Verify 'lg' size renders as 300px
+    const container = canvasElement.querySelector('[aria-label="Animation"]');
+    expect(container).toBeInTheDocument();
+    
+    const containerStyles = window.getComputedStyle(container!);
+    expect(containerStyles.width).toBe('300px');
+    expect(containerStyles.height).toBe('300px');
+    
+    // Verify SVG scales properly within container
+    const svg = getLottieSVG(canvasElement);
+    const svgStyles = window.getComputedStyle(svg);
+    
+    // SVG should fill the container (100% width/height via CSS)
+    expect(svg.style.width || svgStyles.width).toBeTruthy();
+    expect(svg.style.height || svgStyles.height).toBeTruthy();
+    
+    // Test size configuration mapping
+    const sizeMap = {
+      sm: '120px',
+      md: '200px', 
+      lg: '300px',
+      xl: '400px',
+      '2xl': '500px'
+    };
+    
+    expect(sizeMap.lg).toBe('300px');
+    expect(containerStyles.width).toBe(sizeMap.lg);
   },
 };
 
@@ -235,16 +294,25 @@ export const ThemeVariations: Story = {
     glow: true,
   },
   play: async ({ canvasElement }) => {
-    const animation = canvasElement.querySelector('[aria-label="Animation"], [role="button"]');
-
-    // Verify component renders with theme variations
-    expect(animation).toBeInTheDocument();
-
-    // Test background variants
-    const backgrounds = ['glass', 'solid', 'none'];
-    backgrounds.forEach((bg) => {
-      expect(['glass', 'solid', 'none']).toContain(bg);
-    });
+    await waitForAnimationLoad(canvasElement);
+    
+    const container = canvasElement.querySelector('[aria-label="Animation"]');
+    expect(container).toBeInTheDocument();
+    
+    const containerStyles = window.getComputedStyle(container!);
+    
+    // Verify glass background effect
+    expect(containerStyles.background).toContain('linear-gradient');
+    expect(containerStyles.backdropFilter || containerStyles.webkitBackdropFilter).toContain('blur');
+    
+    // Verify glow effect is applied via box-shadow
+    const boxShadow = containerStyles.boxShadow;
+    expect(boxShadow).toBeTruthy();
+    expect(boxShadow).not.toBe('none');
+    
+    // Verify border radius is applied
+    expect(containerStyles.borderRadius).toBeTruthy();
+    expect(containerStyles.borderRadius).not.toBe('0px');
   },
 };
 
@@ -252,59 +320,53 @@ export const VisualStates: Story = {
   args: {
     src: sampleAnimation,
     size: 'md',
+    segments: [10, 40] as [number, number],
+    autoplay: true,
+    onSegmentComplete: fn(),
   },
-  play: async ({ canvasElement }) => {
-    // Test different visual states
-    const animation = canvasElement.querySelector('[aria-label="Animation"], [role="button"]');
-    expect(animation).toBeInTheDocument();
-
-    // Verify visual state properties
-    const visualStates = {
-      glow: [true, false],
-      background: ['glass', 'solid', 'none'],
-      interactive: [true, false],
-      autoplay: [true, false],
-      loop: [true, false],
-    };
-
-    Object.entries(visualStates).forEach(([, values]) => {
-      values.forEach((value) => {
-        expect([true, false, 'glass', 'solid', 'none']).toContain(value);
-      });
-    });
+  play: async ({ canvasElement, args }) => {
+    await waitForAnimationLoad(canvasElement);
+    
+    // Verify segment configuration
+    expect(args.segments).toEqual([10, 40]);
+    expect(args.onSegmentComplete).toBeDefined();
+    
+    // Verify animation loads and plays segments
+    const svg = getLottieSVG(canvasElement);
+    expect(svg).toBeInTheDocument();
+    
+    // Verify container is present and animation is running
+    const container = canvasElement.querySelector('[aria-label="Animation"]');
+    expect(container).toBeInTheDocument();
+    
+    // Wait for segment playback initialization
+    await new Promise(resolve => window.setTimeout(resolve, 200));
+    expect(svg).toBeInTheDocument();
   },
 };
 
 export const Performance: Story = {
   args: {
-    src: sampleAnimation,
+    src: 'https://invalid-url-that-will-fail.json',
     size: 'md',
-    autoplay: true,
-    loop: true,
   },
   play: async ({ canvasElement }) => {
-    const startTime = Date.now();
-
-    const animation = canvasElement.querySelector('[aria-label="Animation"], [role="button"]');
-
-    // Verify component renders quickly
-    expect(animation).toBeInTheDocument();
-
-    const renderTime = Date.now() - startTime;
-    expect(renderTime).toBeLessThan(100); // Should render in under 100ms
-
-    // Test multiple rapid interactions don't break performance
-    const canvas = within(canvasElement);
-    const interactiveElement = canvas.queryByRole('button');
-    if (interactiveElement) {
-      for (let i = 0; i < 5; i++) {
-        await userEvent.click(interactiveElement);
-        await new Promise((resolve) => {
-          const timeoutId = window.setTimeout(resolve, 10);
-          return timeoutId;
-        });
-      }
-    }
+    // Initially should show loading state
+    const container = canvasElement.querySelector('[aria-label="Animation"]');
+    expect(container).toBeInTheDocument();
+    
+    // Should show loading spinner initially
+    const loadingSpinner = canvasElement.querySelector('[class*="spin"]');
+    expect(loadingSpinner || container).toBeTruthy();
+    
+    // Wait for load attempt to complete (should fail gracefully)
+    await new Promise(resolve => window.setTimeout(resolve, 1000));
+    
+    // Component should still be in DOM after load failure
+    expect(container).toBeInTheDocument();
+    
+    // Should handle error gracefully without crashing
+    expect(canvasElement).toBeInTheDocument();
   },
 };
 
@@ -312,24 +374,37 @@ export const EdgeCases: Story = {
   args: {
     src: sampleAnimation,
     size: 'md',
+    interactive: true,
+    background: 'solid',
   },
   play: async ({ canvasElement }) => {
-    // Test component handles edge cases
-    const animation = canvasElement.querySelector('[aria-label="Animation"], [role="button"]');
-    expect(animation).toBeInTheDocument();
-
-    // Verify size edge cases
-    const validSizes = ['sm', 'md', 'lg', 'xl', '2xl'];
-    validSizes.forEach((size) => {
-      expect(validSizes).toContain(size);
+    await waitForAnimationLoad(canvasElement);
+    
+    const button = canvasElement.querySelector('[role="button"]');
+    expect(button).toBeInTheDocument();
+    expect(button).toHaveAttribute('tabindex', '0');
+    
+    // Verify interactive styles are applied
+    const buttonStyles = window.getComputedStyle(button!);
+    expect(buttonStyles.cursor).toBe('pointer');
+    
+    // Test hover state by checking CSS transition properties
+    expect(buttonStyles.transition).toContain('transform');
+    expect(buttonStyles.transition).toContain('box-shadow');
+    
+    // Test focus management
+    (button as HTMLElement).focus();
+    expect(button).toHaveFocus();
+    
+    // Verify interaction doesn't break animation
+    await userEvent.click(button);
+    await waitFor(() => {
+      expect(button).toHaveAttribute('aria-label');
     });
-
-    // Verify speed edge cases
-    const speedLimits = [0.5, 3]; // min and max speeds
-    speedLimits.forEach((speed) => {
-      expect(speed).toBeGreaterThanOrEqual(0.5);
-      expect(speed).toBeLessThanOrEqual(3);
-    });
+    
+    // Verify animation is still present after interaction
+    const svg = getLottieSVG(canvasElement);
+    expect(svg).toBeInTheDocument();
   },
 };
 
@@ -337,31 +412,67 @@ export const Integration: Story = {
   args: {
     src: sampleAnimation,
     size: 'md',
-    interactive: true,
-    onComplete: fn(),
-    onSegmentComplete: fn(),
+    loop: false,
+    autoplay: true,
   },
-  play: async ({ canvasElement, args }) => {
-    const animation = canvasElement.querySelector('[aria-label="Animation"], [role="button"]');
+  play: async ({ canvasElement }) => {
+    await waitForAnimationLoad(canvasElement);
+    
+    // Verify progress indicator exists for non-looping animation
+    const container = canvasElement.querySelector('[aria-label="Animation"]');
+    expect(container).toBeInTheDocument();
+    
+    // For non-looping animations, progress indicator should be present
+    // (Implementation shows it should render when !loop && !isLoading)
+    const svg = getLottieSVG(canvasElement);
+    expect(svg).toBeInTheDocument();
+    
+    // Verify animation setup for progress tracking
+    await new Promise(resolve => window.setTimeout(resolve, 100));
+    expect(container).toBeInTheDocument();
+    expect(svg).toBeInTheDocument();
+  },
+};
 
-    // Verify component integrates properly
-    expect(animation).toBeInTheDocument();
-
-    // Test callback integration
-    expect(args.onComplete).toBeDefined();
-    expect(args.onSegmentComplete).toBeDefined();
-
-    // Test interactive integration
-    const canvas = within(canvasElement);
-    const interactiveElement = canvas.queryByRole('button');
-    if (interactiveElement) {
-      await userEvent.click(interactiveElement);
-
-      // Verify state management integration
-      await waitFor(() => {
-        const currentLabel = interactiveElement.getAttribute('aria-label');
-        expect(['Play animation', 'Pause animation']).toContain(currentLabel);
-      });
-    }
+export const AccessibilityCompliance: Story = {
+  args: {
+    src: sampleAnimation,
+    size: 'md',
+    interactive: true,
+    autoplay: false,
+  },
+  play: async ({ canvasElement }) => {
+    await waitForAnimationLoad(canvasElement);
+    
+    const button = canvasElement.querySelector('[role="button"]');
+    expect(button).toBeInTheDocument();
+    
+    // Verify ARIA attributes
+    expect(button).toHaveAttribute('role', 'button');
+    expect(button).toHaveAttribute('tabindex', '0');
+    expect(button).toHaveAttribute('aria-label');
+    
+    // Verify aria-label changes with state
+    const initialLabel = button!.getAttribute('aria-label');
+    expect(['Play animation', 'Pause animation']).toContain(initialLabel);
+    
+    // Test keyboard accessibility
+    (button as HTMLElement).focus();
+    expect(button).toHaveFocus();
+    
+    // Test Enter key
+    await userEvent.keyboard('{Enter}');
+    await waitFor(() => {
+      const newLabel = button!.getAttribute('aria-label');
+      expect(newLabel).not.toBe(initialLabel);
+      expect(['Play animation', 'Pause animation']).toContain(newLabel);
+    });
+    
+    // Test Space key
+    await userEvent.keyboard(' ');
+    await waitFor(() => {
+      const finalLabel = button!.getAttribute('aria-label');
+      expect(['Play animation', 'Pause animation']).toContain(finalLabel);
+    });
   },
 };

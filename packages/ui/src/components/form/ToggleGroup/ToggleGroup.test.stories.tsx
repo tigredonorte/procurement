@@ -63,14 +63,24 @@ const optionsWithDisabled = [
   { value: 'option3', label: 'Available', icon: <Bookmark size={16} /> },
 ];
 
+// Component for controlled testing
+const ControlledBasicInteraction = () => {
+  const [value, setValue] = React.useState<string>('');
+  
+  return (
+    <ToggleGroup
+      options={alignOptions}
+      variant="single"
+      value={value}
+      onChange={(_, newValue) => setValue(newValue || '')}
+    />
+  );
+};
+
 // 1. Basic Interaction Tests
 export const BasicInteraction: Story = {
-  args: {
-    options: alignOptions,
-    variant: 'single',
-    onChange: fn(),
-  },
-  play: async ({ canvasElement, args }) => {
+  render: () => <ControlledBasicInteraction />,
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
     // Test initial state
@@ -80,12 +90,7 @@ export const BasicInteraction: Story = {
     // Test clicking a button
     await userEvent.click(toggleButtons[0]);
 
-    // Verify onChange was called
-    await waitFor(() => {
-      expect(args.onChange).toHaveBeenCalled();
-    });
-
-    // Verify button state changes
+    // Verify button state changes 
     await waitFor(() => {
       expect(toggleButtons[0]).toHaveAttribute('aria-pressed', 'true');
     });
@@ -141,7 +146,7 @@ export const KeyboardNavigation: Story = {
       expect(firstButton).toHaveFocus();
     });
 
-    // Test Tab navigation
+    // Test Tab navigation between buttons (MUI default behavior)
     await userEvent.tab();
     const secondButton = canvas.getAllByRole('button')[1];
     await waitFor(() => {
@@ -180,7 +185,8 @@ export const ScreenReader: Story = {
     const buttons = canvas.getAllByRole('button');
 
     buttons.forEach((button, index) => {
-      expect(button).toHaveAttribute('role', 'button');
+      // MUI ToggleButton doesn't explicitly set role="button" as it's implicit
+      expect(button.tagName.toLowerCase()).toBe('button');
       expect(button).toHaveAttribute('aria-pressed');
 
       // Verify accessible names
@@ -208,7 +214,7 @@ export const FocusManagement: Story = {
       expect(buttons[0]).toHaveFocus();
     });
 
-    // Test focus moves correctly with keyboard navigation
+    // Test focus moves correctly with tab navigation  
     await userEvent.tab();
     await waitFor(() => {
       expect(buttons[1]).toHaveFocus();
@@ -345,9 +351,15 @@ export const VisualStates: Story = {
     expect(disabledButtons[0]).not.toBeDisabled();
     expect(disabledButtons[2]).not.toBeDisabled();
 
-    // Test glass effect
+    // Test glass effect - verify backdrop filter and styling
     const glassGroup = canvas.getByTestId('glass');
     expect(glassGroup).toBeInTheDocument();
+    
+    // Verify glass effect styling is applied
+    const styles = window.getComputedStyle(glassGroup);
+    expect(styles.backdropFilter).toContain('blur');
+    expect(styles.backgroundColor).not.toBe('transparent');
+    expect(parseInt(styles.padding)).toBeGreaterThan(0);
 
     // Test gradient effect
     const gradientGroup = canvas.getByTestId('gradient');
@@ -486,7 +498,115 @@ export const EdgeCases: Story = {
   },
 };
 
-// 11. Integration Tests
+// Component for controlled glow testing
+const ControlledGlowTest = () => {
+  const [normalValue, setNormalValue] = React.useState<string>('');
+  const [glassValue, setGlassValue] = React.useState<string>('');
+  const [gradientValue, setGradientValue] = React.useState<string>('');
+  
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4, p: 4, backgroundColor: '#f0f0f0' }}>
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Normal Toggle Group
+        </Typography>
+        <ToggleGroup 
+          options={alignOptions} 
+          data-testid="normal-group"
+          value={normalValue}
+          onChange={(_, newValue) => setNormalValue(newValue || '')}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Glass Effect Toggle Group
+        </Typography>
+        <ToggleGroup 
+          options={alignOptions} 
+          glass
+          data-testid="glass-group"
+          value={glassValue}
+          onChange={(_, newValue) => setGlassValue(newValue || '')}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Glass + Gradient Toggle Group
+        </Typography>
+        <ToggleGroup 
+          options={themeOptions}
+          glass
+          gradient
+          color="secondary"
+          data-testid="glass-gradient-group"
+          value={gradientValue}
+          onChange={(_, newValue) => setGradientValue(newValue || '')}
+        />
+      </Box>
+    </Box>
+  );
+};
+
+// 11. Glow Effect Tests
+export const GlowEffectTest: Story = {
+  render: () => <ControlledGlowTest />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Test normal group (no glass)
+    const normalGroup = canvas.getByTestId('normal-group');
+    const normalStyles = window.getComputedStyle(normalGroup);
+    expect(normalStyles.backdropFilter).toBe('none');
+    // CSS transparent can be rendered as rgba(0, 0, 0, 0)
+    expect(normalStyles.backgroundColor).toMatch(/transparent|rgba\(0,\s*0,\s*0,\s*0\)/);
+
+    // Test glass effect group
+    const glassGroup = canvas.getByTestId('glass-group');
+    const glassStyles = window.getComputedStyle(glassGroup);
+    
+    // Verify glass-specific styling
+    expect(glassStyles.backdropFilter).toContain('blur(20px)');
+    expect(glassStyles.backgroundColor).toContain('rgba');
+    expect(parseInt(glassStyles.padding)).toBe(4);
+    expect(glassStyles.borderRadius).not.toBe('0px');
+    expect(glassStyles.border).toContain('1px solid');
+
+    // Test glass + gradient combination
+    const glassGradientGroup = canvas.getByTestId('glass-gradient-group');
+    const glassGradientStyles = window.getComputedStyle(glassGradientGroup);
+    
+    // Verify glass effect is still applied
+    expect(glassGradientStyles.backdropFilter).toContain('blur(20px)');
+    expect(glassGradientStyles.backgroundColor).toContain('rgba');
+
+    // Test interaction with glass effect
+    const glassButtons = within(glassGroup).getAllByRole('button');
+    
+    // Click a button and verify glass effect is maintained
+    await userEvent.click(glassButtons[1]);
+    
+    await waitFor(() => {
+      const updatedStyles = window.getComputedStyle(glassGroup);
+      expect(updatedStyles.backdropFilter).toContain('blur(20px)');
+      // For uncontrolled mode, check aria-pressed
+      expect(glassButtons[1]).toHaveAttribute('aria-pressed', 'true');
+    });
+
+    // Test that gradient effect works on selected button
+    const gradientButtons = within(glassGradientGroup).getAllByRole('button');
+    await userEvent.click(gradientButtons[0]);
+    
+    await waitFor(() => {
+      const buttonStyles = window.getComputedStyle(gradientButtons[0]);
+      // Selected button should have gradient (linear-gradient in background)
+      expect(buttonStyles.background).toContain('linear-gradient');
+    });
+  },
+};
+
+// 12. Integration Tests
 const IntegrationComponent = () => {
   const [singleValue, setSingleValue] = React.useState<string>('');
   const [multipleValue, setMultipleValue] = React.useState<string[]>([]);

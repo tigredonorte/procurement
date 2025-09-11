@@ -52,7 +52,7 @@ const TestSlider = ({
 };
 
 // 1. Basic Interaction Tests
-export const BasicInteraction: Story = {
+export const BasicInteractionTest: Story = {
   name: '🧪 Basic Interaction Test',
   render: () => (
     <TestSlider
@@ -111,7 +111,7 @@ export const BasicInteraction: Story = {
 };
 
 // 2. Form Interaction Tests
-export const FormInteraction: Story = {
+export const FormInteractionTest: Story = {
   name: '📝 Form Interaction Test',
   render: () => {
     const FormWrapper = () => {
@@ -214,7 +214,7 @@ export const FormInteraction: Story = {
 };
 
 // 3. Keyboard Navigation Test
-export const KeyboardNavigation: Story = {
+export const KeyboardNavigationTest: Story = {
   name: '⌨️ Keyboard Navigation Test',
   render: () => (
     <Box sx={{ width: 400, p: 3 }}>
@@ -300,7 +300,7 @@ export const KeyboardNavigation: Story = {
 };
 
 // 4. Screen Reader Test
-export const ScreenReader: Story = {
+export const ScreenReaderTest: Story = {
   name: '🔊 Screen Reader Test',
   render: () => (
     <Box sx={{ width: 400, p: 3 }}>
@@ -367,7 +367,7 @@ export const ScreenReader: Story = {
 };
 
 // 5. Focus Management Test
-export const FocusManagement: Story = {
+export const FocusManagementTest: Story = {
   name: '🎯 Focus Management Test',
   render: () => {
     const FocusTestComponent = () => {
@@ -421,7 +421,7 @@ export const FocusManagement: Story = {
 };
 
 // 6. Responsive Design Test
-export const ResponsiveDesign: Story = {
+export const ResponsiveDesignTest: Story = {
   name: '📱 Responsive Design Test',
   render: () => (
     <Box sx={{ p: 2 }}>
@@ -488,7 +488,7 @@ export const ResponsiveDesign: Story = {
 };
 
 // 7. Theme Variations Test
-export const ThemeVariations: Story = {
+export const ThemeVariationsTest: Story = {
   name: '🎨 Theme Variations Test',
   render: () => (
     <Box sx={{ width: 500, p: 3 }}>
@@ -570,7 +570,7 @@ export const ThemeVariations: Story = {
 };
 
 // 8. Visual States Test
-export const VisualStates: Story = {
+export const VisualStatesTest: Story = {
   name: '👁️ Visual States Test',
   render: () => (
     <Box sx={{ width: 500, p: 3 }}>
@@ -646,7 +646,7 @@ export const VisualStates: Story = {
 };
 
 // 9. Performance Test
-export const Performance: Story = {
+export const PerformanceTest: Story = {
   name: '⚡ Performance Test',
   render: () => {
     const PerformanceTestComponent = () => {
@@ -715,7 +715,7 @@ export const Performance: Story = {
 };
 
 // 10. Edge Cases Test
-export const EdgeCases: Story = {
+export const EdgeCasesTest: Story = {
   name: '🔧 Edge Cases Test',
   render: () => (
     <Box sx={{ width: 500, p: 3 }}>
@@ -798,7 +798,7 @@ export const EdgeCases: Story = {
 };
 
 // 11. Integration Test
-export const Integration: Story = {
+export const IntegrationTest: Story = {
   name: '🔗 Integration Test',
   render: () => {
     const IntegrationTestComponent = () => {

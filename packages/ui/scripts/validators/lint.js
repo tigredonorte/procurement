@@ -1,3 +1,6 @@
+import path from 'path';
+import fs from 'fs';
+
 /**
  * Checks for ESLint bypass patterns in the codebase
  * @param {string} componentDir - Directory to scan
@@ -92,3 +95,5 @@ function checkEslintBypass(componentDir) {
     
     console.log('  ✓ No ESLint bypass patterns found');
 }
+
+export { checkEslintBypass };

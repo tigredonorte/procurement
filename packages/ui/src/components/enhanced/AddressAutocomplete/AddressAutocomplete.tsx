@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import React, { FC, useState, useEffect, useRef, useCallback } from 'react';
 import {
   Autocomplete,
@@ -162,6 +161,30 @@ const MOCK_PLACE_DETAILS: Record<string, MockPlaceDetails> = {
       { long_name: '78701', types: ['postal_code'] },
     ],
     geometry: { location: { lat: () => 30.2672, lng: () => -97.7431 } },
+  },
+  mock_6: {
+    formatted_address: '1000 Broadway, New York, NY 10001, USA',
+    address_components: [
+      { long_name: '1000', types: ['street_number'] },
+      { long_name: 'Broadway', types: ['route'] },
+      { long_name: 'New York', types: ['locality'] },
+      { long_name: 'New York', types: ['administrative_area_level_1'] },
+      { long_name: 'United States', types: ['country'] },
+      { long_name: '10001', types: ['postal_code'] },
+    ],
+    geometry: { location: { lat: () => 40.7589, lng: () => -73.9851 } },
+  },
+  mock_7: {
+    formatted_address: '250 Market Street, San Francisco, CA 94102, USA',
+    address_components: [
+      { long_name: '250', types: ['street_number'] },
+      { long_name: 'Market Street', types: ['route'] },
+      { long_name: 'San Francisco', types: ['locality'] },
+      { long_name: 'California', types: ['administrative_area_level_1'] },
+      { long_name: 'United States', types: ['country'] },
+      { long_name: '94102', types: ['postal_code'] },
+    ],
+    geometry: { location: { lat: () => 37.7879, lng: () => -122.4075 } },
   },
 };
 
@@ -337,14 +360,39 @@ export const AddressAutocomplete: FC<AddressAutocompleteProps> = ({
 
         // Use mock data if API is not available
         if (useMockData) {
-          setLoading(false);
-          const searchTerm = input.toLowerCase().trim();
-          const filtered = MOCK_ADDRESSES.filter(addr => 
-            addr.description.toLowerCase().includes(searchTerm) ||
-            addr.structured_formatting.main_text.toLowerCase().includes(searchTerm)
-          );
-          setOptions(filtered.length > 0 ? filtered : []);
-          setApiError(null);
+          // Simulate realistic API delay
+          setTimeout(() => {
+            setLoading(false);
+            const searchTerm = input.toLowerCase().trim();
+            
+            // More sophisticated search logic that matches Google Maps behavior
+            const filtered = MOCK_ADDRESSES.filter(addr => {
+              const description = addr.description.toLowerCase();
+              const mainText = addr.structured_formatting.main_text.toLowerCase();
+              const secondaryText = addr.structured_formatting.secondary_text?.toLowerCase() || '';
+              
+              // Match against street number, street name, city, or state
+              const searchWords = searchTerm.split(' ');
+              return searchWords.every(word => 
+                description.includes(word) || 
+                mainText.includes(word) || 
+                secondaryText.includes(word)
+              );
+            });
+            
+            // Sort by relevance (exact matches first, then partial matches)
+            const sorted = filtered.sort((a, b) => {
+              const aMain = a.structured_formatting.main_text.toLowerCase();
+              const bMain = b.structured_formatting.main_text.toLowerCase();
+              
+              if (aMain.startsWith(searchTerm) && !bMain.startsWith(searchTerm)) return -1;
+              if (!aMain.startsWith(searchTerm) && bMain.startsWith(searchTerm)) return 1;
+              return aMain.localeCompare(bMain);
+            });
+            
+            setOptions(sorted.length > 0 ? sorted : []);
+            setApiError(null);
+          }, 150 + Math.random() * 200); // Realistic API delay
           return;
         }
 

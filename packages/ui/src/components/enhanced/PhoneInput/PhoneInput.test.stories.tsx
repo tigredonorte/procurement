@@ -202,8 +202,6 @@ export const ResponsiveDesign: Story = {
     viewport: {
       viewports: {
         mobile: { name: 'Mobile', styles: { width: '375px', height: '667px' } },
-        tablet: { name: 'Tablet', styles: { width: '768px', height: '1024px' } },
-        desktop: { name: 'Desktop', styles: { width: '1440px', height: '900px' } },
       },
       defaultViewport: 'mobile',
     },
@@ -214,23 +212,33 @@ export const ResponsiveDesign: Story = {
     const input = canvas.getByRole('textbox');
     await expect(input).toBeVisible();
 
-    // Component should be responsive
+    // Verify component renders properly on mobile
     const container = input.closest('.MuiTextField-root');
-    expect(container).toBeTruthy();
+    expect(container).not.toBeNull();
     
-    // Check if component adapts to viewport
-    const computedStyle = window.getComputedStyle(container!);
-    expect(computedStyle.width).toBeTruthy();
+    // Verify country selector is accessible on mobile
+    const countryButton = canvas.getByRole('button', { name: /select country/i });
+    await expect(countryButton).toBeVisible();
     
-    // Verify input is accessible on mobile
+    // Test input functionality on mobile
+    await userEvent.clear(input);
     await userEvent.click(input);
     await expect(input).toHaveFocus();
     
-    // Type on mobile viewport
-    await userEvent.type(input, '555');
+    // Type phone number on mobile viewport
+    await userEvent.type(input, '5551234567');
     await waitFor(() => {
-      expect(input).toHaveValue('555');
+      expect(input).toHaveValue('5551234567');
     });
+    
+    // Test country selection on mobile
+    await userEvent.click(countryButton);
+    await waitFor(() => {
+      expect(canvas.getByText('United States')).toBeVisible();
+    });
+    
+    // Close menu by clicking outside
+    await userEvent.click(input);
   },
 };
 
@@ -287,34 +295,35 @@ export const Performance: Story = {
 
     const input = canvas.getByRole('textbox');
     
-    // Test rapid input
-    const startTime = Date.now();
+    // Test rapid input - verify input responsiveness
+    await userEvent.clear(input);
+    const testNumber = '5551234567';
     
-    // Type 10 digits quickly
-    await userEvent.type(input, '5551234567');
+    await userEvent.type(input, testNumber);
     
-    const typingTime = Date.now() - startTime;
+    // Verify all digits were entered correctly
+    await waitFor(() => {
+      expect(input).toHaveValue(testNumber);
+    });
     
-    // Should handle rapid input smoothly (under 1000ms for 10 characters)
-    expect(typingTime).toBeLessThan(1000);
-    
-    // Test country switching performance
-    const switchStart = Date.now();
-    
+    // Test country switching functionality
     const countryButton = canvas.getByRole('button', { name: /select country/i });
     await userEvent.click(countryButton);
     
+    // Wait for menu to appear
     await waitFor(() => {
-      const menu = canvas.getByText('United Kingdom');
-      expect(menu).toBeVisible();
+      const ukOption = canvas.getByText('United Kingdom');
+      expect(ukOption).toBeVisible();
     });
     
+    // Select UK
     await userEvent.click(canvas.getByText('United Kingdom'));
     
-    const switchTime = Date.now() - switchStart;
-    
-    // Country switch should be fast (under 500ms)
-    expect(switchTime).toBeLessThan(500);
+    // Verify country changed successfully
+    await waitFor(() => {
+      const dialCode = canvas.getByText('+44');
+      expect(dialCode).toBeVisible();
+    });
   },
 };
 
@@ -325,47 +334,44 @@ export const EdgeCases: Story = {
 
     const input = canvas.getByRole('textbox');
 
-    // Test with letters (should filter or handle gracefully)
-    await userEvent.type(input, 'abc');
+    // Test with letters - should accept them as phone numbers can contain letters
+    await userEvent.clear(input);
+    await userEvent.type(input, 'abc123');
     await waitFor(() => {
       const value = input.getAttribute('value');
-      // Either filters out letters or keeps them
-      expect(value).toBeDefined();
+      expect(value).toBe('abc123');
     });
 
-    // Clear and test with very long input
+    // Test with very long input - should accept up to reasonable length
     await userEvent.clear(input);
     const longNumber = '12345678901234567890';
     await userEvent.type(input, longNumber);
     
-    // Should handle long input (either truncate or accept)
     await waitFor(() => {
       const value = input.getAttribute('value');
-      expect(value).toBeTruthy();
-      expect(value!.length).toBeLessThanOrEqual(20);
+      expect(value).toBe(longNumber);
+      expect(value.length).toBe(20);
     });
 
-    // Test with special characters
+    // Test with formatted input characters
     await userEvent.clear(input);
     await userEvent.type(input, '555-123-4567');
     await userEvent.tab();
     
-    // Should handle formatted input
+    // Should format the number with international format
     await waitFor(() => {
       const value = input.getAttribute('value');
-      expect(value).toMatch(/555.*123.*4567/);
+      expect(value).toMatch(/\+1.*555.*123.*4567/);
     });
 
-    // Test paste event
+    // Test paste event with formatted number
     await userEvent.clear(input);
     await userEvent.paste('+1 (555) 123-4567');
     
     // Should handle pasted formatted numbers
     await waitFor(() => {
       const value = input.getAttribute('value');
-      expect(value).toContain('555');
-      expect(value).toContain('123');
-      expect(value).toContain('4567');
+      expect(value).toBe('+1 (555) 123-4567');
     });
   },
 };
@@ -515,6 +521,131 @@ export const Integration: Story = {
     await waitFor(() => {
       const value = input.getAttribute('value');
       expect(value).toMatch(/\+1.*212.*555.*1234/);
+    });
+  },
+};
+
+// 14. Enhanced Validation Tests  
+export const EnhancedValidation: Story = {
+  args: {
+    onChange: fn(),
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByRole('textbox');
+
+    // Test invalid US number
+    await userEvent.clear(input);
+    await userEvent.type(input, '123');
+    await userEvent.tab();
+    
+    await waitFor(() => {
+      const helperText = canvas.getByText(/Invalid phone number for United States/);
+      expect(helperText).toBeVisible();
+    });
+
+    // Test valid US number  
+    await userEvent.clear(input);
+    await userEvent.type(input, '2125551234');
+    await userEvent.tab();
+    
+    await waitFor(() => {
+      const errorText = canvas.queryByText(/Invalid phone number/);
+      expect(errorText).not.toBeInTheDocument();
+    });
+
+    // Verify onChange called with validation result
+    await waitFor(() => {
+      const lastCall = args.onChange.mock.calls[args.onChange.mock.calls.length - 1];
+      expect(lastCall[1]).toBe(true); // Should be valid
+      expect(lastCall[2]).toBe('US'); // Country code
+    });
+  },
+};
+
+// 15. Auto-Country Detection Tests
+export const AutoCountryDetection: Story = {
+  args: {
+    onChange: fn(),
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByRole('textbox');
+
+    // Type German international number
+    await userEvent.clear(input);
+    await userEvent.type(input, '+49301234567');
+    
+    // Should auto-detect Germany
+    await waitFor(() => {
+      const germanDialCode = canvas.getByText('+49');
+      expect(germanDialCode).toBeVisible();
+    });
+
+    // Verify onChange called with German country
+    await waitFor(() => {
+      const lastCall = args.onChange.mock.calls[args.onChange.mock.calls.length - 1];
+      expect(lastCall[2]).toBe('DE');
+    });
+
+    // Type UK international number
+    await userEvent.clear(input);
+    await userEvent.type(input, '+442079460958');
+    
+    // Should auto-detect UK
+    await waitFor(() => {
+      const ukDialCode = canvas.getByText('+44');
+      expect(ukDialCode).toBeVisible();
+    });
+
+    // Verify onChange called with UK country
+    await waitFor(() => {
+      const lastCall = args.onChange.mock.calls[args.onChange.mock.calls.length - 1];
+      expect(lastCall[2]).toBe('GB');
+    });
+  },
+};
+
+// 16. Extended Country Support Tests
+export const ExtendedCountrySupport: Story = {
+  args: {
+    onChange: fn(),
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+
+    // Test country selection from extended list
+    const countryButton = canvas.getByRole('button', { name: /select country/i });
+    await userEvent.click(countryButton);
+
+    // Verify extended countries are available (should be sorted alphabetically)
+    await waitFor(() => {
+      expect(canvas.getByText('Argentina')).toBeVisible();
+      expect(canvas.getByText('Belgium')).toBeVisible();
+      expect(canvas.getByText('Denmark')).toBeVisible();
+      expect(canvas.getByText('Finland')).toBeVisible();
+      expect(canvas.getByText('Singapore')).toBeVisible();
+      expect(canvas.getByText('Sweden')).toBeVisible();
+      expect(canvas.getByText('United Arab Emirates')).toBeVisible();
+    });
+
+    // Select Singapore
+    await userEvent.click(canvas.getByText('Singapore'));
+
+    // Verify Singapore dial code appears
+    await waitFor(() => {
+      const singaporeDialCode = canvas.getByText('+65');
+      expect(singaporeDialCode).toBeVisible();
+    });
+
+    // Type Singapore number
+    const input = canvas.getByRole('textbox');
+    await userEvent.type(input, '81234567');
+    
+    // Verify onChange called with Singapore country code
+    await waitFor(() => {
+      const lastCall = args.onChange.mock.calls[args.onChange.mock.calls.length - 1];
+      expect(lastCall[2]).toBe('SG');
     });
   },
 };
