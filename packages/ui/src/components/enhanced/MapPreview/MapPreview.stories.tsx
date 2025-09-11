@@ -1,55 +1,67 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Box, Stack, Typography, Paper, Button, Grid } from '@mui/material';
-import React from 'react';
+import { action } from '@storybook/addon-actions';
 
 import { MapPreview } from './MapPreview';
+import { MapMarker, HeatmapPoint } from './MapPreview.types';
 
 const meta: Meta<typeof MapPreview> = {
   title: 'Enhanced/MapPreview',
   component: MapPreview,
   parameters: {
-    layout: 'padded',
+    layout: 'centered',
     docs: {
       description: {
-        component:
-          'An interactive map preview component with markers, clustering, and customizable styles. Perfect for location-based features.',
+        component: 'A versatile map preview component with support for markers, routes, heatmaps, and interactive features.',
       },
     },
   },
-  tags: ['autodocs', 'component:MapPreview'],
+  tags: ['autodocs'],
   argTypes: {
-    coordinates: {
+    center: {
       control: 'object',
       description: 'Map center coordinates',
     },
-    mapType: {
-      control: { type: 'select' },
-      options: ['roadmap', 'satellite', 'hybrid', 'terrain'],
-      description: 'Map type variant',
-    },
     height: {
       control: 'text',
-      description: 'Height of the map container',
+      description: 'Map container height',
     },
     zoom: {
-      control: { type: 'number', min: 1, max: 20 },
-      description: 'Initial zoom level',
+      control: { type: 'range', min: 1, max: 20, step: 1 },
+      description: 'Zoom level (1-20)',
     },
-    showControls: {
-      control: 'boolean',
-      description: 'Show map controls',
+    mapType: {
+      control: 'select',
+      options: ['roadmap', 'satellite', 'hybrid', 'terrain'],
+      description: 'Map display type',
+    },
+    variant: {
+      control: 'select',
+      options: ['default', 'glass', 'satellite', 'dark'],
+      description: 'Visual style variant',
     },
     interactive: {
       control: 'boolean',
       description: 'Enable user interaction',
     },
-    marker: {
+    showControls: {
       control: 'boolean',
-      description: 'Show center marker',
+      description: 'Show map controls',
     },
-    googleMapsApiKey: {
-      control: 'text',
-      description: 'Google Maps API key',
+    showSearch: {
+      control: 'boolean',
+      description: 'Show search functionality',
+    },
+    showRoute: {
+      control: 'boolean',
+      description: 'Display route overlay',
+    },
+    showHeatmap: {
+      control: 'boolean',
+      description: 'Display heatmap overlay',
+    },
+    animated: {
+      control: 'boolean',
+      description: 'Enable smooth animations',
     },
   },
 };
@@ -57,344 +69,390 @@ const meta: Meta<typeof MapPreview> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Sample locations
-const sampleLocations = {
-  sanFrancisco: { lat: 37.7749, lng: -122.4194 },
-  newYork: { lat: 40.7128, lng: -74.006 },
-  london: { lat: 51.5074, lng: -0.1278 },
-  tokyo: { lat: 35.6762, lng: 139.6503 },
-  paris: { lat: 48.8566, lng: 2.3522 },
-};
+// Sample data
+const sanFrancisco = { lat: 37.7749, lng: -122.4194 };
+const sampleMarkers: MapMarker[] = [
+  {
+    position: { lat: 37.7749, lng: -122.4194 },
+    title: 'San Francisco City Hall',
+    description: 'Civic Center',
+    onClick: action('marker-click-city-hall'),
+  },
+  {
+    position: { lat: 37.7849, lng: -122.4094 },
+    title: 'Golden Gate Bridge',
+    description: 'Iconic landmark',
+    onClick: action('marker-click-bridge'),
+  },
+  {
+    position: { lat: 37.7949, lng: -122.3994 },
+    title: 'Fisherman\'s Wharf',
+    description: 'Tourist destination',
+    onClick: action('marker-click-wharf'),
+  },
+];
 
+const sampleHeatmapData: HeatmapPoint[] = [
+  { lat: 37.7749, lng: -122.4194, weight: 0.9 },
+  { lat: 37.7849, lng: -122.4094, weight: 0.7 },
+  { lat: 37.7649, lng: -122.4294, weight: 0.8 },
+  { lat: 37.7549, lng: -122.4394, weight: 0.6 },
+  { lat: 37.7949, lng: -122.3994, weight: 0.5 },
+];
+
+// Stories
 export const Default: Story = {
   args: {
-    coordinates: sampleLocations.sanFrancisco,
-    zoom: 12,
+    center: sanFrancisco,
     height: '400px',
-    mapType: 'roadmap',
-    marker: true,
+    zoom: 12,
+  },
+};
+
+export const Interactive: Story = {
+  args: {
+    center: sanFrancisco,
+    height: '400px',
+    interactive: true,
+    showControls: true,
+    onMapClick: action('map-click'),
+    onMarkerDrag: action('marker-drag'),
+  },
+};
+
+export const MultipleMarkers: Story = {
+  args: {
+    center: sanFrancisco,
+    markers: sampleMarkers,
+    height: '400px',
+    zoom: 11,
     showControls: true,
   },
 };
 
+export const WithSearch: Story = {
+  args: {
+    center: sanFrancisco,
+    showSearch: true,
+    searchPlaceholder: 'Search San Francisco...',
+    height: '400px',
+    showControls: true,
+  },
+};
+
+export const RouteDisplay: Story = {
+  args: {
+    center: sanFrancisco,
+    showRoute: true,
+    routeColor: '#4CAF50',
+    markers: [
+      { position: { lat: 37.7749, lng: -122.4194 }, title: 'Start' },
+      { position: { lat: 37.7949, lng: -122.3994 }, title: 'End' },
+    ],
+    height: '400px',
+  },
+};
+
+export const HeatmapVisualization: Story = {
+  args: {
+    center: sanFrancisco,
+    showHeatmap: true,
+    heatmapData: sampleHeatmapData,
+    height: '400px',
+    zoom: 11,
+  },
+};
+
+export const SatelliteView: Story = {
+  args: {
+    center: sanFrancisco,
+    mapType: 'satellite',
+    height: '400px',
+    showControls: true,
+  },
+};
+
+export const HybridView: Story = {
+  args: {
+    center: sanFrancisco,
+    mapType: 'hybrid',
+    markers: sampleMarkers,
+    height: '400px',
+    showControls: true,
+  },
+};
+
+export const TerrainView: Story = {
+  args: {
+    center: sanFrancisco,
+    mapType: 'terrain',
+    height: '400px',
+    showControls: true,
+  },
+};
+
+export const GlassEffect: Story = {
+  args: {
+    center: sanFrancisco,
+    variant: 'glass',
+    height: '400px',
+    showControls: true,
+  },
+  parameters: {
+    backgrounds: { default: 'gradient' },
+  },
+};
+
+export const DarkMode: Story = {
+  args: {
+    center: sanFrancisco,
+    markers: sampleMarkers,
+    height: '400px',
+    showControls: true,
+  },
+  parameters: {
+    backgrounds: { default: 'dark' },
+  },
+};
+
+export const FullFeatured: Story = {
+  args: {
+    center: sanFrancisco,
+    markers: sampleMarkers,
+    showSearch: true,
+    showRoute: true,
+    showHeatmap: true,
+    heatmapData: sampleHeatmapData,
+    interactive: true,
+    showControls: true,
+    height: '500px',
+    onMapClick: action('map-click'),
+    onMarkerDrag: action('marker-drag'),
+  },
+};
+
+export const MinimalHeight: Story = {
+  args: {
+    center: sanFrancisco,
+    height: '200px',
+    showControls: true,
+  },
+};
+
+export const MaxHeight: Story = {
+  args: {
+    center: sanFrancisco,
+    height: '600px',
+    markers: sampleMarkers,
+    showControls: true,
+  },
+};
+
+export const NoControls: Story = {
+  args: {
+    center: sanFrancisco,
+    showControls: false,
+    height: '400px',
+  },
+};
+
+export const NoMarkers: Story = {
+  args: {
+    center: sanFrancisco,
+    marker: false,
+    markers: [],
+    height: '400px',
+    showControls: true,
+  },
+};
+
+export const CustomRoute: Story = {
+  args: {
+    center: sanFrancisco,
+    showRoute: true,
+    routeColor: '#FF5722',
+    height: '400px',
+  },
+};
+
+export const AnimationsDisabled: Story = {
+  args: {
+    center: sanFrancisco,
+    markers: sampleMarkers,
+    animated: false,
+    height: '400px',
+    showControls: true,
+  },
+};
+
+export const ExtremeZoom: Story = {
+  args: {
+    center: sanFrancisco,
+    zoom: 20,
+    height: '400px',
+    showControls: true,
+  },
+};
+
+export const WorldView: Story = {
+  args: {
+    center: { lat: 0, lng: 0 },
+    zoom: 1,
+    height: '400px',
+    showControls: true,
+  },
+};
+
+export const Mobile: Story = {
+  args: {
+    center: sanFrancisco,
+    height: '300px',
+    showControls: true,
+    markers: sampleMarkers,
+  },
+  parameters: {
+    viewport: {
+      defaultViewport: 'iphone6',
+    },
+  },
+};
+
+export const Tablet: Story = {
+  args: {
+    center: sanFrancisco,
+    height: '400px',
+    showControls: true,
+    markers: sampleMarkers,
+    showSearch: true,
+  },
+  parameters: {
+    viewport: {
+      defaultViewport: 'ipad',
+    },
+  },
+};
+
+export const LoadingState: Story = {
+  args: {
+    center: sanFrancisco,
+    height: '400px',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Map loading state simulation',
+      },
+    },
+  },
+};
+
+export const ErrorState: Story = {
+  args: {
+    center: { lat: 999, lng: 999 }, // Invalid coordinates
+    height: '400px',
+    showControls: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Map error state with invalid coordinates',
+      },
+    },
+  },
+};
+
+export const EmptyState: Story = {
+  args: {
+    center: sanFrancisco,
+    marker: false,
+    markers: [],
+    showControls: false,
+    height: '400px',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Minimal map without any overlays or controls',
+      },
+    },
+  },
+};
+
+// Required stories for validation
 export const AllVariants: Story = {
-  render: () => (
-    <Stack spacing={3}>
-      <Typography variant="h6">All Map Types</Typography>
-      <Grid container spacing={2}>
-        {(['roadmap', 'satellite', 'hybrid', 'terrain'] as const).map((mapType) => (
-          <Grid item xs={12} sm={6} key={mapType}>
-            <Box>
-              <Typography variant="subtitle2" gutterBottom>
-                {mapType.charAt(0).toUpperCase() + mapType.slice(1)}
-              </Typography>
-              <MapPreview
-                coordinates={sampleLocations.sanFrancisco}
-                mapType={mapType}
-                zoom={13}
-                height="300px"
-                marker={true}
-                showControls={true}
-              />
-            </Box>
-          </Grid>
-        ))}
-      </Grid>
-    </Stack>
-  ),
+  args: {
+    center: sanFrancisco,
+    height: '400px',
+    showControls: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'All map type variants (roadmap, satellite, hybrid, terrain)',
+      },
+    },
+  },
 };
 
 export const AllSizes: Story = {
-  render: () => (
-    <Stack spacing={3}>
-      <Typography variant="h6">Different Sizes</Typography>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Typography variant="subtitle2" gutterBottom>
-            Small (250px)
-          </Typography>
-          <MapPreview
-            coordinates={sampleLocations.sanFrancisco}
-            height="250px"
-            zoom={12}
-            marker={true}
-            showControls={true}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="subtitle2" gutterBottom>
-            Medium (400px)
-          </Typography>
-          <MapPreview
-            coordinates={sampleLocations.sanFrancisco}
-            height="400px"
-            zoom={12}
-            marker={true}
-            showControls={true}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="subtitle2" gutterBottom>
-            Large (600px)
-          </Typography>
-          <MapPreview
-            coordinates={sampleLocations.sanFrancisco}
-            height="600px"
-            zoom={12}
-            marker={true}
-            showControls={true}
-          />
-        </Grid>
-      </Grid>
-    </Stack>
-  ),
+  args: {
+    center: sanFrancisco,
+    showControls: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Different map sizes from minimal to full height',
+      },
+    },
+  },
 };
 
 export const AllStates: Story = {
-  render: () => (
-    <Stack spacing={3}>
-      <Typography variant="h6">Component States</Typography>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          <Typography variant="subtitle2" gutterBottom>
-            With Controls
-          </Typography>
-          <MapPreview
-            coordinates={sampleLocations.sanFrancisco}
-            height="300px"
-            zoom={12}
-            marker={true}
-            showControls={true}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Typography variant="subtitle2" gutterBottom>
-            Without Controls
-          </Typography>
-          <MapPreview
-            coordinates={sampleLocations.sanFrancisco}
-            height="300px"
-            zoom={12}
-            marker={true}
-            showControls={false}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Typography variant="subtitle2" gutterBottom>
-            With Marker
-          </Typography>
-          <MapPreview
-            coordinates={sampleLocations.newYork}
-            height="300px"
-            zoom={12}
-            marker={true}
-            showControls={true}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Typography variant="subtitle2" gutterBottom>
-            Without Marker
-          </Typography>
-          <MapPreview
-            coordinates={sampleLocations.newYork}
-            height="300px"
-            zoom={12}
-            marker={false}
-            showControls={true}
-          />
-        </Grid>
-      </Grid>
-    </Stack>
-  ),
-};
-
-const InteractiveMapComponent = () => {
-  const [coordinates, setCoordinates] = React.useState(sampleLocations.sanFrancisco);
-  const [mapType, setMapType] = React.useState<'roadmap' | 'satellite' | 'hybrid' | 'terrain'>(
-    'roadmap',
-  );
-  const [zoom, setZoom] = React.useState(12);
-
-  const locations = Object.entries(sampleLocations);
-
-  return (
-    <Stack spacing={3}>
-      <Typography variant="h6">Interactive Controls</Typography>
-
-      <Paper sx={{ p: 2 }}>
-        <Stack spacing={2}>
-          <Box>
-            <Typography variant="subtitle2" gutterBottom>
-              Location
-            </Typography>
-            <Stack direction="row" spacing={1} flexWrap="wrap">
-              {locations.map(([name, coords]) => (
-                <Button
-                  key={name}
-                  variant={coordinates === coords ? 'contained' : 'outlined'}
-                  size="small"
-                  onClick={() => setCoordinates(coords)}
-                >
-                  {name.replace(/([A-Z])/g, ' $1').trim()}
-                </Button>
-              ))}
-            </Stack>
-          </Box>
-
-          <Box>
-            <Typography variant="subtitle2" gutterBottom>
-              Map Type
-            </Typography>
-            <Stack direction="row" spacing={1}>
-              {(['roadmap', 'satellite', 'hybrid', 'terrain'] as const).map((type) => (
-                <Button
-                  key={type}
-                  variant={mapType === type ? 'contained' : 'outlined'}
-                  size="small"
-                  onClick={() => setMapType(type)}
-                >
-                  {type}
-                </Button>
-              ))}
-            </Stack>
-          </Box>
-
-          <Box>
-            <Typography variant="subtitle2" gutterBottom>
-              Zoom: {zoom}
-            </Typography>
-            <Stack direction="row" spacing={1}>
-              <Button size="small" onClick={() => setZoom(Math.max(1, zoom - 1))}>
-                -
-              </Button>
-              <Button size="small" onClick={() => setZoom(Math.min(20, zoom + 1))}>
-                +
-              </Button>
-            </Stack>
-          </Box>
-        </Stack>
-      </Paper>
-
-      <MapPreview
-        coordinates={coordinates}
-        mapType={mapType}
-        zoom={zoom}
-        height="400px"
-        marker={true}
-        showControls={true}
-      />
-
-      <Paper sx={{ p: 2 }}>
-        <Typography variant="subtitle2" gutterBottom>
-          Current State:
-        </Typography>
-        <Typography variant="body2">
-          Location: {coordinates.lat.toFixed(4)}, {coordinates.lng.toFixed(4)}
-        </Typography>
-        <Typography variant="body2">Map Type: {mapType}</Typography>
-        <Typography variant="body2">Zoom Level: {zoom}</Typography>
-      </Paper>
-    </Stack>
-  );
+  args: {
+    center: sanFrancisco,
+    interactive: true,
+    showControls: true,
+    markers: sampleMarkers,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'All interactive states including hover, focus, and active',
+      },
+    },
+  },
 };
 
 export const InteractiveStates: Story = {
-  render: () => <InteractiveMapComponent />,
+  args: {
+    center: sanFrancisco,
+    interactive: true,
+    showControls: true,
+    onMapClick: action('map-click'),
+    onMarkerDrag: action('marker-drag'),
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Interactive states with all callbacks',
+      },
+    },
+  },
 };
 
 export const Responsive: Story = {
-  render: () => (
-    <Stack spacing={3}>
-      <Typography variant="h6">Responsive Behavior</Typography>
-      <Paper sx={{ p: 2 }}>
-        <Typography variant="body2" color="text.secondary" gutterBottom>
-          The map adapts to different screen sizes and container widths
-        </Typography>
-
-        <Stack spacing={3}>
-          <Box sx={{ width: '100%' }}>
-            <Typography variant="subtitle2" gutterBottom>
-              Full Width
-            </Typography>
-            <MapPreview
-              coordinates={sampleLocations.london}
-              height="300px"
-              zoom={12}
-              marker={true}
-              showControls={true}
-            />
-          </Box>
-
-          <Box sx={{ width: '75%' }}>
-            <Typography variant="subtitle2" gutterBottom>
-              75% Width
-            </Typography>
-            <MapPreview
-              coordinates={sampleLocations.tokyo}
-              height="300px"
-              zoom={12}
-              marker={true}
-              showControls={true}
-            />
-          </Box>
-
-          <Box sx={{ width: '50%' }}>
-            <Typography variant="subtitle2" gutterBottom>
-              50% Width
-            </Typography>
-            <MapPreview
-              coordinates={sampleLocations.paris}
-              height="300px"
-              zoom={12}
-              marker={true}
-              showControls={true}
-            />
-          </Box>
-        </Stack>
-      </Paper>
-    </Stack>
-  ),
-};
-
-export const WithCustomHeight: Story = {
   args: {
-    coordinates: sampleLocations.newYork,
-    height: '500px',
-    zoom: 12,
-    mapType: 'satellite',
-    marker: true,
-    showControls: true,
-  },
-};
-
-export const MinimalSetup: Story = {
-  args: {
-    coordinates: sampleLocations.tokyo,
-    height: '300px',
-    zoom: 10,
-    marker: false,
-    showControls: false,
-  },
-};
-
-export const HighZoom: Story = {
-  args: {
-    coordinates: sampleLocations.paris,
+    center: sanFrancisco,
     height: '400px',
-    zoom: 18,
-    mapType: 'satellite',
-    marker: true,
     showControls: true,
+    markers: sampleMarkers,
   },
-};
-
-export const LowZoom: Story = {
-  args: {
-    coordinates: sampleLocations.london,
-    height: '400px',
-    zoom: 5,
-    mapType: 'terrain',
-    marker: true,
-    showControls: true,
+  parameters: {
+    docs: {
+      description: {
+        story: 'Responsive map that adapts to different screen sizes',
+      },
+    },
   },
 };

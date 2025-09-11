@@ -89,20 +89,32 @@ A comprehensive charting component built on Recharts, supporting multiple chart 
 
 ## Storybook Tests Status
 
-- [ ] Basic Interaction (planned)
-- [ ] Keyboard Navigation (planned)
-- [ ] Screen Reader (planned)
-- [ ] Focus Management (planned)
-- [ ] Responsive Design (planned)
-- [ ] Theme Variations (planned)
-- [ ] Visual States (planned)
-- [ ] Performance (planned)
-- [ ] Edge Cases (planned)
-- [ ] Integration (planned)
+- [x] Basic Interaction (completed) - Verifies data rendering, axis labels, legend, clicks
+- [x] Form Interaction (completed) - Tests bar chart with tooltips and data values
+- [x] Keyboard Navigation (completed) - Tests keyboard interaction
+- [x] Screen Reader (completed) - Tests accessibility with pie chart
+- [x] Focus Management (completed) - Tests focus/blur events
+- [x] Responsive Design (completed) - Verifies responsive container adapts to size
+- [x] Theme Variations (completed) - Tests area chart with theme colors
+- [x] Visual States (completed) - Tests elevated variant with shadows
+- [x] Performance (completed) - Tests rendering 100 data points efficiently
+- [x] Edge Cases (completed) - Tests single data point and empty data
+- [x] Integration (completed) - Tests composed chart with multiple types
+- [x] Radar Chart Test (completed) - Tests radar chart with polar grid
+- [x] Scatter Chart Test (completed) - Tests scatter plot with XY coordinates
+- [x] Data Update Test (completed) - Tests chart structure with data changes
+- [x] Stacked Chart Test (completed) - Tests stacked bar chart positioning
+- [x] Curved vs Linear Test (completed) - Tests line path commands
+- [x] Animation Test (completed) - Tests animation behavior
+- [x] Pie Chart Data Test (completed) - Tests pie slices with percentages
+- [x] Axis Labels Test (completed) - Tests axis labels and grid
+- [x] Loading State (completed) - Tests loading spinner
+- [x] Disabled State (completed) - Tests disabled styling
+- [x] Custom Colors Test (completed) - Tests custom color application
 
-**Current (BRT)**: 2025-09-09 14:46
+**Current (BRT)**: 2025-09-10 18:00
 
-### Current Task: omega-91 - Component validation completed
+### Current Task: omega-601 - Enhanced test assertions for data rendering
 
 - Fixed Stories section format (added colon and used asterisks for list items)
 - Updated current timestamp to be fresh
@@ -119,19 +131,3 @@ A comprehensive charting component built on Recharts, supporting multiple chart 
 - All validation checks pass
 - Status updated to completed
 
-## Missing things
-
-### Tests
-
-- Tests lack proper assertions for chart behavior
-- Most tests only check if elements exist without verifying actual functionality
-- Missing verification of: actual data point rendering, tooltip content validation, legend item clicks, data updates, chart type switching, axis label rendering, animation completion, responsive resizing behavior, theme color application, and interactive callbacks with proper event data
-
-### Documentation
-
-- Documentation appears to be present (Chart.md)
-
-### Implementation
-
-- Implementation is correct and follows design guidelines
-- Supports 7 chart types with extensive customization options

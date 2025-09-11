@@ -36,7 +36,13 @@ export interface ToastContainerProps {
   className?: string;
 }
 
+export interface ToastItem extends ToastProps {
+  id: string;
+  timestamp: number;
+}
+
 export interface ToastContextType {
+  toasts: ToastItem[];
   addToast: (toast: Omit<ToastProps, 'id'>) => string;
   removeToast: (id: string) => void;
   clearAllToasts: () => void;

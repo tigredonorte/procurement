@@ -3,7 +3,7 @@ import { userEvent, within, expect, waitFor, fn } from '@storybook/test';
 
 import { LottieAnimation } from './LottieAnimation';
 
-// Sample Lottie animation data (simple loading spinner)
+// Sample Lottie animation data with multiple frames for testing
 const sampleAnimation = {
   v: '5.5.7',
   fr: 30,
@@ -11,7 +11,7 @@ const sampleAnimation = {
   op: 60,
   w: 100,
   h: 100,
-  nm: 'Loading',
+  nm: 'TestAnimation',
   ddd: 0,
   assets: [],
   layers: [

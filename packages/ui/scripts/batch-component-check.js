@@ -403,7 +403,7 @@ async function preScriptAsserts() {
 }
 
 // Main execution
-async function main() {
+async function execute() {
     console.log('🚀 Starting batch component check (optimized parallel mode)...\n');
     
     // Pre-flight checks
@@ -481,8 +481,17 @@ process.on('uncaughtException', async (error) => {
 });
 
 // Run
-main().catch(async (error) => {
-    console.error('❌ Fatal error:', error);
-    await cleanupTsConfigFiles();
-    process.exit(1);
-});
+async function main() {
+  try {
+    console.time('Total check time');
+    await execute();
+  } catch (error) {
+      console.error('❌ Fatal error:', error);
+      await cleanupTsConfigFiles();
+      process.exit(1);
+  } finally {
+      console.timeEnd('Total check time');
+  }
+}
+
+main();

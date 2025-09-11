@@ -259,6 +259,9 @@ const SonnerToast: React.FC<SonnerItem & { onDismiss: (id: string) => void }> = 
   return (
     <Collapse in={visible} timeout={200}>
       <Box
+        role={important || type === 'error' ? 'alert' : 'status'}
+        aria-live={important || type === 'error' ? 'assertive' : 'polite'}
+        aria-atomic="true"
         sx={{
           ...getVariantStyles(),
           p: 2,
@@ -328,6 +331,7 @@ const SonnerToast: React.FC<SonnerItem & { onDismiss: (id: string) => void }> = 
           <IconButton
             size="small"
             onClick={handleDismiss}
+            aria-label="Dismiss notification"
             sx={{
               ml: 'auto',
               color: 'text.secondary',
@@ -348,6 +352,11 @@ const SonnerToaster: React.FC<{
   toasts: SonnerItem[];
   onDismiss: (id: string) => void;
 }> = ({ toasts, onDismiss }) => {
+  // Limit visible toasts to prevent overflow
+  const MAX_VISIBLE_TOASTS = 5;
+  const visibleToasts = toasts.slice(-MAX_VISIBLE_TOASTS);
+  const hiddenCount = Math.max(0, toasts.length - MAX_VISIBLE_TOASTS);
+
   return (
     <Portal>
       <Box
@@ -359,9 +368,26 @@ const SonnerToaster: React.FC<{
           display: 'flex',
           flexDirection: 'column',
           pointerEvents: 'none',
+          maxHeight: 'calc(100vh - 32px)',
+          overflowY: 'auto',
+          overflowX: 'hidden',
         }}
       >
-        {toasts.map((toast) => (
+        {hiddenCount > 0 && (
+          <Box
+            sx={{
+              p: 1,
+              mb: 0.5,
+              textAlign: 'center',
+              fontSize: '0.75rem',
+              color: 'text.secondary',
+              pointerEvents: 'none',
+            }}
+          >
+            +{hiddenCount} more
+          </Box>
+        )}
+        {visibleToasts.map((toast) => (
           <Box key={toast.id} sx={{ pointerEvents: 'auto' }}>
             <SonnerToast {...toast} onDismiss={onDismiss} />
           </Box>

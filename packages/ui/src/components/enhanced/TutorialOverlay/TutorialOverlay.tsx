@@ -252,11 +252,15 @@ export const TutorialOverlay: FC<TutorialOverlayProps> = ({
   steps,
   onComplete,
   onSkip,
+  onStepComplete,
   initialStep = 0,
   active = true,
   showProgress = true,
   allowKeyboardNavigation = true,
   allowClickThrough = false,
+  variant = 'tooltip',
+  allowSkip = false,
+  animated = true,
 }) => {
   const [currentStep, setCurrentStep] = useState(initialStep);
   const [targetBounds, setTargetBounds] = useState<DOMRect | null>(null);
@@ -267,6 +271,10 @@ export const TutorialOverlay: FC<TutorialOverlayProps> = ({
 
   const currentStepData = steps[currentStep];
   const progress = ((currentStep + 1) / steps.length) * 100;
+  const isModal = variant === 'modal';
+  const isSpotlight = variant === 'spotlight' || variant === 'highlight';
+  const isLastStep = currentStep === steps.length - 1;
+  const requiresActionBeforeNext = currentStepData?.requiresAction && !isLastStep;
 
   // Update target bounds when step changes
   useEffect(() => {
@@ -304,7 +312,7 @@ export const TutorialOverlay: FC<TutorialOverlayProps> = ({
     const { position, placement } = calculateTooltipPosition(
       targetBounds,
       tooltipBounds,
-      currentStepData.placement || 'auto',
+      currentStepData.position || 'auto',
     );
     setTooltipPosition(position);
     setActualPlacement(placement);
@@ -312,12 +320,17 @@ export const TutorialOverlay: FC<TutorialOverlayProps> = ({
 
   // Handler functions
   const handleNext = useCallback(() => {
+    const currentStepId = steps[currentStep]?.id;
+    if (currentStepId && onStepComplete) {
+      onStepComplete(currentStepId);
+    }
+    
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else if (onComplete) {
       onComplete();
     }
-  }, [currentStep, steps.length, onComplete]);
+  }, [currentStep, steps, onComplete, onStepComplete]);
 
   const handlePrev = useCallback(() => {
     if (currentStep > 0) {
@@ -359,14 +372,17 @@ export const TutorialOverlay: FC<TutorialOverlayProps> = ({
 
   if (!active || !currentStepData) return null;
 
+  // Handle empty steps array
+  if (steps.length === 0) return null;
+
   return (
     <Portal>
       <Overlay allowClickThrough={allowClickThrough}>
         {showProgress && <ProgressBar variant="determinate" value={progress} />}
 
-        <Backdrop />
+        {(isModal || isSpotlight) && <Backdrop />}
 
-        {targetBounds && isVisible && (
+        {targetBounds && isVisible && isSpotlight && (
           <Spotlight bounds={targetBounds} padding={currentStepData.spotlightPadding || 8} />
         )}
 
@@ -378,23 +394,44 @@ export const TutorialOverlay: FC<TutorialOverlayProps> = ({
             style={{
               top: tooltipPosition.top,
               left: tooltipPosition.left,
+              animation: animated ? undefined : 'none',
             }}
+            role="dialog"
+            aria-labelledby={`tutorial-title-${currentStep}`}
+            aria-describedby={`tutorial-content-${currentStep}`}
           >
             <Stack spacing={2}>
               <Box
                 sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}
               >
-                <Typography variant="h6" fontWeight="bold" sx={{ flex: 1 }}>
+                <Typography 
+                  id={`tutorial-title-${currentStep}`}
+                  variant="h6" 
+                  fontWeight="bold" 
+                  sx={{ flex: 1 }}
+                >
                   {currentStepData.title}
                 </Typography>
-                <IconButton size="small" onClick={handleSkip} sx={{ ml: 1, mt: -1, mr: -1 }}>
-                  <CloseIcon fontSize="small" />
-                </IconButton>
+                {allowSkip && (
+                  <IconButton size="small" onClick={handleSkip} sx={{ ml: 1, mt: -1, mr: -1 }}>
+                    <CloseIcon fontSize="small" />
+                  </IconButton>
+                )}
               </Box>
 
-              <Typography variant="body2" color="text.secondary">
+              <Typography 
+                id={`tutorial-content-${currentStep}`}
+                variant="body2" 
+                color="text.secondary"
+              >
                 {currentStepData.content}
               </Typography>
+
+              {showProgress && (
+                <Typography variant="caption" color="text.secondary" align="center">
+                  {currentStep + 1} of {steps.length}
+                </Typography>
+              )}
 
               {currentStepData.action && (
                 <Button
@@ -422,32 +459,47 @@ export const TutorialOverlay: FC<TutorialOverlayProps> = ({
 
               <Stack direction="row" spacing={1} justifyContent="space-between">
                 <Stack direction="row" spacing={1}>
-                  <IconButton
-                    size="small"
-                    onClick={handleRestart}
-                    disabled={currentStep === 0}
-                    title="Restart"
-                  >
-                    <RestartIcon fontSize="small" />
-                  </IconButton>
+                  {allowSkip && (
+                    <Button
+                      size="small"
+                      onClick={handleSkip}
+                      variant="text"
+                    >
+                      Skip
+                    </Button>
+                  )}
+                  {steps.length > 1 && (
+                    <IconButton
+                      size="small"
+                      onClick={handleRestart}
+                      disabled={currentStep === 0}
+                      title="Restart"
+                    >
+                      <RestartIcon fontSize="small" />
+                    </IconButton>
+                  )}
                 </Stack>
 
                 <Stack direction="row" spacing={1}>
-                  <Button
-                    size="small"
-                    startIcon={<PrevIcon />}
-                    onClick={handlePrev}
-                    disabled={currentStep === 0}
-                  >
-                    Previous
-                  </Button>
+                  {steps.length > 1 && currentStep > 0 && (
+                    <Button
+                      size="small"
+                      startIcon={<PrevIcon />}
+                      onClick={handlePrev}
+                      disabled={currentStep === 0}
+                    >
+                      Previous
+                    </Button>
+                  )}
 
-                  {currentStep < steps.length - 1 ? (
+                  {!isLastStep ? (
                     <Button
                       variant="contained"
                       size="small"
                       endIcon={<NextIcon />}
                       onClick={handleNext}
+                      disabled={requiresActionBeforeNext}
+                      title={requiresActionBeforeNext ? 'Complete the required action first' : ''}
                     >
                       Next
                     </Button>
@@ -456,12 +508,12 @@ export const TutorialOverlay: FC<TutorialOverlayProps> = ({
                       variant="contained"
                       size="small"
                       endIcon={<CompleteIcon />}
-                      onClick={onComplete}
+                      onClick={handleNext}
                       sx={{
                         background: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)',
                       }}
                     >
-                      Complete
+                      {steps.length === 1 ? 'Complete' : 'Finish'}
                     </Button>
                   )}
                 </Stack>

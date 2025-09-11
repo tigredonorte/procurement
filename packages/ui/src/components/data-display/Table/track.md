@@ -101,31 +101,67 @@ The Table component provides structured data display with sorting, filtering, pa
 
 ## Current (BRT)
 
-**Current (BRT)**: 2025-09-09 14:55
+**Current (BRT)**: 2025-09-11 14:30
 
-### Current Task: Fix Stories Coverage Validation
+### Current Task: omega-802 - Fix Implementation and Tests
 
-- Fixed CSF title format to "DataDisplay/Table"
-- Added all required story exports:
-  - AllVariants - Shows all table variants
-  - AllSizes - Shows all density options
-  - AllStates - Shows all table states
-  - InteractiveStates - Shows interactive functionality
-  - Responsive - Shows responsive behavior
-- Created Table.md documentation file
-- Updated track.md with complete status
-
-### Completed:
-
-- All required story exports implemented
-- Documentation file created
-- TypeScript compilation clean
+- Fixed row click handler conflicts with selection (event.stopPropagation)
+- Fixed memory leaks by adding React.memo and useCallback hooks
+- Added missing features:
+  - aria-sort attribute for proper accessibility
+  - FilterConfig type for future filtering support
+  - Improved TypeScript types
+- Fixed TypeScript compilation errors
 - ESLint clean
 - Component builds successfully
-- All test stories implemented and passing
-- Validation checks should now pass
 
-### Next Steps:
+### Partially Completed:
 
-- Run validation to confirm all checks pass
-- Update components.tasks.md to completed status
+- Implementation bugs fixed ✓
+- Memory leaks fixed ✓
+- TypeScript clean ✓
+- ESLint clean ✓
+- 15/17 validation checks pass ✓
+- 8 test stories still failing (checkbox state issues)
+
+### Remaining Issues:
+
+- Checkbox indeterminate state not working properly
+- Initial selection state not being applied correctly
+- Tests need adjustment for new implementation
+
+## Missing things
+
+### Test Coverage Issues
+- **Tests focus too much on visibility rather than behavior**: Most assertions check `toBeVisible()` or `toBeInTheDocument()` instead of verifying actual functionality
+- **Sorting tests don't verify data is correctly sorted**: Tests check that elements exist after sorting but don't validate the actual sort algorithm works (ascending/descending order)
+- **Selection state management not fully tested**: Missing tests for edge cases like:
+  - Selecting rows that don't exist
+  - Handling duplicate selection IDs
+  - Verifying onSelectionChange callback receives correct parameters
+- **Virtual scrolling behavior not properly tested**: Tests check row count but don't verify:
+  - Correct rows are rendered at specific scroll positions
+  - Overscan buffer works correctly
+  - Performance metrics are met
+- **Column configuration not tested**: Missing tests for:
+  - Custom render functions receiving correct parameters
+  - Column width and alignment actually applied
+  - Sortable flag properly disables sorting
+
+### Implementation Issues
+- **Row click handlers may conflict with selection**: When both `onRowClick` and selection are enabled, clicking a row triggers both actions which could cause unexpected behavior
+- **Virtual scrolling implementation has potential bugs**:
+  - The `visibleItems` calculation doesn't account for variable row heights
+  - Scroll position restoration after data updates not handled
+- **Memory leaks possible**: Event listeners in responsive hook aren't cleaned up properly
+- **Accessibility gaps**:
+  - Missing `aria-rowcount` and `aria-rowindex` for virtual scrolling
+  - Sort direction not properly announced to screen readers
+  - Selected row state not announced when using keyboard navigation
+
+### Missing Features
+- **No column resize functionality**: Users can't adjust column widths
+- **No filter/search capability**: Basic filtering should be available
+- **No export functionality**: Can't export table data to CSV/Excel
+- **No grouping or aggregation**: Can't group rows or show totals
+- **Pagination not integrated**: Component supports virtual scrolling but not traditional pagination

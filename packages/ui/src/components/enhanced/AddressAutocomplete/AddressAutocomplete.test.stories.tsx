@@ -16,7 +16,7 @@ const meta: Meta<typeof AddressAutocomplete> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Basic Interaction Test
+// Basic Interaction Test - Tests autocomplete suggestions appear
 export const BasicInteraction: Story = {
   args: {
     label: 'Address',
@@ -24,7 +24,7 @@ export const BasicInteraction: Story = {
     googleMapsApiKey: 'demo-key',
     onSelect: fn(),
   },
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
     
     try {
@@ -32,9 +32,30 @@ export const BasicInteraction: Story = {
       const input = canvas.getByPlaceholderText('Enter address...');
       await expect(input).toBeInTheDocument();
       
-      // Type in the input
-      await userEvent.type(input, '123 Main Street');
-      await expect(input).toHaveValue('123 Main Street');
+      // Type in the input to trigger autocomplete
+      await userEvent.type(input, '123 main');
+      await expect(input).toHaveValue('123 main');
+      
+      // Wait for autocomplete suggestions to appear
+      await waitFor(async () => {
+        const suggestions = document.querySelectorAll('[role="option"]');
+        expect(suggestions.length).toBeGreaterThan(0);
+      }, { timeout: 1500 });
+      
+      // Verify mock addresses are shown
+      const firstSuggestion = await waitFor(() => {
+        const option = canvas.getByText('123 Main Street');
+        return option;
+      });
+      await expect(firstSuggestion).toBeInTheDocument();
+      
+      // Click on a suggestion
+      await userEvent.click(firstSuggestion);
+      
+      // Verify the callback was called
+      await waitFor(() => {
+        expect(args.onSelect).toHaveBeenCalled();
+      });
       
       // Clear the input
       await userEvent.clear(input);
@@ -55,7 +76,7 @@ export const BasicInteraction: Story = {
   },
 };
 
-// Form Interaction Test
+// Form Interaction Test - Tests address selection and data extraction
 export const FormInteraction: Story = {
   args: {
     label: 'Delivery Address',
@@ -64,7 +85,7 @@ export const FormInteraction: Story = {
     required: true,
     onSelect: fn(),
   },
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
     
     try {
@@ -76,9 +97,45 @@ export const FormInteraction: Story = {
       const label = canvas.getByText('Delivery Address');
       await expect(label).toBeInTheDocument();
       
-      // Type address
-      await userEvent.type(input, '456 Oak Avenue');
-      await expect(input).toHaveValue('456 Oak Avenue');
+      // Type to trigger suggestions
+      await userEvent.type(input, '456 oak');
+      await expect(input).toHaveValue('456 oak');
+      
+      // Wait for autocomplete suggestions
+      await waitFor(async () => {
+        const suggestions = document.querySelectorAll('[role="option"]');
+        expect(suggestions.length).toBeGreaterThan(0);
+      }, { timeout: 1500 });
+      
+      // Find and click the New York address
+      const nySuggestion = await waitFor(() => {
+        const option = canvas.getByText('456 Oak Avenue');
+        return option;
+      });
+      await userEvent.click(nySuggestion);
+      
+      // Verify the onSelect callback was called with address details
+      await waitFor(() => {
+        expect(args.onSelect).toHaveBeenCalledWith(
+          expect.objectContaining({
+            formatted: expect.stringContaining('456 Oak Avenue'),
+            street: expect.stringContaining('Oak Avenue'),
+            city: 'New York',
+            state: 'New York',
+            country: 'United States',
+            postalCode: '10001',
+            coordinates: expect.objectContaining({
+              lat: expect.any(Number),
+              lng: expect.any(Number),
+            }),
+          })
+        );
+      });
+      
+      // Verify input shows the formatted address
+      await waitFor(() => {
+        expect(input).toHaveValue('456 Oak Avenue, New York, NY 10001, USA');
+      });
       
       // Set status to pass
       const statusElement = document.createElement('div');
@@ -95,7 +152,7 @@ export const FormInteraction: Story = {
   },
 };
 
-// Keyboard Navigation Test
+// Keyboard Navigation Test - Tests keyboard navigation through suggestions
 export const KeyboardNavigation: Story = {
   args: {
     label: 'Navigate with keyboard',
@@ -103,7 +160,7 @@ export const KeyboardNavigation: Story = {
     googleMapsApiKey: 'demo-key',
     onSelect: fn(),
   },
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
     
     try {
@@ -114,11 +171,47 @@ export const KeyboardNavigation: Story = {
       input.focus();
       await expect(input).toHaveFocus();
       
-      // Type and navigate
-      await userEvent.type(input, 'Test');
+      // Type to trigger suggestions
+      await userEvent.type(input, 'main');
+      
+      // Wait for suggestions to appear
+      await waitFor(async () => {
+        const suggestions = document.querySelectorAll('[role="option"]');
+        expect(suggestions.length).toBeGreaterThan(0);
+      }, { timeout: 1500 });
+      
+      // Navigate down through suggestions
       await userEvent.keyboard('{ArrowDown}');
+      await waitFor(() => {
+        const activeOption = document.querySelector('[aria-selected="true"]');
+        expect(activeOption).toBeInTheDocument();
+      });
+      
+      // Navigate up
       await userEvent.keyboard('{ArrowUp}');
+      
+      // Navigate down again and select with Enter
+      await userEvent.keyboard('{ArrowDown}');
+      await userEvent.keyboard('{Enter}');
+      
+      // Verify selection was made
+      await waitFor(() => {
+        expect(args.onSelect).toHaveBeenCalled();
+      });
+      
+      // Test Escape key closes suggestions
+      await userEvent.clear(input);
+      await userEvent.type(input, 'test');
+      await waitFor(async () => {
+        const suggestions = document.querySelectorAll('[role="option"]');
+        expect(suggestions.length).toBeGreaterThan(0);
+      });
+      
       await userEvent.keyboard('{Escape}');
+      await waitFor(() => {
+        const suggestions = document.querySelectorAll('[role="option"]');
+        expect(suggestions.length).toBe(0);
+      });
       
       // Set status to pass
       const statusElement = document.createElement('div');
@@ -402,7 +495,7 @@ export const PerformanceTest: Story = {
   },
 };
 
-// Edge Cases Test
+// Edge Cases Test - Tests error handling and edge cases
 export const EdgeCasesTest: Story = {
   args: {
     label: 'Edge Cases',
@@ -416,23 +509,47 @@ export const EdgeCasesTest: Story = {
     try {
       const input = canvas.getByPlaceholderText('Test edge cases...');
       
-      // Test empty input
+      // Test empty input doesn't trigger suggestions
       await expect(input).toHaveValue('');
+      const initialSuggestions = document.querySelectorAll('[role="option"]');
+      expect(initialSuggestions.length).toBe(0);
       
-      // Test very long input
-      const longText = 'A'.repeat(500);
+      // Test minimum characters requirement (less than 3 chars)
+      await userEvent.type(input, 'ab');
+      await waitFor(() => {
+        const noOptionsText = canvas.queryByText('Type at least 3 characters');
+        expect(noOptionsText).toBeInTheDocument();
+      });
+      
+      // Clear and test no results scenario
+      await userEvent.clear(input);
+      await userEvent.type(input, 'zzzzzzz');
+      await waitFor(() => {
+        const noOptions = canvas.queryByText('No addresses found');
+        expect(noOptions).toBeInTheDocument();
+      }, { timeout: 1500 });
+      
+      // Test very long input gets trimmed in search
+      await userEvent.clear(input);
+      const longText = '123 main ' + 'street '.repeat(50);
       await userEvent.type(input, longText);
-      await expect(input.value.length).toBeGreaterThan(0);
+      await waitFor(async () => {
+        const suggestions = document.querySelectorAll('[role="option"]');
+        expect(suggestions.length).toBeGreaterThan(0);
+      }, { timeout: 1500 });
       
-      // Clear and test special characters
+      // Test special characters in search
       await userEvent.clear(input);
-      await userEvent.type(input, '!@#$%^&*()');
-      await expect(input).toHaveValue('!@#$%^&*()');
+      await userEvent.type(input, '123 main & oak');
+      await expect(input).toHaveValue('123 main & oak');
       
-      // Clear and test numbers
+      // Test numbers in address
       await userEvent.clear(input);
-      await userEvent.type(input, '123456789');
-      await expect(input).toHaveValue('123456789');
+      await userEvent.type(input, '123');
+      await waitFor(async () => {
+        const suggestions = document.querySelectorAll('[role="option"]');
+        expect(suggestions.length).toBeGreaterThan(0);
+      }, { timeout: 1500 });
       
       // Set status to pass
       const statusElement = document.createElement('div');
@@ -449,7 +566,7 @@ export const EdgeCasesTest: Story = {
   },
 };
 
-// Integration Test
+// Integration Test - Tests geolocation and current location feature
 export const IntegrationTest: Story = {
   args: {
     label: 'Integration Test',
@@ -459,6 +576,7 @@ export const IntegrationTest: Story = {
     helperText: 'Helper text for integration',
     required: true,
     fullWidth: true,
+    getCurrentLocation: true,
     onSelect: fn(),
   },
   play: async ({ canvasElement, args }) => {
@@ -473,16 +591,65 @@ export const IntegrationTest: Story = {
       const helperText = canvas.getByText('Helper text for integration');
       await expect(helperText).toBeInTheDocument();
       
-      // Check label
+      // Check label  
       const label = canvas.getByText('Integration Test');
       await expect(label).toBeInTheDocument();
       
-      // Type and verify
-      await userEvent.type(input, 'Integration test address');
-      await expect(input).toHaveValue('Integration test address');
+      // Check current location button is present
+      const locationButton = canvas.getByTitle('Use current location');
+      await expect(locationButton).toBeInTheDocument();
       
-      // Verify onSelect callback capability
-      await expect(args.onSelect).toBeDefined();
+      // Click current location button
+      await userEvent.click(locationButton);
+      
+      // Wait for location to be retrieved (mock)
+      await waitFor(() => {
+        expect(args.onSelect).toHaveBeenCalledWith(
+          expect.objectContaining({
+            formatted: expect.stringContaining('123 Main Street'),
+            coordinates: expect.objectContaining({
+              lat: expect.any(Number),
+              lng: expect.any(Number),
+            }),
+          })
+        );
+      }, { timeout: 2000 });
+      
+      // Verify input was populated
+      await waitFor(() => {
+        expect(input.value).toContain('123 Main Street');
+      });
+      
+      // Clear and test normal typing with all features
+      await userEvent.clear(input);
+      await userEvent.type(input, 'pine');
+      
+      // Wait for suggestions with full integration
+      await waitFor(async () => {
+        const suggestions = document.querySelectorAll('[role="option"]');
+        expect(suggestions.length).toBeGreaterThan(0);
+      });
+      
+      // Select an address
+      const pineSuggestion = await waitFor(() => {
+        const option = canvas.getByText('789 Pine Boulevard');
+        return option;
+      });
+      await userEvent.click(pineSuggestion);
+      
+      // Verify full address details were extracted
+      await waitFor(() => {
+        const calls = args.onSelect.mock.calls;
+        const lastCall = calls[calls.length - 1][0];
+        expect(lastCall).toMatchObject({
+          formatted: expect.stringContaining('Pine Boulevard'),
+          street: expect.stringContaining('Pine Boulevard'),
+          city: 'Los Angeles',
+          state: 'California',
+          country: 'United States',
+          postalCode: '90001',
+        });
+      });
       
       // Set status to pass
       const statusElement = document.createElement('div');

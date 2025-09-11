@@ -14,4 +14,5 @@ export interface PasswordStrengthProps {
   showSuggestions?: boolean;
   variant?: 'linear' | 'circular' | 'steps';
   animated?: boolean;
+  'data-testid'?: string;
 }

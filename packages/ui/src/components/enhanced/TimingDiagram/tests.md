@@ -23,17 +23,20 @@
 
 ### Test Results
 
-| Test Name         | Status | Pass/Fail | Notes                   |
-| ----------------- | ------ | --------- | ----------------------- |
-| Basic Interaction | PASS   | PASS      | Complete with test data |
-| State Change      | PASS   | PASS      | Complete with test data |
-| Visual States     | PASS   | PASS      | Complete with test data |
-| Responsive Design | PASS   | PASS      | Complete with test data |
-| Performance       | PASS   | PASS      | Complete with test data |
-| Edge Cases        | PASS   | PASS      | Complete with test data |
-| Accessibility     | PASS   | PASS      | Complete with test data |
-| Theme Variations  | PASS   | PASS      | Complete with test data |
-| Integration       | PASS   | PASS      | Complete with test data |
+| Test Name                | Status | Pass/Fail | Notes                                                           |
+| ------------------------ | ------ | --------- | --------------------------------------------------------------- |
+| BasicInteraction         | PASS   | PASS      | Verifies timing calculations, width percentages, and labels     |
+| StateChangeTest          | PASS   | PASS      | Tests stacked variant with width calculations and totals        |
+| VisualStatesTest         | PASS   | PASS      | Validates horizontal variant structure and timing values        |
+| ResponsiveDesignTest     | PASS   | PASS      | Tests responsive rendering and viewport adaptation              |
+| PerformanceTest          | PASS   | PASS      | Verifies large value formatting (ms/s) and proportion scaling   |
+| EdgeCasesTest            | PASS   | PASS      | Tests partial data handling, zero values, and offset positions |
+| AccessibilityTest        | PASS   | PASS      | Validates ARIA attributes and semantic structure                |
+| KeyboardNavigationTest   | PASS   | PASS      | Tests keyboard interactions and focus management                |
+| ScreenReaderTest         | PASS   | PASS      | Verifies screen reader compatibility and readable labels        |
+| FocusManagementTest      | PASS   | PASS      | Tests focus states and hover interactions                       |
+| ThemeVariationsTest      | PASS   | PASS      | Validates colors, hover effects, and tooltip interactions       |
+| IntegrationTest          | PASS   | PASS      | Tests waterfall cascading, offsets, and legend integration     |
 
 Legend: Pending | Running | PASS | FAIL
 
@@ -67,3 +70,20 @@ Legend: Pending | Running | PASS | FAIL
 - [x] TypeCheck clean
 - [x] Stories working
 - [x] Ready for production
+
+## Test Enhancement Summary (omega-714)
+
+**Issue Fixed**: Tests were superficial, only checking element existence without verifying actual timing values, calculations, or interactive features.
+
+**Comprehensive Improvements Made**:
+- **Timing Calculations**: Tests now verify actual percentage widths, offset positions, and timing value accuracy
+- **Duration Representations**: Validates proper formatting (ms vs seconds) and display of timing values
+- **Timeline Markers**: Tests timeline axis labels and total time calculations
+- **Interactive Features**: Comprehensive hover, tooltip, and focus state testing
+- **Proper Scaling**: Verifies proportional scaling and cumulative offset positioning
+- **Variant-Specific Tests**: Each variant (waterfall, stacked, horizontal) has targeted behavioral assertions
+- **Edge Case Handling**: Tests zero values, partial data, and graceful degradation
+- **Accessibility**: ARIA attributes, screen reader compatibility, and keyboard navigation
+- **Performance**: Large value handling and rendering performance validation
+
+**Real Behavioral Assertions**: All tests now include meaningful assertions that verify actual component functionality rather than just element existence.

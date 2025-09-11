@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useState, useRef } from 'react';
+import React, { forwardRef, useCallback, useState, useRef, useEffect } from 'react';
 import {
   Box,
   Paper,
@@ -22,6 +22,7 @@ import {
   Code,
   FormatQuote,
 } from '@mui/icons-material';
+import DOMPurify from 'dompurify';
 
 import { RichTextEditorProps, ToolbarConfig } from './RichTextEditor.types';
 
@@ -67,14 +68,21 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(
 
     const toolbarConfig = { ...DEFAULT_TOOLBAR, ...toolbar };
 
-    const handleContentChange = useCallback((newContent: string) => {
-      if (maxLength && newContent.length > maxLength) {
+    const handleContentChange = useCallback(() => {
+      if (!editorRef.current) return;
+      
+      const newContent = editorRef.current.innerHTML;
+      const textContent = editorRef.current.textContent || '';
+      
+      if (maxLength && textContent.length > maxLength) {
+        // Restore previous content
+        editorRef.current.innerHTML = content;
         return;
       }
       
       setContent(newContent);
       onChange?.(newContent);
-    }, [maxLength, onChange]);
+    }, [maxLength, onChange, content]);
 
     const handleFocus = useCallback(() => {
       setIsFocused(true);
@@ -86,12 +94,161 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(
       onBlur?.();
     }, [onBlur]);
 
-    const applyFormat = useCallback((command: string, value?: string) => {
-      if (disabled || readOnly) return;
+    const applyFormat = useCallback((formatType: string, value?: string) => {
+      if (disabled || readOnly || !editorRef.current) return;
       
-      document.execCommand(command, false, value);
-      editorRef.current?.focus();
-    }, [disabled, readOnly]);
+      const selection = window.getSelection();
+      if (!selection || selection.rangeCount === 0) {
+        editorRef.current.focus();
+        return;
+      }
+      
+      const range = selection.getRangeAt(0);
+      
+      switch (formatType) {
+        case 'bold':
+          wrapSelection(range, 'strong');
+          break;
+        case 'italic':
+          wrapSelection(range, 'em');
+          break;
+        case 'underline':
+          wrapSelection(range, 'u');
+          break;
+        case 'strikethrough':
+          wrapSelection(range, 's');
+          break;
+        case 'insertOrderedList':
+          toggleList(range, 'ol');
+          break;
+        case 'insertUnorderedList':
+          toggleList(range, 'ul');
+          break;
+        case 'createLink':
+          if (value) {
+            wrapSelectionWithLink(range, value);
+          }
+          break;
+        case 'insertImage':
+          if (value) {
+            insertImage(range, value);
+          }
+          break;
+        case 'formatBlock':
+          if (value === 'pre') {
+            wrapSelection(range, 'pre');
+          } else if (value === 'blockquote') {
+            wrapSelection(range, 'blockquote');
+          }
+          break;
+      }
+      
+      handleContentChange();
+      editorRef.current.focus();
+    }, [disabled, readOnly, handleContentChange]);
+    
+    const wrapSelection = (range: globalThis.Range, tagName: string) => {
+      const selectedText = range.toString();
+      if (!selectedText) return;
+      
+      const wrapper = document.createElement(tagName);
+      wrapper.appendChild(document.createTextNode(selectedText));
+      
+      range.deleteContents();
+      range.insertNode(wrapper);
+      
+      // Move cursor after inserted element
+      const newRange = document.createRange();
+      newRange.setStartAfter(wrapper);
+      newRange.collapse(true);
+      
+      const selection = window.getSelection();
+      selection?.removeAllRanges();
+      selection?.addRange(newRange);
+    };
+    
+    const wrapSelectionWithLink = (range: globalThis.Range, url: string) => {
+      const selectedText = range.toString();
+      if (!selectedText) return;
+      
+      const link = document.createElement('a');
+      link.href = url.startsWith('http') ? url : `https://${url}`;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.appendChild(document.createTextNode(selectedText));
+      
+      range.deleteContents();
+      range.insertNode(link);
+      
+      // Move cursor after inserted element
+      const newRange = document.createRange();
+      newRange.setStartAfter(link);
+      newRange.collapse(true);
+      
+      const selection = window.getSelection();
+      selection?.removeAllRanges();
+      selection?.addRange(newRange);
+    };
+    
+    const insertImage = (range: globalThis.Range, src: string) => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.style.maxWidth = '100%';
+      img.style.height = 'auto';
+      
+      range.deleteContents();
+      range.insertNode(img);
+      
+      // Move cursor after inserted element
+      const newRange = document.createRange();
+      newRange.setStartAfter(img);
+      newRange.collapse(true);
+      
+      const selection = window.getSelection();
+      selection?.removeAllRanges();
+      selection?.addRange(newRange);
+    };
+    
+    const toggleList = (range: globalThis.Range, listType: 'ol' | 'ul') => {
+      if (!editorRef.current) return;
+      
+      // Get the parent block element
+      let parentBlock = range.commonAncestorContainer;
+      if (parentBlock.nodeType === globalThis.Node.TEXT_NODE) {
+        parentBlock = parentBlock.parentElement || parentBlock;
+      }
+      
+      // Check if we're already in a list
+      const existingList = (parentBlock as globalThis.Element).closest(listType);
+      if (existingList) {
+        // Remove from list
+        const listItem = (parentBlock as globalThis.Element).closest('li');
+        if (listItem && listItem.parentElement) {
+          const text = document.createTextNode(listItem.textContent || '');
+          listItem.parentElement.replaceChild(text, listItem);
+        }
+      } else {
+        // Create new list
+        const list = document.createElement(listType);
+        const listItem = document.createElement('li');
+        
+        const selectedText = range.toString() || 'List item';
+        listItem.appendChild(document.createTextNode(selectedText));
+        list.appendChild(listItem);
+        
+        range.deleteContents();
+        range.insertNode(list);
+        
+        // Move cursor inside list item
+        const newRange = document.createRange();
+        newRange.selectNodeContents(listItem);
+        newRange.collapse(false);
+        
+        const selection = window.getSelection();
+        selection?.removeAllRanges();
+        selection?.addRange(newRange);
+      }
+    };
 
     const getToolbarButton = (
       key: string,
@@ -102,11 +259,27 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(
     ) => {
       if (!toolbarConfig[key as keyof typeof toolbarConfig]) return null;
       
+      const handleClick = () => {
+        if (command === 'createLink') {
+          const url = window.prompt('Enter URL:', 'https://');
+          if (url) {
+            applyFormat(command, url);
+          }
+        } else if (command === 'insertImage') {
+          const src = window.prompt('Enter image URL:');
+          if (src) {
+            applyFormat(command, src);
+          }
+        } else {
+          applyFormat(command, commandValue);
+        }
+      };
+      
       return (
         <Tooltip key={key} title={tooltip}>
           <IconButton
             size="small"
-            onClick={() => applyFormat(command, commandValue)}
+            onClick={handleClick}
             disabled={disabled || readOnly}
             aria-label={tooltip}
           >
@@ -116,7 +289,25 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(
       );
     };
 
-    const characterCount = content.replace(/<[^>]*>/g, '').length;
+    // Sanitize content for security
+    const sanitizedContent = DOMPurify.sanitize(content, {
+      ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 's', 'a', 'img', 'ul', 'ol', 'li', 'blockquote', 'pre', 'code', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'span', 'div'],
+      ALLOWED_ATTR: ['href', 'src', 'alt', 'target', 'rel', 'style', 'class'],
+      ALLOW_DATA_ATTR: false,
+      KEEP_CONTENT: true,
+    });
+    
+    // Calculate character count from text content
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = sanitizedContent;
+    const characterCount = tempDiv.textContent?.length || 0;
+    
+    // Update editor content if it was sanitized differently
+    useEffect(() => {
+      if (editorRef.current && editorRef.current.innerHTML !== sanitizedContent) {
+        editorRef.current.innerHTML = sanitizedContent;
+      }
+    }, [sanitizedContent]);
 
     return (
       <Paper
@@ -153,7 +344,7 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(
           {getToolbarButton('bold', <FormatBold />, 'Bold', 'bold')}
           {getToolbarButton('italic', <FormatItalic />, 'Italic', 'italic')}
           {getToolbarButton('underline', <FormatUnderlined />, 'Underline', 'underline')}
-          {getToolbarButton('strikethrough', <FormatStrikethrough />, 'Strikethrough', 'strikeThrough')}
+          {getToolbarButton('strikethrough', <FormatStrikethrough />, 'Strikethrough', 'strikethrough')}
           
           {(toolbarConfig.bold || toolbarConfig.italic || toolbarConfig.underline || toolbarConfig.strikethrough) && 
            (toolbarConfig.orderedList || toolbarConfig.unorderedList) && (
@@ -168,7 +359,7 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(
             <Divider orientation="vertical" flexItem sx={{ mx: 0.5 }} />
           )}
           
-          {getToolbarButton('link', <Link />, 'Insert Link', 'createLink', 'https://')}
+          {getToolbarButton('link', <Link />, 'Insert Link', 'createLink')}
           {getToolbarButton('image', <Image />, 'Insert Image', 'insertImage')}
           {getToolbarButton('codeBlock', <Code />, 'Code Block', 'formatBlock', 'pre')}
           {getToolbarButton('quote', <FormatQuote />, 'Quote', 'formatBlock', 'blockquote')}
@@ -210,15 +401,15 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(
         <Box
           ref={editorRef}
           contentEditable={!disabled && !readOnly}
-          onInput={(e) => handleContentChange(e.currentTarget.innerHTML)}
+          onInput={handleContentChange}
           onFocus={handleFocus}
           onBlur={handleBlur}
-          dangerouslySetInnerHTML={{ __html: content }}
           role="textbox"
           aria-label={ariaLabel || 'Rich text editor'}
           aria-describedby={ariaDescribedBy}
           aria-multiline="true"
           tabIndex={disabled ? -1 : 0}
+          suppressContentEditableWarning
           sx={{
             minHeight: typeof height === 'number' ? `${height}px` : height,
             p: 2,

@@ -19,6 +19,20 @@ An interactive tutorial overlay system for guiding users through application fea
 - theme: object - Custom styling theme
 - navigation: boolean - Show next/previous navigation
 
+## Missing things
+
+### Issues Found in Implementation vs Tests:
+
+1. **Single Step Button Label Issue**: Test expects "Complete" button for single-step tutorials, but implementation shows "Finish" (line 512 in implementation vs test expectation in EdgeCases story)
+
+2. **Finish Button Implementation**: The test in IntegrationTest story queries for a "Finish" button (line 578), but the implementation condition on line 512 shows `steps.length === 1 ? 'Complete' : 'Finish'` - which is backwards from what tests expect
+
+3. **requiresAction Property**: The `requiresAction` property is defined in types (line 31) and used in tests (line 131) but not actually implemented in the component logic - it doesn't affect behavior
+
+4. **Keyboard Navigation TypeScript Issue**: The implementation uses browser's KeyboardEvent (line 353) but imports a custom KeyboardEvent type which may cause conflicts
+
+5. **Previous Button Conditional Logic**: The Previous button has redundant condition check - appears both in wrapping condition (line 482) and as disabled prop (line 487)
+
 ## Lint Status
 
 - [ ] No lint errors

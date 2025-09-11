@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
 
+/// <reference types="@types/google.maps" />
+
 export interface AddressDetails {
   formatted: string;
   street: string;
