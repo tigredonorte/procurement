@@ -109,19 +109,22 @@ None - TypeScript compilation successful
 - DataDisplay/Carousel/InteractiveStates
 - DataDisplay/Carousel/Responsive
 
-**Current (BRT)**: 2025-09-09 14:50
+**Current (BRT)**: 2025-09-11 19:15
 
-### Current Task: Fixing Stories coverage validation
+### Current Task: Fixed test failures [omega-905]
 
-- Fixed CSF title format to "DataDisplay/Carousel"
-- Added all required story exports (AllVariants, AllSizes, AllStates, InteractiveStates, Responsive)
-- Fixed React hooks usage in story render functions
-- Updated track.md with correct format
+- Fixed implicit action args issue by adding explicit spy functions (fn()) for all callbacks
+- Fixed onChange callback not being triggered in handleNext/handlePrev functions
+- Added proper aria-labels to all navigation buttons and indicators
+- Fixed individual disable states for prev/next arrows when loop is false
+- Updated EdgeCases test to handle disabled buttons properly
 
 ### Completed:
 
-- All 16 validation checks passing
+- All 18 validation checks passing
+- All 34 tests PASS (both regular and test stories)
 - TypeScript compilation successful
 - ESLint issues resolved
 - Stories coverage complete
 - Component builds successfully
+- Accessibility compliance improved with proper aria-labels

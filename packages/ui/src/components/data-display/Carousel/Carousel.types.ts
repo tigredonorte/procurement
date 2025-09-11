@@ -61,6 +61,8 @@ export interface CarouselArrowsProps {
   onNext: () => void;
   position?: 'inside' | 'outside' | 'overlay';
   disabled?: boolean;
+  disablePrev?: boolean;
+  disableNext?: boolean;
   color?: 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info';
   size?: 'small' | 'medium' | 'large';
   className?: string;

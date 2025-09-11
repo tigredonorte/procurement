@@ -360,6 +360,9 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
               fontWeight: 600,
               fontSize: '1.05rem',
               marginBottom: description ? 0.5 : 0,
+              wordWrap: 'break-word',
+              overflowWrap: 'break-word',
+              wordBreak: 'break-word',
             }}
           >
             {title}
@@ -371,6 +374,9 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
             sx={{
               opacity: 0.9,
               fontSize: '0.925rem',
+              wordWrap: 'break-word',
+              overflowWrap: 'break-word',
+              wordBreak: 'break-word',
             }}
           >
             {description}
