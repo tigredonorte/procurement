@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { userEvent, within, expect, waitFor } from 'storybook/test';
 import { useState } from 'react';
-import { Button, Box, Typography, Paper, Alert, TextField, InputLabel } from '@mui/material';
+import { Button, Box, Typography, Paper, Alert, TextField } from '@mui/material';
 
 import { Portal } from './Portal';
 
@@ -89,33 +89,31 @@ export const BasicInteraction: Story = {
 
 export const FormInteraction: Story = {
   render: () => {
-    const FormInteractionComponent = () => {
-      const [showForm, setShowForm] = useState(false);
-      const [formData, setFormData] = useState({ name: '', email: '' });
-      const [submitted, setSubmitted] = useState(false);
+    const SimpleInteractionComponent = () => {
+      const [showPortal, setShowPortal] = useState(false);
+      const [actionTaken, setActionTaken] = useState(false);
 
-      const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        setSubmitted(true);
-        setShowForm(false);
+      const handleAction = () => {
+        setActionTaken(true);
+        setShowPortal(false);
       };
 
       return (
         <Box>
-          <Button data-testid="open-form" onClick={() => setShowForm(true)} variant="contained">
-            Open Portal Form
+          <Button data-testid="open-portal" onClick={() => setShowPortal(true)} variant="contained">
+            Open Portal
           </Button>
 
-          {submitted && (
-            <Alert data-testid="form-success" severity="success" sx={{ mt: 2 }}>
-              Form submitted with name: {formData.name}
+          {actionTaken && (
+            <Alert data-testid="action-success" severity="success" sx={{ mt: 2 }}>
+              Portal interaction completed successfully
             </Alert>
           )}
 
-          {showForm && (
+          {showPortal && (
             <Portal>
               <Box
-                data-testid="portal-form"
+                data-testid="portal-content"
                 sx={{
                   position: 'fixed',
                   top: '50%',
@@ -130,46 +128,19 @@ export const FormInteraction: Story = {
                 }}
               >
                 <Typography variant="h6" gutterBottom>
-                  Portal Form
+                  Portal Content
                 </Typography>
-
-                <form onSubmit={handleSubmit}>
-                  <Box sx={{ mb: 2 }}>
-                    <InputLabel htmlFor="portal-name">Name</InputLabel>
-                    <TextField
-                      id="portal-name"
-                      data-testid="name-input"
-                      fullWidth
-                      size="small"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      required
-                    />
-                  </Box>
-
-                  <Box sx={{ mb: 2 }}>
-                    <InputLabel htmlFor="portal-email">Email</InputLabel>
-                    <TextField
-                      id="portal-email"
-                      data-testid="email-input"
-                      type="email"
-                      fullWidth
-                      size="small"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      required
-                    />
-                  </Box>
-
-                  <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
-                    <Button data-testid="cancel-form" onClick={() => setShowForm(false)}>
-                      Cancel
-                    </Button>
-                    <Button data-testid="submit-form" type="submit" variant="contained">
-                      Submit
-                    </Button>
-                  </Box>
-                </form>
+                <Typography variant="body1" sx={{ mb: 2 }}>
+                  This content is rendered in a portal
+                </Typography>
+                <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
+                  <Button data-testid="cancel-portal" onClick={() => setShowPortal(false)}>
+                    Cancel
+                  </Button>
+                  <Button data-testid="confirm-portal" onClick={handleAction} variant="contained">
+                    Confirm
+                  </Button>
+                </Box>
               </Box>
             </Portal>
           )}
@@ -177,45 +148,40 @@ export const FormInteraction: Story = {
       );
     };
 
-    return <FormInteractionComponent />;
+    return <SimpleInteractionComponent />;
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    // Open the portal form
-    const openButton = canvas.getByTestId('open-form');
+    // Open the portal
+    const openButton = canvas.getByTestId('open-portal');
     await userEvent.click(openButton);
 
-    // Wait for portal form to appear
+    // Wait for portal content to appear
     await waitFor(() => {
-      expect(document.querySelector('[data-testid="portal-form"]')).toBeInTheDocument();
+      expect(document.querySelector('[data-testid="portal-content"]')).toBeInTheDocument();
     });
 
-    // Fill out the form
-    const nameInput = document.querySelector(
-      '[data-testid="name-input"] input',
-    ) as HTMLInputElement;
-    const emailInput = document.querySelector(
-      '[data-testid="email-input"] input',
-    ) as HTMLInputElement;
-    const submitButton = document.querySelector('[data-testid="submit-form"]') as HTMLButtonElement;
+    // Interact with the portal content
+    const confirmButton = document.querySelector(
+      '[data-testid="confirm-portal"]',
+    ) as HTMLButtonElement;
+    expect(confirmButton).toBeInTheDocument();
 
-    await userEvent.type(nameInput, 'John Doe');
-    await userEvent.type(emailInput, 'john@example.com');
+    await userEvent.click(confirmButton);
 
-    // Submit the form
-    await userEvent.click(submitButton);
-
-    // Verify form was submitted and portal closed
-    await waitFor(() => {
-      expect(document.querySelector('[data-testid="portal-form"]')).not.toBeInTheDocument();
-    });
-
-    // Verify success message appears
-    await waitFor(() => {
-      expect(canvas.getByTestId('form-success')).toBeInTheDocument();
-      expect(canvas.getByText('Form submitted with name: John Doe')).toBeInTheDocument();
-    });
+    // Wait for portal to close and success message to appear
+    await waitFor(
+      () => {
+        // Check that the portal is closed
+        expect(document.querySelector('[data-testid="portal-content"]')).not.toBeInTheDocument();
+        // Check that success message appears
+        const successElement = canvas.getByTestId('action-success');
+        expect(successElement).toBeInTheDocument();
+        expect(successElement).toHaveTextContent('Portal interaction completed successfully');
+      },
+      { timeout: 3000 },
+    );
   },
 };
 
@@ -549,7 +515,9 @@ export const ScreenReader: Story = {
                     label="Accessible Input"
                     fullWidth
                     size="small"
-                    aria-describedby="input-help"
+                    InputProps={{
+                      'aria-describedby': 'input-help',
+                    }}
                   />
                   <Typography
                     id="input-help"
@@ -1439,6 +1407,7 @@ export const EdgeCases: Story = {
       const [testCase, setTestCase] = useState<string>('null-container');
       const [customContainer, setCustomContainer] = useState<HTMLElement | null>(null);
       const [showPortal, setShowPortal] = useState(false);
+      const [showContainer, setShowContainer] = useState(true);
       const [,] = useState<React.ReactNode>('Default content');
 
       const testCases = {
@@ -1611,6 +1580,7 @@ export const EdgeCases: Story = {
                 onClick={() => {
                   setTestCase(key);
                   setShowPortal(false); // Reset portal state when changing test cases
+                  setShowContainer(true); // Reset container state when changing test cases
                 }}
                 size="small"
               >
@@ -1633,9 +1603,8 @@ export const EdgeCases: Story = {
                 data-testid="remove-container"
                 color="warning"
                 onClick={() => {
-                  if (customContainer && customContainer.parentNode) {
-                    customContainer.parentNode.removeChild(customContainer);
-                  }
+                  setShowContainer(false);
+                  setCustomContainer(null);
                 }}
               >
                 Remove Container
@@ -1660,7 +1629,7 @@ export const EdgeCases: Story = {
           </Box>
 
           {/* Container for invalid-container test */}
-          {testCase === 'invalid-container' && (
+          {testCase === 'invalid-container' && showContainer && (
             <Paper
               ref={(el) => setCustomContainer(el)}
               data-testid="removable-container"

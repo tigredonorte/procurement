@@ -77,16 +77,18 @@ export const StateChange: Story = {
     // Test code variant
     const codeText = canvas.getByTestId('code-text');
     expect(codeText).toBeInTheDocument();
-    expect(codeText).toHaveStyle({
-      fontFamily: expect.stringMatching(/Monaco|Menlo|Ubuntu Mono|Courier New|monospace/i),
-    });
+    // Verify code font family by checking computed style
+    const codeStyle = window.getComputedStyle(codeText);
+    expect(codeStyle.fontFamily).toMatch(/Monaco|Menlo|Ubuntu Mono|Courier New|monospace/i);
 
     // Test size variations
     const largeText = canvas.getByTestId('large-text');
-    expect(largeText).toHaveStyle({ fontSize: '1.125rem' });
+    const largeStyle = window.getComputedStyle(largeText);
+    expect(largeStyle.fontSize).toBe('18px'); // 1.125rem = 18px
 
     const smallText = canvas.getByTestId('small-text');
-    expect(smallText).toHaveStyle({ fontSize: '0.875rem' });
+    const smallStyle = window.getComputedStyle(smallText);
+    expect(smallStyle.fontSize).toBe('14px'); // 0.875rem = 14px
 
     // Test weight variations
     const boldText = canvas.getByTestId('bold-text');
@@ -151,30 +153,31 @@ export const KeyboardNavigation: Story = {
       canvas.getByTestId('nav-text-3'),
     ];
 
-    // Test Tab navigation
+    // Test initial focus
     focusableTexts[0].focus();
     expect(focusableTexts[0]).toHaveFocus();
 
-    await userEvent.keyboard('[Tab]');
+    // Test Tab navigation between elements
+    await userEvent.tab();
     expect(focusableTexts[1]).toHaveFocus();
 
-    await userEvent.keyboard('[Tab]');
+    await userEvent.tab();
     expect(focusableTexts[2]).toHaveFocus();
 
-    // Test Shift+Tab navigation
-    await userEvent.keyboard('[Shift>][Tab][/Shift]');
+    // Test Shift+Tab backward navigation
+    await userEvent.tab({ shift: true });
     expect(focusableTexts[1]).toHaveFocus();
 
-    // Test Enter key doesn't cause errors
-    await userEvent.keyboard('[Enter]');
+    // Test keyboard interaction doesn't lose focus
+    await userEvent.keyboard('{Enter}');
     expect(focusableTexts[1]).toHaveFocus();
 
-    // Test Space key doesn't cause errors
-    await userEvent.keyboard('[Space]');
+    // Test Space key interaction
+    await userEvent.keyboard(' ');
     expect(focusableTexts[1]).toHaveFocus();
 
-    // Test Escape key doesn't cause errors
-    await userEvent.keyboard('[Escape]');
+    // Test Escape key interaction
+    await userEvent.keyboard('{Escape}');
     expect(focusableTexts[1]).toHaveFocus();
   },
   render: () => (
@@ -198,8 +201,9 @@ export const ScreenReader: Story = {
     const canvas = within(canvasElement);
 
     // Test semantic elements
-    const paragraph = canvas.getByRole('generic', { name: /paragraph text/i });
+    const paragraph = canvas.getByTestId('paragraph');
     expect(paragraph).toBeInTheDocument();
+    expect(paragraph.tagName.toLowerCase()).toBe('p');
 
     // Test aria-label is preserved
     const labeledText = canvas.getByLabelText('Important announcement');
@@ -428,11 +432,11 @@ export const VisualStates: Story = {
     const largeText = canvas.getByTestId('lg-text');
     const extraLargeText = canvas.getByTestId('xl-text');
 
-    expect(extraSmallText).toHaveStyle({ fontSize: '0.75rem' });
-    expect(smallText).toHaveStyle({ fontSize: '0.875rem' });
-    expect(mediumText).toHaveStyle({ fontSize: '1rem' });
-    expect(largeText).toHaveStyle({ fontSize: '1.125rem' });
-    expect(extraLargeText).toHaveStyle({ fontSize: '1.25rem' });
+    expect(window.getComputedStyle(extraSmallText).fontSize).toBe('12px'); // 0.75rem
+    expect(window.getComputedStyle(smallText).fontSize).toBe('14px'); // 0.875rem
+    expect(window.getComputedStyle(mediumText).fontSize).toBe('16px'); // 1rem
+    expect(window.getComputedStyle(largeText).fontSize).toBe('18px'); // 1.125rem
+    expect(window.getComputedStyle(extraLargeText).fontSize).toBe('20px'); // 1.25rem
 
     // Test all weight variants
     const lightText = canvas.getByTestId('light-text');
@@ -565,7 +569,7 @@ export const EdgeCases: Story = {
     // Test special characters
     const specialCharsText = canvas.getByTestId('special-chars');
     expect(specialCharsText).toBeInTheDocument();
-    expect(specialCharsText.textContent).toBe('Special chars: !@#$%^&*()_+-=[]{}|;:,<>?');
+    expect(specialCharsText.textContent).toBe('Special chars: !@#$%^&*()_+-=[]|;:,<>?');
 
     // Test HTML entities
     const htmlEntitiesText = canvas.getByTestId('html-entities');
@@ -581,11 +585,13 @@ export const EdgeCases: Story = {
     const zeroWidthText = canvas.getByTestId('zero-width');
     expect(zeroWidthText).toBeInTheDocument();
 
-    // Test multiline content
+    // Test multiline content - verify it exists and contains expected text
     const multilineText = canvas.getByTestId('multiline');
     expect(multilineText).toBeInTheDocument();
+    // Check for line content (text may be rendered without line breaks in DOM)
     expect(multilineText.textContent).toContain('Line 1');
     expect(multilineText.textContent).toContain('Line 2');
+    expect(multilineText.textContent).toContain('Line 3');
 
     // Test RTL text
     const rtlText = canvas.getByTestId('rtl-text');

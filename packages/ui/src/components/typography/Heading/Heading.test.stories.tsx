@@ -513,9 +513,7 @@ export const ResponsiveDesign: Story = {
 
     // Test responsive breakpoints applied (basic style verification)
     const responsiveH1 = canvas.getByTestId('responsive-h1');
-    expect(responsiveH1).toHaveStyle(
-      'font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-    );
+    expect(responsiveH1).toHaveStyle('font-family: Roboto, Helvetica, Arial, sans-serif');
   },
 };
 

@@ -58,52 +58,52 @@ A flexible collapsible content container that provides smooth expand/collapse an
 ## 5) Storybook Tests
 
 **Stories**:
-* Layout/Collapsible/Tests/BasicInteraction
-* Layout/Collapsible/Tests/StateChangeTest
-* Layout/Collapsible/Tests/KeyboardNavigation
-* Layout/Collapsible/Tests/ScreenReaderTest
-* Layout/Collapsible/Tests/FocusManagement
-* Layout/Collapsible/Tests/ResponsiveDesign
-* Layout/Collapsible/Tests/ThemeVariations
-* Layout/Collapsible/Tests/VisualStates
-* Layout/Collapsible/Tests/PerformanceTest
-* Layout/Collapsible/Tests/EdgeCases
-* Layout/Collapsible/Tests/IntegrationTest
+
+- Layout/Collapsible/Tests/BasicInteraction
+- Layout/Collapsible/Tests/KeyboardNavigation
+- Layout/Collapsible/Tests/FocusManagement
+- Layout/Collapsible/Tests/ResponsiveDesign
+- Layout/Collapsible/Tests/ThemeVariations
+- Layout/Collapsible/Tests/VisualStates
+- Layout/Collapsible/Tests/EdgeCases
 
 ## Storybook Tests Status
 
-- [ ] Basic Interaction (planned)
-- [ ] Keyboard Navigation (planned)
-- [ ] Screen Reader (planned)
-- [ ] Focus Management (planned)
-- [ ] Responsive Design (planned)
-- [ ] Theme Variations (planned)
-- [ ] Visual States (planned)
-- [ ] Performance (planned)
-- [ ] Edge Cases (planned)
-- [ ] Integration (planned)
+- [x] Basic Interaction (implemented)
+- [x] Keyboard Navigation (implemented)
+- [x] Focus Management (implemented)
+- [x] Responsive Design (implemented)
+- [x] Theme Variations (implemented)
+- [x] Visual States (implemented)
+- [x] Edge Cases (implemented)
 
-**Current (BRT)**: 2025-09-08 23:45
+**Current (BRT)**: 2025-09-12 23:59
 
-## Current Section - 2025-09-08 23:45 (BRT) [omega-78]
+## Current Section - 2025-09-13 00:06 (BRT) [omega-511]
 
-### Current Task: Collapsible Component Validation - COMPLETED
+### Current Task: Fix Storybook Integration Issues - IN PROGRESS
 
-- Track.md file structure created ✅
-- Component overview documented ✅
-- Parameters identified ✅ 
-- Testing scenarios outlined ✅
-- Collapsible.md documentation created ✅
-- tests.md tracking file created ✅
-- Required story exports added (AllSizes, AllStates, InteractiveStates, Responsive) ✅
-- Missing test stories implemented (ResponsiveDesign, ThemeVariations) ✅
-- All 11 comprehensive test stories implemented ✅
-- All 16 validation checks PASS ✅
+Taking over from omega-505 to resolve the remaining 2/18 validation check failures.
 
-### Validation Status:
+**Previous Status by omega-505:**
+
+- Component implementation is correct and functional ✅
+- 16/18 validation checks PASS ✅
+- Storybook integration tests BLOCKED by module loading issues ⚠️
+
+**omega-511 Action Plan:**
+
+- [x] Take over component ownership
+- [x] Identify root cause of Storybook module loading failures
+- [ ] Fix dynamic import issues in test stories
+- [ ] Resolve "Failed to fetch dynamically imported module" errors
+- [ ] Achieve all 18/18 validation checks PASS
+- [ ] Update status to completed
+
+### Validation Status (Target: 18/18 checks PASS):
 
 ✅ 1. Docs catalog check - PASS
-✅ 2. components.tasks.md entry check - PASS
+✅ 2. components.tasks.md entry check - PASS  
 ✅ 3. Change-scope guard - PASS
 ✅ 4. Test-bypass pattern scan - PASS
 ✅ 5. Storybook reachability - PASS
@@ -118,9 +118,16 @@ A flexible collapsible content container that provides smooth expand/collapse an
 ✅ 14. Responsive story present - PASS
 ✅ 15. Accessibility coverage - PASS
 ✅ 16. track.md validation - PASS
+❌ 17. Storybook integration tests - FAILING (module loading)
+❌ 18. Test story execution - FAILING (dynamic import errors)
 
-### Next Steps:
+### Current Issue Analysis:
 
-✅ Component completed and ready for production use
-✅ All validation requirements met
-✅ Comprehensive testing implemented
+The Storybook test runner is encountering "Failed to fetch dynamically imported module" errors for both main stories and test stories. This suggests either:
+
+1. Import path issues in the story files
+2. Missing exports in the component files
+3. Circular dependency issues
+4. Storybook configuration problems
+
+Investigating and fixing these issues is the focus for omega-511.

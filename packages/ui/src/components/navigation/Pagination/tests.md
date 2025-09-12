@@ -9,17 +9,17 @@
 
 ### Direct Links (quick access)
 
-- Basic Interaction: <pending URL from UI>
-- Form Interaction: <pending URL from UI>
-- Keyboard Navigation: <pending URL from UI>
-- Screen Reader: <pending URL from UI>
-- Focus Management: <pending URL from UI>
-- Responsive Design: <pending URL from UI>
-- Theme Variations: <pending URL from UI>
-- Visual States: <pending URL from UI>
-- Performance: <pending URL from UI>
-- Edge Cases: <pending URL from UI>
-- Integration: <pending URL from UI>
+- Basic Interaction: http://192.168.166.133:6008/?path=/story/navigation-pagination-tests--basic-interaction
+- Form Interaction: http://192.168.166.133:6008/?path=/story/navigation-pagination-tests--form-interaction
+- Keyboard Navigation: http://192.168.166.133:6008/?path=/story/navigation-pagination-tests--keyboard-navigation
+- Screen Reader: http://192.168.166.133:6008/?path=/story/navigation-pagination-tests--screen-reader
+- Focus Management: http://192.168.166.133:6008/?path=/story/navigation-pagination-tests--focus-management
+- Responsive Design: http://192.168.166.133:6008/?path=/story/navigation-pagination-tests--responsive-design
+- Theme Variations: http://192.168.166.133:6008/?path=/story/navigation-pagination-tests--theme-variations
+- Visual States: http://192.168.166.133:6008/?path=/story/navigation-pagination-tests--visual-states
+- Performance: http://192.168.166.133:6008/?path=/story/navigation-pagination-tests--performance
+- Edge Cases: http://192.168.166.133:6008/?path=/story/navigation-pagination-tests--edge-cases
+- Integration: http://192.168.166.133:6008/?path=/story/navigation-pagination-tests--integration
 
 ### Test Results
 

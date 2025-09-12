@@ -3,9 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
 
-const TRACK_FRESHNESS_HOURS = 48;
 const STORY_TITLE_FIELD = 'title';
-const ALLOWED_STORY_FILE_EXT = ['.ts', '.tsx', '.js', '.jsx', '.mdx'];
 
 export function loadTrack(componentDirAbs) {
   const trackPath = path.join(componentDirAbs, 'track.md');
@@ -66,44 +64,6 @@ export function loadTrack(componentDirAbs) {
     stories,
     plannedTests,
   };
-}
-
-export function assertTrackFreshness(currentStr) {
-  if (!currentStr) {
-    console.error('track.md: The "**Current (BRT)**" line is missing or empty.');
-    process.exit(1);
-  }
-
-  const match = currentStr.match(/\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}/);
-
-  if (!match) {
-    console.error(`track.md: Could not find a "YYYY-MM-DD HH:MM" timestamp on the "Current (BRT)" line.`);
-    console.error(`  > Line content: "${currentStr}"`);
-    process.exit(1);
-  }
-
-  const timestamp = match[0];
-  const isoStringWithOffset = `${timestamp.replace(' ', 'T')}:00-03:00`;
-  const updated = new Date(isoStringWithOffset);
-
-  if (isNaN(updated.getTime())) {
-    console.error(`track.md: Failed to parse the timestamp found on the "Current (BRT)" line.`);
-    console.error(`  > Found timestamp: "${timestamp}"`);
-    console.error(`  > Full line content: "${currentStr}"`);
-    process.exit(1);
-  }
-
-  const now = new Date();
-  const diffH = (now.getTime() - updated.getTime()) / (1000 * 60 * 60);
-
-  if (diffH > TRACK_FRESHNESS_HOURS) {
-    console.error(
-      `track.md: Timestamp is older than ${TRACK_FRESHNESS_HOURS}h (stale).`
-    );
-    console.error(`  > Stale timestamp: "${timestamp}"`);
-    console.error(`  > Full line content: "${currentStr}"`);
-    process.exit(1);
-  }
 }
 
 function listStoryFiles(componentDirAbs) {

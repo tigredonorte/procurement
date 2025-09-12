@@ -32,12 +32,16 @@ type Story = StoryObj<typeof meta>;
 interface TabsTestWrapperProps extends Partial<TabsProps> {
   onChangeCallback?: typeof fn;
   onTabCloseCallback?: typeof fn;
+  onFocusCallback?: typeof fn;
+  onBlurCallback?: typeof fn;
   initialValue?: string;
 }
 
 const TabsTestWrapper = ({
   onChangeCallback = fn(),
   onTabCloseCallback = fn(),
+  onFocusCallback = fn(),
+  onBlurCallback = fn(),
   initialValue = 'tab1',
   ...props
 }: TabsTestWrapperProps) => {
@@ -54,7 +58,14 @@ const TabsTestWrapper = ({
 
   return (
     <Box sx={{ width: 600, minHeight: 300 }}>
-      <Tabs {...props} value={value} onChange={handleChange} onTabClose={handleTabClose} />
+      <Tabs
+        {...props}
+        value={value}
+        onChange={handleChange}
+        onTabClose={handleTabClose}
+        onFocus={onFocusCallback}
+        onBlur={onBlurCallback}
+      />
     </Box>
   );
 };
@@ -128,6 +139,10 @@ export const BasicInteraction: Story = {
   name: '🧪 Basic Interaction Test',
   args: {
     items: basicTestItems,
+    onChangeCallback: fn(),
+    onTabCloseCallback: fn(),
+    onFocusCallback: fn(),
+    onBlurCallback: fn(),
   },
   render: (args) => <TabsTestWrapper {...args} />,
   parameters: {
@@ -186,6 +201,10 @@ export const KeyboardNavigation: Story = {
   name: '⌨️ Keyboard Navigation Test',
   args: {
     items: basicTestItems,
+    onChangeCallback: fn(),
+    onTabCloseCallback: fn(),
+    onFocusCallback: fn(),
+    onBlurCallback: fn(),
   },
   render: (args) => <TabsTestWrapper {...args} />,
   parameters: {
@@ -265,6 +284,10 @@ export const KeyboardNavigation: Story = {
 export const ClosableTabsTest: Story = {
   name: '❌ Closable Tabs Test',
   args: {
+    onChange: fn(),
+    onTabClose: fn(),
+    onFocus: fn(),
+    onBlur: fn(),
     items: [
       {
         id: 'tab1',
@@ -305,6 +328,7 @@ export const ClosableTabsTest: Story = {
 
       const handleChange = (event: React.SyntheticEvent, tabId: string) => {
         setValue(tabId);
+        args.onChange(event, tabId);
       };
 
       const handleTabClose = (tabId: string) => {
@@ -313,6 +337,7 @@ export const ClosableTabsTest: Story = {
         if (value === tabId && newTabs.length > 0) {
           setValue(newTabs[0].id);
         }
+        args.onTabClose(tabId);
       };
 
       return (
@@ -323,6 +348,8 @@ export const ClosableTabsTest: Story = {
             value={value}
             onChange={handleChange}
             onTabClose={handleTabClose}
+            onFocus={args.onFocus}
+            onBlur={args.onBlur}
           />
         </Box>
       );
@@ -335,14 +362,14 @@ export const ClosableTabsTest: Story = {
 
     await step('Verify close buttons are rendered', async () => {
       // Check close buttons for closable tabs
-      const closeButtons = canvas.getAllByRole('button', { name: '' });
+      const closeButtons = canvas.getAllByRole('button', { name: 'Close tab' });
       // Should have 2 close buttons (tab1 and tab2)
       await expect(closeButtons).toHaveLength(2);
     });
 
     await step('Close a tab', async () => {
       // Get the first close button
-      const closeButtons = canvas.getAllByRole('button', { name: '' });
+      const closeButtons = canvas.getAllByRole('button', { name: 'Close tab' });
       const firstCloseButton = closeButtons[0];
 
       // Click close button
@@ -357,10 +384,9 @@ export const ClosableTabsTest: Story = {
 
     await step('Verify non-closable tab has no close button', async () => {
       const tab3 = canvas.getByRole('tab', { name: /Tab 3/i });
-      const tab3Parent = tab3.parentElement;
 
       // Should not have a close button within Tab 3
-      const closeButtonInTab3 = within(tab3Parent!).queryByRole('button');
+      const closeButtonInTab3 = within(tab3).queryByRole('button', { name: 'Close tab' });
       await expect(closeButtonInTab3).not.toBeInTheDocument();
     });
   },
@@ -404,6 +430,10 @@ export const BadgeTest: Story = {
         ),
       },
     ],
+    onChangeCallback: fn(),
+    onTabCloseCallback: fn(),
+    onFocusCallback: fn(),
+    onBlurCallback: fn(),
   },
   render: (args) => <TabsTestWrapper {...args} initialValue="messages" />,
   play: async ({ canvasElement, step }) => {
@@ -423,10 +453,12 @@ export const BadgeTest: Story = {
       const dashboardTab = canvas.getByRole('tab', { name: /Dashboard/i });
       await expect(dashboardTab).toBeInTheDocument();
 
-      // Should not have a badge
-      const dashboardParent = dashboardTab.parentElement;
-      const badgeInDashboard = within(dashboardParent!).queryByText(/^\d+$/);
-      await expect(badgeInDashboard).not.toBeInTheDocument();
+      // Dashboard tab should not contain any badge numbers
+      const dashboardContainer = dashboardTab.closest('[role="tab"]');
+      const badgeInDashboard = dashboardContainer
+        ? within(dashboardContainer).queryByText(/^(5|99)$/)
+        : null;
+      await expect(badgeInDashboard).toBeNull();
     });
   },
 };
@@ -478,13 +510,19 @@ export const DisabledTabsTest: Story = {
 
     await step('Attempt to click disabled tab', async () => {
       const disabledTab = canvas.getByRole('tab', { name: /Disabled Tab/i });
-      await userEvent.click(disabledTab);
+
+      // Try to click but expect it to fail gracefully due to pointer-events: none
+      try {
+        await userEvent.click(disabledTab, { skipPointerEventsCheck: true });
+      } catch {
+        // Expected to fail due to pointer-events: none
+      }
 
       // Should not be selected
       await expect(disabledTab).toHaveAttribute('aria-selected', 'false');
 
       // First tab should still be selected
-      const firstTab = canvas.getByRole('tab', { name: /Active Tab/i });
+      const firstTab = canvas.getByRole('tab', { name: 'Active Tab' });
       await expect(firstTab).toHaveAttribute('aria-selected', 'true');
     });
 
@@ -541,8 +579,12 @@ export const SizeVariationTest: Story = {
   name: '📏 Size Variation Test',
   args: {
     items: basicTestItems,
+    onChange: fn(),
+    onTabClose: fn(),
+    onFocus: fn(),
+    onBlur: fn(),
   },
-  render: () => {
+  render: (args) => {
     const sizes = ['sm', 'md', 'lg'] as const;
 
     return (
@@ -557,6 +599,10 @@ export const SizeVariationTest: Story = {
               size={size}
               variant="default"
               initialValue="tab1"
+              onChangeCallback={args.onChange}
+              onTabCloseCallback={args.onTabClose}
+              onFocusCallback={args.onFocus}
+              onBlurCallback={args.onBlur}
             />
           </Box>
         ))}
@@ -797,7 +843,7 @@ export const AccessibilityTest: Story = {
   args: {
     items: itemsWithIcons,
   },
-  render: (args) => <TabsTestWrapper {...args} />,
+  render: (args) => <TabsTestWrapper {...args} initialValue="home" />,
   parameters: {
     a11y: {
       element: '#storybook-root',
@@ -1056,6 +1102,10 @@ export const IntegrationTest: Story = {
     size: 'md',
     color: 'primary',
     animateContent: true,
+    onChange: fn(),
+    onTabClose: fn(),
+    onFocus: fn(),
+    onBlur: fn(),
     items: [
       {
         id: 'home',
@@ -1099,6 +1149,7 @@ export const IntegrationTest: Story = {
 
       const handleChange = (event: React.SyntheticEvent, tabId: string) => {
         setValue(tabId);
+        args.onChange(event, tabId);
       };
 
       const handleTabClose = (tabId: string) => {
@@ -1107,6 +1158,7 @@ export const IntegrationTest: Story = {
         if (value === tabId && newItems.length > 0) {
           setValue(newItems[0].id);
         }
+        args.onTabClose(tabId);
       };
 
       return (
@@ -1117,6 +1169,8 @@ export const IntegrationTest: Story = {
             value={value}
             onChange={handleChange}
             onTabClose={handleTabClose}
+            onFocus={args.onFocus}
+            onBlur={args.onBlur}
           />
         </Box>
       );
@@ -1136,7 +1190,7 @@ export const IntegrationTest: Story = {
       await expect(securityTab).toHaveAttribute('aria-disabled', 'true');
 
       // Check closable tab has close button
-      const closeButtons = canvas.getAllByRole('button', { name: '' });
+      const closeButtons = canvas.getAllByRole('button', { name: 'Close tab' });
       await expect(closeButtons.length).toBeGreaterThan(0);
     });
 
@@ -1152,7 +1206,7 @@ export const IntegrationTest: Story = {
     });
 
     await step('Close the settings tab', async () => {
-      const closeButtons = canvas.getAllByRole('button', { name: '' });
+      const closeButtons = canvas.getAllByRole('button', { name: 'Close tab' });
       const settingsCloseButton = closeButtons[0];
 
       await userEvent.click(settingsCloseButton);

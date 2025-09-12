@@ -16,14 +16,12 @@ export interface VirtualListProps {
   itemHeight?: number; // For fixed height items
   estimatedItemHeight?: number; // For variable height items
   overscan?: number; // Number of items to render outside visible area
-  renderItem: (params: {
-    item: VirtualListItem;
-    index: number;
-    style: CSSProperties;
-  }) => ReactNode;
+  renderItem: (params: { item: VirtualListItem; index: number; style: CSSProperties }) => ReactNode;
   onScroll?: (scrollTop: number) => void;
   className?: string;
   style?: CSSProperties;
+  'data-testid'?: string;
+  'aria-label'?: string;
 }
 
 export interface VirtualGridProps {
@@ -45,4 +43,6 @@ export interface VirtualGridProps {
   onScroll?: (scrollTop: number, scrollLeft: number) => void;
   className?: string;
   style?: CSSProperties;
+  'data-testid'?: string;
+  'aria-label'?: string;
 }
