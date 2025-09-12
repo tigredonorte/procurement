@@ -8,4 +8,5 @@ export interface SpacerProps {
   height?: number | string;
   flex?: boolean;
   className?: string;
+  'data-testid'?: string;
 }

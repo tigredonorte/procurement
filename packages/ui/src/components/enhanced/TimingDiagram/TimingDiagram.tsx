@@ -28,7 +28,10 @@ const WaterfallContainer = styled(Box)(({ theme }) => ({
   marginTop: theme.spacing(2),
 }));
 
-const WaterfallBar = styled(Box)<{
+const WaterfallBar = styled(Box, {
+  shouldForwardProp: (prop) =>
+    !['phaseColor', 'offset', 'width', 'animated'].includes(prop as string),
+})<{
   phaseColor: string;
   offset: number;
   width: number;
@@ -66,7 +69,9 @@ const WaterfallBar = styled(Box)<{
   },
 }));
 
-const StackedBar = styled(Box)<{ animated: boolean }>(({ theme, animated }) => ({
+const StackedBar = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'animated',
+})<{ animated: boolean }>(({ theme, animated }) => ({
   display: 'flex',
   width: '100%',
   height: 40,
@@ -84,24 +89,24 @@ const StackedBar = styled(Box)<{ animated: boolean }>(({ theme, animated }) => (
   }),
 }));
 
-const StackedSegment = styled(Box)<{ phaseColor: string; width: number }>(
-  ({ phaseColor, width }) => ({
-    width: `${width}%`,
-    background: `linear-gradient(135deg, ${phaseColor} 0%, ${alpha(phaseColor, 0.85)} 100%)`,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: '#fff',
-    fontSize: '0.7rem',
-    fontWeight: 600,
-    position: 'relative',
-    transition: 'all 0.3s ease',
-    '&:hover': {
-      filter: 'brightness(1.1)',
-      zIndex: 1,
-    },
-  }),
-);
+const StackedSegment = styled(Box, {
+  shouldForwardProp: (prop) => !['phaseColor', 'width'].includes(prop as string),
+})<{ phaseColor: string; width: number }>(({ phaseColor, width }) => ({
+  width: `${width}%`,
+  background: `linear-gradient(135deg, ${phaseColor} 0%, ${alpha(phaseColor, 0.85)} 100%)`,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: '#fff',
+  fontSize: '0.7rem',
+  fontWeight: 600,
+  position: 'relative',
+  transition: 'all 0.3s ease',
+  '&:hover': {
+    filter: 'brightness(1.1)',
+    zIndex: 1,
+  },
+}));
 
 const HorizontalBar = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -110,7 +115,9 @@ const HorizontalBar = styled(Box)(({ theme }) => ({
   marginTop: theme.spacing(2),
 }));
 
-const HorizontalSegment = styled(Box)<{
+const HorizontalSegment = styled(Box, {
+  shouldForwardProp: (prop) => !['phaseColor', 'width', 'animated'].includes(prop as string),
+})<{
   phaseColor: string;
   width: number;
   animated: boolean;
@@ -251,7 +258,11 @@ export const TimingDiagram: FC<TimingDiagramProps> = ({
               width={width}
               animated={animated}
               data-animated={animated.toString()}
-              style={{ top: index * 8 }}
+              style={{
+                top: index * 8,
+                width: `${width}%`,
+                left: `${currentOffset}%`,
+              }}
             >
               {showLabels && width > 10 && (
                 <span data-testid="timing-label">{formatTime(phase.value!)}</span>
@@ -286,12 +297,14 @@ export const TimingDiagram: FC<TimingDiagramProps> = ({
     <Box data-variant="stacked">
       <StackedBar animated={animated} data-animated={animated.toString()}>
         {phases.map((phase) => {
+          const width = percentages[phase.key as keyof typeof percentages] ?? 0;
           const segment = (
             <StackedSegment
               key={phase.key}
               data-testid={`timing-segment-${phase.key}`}
               phaseColor={phaseColors[phase.key as keyof typeof phaseColors]}
-              width={percentages[phase.key as keyof typeof percentages] ?? 0}
+              width={width}
+              style={{ width: `${width}%` }}
             >
               {showLabels && (percentages[phase.key as keyof typeof percentages] ?? 0) > 10 && (
                 <span data-testid="timing-label">{formatTime(phase.value!)}</span>

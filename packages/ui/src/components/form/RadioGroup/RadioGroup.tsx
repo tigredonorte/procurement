@@ -491,8 +491,10 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
             animated
             onClick={() => {
               if (!option.disabled && onChange) {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                onChange({ target: { value: option.value } } as any, option.value);
+                const event = {
+                  target: { value: option.value },
+                } as React.ChangeEvent<HTMLInputElement>;
+                onChange(event, option.value);
               }
             }}
           >
@@ -550,8 +552,10 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
             disabled={option.disabled}
             onClick={() => {
               if (!option.disabled && onChange) {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                onChange({ target: { value: option.value } } as any, option.value);
+                const event = {
+                  target: { value: option.value },
+                } as React.ChangeEvent<HTMLInputElement>;
+                onChange(event, option.value);
               }
             }}
           >
@@ -576,8 +580,10 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
             disabled={option.disabled}
             onClick={() => {
               if (!option.disabled && onChange) {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                onChange({ target: { value: option.value } } as any, option.value);
+                const event = {
+                  target: { value: option.value },
+                } as React.ChangeEvent<HTMLInputElement>;
+                onChange(event, option.value);
               }
             }}
           >

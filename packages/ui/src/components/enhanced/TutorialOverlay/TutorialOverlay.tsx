@@ -46,7 +46,9 @@ const floatAnimation = keyframes`
 `;
 
 // Styled components
-const Overlay = styled(Box)<{ allowClickThrough?: boolean }>(({ theme, allowClickThrough }) => ({
+const Overlay = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'allowClickThrough',
+})<{ allowClickThrough?: boolean }>(({ theme, allowClickThrough }) => ({
   position: 'fixed',
   top: 0,
   left: 0,
@@ -67,29 +69,31 @@ const Backdrop = styled(Box)(() => ({
   backdropFilter: 'blur(2px)',
 }));
 
-const Spotlight = styled(Box)<{ bounds: globalThis.DOMRect; padding: number }>(
-  ({ bounds, padding }) => ({
+const Spotlight = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'bounds' && prop !== 'padding',
+})<{ bounds: globalThis.DOMRect; padding: number }>(({ bounds, padding }) => ({
+  position: 'absolute',
+  top: bounds.top - padding,
+  left: bounds.left - padding,
+  width: bounds.width + padding * 2,
+  height: bounds.height + padding * 2,
+  borderRadius: 8,
+  border: '2px solid rgba(255, 255, 255, 0.5)',
+  animation: `${pulseAnimation} 2s infinite`,
+  pointerEvents: 'none',
+  '&::before': {
+    content: '""',
     position: 'absolute',
-    top: bounds.top - padding,
-    left: bounds.left - padding,
-    width: bounds.width + padding * 2,
-    height: bounds.height + padding * 2,
+    inset: -2,
     borderRadius: 8,
-    border: '2px solid rgba(255, 255, 255, 0.5)',
-    animation: `${pulseAnimation} 2s infinite`,
-    pointerEvents: 'none',
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      inset: -2,
-      borderRadius: 8,
-      background: 'transparent',
-      boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.7)',
-    },
-  }),
-);
+    background: 'transparent',
+    boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.7)',
+  },
+}));
 
-const TooltipContainer = styled(Paper)<{ placement: string }>(({ theme, placement }) => ({
+const TooltipContainer = styled(Paper, {
+  shouldForwardProp: (prop) => prop !== 'placement',
+})<{ placement: string }>(({ theme, placement }) => ({
   position: 'absolute',
   maxWidth: 360,
   padding: theme.spacing(3),
@@ -159,22 +163,22 @@ const StepIndicator = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(2),
 }));
 
-const StepDot = styled(Box)<{ active?: boolean; completed?: boolean }>(
-  ({ theme, active, completed }) => ({
-    width: 8,
-    height: 8,
-    borderRadius: '50%',
-    background: completed
-      ? theme.palette.success.main
-      : active
-        ? theme.palette.primary.main
-        : alpha(theme.palette.text.primary, 0.3),
-    transition: 'all 0.3s ease',
-    ...(active && {
-      transform: 'scale(1.5)',
-    }),
+const StepDot = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'active' && prop !== 'completed',
+})<{ active?: boolean; completed?: boolean }>(({ theme, active, completed }) => ({
+  width: 8,
+  height: 8,
+  borderRadius: '50%',
+  background: completed
+    ? theme.palette.success.main
+    : active
+      ? theme.palette.primary.main
+      : alpha(theme.palette.text.primary, 0.3),
+  transition: 'all 0.3s ease',
+  ...(active && {
+    transform: 'scale(1.5)',
   }),
-);
+}));
 
 // Helper function to get element bounds
 const getElementBounds = (selector: string): globalThis.DOMRect | null => {

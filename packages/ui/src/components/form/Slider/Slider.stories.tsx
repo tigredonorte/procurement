@@ -406,7 +406,7 @@ const ResponsiveComponent = () => {
           unit="%"
           value={value}
           onChange={(e, newValue) => setValue(newValue)}
-          size={{ xs: 'xs', sm: 'sm', md: 'md', lg: 'lg' }}
+          size="md"
         />
       </Box>
     </Box>

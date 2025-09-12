@@ -72,15 +72,23 @@ export const ScrollArea: React.FC<ScrollAreaProps> = ({
 
   // Get overflow style based on orientation
   const getOverflowStyle = () => {
-    if (disabled) return { overflow: 'hidden' };
+    if (disabled) return { overflow: 'hidden' as const };
 
     switch (orientation) {
       case 'horizontal':
-        return { overflowX: 'auto', overflowY: 'hidden' };
+        return {
+          overflow: 'hidden' as const,
+          overflowX: 'auto' as const,
+          overflowY: 'hidden' as const,
+        };
       case 'both':
-        return { overflow: 'auto' };
+        return { overflow: 'auto' as const };
       default:
-        return { overflowY: 'auto', overflowX: 'hidden' };
+        return {
+          overflow: 'hidden' as const,
+          overflowY: 'auto' as const,
+          overflowX: 'hidden' as const,
+        };
     }
   };
 
@@ -142,13 +150,11 @@ export const ScrollArea: React.FC<ScrollAreaProps> = ({
   }, []);
 
   // Get variant-specific styles
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const getVariantStyles = (): any => {
+  const getVariantStyles = () => {
     const colors = getScrollbarColors();
     const size = getScrollbarSize();
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const baseScrollbarStyles: any = {
+    const baseScrollbarStyles = {
       '&::-webkit-scrollbar': {
         width: orientation !== 'horizontal' ? size : '100%',
         height: orientation !== 'vertical' ? size : '100%',
@@ -168,58 +174,83 @@ export const ScrollArea: React.FC<ScrollAreaProps> = ({
       '&::-webkit-scrollbar-corner': {
         background: colors.track,
       },
-      scrollbarWidth: scrollbarSize === 'thin' ? 'thin' : 'auto',
+      scrollbarWidth: scrollbarSize === 'thin' ? ('thin' as const) : ('auto' as const),
       scrollbarColor: `${colors.scrollbar} ${colors.track}`,
     };
 
     switch (variant) {
       case 'overlay':
         return {
-          ...baseScrollbarStyles,
           '&::-webkit-scrollbar': {
-            ...baseScrollbarStyles['&::-webkit-scrollbar'],
+            width: orientation !== 'horizontal' ? size : '100%',
+            height: orientation !== 'vertical' ? size : '100%',
             position: 'absolute',
             right: 0,
             top: 0,
           },
           '&::-webkit-scrollbar-track': {
-            ...baseScrollbarStyles['&::-webkit-scrollbar-track'],
             background: 'transparent',
+            borderRadius: size / 2,
           },
           '&::-webkit-scrollbar-thumb': {
-            ...baseScrollbarStyles['&::-webkit-scrollbar-thumb'],
             background: alpha(
               colors.scrollbar,
               autoHide && !isScrolling && !alwaysShowScrollbar ? 0 : 0.5,
             ),
+            borderRadius: size / 2,
+            transition: 'all 0.2s ease',
             border: `2px solid transparent`,
             backgroundClip: 'padding-box',
+            '&:hover': {
+              background: theme.palette.primary.main,
+            },
           },
+          '&::-webkit-scrollbar-corner': {
+            background: colors.track,
+          },
+          scrollbarWidth: scrollbarSize === 'thin' ? ('thin' as const) : ('auto' as const),
+          scrollbarColor: `${colors.scrollbar} ${colors.track}`,
         };
 
       case 'glass':
         return {
-          ...baseScrollbarStyles,
-          backdropFilter: 'blur(10px)',
+          '&::-webkit-scrollbar': {
+            width: orientation !== 'horizontal' ? size : '100%',
+            height: orientation !== 'vertical' ? size : '100%',
+          },
           '&::-webkit-scrollbar-track': {
-            ...baseScrollbarStyles['&::-webkit-scrollbar-track'],
             background: alpha(theme.palette.background.paper, 0.1),
+            borderRadius: size / 2,
             backdropFilter: 'blur(5px)',
           },
           '&::-webkit-scrollbar-thumb': {
-            ...baseScrollbarStyles['&::-webkit-scrollbar-thumb'],
             background: `linear-gradient(180deg, ${alpha(theme.palette.primary.main, 0.3)}, ${alpha(theme.palette.secondary.main, 0.3)})`,
+            borderRadius: size / 2,
+            transition: 'all 0.2s ease',
             boxShadow: `inset 0 0 6px ${alpha(theme.palette.common.white, 0.3)}`,
+            '&:hover': {
+              background: theme.palette.primary.main,
+            },
           },
+          '&::-webkit-scrollbar-corner': {
+            background: colors.track,
+          },
+          scrollbarWidth: scrollbarSize === 'thin' ? ('thin' as const) : ('auto' as const),
+          scrollbarColor: `${colors.scrollbar} ${colors.track}`,
+          backdropFilter: 'blur(10px)',
         };
 
       default:
         return {
           ...baseScrollbarStyles,
           '&::-webkit-scrollbar-thumb': {
-            ...baseScrollbarStyles['&::-webkit-scrollbar-thumb'],
+            background: colors.scrollbar,
+            borderRadius: size / 2,
+            transition: 'all 0.2s ease',
             opacity: autoHide && !isScrolling && !alwaysShowScrollbar ? 0 : 1,
-            transition: 'opacity 0.3s ease',
+            '&:hover': {
+              background: theme.palette.primary.main,
+            },
           },
         };
     }
@@ -271,8 +302,6 @@ export const ScrollArea: React.FC<ScrollAreaProps> = ({
           height: '100%',
           maxHeight: '100%',
           padding: contentPadding,
-          ...getOverflowStyle(),
-          ...getVariantStyles(),
           opacity: loading ? 0.5 : 1,
           pointerEvents: disabled || loading ? 'none' : 'auto',
           transition: 'opacity 0.3s ease',
@@ -283,6 +312,8 @@ export const ScrollArea: React.FC<ScrollAreaProps> = ({
               outlineOffset: -2,
             },
           },
+          ...getOverflowStyle(),
+          ...getVariantStyles(),
         }}
         style={{
           scrollBehavior: smoothScroll ? 'smooth' : 'auto',

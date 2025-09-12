@@ -1,9 +1,9 @@
-import { ReactNode } from 'react';
+import { ReactNode, HTMLAttributes } from 'react';
 
 export type DrawerVariant = 'left' | 'right' | 'top' | 'bottom' | 'glass';
 export type DrawerAnchor = 'left' | 'right' | 'top' | 'bottom';
 
-export interface DrawerProps {
+export interface DrawerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
   children: ReactNode;
   open: boolean;
   onClose: () => void;

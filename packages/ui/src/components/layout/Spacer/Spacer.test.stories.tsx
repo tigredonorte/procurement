@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { userEvent, within, expect } from '@storybook/test';
+import { userEvent, within, expect } from 'storybook/test';
 import { Box, Button, Typography } from '@mui/material';
 
 import { Spacer } from './Spacer';
@@ -396,7 +396,8 @@ export const EdgeCases: Story = {
       const flexSpacer = await canvas.findByTestId('flex-spacer');
       const style = window.getComputedStyle(flexSpacer);
 
-      await expect(style.flex).toBe('1 1 0%');
+      // flex: 1 with flexShrink: 0 results in '1 0 0%'
+      await expect(style.flex).toBe('1 0 0%');
     });
 
     await step('Pass Test', async () => {

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { fn } from 'storybook/test';
 import { useState } from 'react';
 import {
   Typography,
@@ -62,6 +63,7 @@ export const Default: Story = {
     variant: 'default',
     duration: 300,
     keepMounted: false,
+    onToggle: fn(),
   },
   render: (args) => (
     <Collapsible {...args}>
@@ -552,11 +554,17 @@ const CallbackExampleComponent = () => {
 };
 
 export const CallbackExample: Story = {
+  args: {
+    onToggle: fn(),
+  },
   render: () => <CallbackExampleComponent />,
 };
 
 // Required story exports for validation
 export const AllSizes: Story = {
+  args: {
+    onToggle: fn(),
+  },
   render: () => (
     <Stack spacing={2}>
       <Typography variant="h6">Size Variations</Typography>
@@ -630,6 +638,9 @@ export const AllSizes: Story = {
 };
 
 export const AllStates: Story = {
+  args: {
+    onToggle: fn(),
+  },
   render: () => (
     <Stack spacing={2}>
       <Typography variant="h6">All Component States</Typography>
@@ -688,10 +699,16 @@ export const AllStates: Story = {
 };
 
 export const InteractiveStates: Story = {
+  args: {
+    onToggle: fn(),
+  },
   render: () => <InteractiveExampleComponent />,
 };
 
 export const Responsive: Story = {
+  args: {
+    onToggle: fn(),
+  },
   parameters: {
     viewport: {
       viewports: {

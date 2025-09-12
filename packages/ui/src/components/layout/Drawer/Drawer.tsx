@@ -17,6 +17,7 @@ export const Drawer: React.FC<DrawerProps> = ({
   hideBackdrop = false,
   keepMounted = false,
   className,
+  ...rest
 }) => {
   const theme = useTheme();
 
@@ -85,6 +86,7 @@ export const Drawer: React.FC<DrawerProps> = ({
       }}
       sx={getDrawerStyles()}
       className={className}
+      {...rest}
     >
       {children}
     </MuiDrawer>
@@ -113,7 +115,7 @@ export const DrawerHeader: React.FC<DrawerHeaderProps> = ({
         {typeof children === 'string' ? <Typography variant="h6">{children}</Typography> : children}
       </Box>
       {showCloseButton && onClose && (
-        <IconButton onClick={onClose} edge="end">
+        <IconButton onClick={onClose} edge="end" aria-label="Close drawer">
           <Close />
         </IconButton>
       )}

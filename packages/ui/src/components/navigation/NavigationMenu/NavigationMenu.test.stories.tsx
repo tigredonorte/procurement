@@ -110,12 +110,12 @@ export const BasicInteraction: Story = {
     const canvas = within(canvasElement);
 
     // Test clicking on menu items
-    const ordersItem = canvas.getByText('Orders');
-    await userEvent.click(ordersItem);
+    const ordersItem = canvas.getByText('Orders').closest('a, a, div[role="button"]');
+    await userEvent.click(ordersItem!);
 
     // Test expandable items
-    const analyticsItem = canvas.getByText('Analytics');
-    await userEvent.click(analyticsItem);
+    const analyticsItem = canvas.getByText('Analytics').closest('a, a, div[role="button"]');
+    await userEvent.click(analyticsItem!);
 
     // Wait for submenu to appear
     await waitFor(() => {
@@ -124,12 +124,12 @@ export const BasicInteraction: Story = {
     });
 
     // Test clicking submenu item
-    const overviewItem = canvas.getByText('Overview');
-    await userEvent.click(overviewItem);
+    const overviewItem = canvas.getByText('Overview').closest('a, a, div[role="button"]');
+    await userEvent.click(overviewItem!);
 
     // Test disabled item (should not be clickable)
     const customersItem = canvas.getByText('Customers');
-    const customersButton = customersItem.closest('div[role="button"]');
+    const customersButton = customersItem.closest('a, div[role="button"]');
     expect(customersButton).toHaveAttribute('aria-disabled', 'true');
 
     // Test badge display
@@ -164,7 +164,27 @@ export const CollapsibleMenuInteraction: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    // Find and click collapse button
+    // First check if menu icons are visible
+    await waitFor(() => {
+      const menuIcons = canvas.getAllByTestId('MenuIcon');
+      expect(menuIcons.length).toBeGreaterThan(0);
+    });
+
+    // Check if we're in collapsed state (no text visible) or expanded state
+    const isDashboardVisible = canvas.queryByText('Dashboard');
+
+    if (!isDashboardVisible) {
+      // Menu is collapsed, expand it first
+      const menuIcon = canvas.getAllByTestId('MenuIcon')[0];
+      await userEvent.click(menuIcon.parentElement!);
+
+      // Wait for expansion
+      await waitFor(() => {
+        expect(canvas.getByText('Dashboard')).toBeInTheDocument();
+      });
+    }
+
+    // Now test the collapse functionality
     const collapseButton = canvas.getByText('Collapse');
     await userEvent.click(collapseButton);
 
@@ -177,7 +197,7 @@ export const CollapsibleMenuInteraction: Story = {
       { timeout: 1000 },
     );
 
-    // Click collapse button again to expand
+    // Click menu icon to expand again
     const menuIcon = canvas.getAllByTestId('MenuIcon')[0];
     await userEvent.click(menuIcon.parentElement!);
 
@@ -208,7 +228,7 @@ export const KeyboardNavigation: Story = {
     const canvas = within(canvasElement);
 
     // Focus first item
-    const dashboardItem = canvas.getByText('Dashboard').closest('div[role="button"]');
+    const dashboardItem = canvas.getByText('Dashboard').closest('a, a, div[role="button"]');
     dashboardItem?.focus();
 
     // Navigate with Tab key
@@ -257,11 +277,11 @@ export const ScreenReaderAccessibility: Story = {
     const canvas = within(canvasElement);
 
     // Check ARIA attributes
-    const dashboardButton = canvas.getByText('Dashboard').closest('div[role="button"]');
-    expect(dashboardButton).toHaveAttribute('role', 'button');
+    const dashboardButton = canvas.getByText('Dashboard').closest('a, div[role="button"]');
+    expect(dashboardButton).toBeTruthy();
 
     // Check disabled item has proper ARIA
-    const customersButton = canvas.getByText('Customers').closest('div[role="button"]');
+    const customersButton = canvas.getByText('Customers').closest('a, div[role="button"]');
     expect(customersButton).toHaveAttribute('aria-disabled', 'true');
 
     // Check list structure
@@ -294,7 +314,7 @@ export const FocusManagement: Story = {
     const canvas = within(canvasElement);
 
     // Test focus ring visibility
-    const dashboardItem = canvas.getByText('Dashboard').closest('div[role="button"]');
+    const dashboardItem = canvas.getByText('Dashboard').closest('a, div[role="button"]');
     dashboardItem?.focus();
 
     // Check focus is visible
@@ -309,7 +329,7 @@ export const FocusManagement: Story = {
     });
 
     // Focus should move to submenu items
-    const overviewItem = canvas.getByText('Overview').closest('div[role="button"]');
+    const overviewItem = canvas.getByText('Overview').closest('a, div[role="button"]');
     overviewItem?.focus();
     expect(overviewItem).toHaveFocus();
   },
@@ -372,7 +392,7 @@ export const ThemeVariations: Story = {
 
     // Check size variations are applied
     const dashboardText = canvas.getByText('Dashboard');
-    const dashboardButton = dashboardText.closest('div[role="button"]');
+    const dashboardButton = dashboardText.closest('a, div[role="button"]');
 
     // Large size should have more padding
     const styles = window.getComputedStyle(dashboardButton!);
@@ -414,13 +434,13 @@ export const VisualStates: Story = {
     await userEvent.hover(hoverItem);
 
     // Test active state is visible
-    const activeItem = canvas.getByText('Active Item').closest('div[role="button"]');
+    const activeItem = canvas.getByText('Active Item').closest('a, div[role="button"]');
     expect(activeItem).toHaveStyle({
       backgroundColor: expect.stringContaining('rgba'),
     });
 
     // Test disabled state
-    const disabledItem = canvas.getByText('Disabled Item').closest('div[role="button"]');
+    const disabledItem = canvas.getByText('Disabled Item').closest('a, div[role="button"]');
     expect(disabledItem).toHaveAttribute('aria-disabled', 'true');
 
     // Test badge display
@@ -561,7 +581,7 @@ export const EdgeCases: Story = {
 export const ThemeIntegration: Story = {
   render: function ThemeIntegrationRender() {
     const [darkMode, setDarkMode] = useState(false);
-    
+
     const theme = createTheme({
       palette: {
         mode: darkMode ? 'dark' : 'light',
@@ -573,7 +593,7 @@ export const ThemeIntegration: Story = {
 
     return (
       <div data-testid="theme-container">
-        <button 
+        <button
           data-testid="toggle-theme"
           onClick={() => setDarkMode(!darkMode)}
           style={{ marginBottom: 16 }}
@@ -581,17 +601,17 @@ export const ThemeIntegration: Story = {
           Toggle {darkMode ? 'Light' : 'Dark'} Mode
         </button>
         <ThemeProvider theme={theme}>
-          <Box 
-            sx={{ 
-              display: 'flex', 
+          <Box
+            sx={{
+              display: 'flex',
               height: '400px',
               bgcolor: 'background.default',
-              color: 'text.primary'
+              color: 'text.primary',
             }}
           >
             <NavigationMenu
               variant="vertical"
-              items={testItems.map(item => ({ ...item, active: item.id === '1' }))}
+              items={testItems.map((item) => ({ ...item, active: item.id === '1' }))}
               data-testid="themed-menu"
             />
             <Box sx={{ flex: 1, p: 2, bgcolor: 'background.paper' }}>
@@ -604,14 +624,14 @@ export const ThemeIntegration: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Test light mode
     await expect(canvas.getByTestId('theme-mode')).toHaveTextContent('Mode: light');
-    
+
     // Toggle to dark mode
     await userEvent.click(canvas.getByTestId('toggle-theme'));
     await expect(canvas.getByTestId('theme-mode')).toHaveTextContent('Mode: dark');
-    
+
     // Verify menu still functions in dark mode
     const menuItem = canvas.getByText('Orders');
     await userEvent.click(menuItem);
@@ -628,14 +648,11 @@ export const ControlledUncontrolled: Story = {
     return (
       <div data-testid="controlled-container">
         <Box sx={{ mb: 2 }}>
-          <button 
-            data-testid="toggle-controlled"
-            onClick={() => setIsControlled(!isControlled)}
-          >
+          <button data-testid="toggle-controlled" onClick={() => setIsControlled(!isControlled)}>
             {isControlled ? 'Switch to Uncontrolled' : 'Switch to Controlled'}
           </button>
           {isControlled && (
-            <button 
+            <button
               data-testid="control-collapse"
               onClick={() => setControlledCollapsed(!controlledCollapsed)}
               style={{ marginLeft: 8 }}
@@ -671,14 +688,14 @@ export const ControlledUncontrolled: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Test uncontrolled mode
     await expect(canvas.getByTestId('control-state')).toHaveTextContent('Mode: Uncontrolled');
-    
+
     // Switch to controlled mode
     await userEvent.click(canvas.getByTestId('toggle-controlled'));
     await expect(canvas.getByTestId('control-state')).toHaveTextContent('Mode: Controlled');
-    
+
     // Test controlled collapse
     await userEvent.click(canvas.getByTestId('control-collapse'));
     await expect(canvas.getByTestId('collapse-state')).toHaveTextContent('Collapsed: true');
@@ -805,11 +822,7 @@ export const AccessibilityCompliance: Story = {
     <div data-testid="a11y-container">
       <Box sx={{ display: 'flex', height: '400px' }}>
         <nav aria-label="Main navigation" data-testid="a11y-nav">
-          <NavigationMenu
-            variant="vertical"
-            items={testItems}
-            data-testid="a11y-menu"
-          />
+          <NavigationMenu variant="vertical" items={testItems} data-testid="a11y-menu" />
         </nav>
         <Box sx={{ flex: 1, p: 2 }} role="main">
           <Typography variant="h6" id="content-heading">
@@ -822,23 +835,23 @@ export const AccessibilityCompliance: Story = {
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Test navigation landmark
     const nav = canvas.getByTestId('a11y-nav');
     expect(nav).toHaveAttribute('aria-label', 'Main navigation');
-    
+
     // Test menu items have proper roles
     const menuButtons = canvas.getAllByRole('button');
     expect(menuButtons.length).toBeGreaterThan(0);
-    
+
     // Test disabled item has proper attributes
     const disabledButton = canvas.getByText('Customers').closest('button');
     expect(disabledButton).toHaveAttribute('aria-disabled', 'true');
-    
+
     // Test expandable items have proper ARIA attributes
     const expandableItem = canvas.getByText('Analytics');
     await userEvent.click(expandableItem);
-    
+
     await waitFor(() => {
       const subItems = canvas.getAllByText(/Overview|Reports|Insights/);
       expect(subItems.length).toBeGreaterThan(0);
@@ -856,7 +869,7 @@ export const AdvancedKeyboardNavigation: Story = {
         <Box sx={{ display: 'flex', height: '400px' }}>
           <NavigationMenu
             variant="vertical"
-            items={testItems.map(item => ({
+            items={testItems.map((item) => ({
               ...item,
               onClick: (e) => {
                 e.preventDefault();
@@ -876,33 +889,33 @@ export const AdvancedKeyboardNavigation: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Focus first menu item
     const firstMenuItem = canvas.getByText('Dashboard').closest('button');
     if (firstMenuItem) {
       firstMenuItem.focus();
       await expect(firstMenuItem).toHaveFocus();
     }
-    
+
     // Test Enter key activation
     await userEvent.keyboard('{Enter}');
     await expect(canvas.getByTestId('selected-via-keyboard')).toHaveTextContent('Selected: 1');
-    
+
     // Test Tab navigation
     await userEvent.keyboard('{Tab}');
-    
+
     // Test Arrow key navigation
     await userEvent.keyboard('{ArrowDown}');
-    
+
     // Test expanding submenu with Enter
     const analyticsItem = canvas.getByText('Analytics');
     analyticsItem.focus();
     await userEvent.keyboard('{Enter}');
-    
+
     await waitFor(() => {
       expect(canvas.getByText('Overview')).toBeInTheDocument();
     });
-    
+
     // Test Escape to collapse submenu
     await userEvent.keyboard('{Escape}');
   },

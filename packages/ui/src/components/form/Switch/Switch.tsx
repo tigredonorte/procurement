@@ -437,6 +437,11 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
           ripple={ripple}
           pulse={pulse}
           disabled={loading || props.disabled}
+          inputProps={{
+            'aria-label': props['aria-label'],
+            'aria-describedby': props['aria-describedby'],
+            ...props.inputProps,
+          }}
           {...props}
         />
 

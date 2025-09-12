@@ -258,7 +258,9 @@ const RichToolbar = styled(Box)<{ glass?: boolean }>(({ theme, glass }) => ({
   },
 }));
 
-const ToolbarButton = styled(IconButton)<{ active?: boolean }>(({ theme, active }) => ({
+const ToolbarButton = styled(IconButton, {
+  shouldForwardProp: (prop) => prop !== 'active',
+})<{ active?: boolean }>(({ theme, active }) => ({
   padding: theme.spacing(0.75),
   borderRadius: theme.spacing(0.5),
   color: active ? theme.palette.primary.main : theme.palette.text.secondary,
@@ -546,6 +548,9 @@ const RichTextEditor: React.FC<{
         onInput={handleInput}
         onKeyUp={updateActiveFormats}
         onMouseUp={updateActiveFormats}
+        role="textbox"
+        aria-multiline="true"
+        aria-label={placeholder || 'Rich text editor'}
       />
 
       {characterLimit && (
@@ -651,6 +656,7 @@ export const Textarea: React.FC<TextareaProps> = ({
           minRows={variant === 'autosize' ? minRows : undefined}
           maxRows={variant === 'autosize' ? maxRows : undefined}
           style={textareaStyle}
+          aria-label={label || props['aria-label']}
           {...props}
         />
       </Box>

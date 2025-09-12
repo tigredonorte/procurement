@@ -132,7 +132,7 @@ const StyledListItemButton = styled(ListItemButton, {
     overflow: 'hidden',
     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
     transformStyle: 'preserve-3d',
-    
+
     '&::before': {
       content: '""',
       position: 'absolute',
@@ -144,7 +144,7 @@ const StyledListItemButton = styled(ListItemButton, {
       opacity: 0,
       transition: 'opacity 0.3s ease',
     },
-    
+
     '&::after': {
       content: '""',
       position: 'absolute',
@@ -193,22 +193,28 @@ const StyledListItemButton = styled(ListItemButton, {
       transform: 'translateY(-2px)',
       boxShadow: `0 8px 24px ${alpha(theme.palette.primary.main, 0.15)}`,
       backgroundColor: alpha(theme.palette.primary.main, 0.04),
-      
+
       '&::before': {
         opacity: 1,
       },
-      
+
       '& .MuiListItemIcon-root': {
-        transform: collapsed ? 'scale(1.1)' : size === 'sm' ? 'scale(0.95) rotate(-5deg)' : size === 'lg' ? 'scale(1.25) rotate(-5deg)' : 'scale(1.1) rotate(-5deg)',
+        transform: collapsed
+          ? 'scale(1.1)'
+          : size === 'sm'
+            ? 'scale(0.95) rotate(-5deg)'
+            : size === 'lg'
+              ? 'scale(1.25) rotate(-5deg)'
+              : 'scale(1.1) rotate(-5deg)',
         transition: 'transform 0.3s ease',
       },
-      
+
       '& .MuiListItemText-primary': {
         transform: 'translateX(4px)',
         transition: 'transform 0.3s ease',
       },
     },
-    
+
     '&:active': {
       transform: 'scale(0.98)',
       '&::after': {
@@ -221,17 +227,17 @@ const StyledListItemButton = styled(ListItemButton, {
       color: theme.palette.primary.main,
       boxShadow: `0 4px 20px ${alpha(theme.palette.primary.main, 0.2)}`,
       animation: `${pulseGlow} 2s infinite`,
-      
+
       '& .MuiListItemIcon-root': {
         color: theme.palette.primary.main,
         filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
       },
-      
+
       '&::before': {
         opacity: 1,
         background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.2)} 0%, ${alpha(theme.palette.primary.main, 0.05)} 100%)`,
       },
-      
+
       '&:hover': {
         backgroundColor: alpha(theme.palette.primary.main, 0.2),
         transform: 'translateY(-3px) scale(1.02)',
@@ -248,7 +254,7 @@ const LogoContainer = styled(Box)(({ theme }) => ({
   background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.08)} 0%, ${alpha(theme.palette.primary.dark, 0.04)} 100%)`,
   borderBottom: `2px solid ${alpha(theme.palette.primary.main, 0.2)}`,
   overflow: 'hidden',
-  
+
   '&::before': {
     content: '""',
     position: 'absolute',
@@ -259,7 +265,7 @@ const LogoContainer = styled(Box)(({ theme }) => ({
     background: `radial-gradient(circle, ${alpha(theme.palette.primary.light, 0.1)} 0%, transparent 70%)`,
     animation: `${slideIn} 1s ease-out`,
   },
-  
+
   '& > *': {
     position: 'relative',
     zIndex: 1,
@@ -272,18 +278,18 @@ const CollapseButton = styled(ListItemButton)(({ theme }) => ({
   background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.08)} 0%, ${alpha(theme.palette.primary.dark, 0.04)} 100%)`,
   border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-  
+
   '&:hover': {
     backgroundColor: alpha(theme.palette.primary.main, 0.12),
     transform: 'scale(1.05)',
     boxShadow: `0 6px 20px ${alpha(theme.palette.primary.main, 0.2)}`,
-    
+
     '& .MuiListItemIcon-root': {
       transform: 'rotate(180deg)',
       transition: 'transform 0.3s ease',
     },
   },
-  
+
   '&:active': {
     transform: 'scale(0.98)',
   },
@@ -310,7 +316,7 @@ const MegaMenuSection = styled(Box)(({ theme }) => ({
   overflow: 'hidden',
   animation: `${megaMenuSlide} 0.5s ease-out`,
   animationFillMode: 'both',
-  
+
   '&::before': {
     content: '""',
     position: 'absolute',
@@ -322,7 +328,7 @@ const MegaMenuSection = styled(Box)(({ theme }) => ({
     backgroundSize: '200% 100%',
     animation: 'shimmer 3s ease-in-out infinite',
   },
-  
+
   '@keyframes shimmer': {
     '0%': {
       backgroundPosition: '200% 0',
@@ -331,13 +337,13 @@ const MegaMenuSection = styled(Box)(({ theme }) => ({
       backgroundPosition: '-200% 0',
     },
   },
-  
+
   '&:hover': {
     transform: 'translateY(-4px)',
     boxShadow: `0 15px 40px ${alpha(theme.palette.common.black, 0.12)}`,
     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   },
-  
+
   '&:nth-of-type(1)': { animationDelay: '0.1s' },
   '&:nth-of-type(2)': { animationDelay: '0.2s' },
   '&:nth-of-type(3)': { animationDelay: '0.3s' },
@@ -394,9 +400,9 @@ const MenuItemRenderer: React.FC<MenuItemRendererProps> = ({
           : {})}
       >
         {item.icon && (
-          <ListItemIcon 
-            sx={{ 
-              minWidth: collapsed ? 0 : 40, 
+          <ListItemIcon
+            sx={{
+              minWidth: collapsed ? 0 : 40,
               justifyContent: 'center',
               transition: 'all 0.3s ease',
               '& svg': {
@@ -431,33 +437,32 @@ const MenuItemRenderer: React.FC<MenuItemRendererProps> = ({
                 }}
               />
               {item.badge && (
-                <Badge 
-                  badgeContent={item.badge} 
-                  color="error" 
-                  sx={{ 
+                <Badge
+                  badgeContent={item.badge}
+                  color="error"
+                  sx={{
                     mr: 1,
                     '& .MuiBadge-badge': {
-                      animation: typeof item.badge === 'number' && item.badge > 0 ? `${pulseGlow} 2s infinite` : 'none',
+                      animation:
+                        typeof item.badge === 'number' && item.badge > 0
+                          ? `${pulseGlow} 2s infinite`
+                          : 'none',
                       background: 'linear-gradient(135deg, #ff5252 0%, #ff1744 100%)',
                       boxShadow: '0 2px 8px rgba(255, 23, 68, 0.4)',
                     },
-                  }} 
+                  }}
                 />
               )}
               {hasChildren && (
-                <Box 
-                  sx={{ 
+                <Box
+                  sx={{
                     display: 'flex',
                     alignItems: 'center',
                     transition: 'transform 0.3s ease',
                     transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
                   }}
                 >
-                  {variant === 'horizontal' ? (
-                    <ChevronRight fontSize="small" />
-                  ) : (
-                    <ExpandMore />
-                  )}
+                  {variant === 'horizontal' ? <ChevronRight fontSize="small" /> : <ExpandMore />}
                 </Box>
               )}
             </Box>
@@ -513,7 +518,6 @@ export const NavigationMenu = React.forwardRef<HTMLDivElement, NavigationMenuPro
     {
       variant = 'vertical',
       items,
-      color = 'default', // eslint-disable-line @typescript-eslint/no-unused-vars
       size = 'md',
       collapsible = false,
       collapsed: controlledCollapsed,
@@ -561,15 +565,15 @@ export const NavigationMenu = React.forwardRef<HTMLDivElement, NavigationMenuPro
             >
               {items.map((section, sectionIndex) => (
                 <MegaMenuSection key={section.id}>
-                  <Typography 
-                    variant="h6" 
-                    sx={{ 
-                      mb: 2.5, 
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      mb: 2.5,
                       color: 'primary.main',
                       fontWeight: 600,
                       position: 'relative',
                       paddingBottom: 1,
-                      
+
                       '&::after': {
                         content: '""',
                         position: 'absolute',
@@ -577,7 +581,8 @@ export const NavigationMenu = React.forwardRef<HTMLDivElement, NavigationMenuPro
                         left: 0,
                         width: '40px',
                         height: '3px',
-                        background: theme => `linear-gradient(90deg, ${theme.palette.primary.main} 0%, transparent 100%)`,
+                        background: (theme) =>
+                          `linear-gradient(90deg, ${theme.palette.primary.main} 0%, transparent 100%)`,
                         borderRadius: '2px',
                       },
                     }}
@@ -590,7 +595,7 @@ export const NavigationMenu = React.forwardRef<HTMLDivElement, NavigationMenuPro
                         key={item.id}
                         sx={{
                           animation: `${slideIn} 0.4s ease-out`,
-                          animationDelay: `${(sectionIndex * 0.1) + (itemIndex * 0.05)}s`,
+                          animationDelay: `${sectionIndex * 0.1 + itemIndex * 0.05}s`,
                           animationFillMode: 'both',
                         }}
                       >
@@ -657,12 +662,13 @@ export const NavigationMenu = React.forwardRef<HTMLDivElement, NavigationMenuPro
                   {renderMenuItem(item, variant, size, collapsed, 0)}
                 </Box>
                 {showDividers && index < items.length - 1 && (
-                  <Divider 
-                    sx={{ 
+                  <Divider
+                    sx={{
                       my: 1,
                       opacity: 0.5,
-                      background: theme => `linear-gradient(90deg, transparent 0%, ${alpha(theme.palette.divider, 0.5)} 50%, transparent 100%)`,
-                    }} 
+                      background: (theme) =>
+                        `linear-gradient(90deg, transparent 0%, ${alpha(theme.palette.divider, 0.5)} 50%, transparent 100%)`,
+                    }}
                   />
                 )}
               </React.Fragment>
@@ -671,12 +677,13 @@ export const NavigationMenu = React.forwardRef<HTMLDivElement, NavigationMenuPro
 
           {endContent && (
             <Fade in={true} timeout={600}>
-              <Box 
-                sx={{ 
-                  mt: 'auto', 
+              <Box
+                sx={{
+                  mt: 'auto',
                   p: 2,
-                  borderTop: theme => `1px solid ${alpha(theme.palette.divider, 0.1)}`,
-                  background: theme => `linear-gradient(180deg, transparent 0%, ${alpha(theme.palette.background.default, 0.5)} 100%)`,
+                  borderTop: (theme) => `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+                  background: (theme) =>
+                    `linear-gradient(180deg, transparent 0%, ${alpha(theme.palette.background.default, 0.5)} 100%)`,
                 }}
               >
                 {endContent}

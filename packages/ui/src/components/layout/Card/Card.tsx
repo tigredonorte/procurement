@@ -36,82 +36,113 @@ const pulseAnimation = keyframes`
   }
 `;
 
-export const Card: React.FC<CardProps> = ({
-  children,
-  variant = 'elevated',
-  interactive = false,
-  glow = false,
-  pulse = false,
-  borderRadius = 'md',
-  loading = false,
-  onClick,
-  onFocus,
-  onBlur,
-  sx,
-  ...props
-}) => {
+export const Card: React.FC<CardProps> = (props) => {
+  const {
+    children,
+    variant = 'elevated',
+    interactive = false,
+    glow = false,
+    pulse = false,
+    borderRadius = 'md',
+    loading = false,
+    onClick,
+    onFocus,
+    onBlur,
+    sx,
+    // These props are reserved for future implementation but need to be extracted
+    // to prevent them from being passed to the underlying MuiCard
+    expandable,
+    expanded,
+    onExpandToggle,
+    entranceAnimation,
+    animationDelay,
+    skeleton,
+    hoverScale,
+    ...restProps
+  } = props;
+
+  // Void unused props to satisfy linter
+  void expandable;
+  void expanded;
+  void onExpandToggle;
+  void entranceAnimation;
+  void animationDelay;
+  void skeleton;
+  void hoverScale;
+
   const theme = useTheme();
 
   const getBorderRadius = () => {
     switch (borderRadius) {
-      case 'none': return 0;
-      case 'sm': return theme.spacing(0.5);
-      case 'md': return theme.spacing(1);
-      case 'lg': return theme.spacing(2);
-      case 'xl': return theme.spacing(3);
-      case 'full': return '50%';
-      default: return theme.spacing(1);
+      case 'none':
+        return 0;
+      case 'sm':
+        return theme.spacing(0.5);
+      case 'md':
+        return theme.spacing(1);
+      case 'lg':
+        return theme.spacing(2);
+      case 'xl':
+        return theme.spacing(3);
+      case 'full':
+        return '50%';
+      default:
+        return theme.spacing(1);
     }
   };
 
   const getVariantStyles = () => {
     const baseStyles = {
       borderRadius: getBorderRadius(),
-      transition: theme.transitions.create([
-        'box-shadow',
-        'transform',
-        'border-color',
-        'background-color',
-      ], {
-        duration: theme.transitions.duration.standard,
-      }),
+      transition: theme.transitions.create(
+        ['box-shadow', 'transform', 'border-color', 'background-color'],
+        {
+          duration: theme.transitions.duration.standard,
+        },
+      ),
     };
 
-    const interactiveStyles = interactive ? {
-      cursor: 'pointer',
-      '&:hover': {
-        transform: 'translateY(-2px)',
-      },
-      '&:active': {
-        transform: 'translateY(0)',
-      },
-    } : {};
+    const interactiveStyles = interactive
+      ? {
+          cursor: 'pointer',
+          '&:hover': {
+            transform: 'translateY(-2px)',
+          },
+          '&:active': {
+            transform: 'translateY(0)',
+          },
+        }
+      : {};
 
-    const glowStyles = glow ? {
-      boxShadow: `0 0 20px ${alpha(theme.palette.primary.main, 0.3)}`,
-      '&:hover': {
-        boxShadow: `0 0 30px ${alpha(theme.palette.primary.main, 0.4)}`,
-      },
-    } : {};
+    const glowStyles = glow
+      ? {
+          boxShadow: `0 0 20px ${alpha(theme.palette.primary.main, 0.3)}`,
+          '&:hover': {
+            boxShadow: `0 0 30px ${alpha(theme.palette.primary.main, 0.4)}`,
+          },
+        }
+      : {};
 
-    const pulseStyles = pulse ? {
-      position: 'relative',
-      overflow: 'visible',
-      '&::after': {
-        content: '""',
-        position: 'absolute',
-        top: '0',
-        left: '0',
-        right: '0',
-        bottom: '0',
-        borderRadius: 'inherit',
-        backgroundColor: theme.palette.primary.main,
-        opacity: 0.3,
-        animation: `${pulseAnimation} 2s infinite`,
-        pointerEvents: 'none',
-        zIndex: -1,
-      },
-    } : {};
+    const pulseStyles = pulse
+      ? {
+          position: 'relative',
+          overflow: 'visible',
+          '&::after': {
+            content: '""',
+            position: 'absolute',
+            top: '0',
+            left: '0',
+            right: '0',
+            bottom: '0',
+            borderRadius: 'inherit',
+            backgroundColor: theme.palette.primary.main,
+            opacity: 0.3,
+            animation: `${pulseAnimation} 2s infinite`,
+            pointerEvents: 'none',
+            zIndex: -1,
+          },
+        }
+      : {};
 
     switch (variant) {
       case 'elevated':
@@ -156,7 +187,7 @@ export const Card: React.FC<CardProps> = ({
           '&:hover': {
             ...interactiveStyles['&:hover'],
             ...glowStyles['&:hover'],
-            backgroundColor: interactive 
+            backgroundColor: interactive
               ? alpha(theme.palette.background.paper, 0.15)
               : alpha(theme.palette.background.paper, 0.1),
             border: `1px solid ${alpha(theme.palette.primary.main, 0.3)}`,
@@ -182,29 +213,29 @@ export const Card: React.FC<CardProps> = ({
         };
 
       case 'neumorphic': {
-        const neumorphicBg = theme.palette.mode === 'dark' 
-          ? theme.palette.grey[800] 
-          : theme.palette.grey[100];
-        
+        const neumorphicBg =
+          theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[100];
+
         return {
           ...baseStyles,
           ...interactiveStyles,
           ...pulseStyles,
           backgroundColor: neumorphicBg,
-          boxShadow: theme.palette.mode === 'dark'
-            ? `8px 8px 16px ${alpha(theme.palette.common.black, 0.3)}, -8px -8px 16px ${alpha(theme.palette.common.white, 0.1)}`
-            : `8px 8px 16px ${alpha(theme.palette.grey[400], 0.2)}, -8px -8px 16px ${alpha(theme.palette.common.white, 0.8)}`,
+          boxShadow:
+            theme.palette.mode === 'dark'
+              ? `8px 8px 16px ${alpha(theme.palette.common.black, 0.3)}, -8px -8px 16px ${alpha(theme.palette.common.white, 0.1)}`
+              : `8px 8px 16px ${alpha(theme.palette.grey[400], 0.2)}, -8px -8px 16px ${alpha(theme.palette.common.white, 0.8)}`,
           border: 'none',
           '&:hover': {
             ...interactiveStyles['&:hover'],
             ...glowStyles['&:hover'],
-            boxShadow: interactive 
-              ? (theme.palette.mode === 'dark'
-                  ? `12px 12px 24px ${alpha(theme.palette.common.black, 0.3)}, -12px -12px 24px ${alpha(theme.palette.common.white, 0.1)}`
-                  : `12px 12px 24px ${alpha(theme.palette.grey[400], 0.3)}, -12px -12px 24px ${alpha(theme.palette.common.white, 0.9)}`)
-              : (theme.palette.mode === 'dark'
-                  ? `8px 8px 16px ${alpha(theme.palette.common.black, 0.3)}, -8px -8px 16px ${alpha(theme.palette.common.white, 0.1)}`
-                  : `8px 8px 16px ${alpha(theme.palette.grey[400], 0.2)}, -8px -8px 16px ${alpha(theme.palette.common.white, 0.8)}`),
+            boxShadow: interactive
+              ? theme.palette.mode === 'dark'
+                ? `12px 12px 24px ${alpha(theme.palette.common.black, 0.3)}, -12px -12px 24px ${alpha(theme.palette.common.white, 0.1)}`
+                : `12px 12px 24px ${alpha(theme.palette.grey[400], 0.3)}, -12px -12px 24px ${alpha(theme.palette.common.white, 0.9)}`
+              : theme.palette.mode === 'dark'
+                ? `8px 8px 16px ${alpha(theme.palette.common.black, 0.3)}, -8px -8px 16px ${alpha(theme.palette.common.white, 0.1)}`
+                : `8px 8px 16px ${alpha(theme.palette.grey[400], 0.2)}, -8px -8px 16px ${alpha(theme.palette.common.white, 0.8)}`,
           },
         };
       }
@@ -226,7 +257,7 @@ export const Card: React.FC<CardProps> = ({
         pointerEvents: loading ? 'none' : 'auto',
         ...sx,
       }}
-      {...props}
+      {...restProps}
     >
       {loading && (
         <Box
@@ -259,21 +290,11 @@ export const CardHeader: React.FC<CardHeaderProps> = ({
   }
 
   return (
-    <MuiCardHeader
-      avatar={avatar}
-      action={action}
-      title={title}
-      subheader={subtitle}
-      {...props}
-    />
+    <MuiCardHeader avatar={avatar} action={action} title={title} subheader={subtitle} {...props} />
   );
 };
 
-export const CardContent: React.FC<CardContentProps> = ({
-  children,
-  dense = false,
-  ...props
-}) => {
+export const CardContent: React.FC<CardContentProps> = ({ children, dense = false, ...props }) => {
   return (
     <MuiCardContent
       sx={{
@@ -297,10 +318,14 @@ export const CardActions: React.FC<CardActionsProps> = ({
 }) => {
   const getJustifyContent = () => {
     switch (alignment) {
-      case 'center': return 'center';
-      case 'right': return 'flex-end';
-      case 'space-between': return 'space-between';
-      default: return 'flex-start';
+      case 'center':
+        return 'center';
+      case 'right':
+        return 'flex-end';
+      case 'space-between':
+        return 'space-between';
+      default:
+        return 'flex-start';
     }
   };
 
@@ -326,13 +351,7 @@ export const CardMedia: React.FC<CardMediaProps> = ({
   ...props
 }) => {
   return (
-    <MuiCardMedia
-      component={component}
-      height={height}
-      image={image}
-      title={title}
-      {...props}
-    >
+    <MuiCardMedia component={component} height={height} image={image} title={title} {...props}>
       {children}
     </MuiCardMedia>
   );

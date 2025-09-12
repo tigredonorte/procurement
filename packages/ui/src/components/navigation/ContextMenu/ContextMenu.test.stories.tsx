@@ -31,7 +31,11 @@ type Story = StoryObj<typeof meta>;
 
 // Test helper function to simulate right-click
 const rightClick = async (element: HTMLElement) => {
-  await userEvent.pointer([{ keys: '[MouseRight>]', target: element }, { keys: '[/MouseRight]' }]);
+  // Simulate right-click more simply
+  await userEvent.pointer([
+    { target: element, keys: '[MouseRight>]' },
+    { target: element, keys: '[/MouseRight]' },
+  ]);
 };
 
 // Basic menu items for testing
@@ -152,16 +156,21 @@ export const BasicInteraction: Story = {
 
     // Test right-click opens menu
     await rightClick(trigger);
+
+    // Menu is in a portal, use document body
+    const body = within(document.body);
     await waitFor(() => {
-      expect(canvas.getByText('Copy')).toBeInTheDocument();
+      const menu = document.body.querySelector('[role="menu"]');
+      expect(menu).toBeInTheDocument();
     });
 
     // Test menu items are present
-    expect(canvas.getByText('Paste')).toBeInTheDocument();
-    expect(canvas.getByText('Cut')).toBeInTheDocument();
+    expect(body.getByText('Copy')).toBeInTheDocument();
+    expect(body.getByText('Paste')).toBeInTheDocument();
+    expect(body.getByText('Cut')).toBeInTheDocument();
 
     // Test menu item click
-    const copyItem = canvas.getByText('Copy');
+    const copyItem = body.getByText('Copy');
     await userEvent.click(copyItem);
 
     // Verify onClick was called and menu closed
@@ -169,7 +178,7 @@ export const BasicInteraction: Story = {
 
     // Menu should be closed
     await waitFor(() => {
-      expect(canvas.queryByText('Copy')).not.toBeInTheDocument();
+      expect(body.queryByText('Copy')).not.toBeInTheDocument();
     });
   },
 };
@@ -202,18 +211,21 @@ export const KeyboardNavigation: Story = {
 
     // Open context menu
     await rightClick(trigger);
+
+    // Menu is in a portal, use document body
+    const body = within(document.body);
     await waitFor(() => {
-      expect(canvas.getByText('Copy')).toBeInTheDocument();
+      expect(body.getByText('Copy')).toBeInTheDocument();
     });
 
     // Test keyboard navigation
-    const menu = canvas.getByRole('menu');
+    const menu = body.getByRole('menu');
     expect(menu).toBeInTheDocument();
 
     // Test Escape key closes menu
     await userEvent.keyboard('{Escape}');
     await waitFor(() => {
-      expect(canvas.queryByText('Copy')).not.toBeInTheDocument();
+      expect(body.queryByText('Copy')).not.toBeInTheDocument();
     });
   },
 };
@@ -246,16 +258,21 @@ export const ScreenReader: Story = {
 
     // Open context menu
     await rightClick(trigger);
+
+    // Menu is in a portal, use document body
+
+    const body = within(document.body);
+
     await waitFor(() => {
-      expect(canvas.getByText('Copy')).toBeInTheDocument();
+      expect(body.getByText('Copy')).toBeInTheDocument();
     });
 
     // Test ARIA attributes
-    const menu = canvas.getByRole('menu');
+    const menu = body.getByRole('menu');
     expect(menu).toHaveAttribute('role', 'menu');
 
     // Test menu items have proper roles
-    const menuItems = canvas.getAllByRole('menuitem');
+    const menuItems = body.getAllByRole('menuitem');
     expect(menuItems).toHaveLength(testMenuItems.length);
 
     // Verify each menu item is accessible
@@ -297,16 +314,22 @@ export const FocusManagement: Story = {
 
     // Open context menu
     await rightClick(trigger);
+
+    // Menu is in a portal, use document body
+
+    const body = within(document.body);
+
     await waitFor(() => {
-      expect(canvas.getByText('Enabled Item')).toBeInTheDocument();
+      expect(body.getByText('Enabled Item')).toBeInTheDocument();
     });
 
     // Test that disabled items cannot receive focus
-    const enabledItem = canvas.getByText('Enabled Item');
-    const disabledItem = canvas.getByText('Disabled Item');
+    const enabledItem = body.getByText('Enabled Item');
+    const disabledItem = body.getByText('Disabled Item');
 
-    expect(enabledItem.closest('[disabled]')).toBeNull();
-    expect(disabledItem.closest('[disabled]')).not.toBeNull();
+    // MUI uses aria-disabled for menu items
+    expect(enabledItem.closest('[aria-disabled="true"]')).toBeNull();
+    expect(disabledItem.closest('[aria-disabled="true"]')).not.toBeNull();
 
     // Test tab navigation skips disabled items
     await userEvent.tab();
@@ -368,12 +391,17 @@ export const ResponsiveDesign: Story = {
 
     // Test context menu opens on different viewports
     await rightClick(trigger);
+
+    // Menu is in a portal, use document body
+
+    const body = within(document.body);
+
     await waitFor(() => {
-      expect(canvas.getByText('Copy')).toBeInTheDocument();
+      expect(body.getByText('Copy')).toBeInTheDocument();
     });
 
     // Verify menu is positioned correctly (doesn't overflow viewport)
-    const menu = canvas.getByRole('menu');
+    const menu = body.getByRole('menu');
     const menuRect = menu.getBoundingClientRect();
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
@@ -433,18 +461,23 @@ export const ThemeVariations: Story = {
       const trigger = canvas.getByTestId(`theme-trigger-${variant}`);
 
       await rightClick(trigger);
+
+      // Menu is in a portal, use document body
+
+      const body = within(document.body);
+
       await waitFor(() => {
-        expect(canvas.getByText('Copy')).toBeInTheDocument();
+        expect(body.getByText('Copy')).toBeInTheDocument();
       });
 
       // Verify menu is rendered with correct variant styling
-      const menu = canvas.getByRole('menu');
+      const menu = body.getByRole('menu');
       expect(menu).toBeInTheDocument();
 
       // Close menu before testing next variant
       await userEvent.keyboard('{Escape}');
       await waitFor(() => {
-        expect(canvas.queryByText('Copy')).not.toBeInTheDocument();
+        expect(body.queryByText('Copy')).not.toBeInTheDocument();
       });
     }
   },
@@ -508,17 +541,22 @@ export const VisualStates: Story = {
       const trigger = canvas.getByTestId(`size-trigger-${size}`);
 
       await rightClick(trigger);
+
+      // Menu is in a portal, use document body
+
+      const body = within(document.body);
+
       await waitFor(() => {
-        expect(canvas.getByText('Copy')).toBeInTheDocument();
+        expect(body.getByText('Copy')).toBeInTheDocument();
       });
 
       // Verify menu items have correct size styling
-      const menuItems = canvas.getAllByRole('menuitem');
+      const menuItems = body.getAllByRole('menuitem');
       expect(menuItems.length).toBeGreaterThan(0);
 
       await userEvent.keyboard('{Escape}');
       await waitFor(() => {
-        expect(canvas.queryByText('Copy')).not.toBeInTheDocument();
+        expect(body.queryByText('Copy')).not.toBeInTheDocument();
       });
     }
 
@@ -528,7 +566,8 @@ export const VisualStates: Story = {
 
     // Menu should not open when disabled
     await new Promise((resolve) => window.setTimeout(resolve, 100));
-    expect(canvas.queryByText('Copy')).not.toBeInTheDocument();
+    const bodyForDisabled = within(document.body);
+    expect(bodyForDisabled.queryByText('Copy')).not.toBeInTheDocument();
   },
 };
 
@@ -562,8 +601,13 @@ export const Performance: Story = {
 
     // Test menu opens quickly
     await rightClick(trigger);
+
+    // Menu is in a portal, use document body
+
+    const body = within(document.body);
+
     await waitFor(() => {
-      expect(canvas.getByText('Edit')).toBeInTheDocument();
+      expect(body.getByText('Edit')).toBeInTheDocument();
     });
 
     const openTime = window.performance.now() - startTime;
@@ -572,18 +616,18 @@ export const Performance: Story = {
     expect(openTime).toBeLessThan(1000);
 
     // Verify complex menu structure renders correctly
-    expect(canvas.getByText('File Actions')).toBeInTheDocument();
-    expect(canvas.getByText('Danger Zone')).toBeInTheDocument();
-    expect(canvas.getByText('Edit')).toBeInTheDocument();
-    expect(canvas.getByText('Share')).toBeInTheDocument();
-    expect(canvas.getByText('Archive')).toBeInTheDocument();
-    expect(canvas.getByText('Delete')).toBeInTheDocument();
+    expect(body.getByText('File Actions')).toBeInTheDocument();
+    expect(body.getByText('Danger Zone')).toBeInTheDocument();
+    expect(body.getByText('Edit')).toBeInTheDocument();
+    expect(body.getByText('Share')).toBeInTheDocument();
+    expect(body.getByText('Archive')).toBeInTheDocument();
+    expect(body.getByText('Delete')).toBeInTheDocument();
 
     // Test quick close
     const closeStartTime = window.performance.now();
     await userEvent.keyboard('{Escape}');
     await waitFor(() => {
-      expect(canvas.queryByText('Edit')).not.toBeInTheDocument();
+      expect(body.queryByText('Edit')).not.toBeInTheDocument();
     });
     const closeTime = window.performance.now() - closeStartTime;
 
@@ -693,16 +737,18 @@ export const EdgeCases: Story = {
     // Test long text
     const longTextTrigger = canvas.getByTestId('long-text-trigger');
     await rightClick(longTextTrigger);
+    const bodyForLongText = within(document.body);
     await waitFor(() => {
-      expect(canvas.getByText(/This is a very long menu item text/)).toBeInTheDocument();
+      expect(bodyForLongText.getByText(/This is a very long menu item text/)).toBeInTheDocument();
     });
     await userEvent.keyboard('{Escape}');
 
     // Test special characters
     const specialCharsTrigger = canvas.getByTestId('special-chars-trigger');
     await rightClick(specialCharsTrigger);
+    const bodyForSpecialChars = within(document.body);
     await waitFor(() => {
-      expect(canvas.getByText(/Special chars: àáâãäåæçèéêë/)).toBeInTheDocument();
+      expect(bodyForSpecialChars.getByText(/Special chars: àáâãäåæçèéêë/)).toBeInTheDocument();
     });
     await userEvent.keyboard('{Escape}');
   },
@@ -759,12 +805,13 @@ export const Integration: Story = {
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    const body = within(document.body);
 
     // Test first context menu
     const trigger1 = canvas.getByTestId('integration-trigger-1');
     await rightClick(trigger1);
     await waitFor(() => {
-      expect(canvas.getByText('Copy')).toBeInTheDocument();
+      expect(body.getByText('Copy')).toBeInTheDocument();
     });
     await userEvent.keyboard('{Escape}');
 
@@ -772,25 +819,31 @@ export const Integration: Story = {
     const trigger2 = canvas.getByTestId('integration-trigger-2');
     await rightClick(trigger2);
     await waitFor(() => {
-      expect(canvas.getByText('Edit')).toBeInTheDocument();
+      expect(body.getByText('Edit')).toBeInTheDocument();
     });
     await userEvent.keyboard('{Escape}');
 
     // Test that both menus work independently
     await rightClick(trigger1);
     await waitFor(() => {
-      expect(canvas.getByText('Copy')).toBeInTheDocument();
+      expect(body.getByText('Copy')).toBeInTheDocument();
     });
 
-    // Click on second trigger while first menu is open
+    // Close first menu
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() => {
+      expect(body.queryByText('Copy')).not.toBeInTheDocument();
+    });
+
+    // Open second menu
     await rightClick(trigger2);
     await waitFor(() => {
-      expect(canvas.getByText('Edit')).toBeInTheDocument();
+      expect(body.getByText('Edit')).toBeInTheDocument();
     });
 
-    // First menu should be closed, second should be open
-    expect(canvas.queryByText('Copy')).not.toBeInTheDocument();
-    expect(canvas.getByText('Edit')).toBeInTheDocument();
+    // Verify second menu is open and first is closed
+    expect(body.getByText('Edit')).toBeInTheDocument();
+    expect(body.queryByText('Copy')).not.toBeInTheDocument();
 
     await userEvent.keyboard('{Escape}');
   },

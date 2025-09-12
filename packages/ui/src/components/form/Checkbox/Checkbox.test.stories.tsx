@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { userEvent, within, expect, fn } from '@storybook/test';
+import { userEvent, within, expect, fn } from 'storybook/test';
 import { Stack } from '@mui/material';
 
 import { Checkbox } from './Checkbox';
@@ -25,6 +25,8 @@ export const BasicInteraction: Story = {
     label: 'Test Checkbox',
     onChange: fn(),
     onClick: fn(),
+    onFocus: fn(),
+    onBlur: fn(),
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);

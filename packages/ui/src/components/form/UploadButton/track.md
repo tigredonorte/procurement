@@ -6,7 +6,7 @@ Single-file upload component with variants for plain button, outlined, ghost, an
 
 - `variant` - Button style: 'default' | 'outline' | 'ghost' | 'dropzone'
 - `label` - Button text content
-- `accept` - File type filter (e.g., "image/*,.pdf")
+- `accept` - File type filter (e.g., "image/\*,.pdf")
 - `capture` - Mobile camera hint: 'user' | 'environment'
 - `disabled` - Disable file selection
 - `onSelect` - File selection callback (required)
@@ -54,31 +54,32 @@ Single-file upload component with variants for plain button, outlined, ghost, an
 ## 5) Storybook Tests
 
 **Stories**:
-* Form/UploadButton/Default
-* Form/UploadButton/Outline
-* Form/UploadButton/Ghost
-* Form/UploadButton/Dropzone
-* Form/UploadButton/ImageOnly
-* Form/UploadButton/PDFOnly
-* Form/UploadButton/Disabled
-* Form/UploadButton/WithHelperText
-* Form/UploadButton/WithError
-* Form/UploadButton/Uploading
-* Form/UploadButton/UploadComplete
-* Form/UploadButton/WithSizeLimit
-* Form/UploadButton/WithCustomValidation
-* Form/UploadButton/WithBuiltInUpload
-* Form/UploadButton/WithCustomIcon
-* Form/UploadButton/DropzoneDisabled
-* Form/UploadButton/DropzoneUploading
-* Form/UploadButton/DropzoneWithError
-* Form/UploadButton/CameraCapture
-* Form/UploadButton/FrontCamera
-* Form/UploadButton/AllVariants
-* Form/UploadButton/AllSizes
-* Form/UploadButton/AllStates
-* Form/UploadButton/InteractiveStates
-* Form/UploadButton/Responsive
+
+- Form/UploadButton/Default
+- Form/UploadButton/Outline
+- Form/UploadButton/Ghost
+- Form/UploadButton/Dropzone
+- Form/UploadButton/ImageOnly
+- Form/UploadButton/PDFOnly
+- Form/UploadButton/Disabled
+- Form/UploadButton/WithHelperText
+- Form/UploadButton/WithError
+- Form/UploadButton/Uploading
+- Form/UploadButton/UploadComplete
+- Form/UploadButton/WithSizeLimit
+- Form/UploadButton/WithCustomValidation
+- Form/UploadButton/WithBuiltInUpload
+- Form/UploadButton/WithCustomIcon
+- Form/UploadButton/DropzoneDisabled
+- Form/UploadButton/DropzoneUploading
+- Form/UploadButton/DropzoneWithError
+- Form/UploadButton/CameraCapture
+- Form/UploadButton/FrontCamera
+- Form/UploadButton/AllVariants
+- Form/UploadButton/AllSizes
+- Form/UploadButton/AllStates
+- Form/UploadButton/InteractiveStates
+- Form/UploadButton/Responsive
 
 ## Storybook Tests Status
 
@@ -95,10 +96,17 @@ Single-file upload component with variants for plain button, outlined, ghost, an
 - [ ] EdgeCases (planned)
 - [ ] IntegrationTest (planned)
 
-**Current (BRT)**: 2025-09-09 14:00 [omega-82]
+**Current (BRT)**: 2025-09-12 21:30 [omega-5004] - ALL 18/18 validation checks COMPLETE ✅
 
 **COMPLETED:**
-- ✅ All 16 validation checks pass
+
+- ✅ ALL 18/18 validation checks PASS
+- ✅ ALL 12 test stories PASS
+- ✅ Fixed component tag issue ('component:UploadButton' added)
+- ✅ Fixed test import issues and file upload simulation
+- ✅ Fixed querySelector calls and test assertions
+- ✅ Added data-testid prop support to component
+- ✅ All 16 validation checks pass (previous state)
 - ✅ Created all required component files (tsx, types, stories, test stories, index)
 - ✅ Implemented comprehensive file upload functionality with all variants (default, outline, ghost, dropzone)
 - ✅ Added drag-and-drop support with visual feedback for dropzone variant

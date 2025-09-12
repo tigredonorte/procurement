@@ -946,12 +946,56 @@ export const IntegrationTest: Story = {
 
       const handleChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
         const newValue = e.target.value;
-        setFormData((prev) => ({ ...prev, [field]: newValue }));
+        const newFormData = { ...formData, [field]: newValue };
+        setFormData(newFormData);
 
-        // Clear error when user starts typing
-        if (errors[field]) {
-          setErrors((prev) => ({ ...prev, [field]: '' }));
+        // Validate this specific field
+        const newErrors = { ...errors };
+
+        if (field === 'firstName' && !newValue) {
+          newErrors.firstName = 'First name is required';
+        } else if (field === 'firstName') {
+          delete newErrors.firstName;
         }
+
+        if (field === 'lastName' && !newValue) {
+          newErrors.lastName = 'Last name is required';
+        } else if (field === 'lastName') {
+          delete newErrors.lastName;
+        }
+
+        if (field === 'email' && !newValue) {
+          newErrors.email = 'Email is required';
+        } else if (field === 'email') {
+          delete newErrors.email;
+        }
+
+        if (field === 'password' && !newValue) {
+          newErrors.password = 'Password is required';
+        } else if (field === 'password') {
+          delete newErrors.password;
+        }
+
+        if (field === 'confirmPassword') {
+          if (!newValue) {
+            newErrors.confirmPassword = 'Confirm password is required';
+          } else if (newFormData.password !== newValue) {
+            newErrors.confirmPassword = 'Passwords do not match';
+          } else {
+            delete newErrors.confirmPassword;
+          }
+        }
+
+        // Also check password match when password field changes
+        if (field === 'password' && newFormData.confirmPassword) {
+          if (newValue !== newFormData.confirmPassword) {
+            newErrors.confirmPassword = 'Passwords do not match';
+          } else {
+            delete newErrors.confirmPassword;
+          }
+        }
+
+        setErrors(newErrors);
       };
 
       const validateForm = () => {
@@ -961,7 +1005,9 @@ export const IntegrationTest: Story = {
         if (!formData.lastName) newErrors.lastName = 'Last name is required';
         if (!formData.email) newErrors.email = 'Email is required';
         if (!formData.password) newErrors.password = 'Password is required';
-        if (formData.password !== formData.confirmPassword) {
+        if (!formData.confirmPassword) {
+          newErrors.confirmPassword = 'Confirm password is required';
+        } else if (formData.password !== formData.confirmPassword) {
           newErrors.confirmPassword = 'Passwords do not match';
         }
 
@@ -1049,8 +1095,11 @@ export const IntegrationTest: Story = {
           </button>
 
           <div data-testid="form-summary">
-            Form Valid: {Object.keys(errors).length === 0 ? 'Yes' : 'No'} | Fields Filled:{' '}
-            {Object.values(formData).filter((v) => v.length > 0).length}/5
+            Form Valid:{' '}
+            {Object.keys(errors).length === 0 && Object.values(formData).every((v) => v.length > 0)
+              ? 'Yes'
+              : 'No'}{' '}
+            | Fields Filled: {Object.values(formData).filter((v) => v.length > 0).length}/5
           </div>
         </form>
       );
@@ -1117,12 +1166,19 @@ export const IntegrationTest: Story = {
         expect(canvas.queryByText('First name is required')).not.toBeInTheDocument();
       });
 
-      // Form should be valid again
-      // Wait a bit to ensure state updates are complete
-      await new Promise((resolve) => setTimeout(resolve, 100));
-
+      // Check that all fields are filled
       const summary = canvas.getByTestId('form-summary');
-      await expect(summary).toHaveTextContent('Form Valid: Yes');
+      await waitFor(async () => {
+        await expect(summary).toHaveTextContent('Fields Filled: 5/5');
+      });
+
+      // Form should be valid again (all fields filled and no errors)
+      await waitFor(
+        async () => {
+          await expect(summary).toHaveTextContent('Form Valid: Yes');
+        },
+        { timeout: 2000 },
+      );
     });
   },
 };
