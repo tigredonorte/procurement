@@ -77,7 +77,7 @@ export const FormField: React.FC<FormFieldProps> = ({
           {label}
         </FormLabel>
       )}
-      <FormControl error={!!error} fullWidth>
+      <FormControl fullWidth>
         {children}
         {(error || helperText) && <FormMessage error={!!error}>{error || helperText}</FormMessage>}
       </FormControl>
@@ -110,19 +110,14 @@ export const FormLabel: React.FC<FormLabelProps> = ({ required, error, children,
   );
 };
 
-const StyledFormControl = styled(Box)<{ error?: boolean; fullWidth?: boolean }>(
-  ({ fullWidth }) => ({
-    width: fullWidth ? '100%' : 'auto',
-    position: 'relative',
-  }),
-);
+const StyledFormControl = styled(Box)<{ fullWidth?: boolean }>(({ fullWidth }) => ({
+  width: fullWidth ? '100%' : 'auto',
+  position: 'relative',
+}));
 
-export const FormControl: React.FC<FormControlProps> = ({ error, fullWidth = true, children }) => {
-  return (
-    <StyledFormControl error={error} fullWidth={fullWidth}>
-      {children}
-    </StyledFormControl>
-  );
+export const FormControl: React.FC<FormControlProps> = ({ fullWidth = true, children }) => {
+  // Don't pass error prop to the DOM element
+  return <StyledFormControl fullWidth={fullWidth}>{children}</StyledFormControl>;
 };
 
 const StyledFormMessage = styled('span')<{ error?: boolean }>(({ theme, error }) => ({

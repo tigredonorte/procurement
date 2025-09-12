@@ -178,11 +178,19 @@ export const Autocomplete = <T = AutocompleteOption,>({
     });
 
     setFilteredSuggestions(filtered);
-  }, [suggestions, value, async, getLabel, matchMode]);
+
+    // Open dropdown immediately when we have filtered results and input is focused
+    if (filtered.length > 0 && value.trim() && isInputFocused && !composition) {
+      setOpen(true);
+      if (activeIndex === -1) {
+        setActiveIndex(0);
+      }
+    }
+  }, [suggestions, value, async, getLabel, matchMode, isInputFocused, composition, activeIndex]);
 
   // Ghost text computation using Filter.tsx proven pattern
   useEffect(() => {
-    if (value && isInputFocused && !composition) {
+    if (value && isInputFocused && !composition && showGhostText) {
       const firstSuggestion = filteredSuggestions.find((s) => {
         const label = getLabel(s);
         return (
@@ -191,34 +199,15 @@ export const Autocomplete = <T = AutocompleteOption,>({
         );
       });
 
-      if (firstSuggestion && showGhostText) {
+      if (firstSuggestion) {
         setGhost(getLabel(firstSuggestion).slice(value.length));
       } else {
         setGhost('');
       }
-
-      // Set suggestion visibility based on Filter pattern
-      if (filteredSuggestions.length > 0) {
-        setOpen(true);
-        if (activeIndex === -1) {
-          setActiveIndex(0);
-        }
-      } else {
-        setOpen(false);
-      }
     } else {
-      setOpen(false);
       setGhost('');
     }
-  }, [
-    value,
-    filteredSuggestions,
-    isInputFocused,
-    composition,
-    showGhostText,
-    getLabel,
-    activeIndex,
-  ]);
+  }, [value, filteredSuggestions, isInputFocused, composition, showGhostText, getLabel]);
 
   // Additional open/close logic for loading states
   useEffect(() => {
@@ -301,14 +290,39 @@ export const Autocomplete = <T = AutocompleteOption,>({
           break;
 
         case 'Tab':
-        case 'ArrowRight':
-          // Enhanced ghost text completion using Filter pattern
+          // Tab completion: preserve user's case (concatenate value + ghost)
           if (ghost && isInputFocused && filteredSuggestions.length > 0) {
             event.preventDefault();
             const newValue = value + ghost;
             setInputValue(newValue);
             debouncedOnChange(newValue);
             setGhost('');
+            setOpen(false);
+            setActiveIndex(-1);
+            return;
+          }
+          break;
+
+        case 'ArrowRight':
+          // ArrowRight completion: use original suggestion case
+          if (ghost && isInputFocused && filteredSuggestions.length > 0) {
+            event.preventDefault();
+            // Find the first matching suggestion to get the complete original value
+            const firstSuggestion = filteredSuggestions.find((s) => {
+              const label = getLabel(s);
+              return (
+                label.toLowerCase().startsWith(value.toLowerCase()) &&
+                label.toLowerCase() !== value.toLowerCase()
+              );
+            });
+            if (firstSuggestion) {
+              const newValue = getLabel(firstSuggestion); // Use complete original suggestion to preserve case
+              setInputValue(newValue);
+              debouncedOnChange(newValue);
+            }
+            setGhost('');
+            setOpen(false);
+            setActiveIndex(-1);
             return;
           }
           break;
@@ -348,6 +362,7 @@ export const Autocomplete = <T = AutocompleteOption,>({
       onSelectedItemsChange,
       debouncedOnChange,
       selectItem,
+      getLabel,
     ],
   );
 
@@ -375,10 +390,14 @@ export const Autocomplete = <T = AutocompleteOption,>({
   // Handle input focus
   const handleInputFocus = useCallback(() => {
     setIsInputFocused(true);
-    if (filteredSuggestions.length > 0 && value.trim()) {
+    // Open dropdown if there's content and suggestions
+    if (inputValue.trim() && filteredSuggestions.length > 0) {
       setOpen(true);
+      if (activeIndex === -1) {
+        setActiveIndex(0);
+      }
     }
-  }, [filteredSuggestions, value]);
+  }, [filteredSuggestions, inputValue, activeIndex]);
 
   // Handle input blur with timeout pattern from Filter
   const handleInputBlur = useCallback(() => {

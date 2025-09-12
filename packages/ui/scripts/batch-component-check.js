@@ -4,54 +4,141 @@ import fs from 'fs';
 import { exec } from 'child_process';
 import { promisify } from 'util';
 import { pingStorybook } from './guards/storybook.js';
-import crypto from 'crypto';
 import os from 'os';
+
+import {
+    loadCache,
+    getComponentHashByName,
+    getAllCacheEntries,
+    setupCacheCleanup
+} from './helpers/cache.js';
+
+// Error Handling
+import { extractFailureReason } from './helpers/error.js';
 
 const execAsync = promisify(exec);
 
 const PKG_UI = process.cwd();
-const statusFile = path.join(PKG_UI, 'status.md');
-const cacheFile = path.join(PKG_UI, '.component-check-cache.json');
 
 // Track created tsconfig files for cleanup
 global.createdTsConfigFiles = new Set();
 
-// Load cache from previous runs
-let componentCache = {};
-try {
-    if (fs.existsSync(cacheFile)) {
-        componentCache = JSON.parse(fs.readFileSync(cacheFile, 'utf-8'));
-    }
-} catch (error) {
-    console.warn('Could not load cache:', error.message);
-}
+// Setup cache cleanup handlers
+setupCacheCleanup();
 
-// Calculate hash for a component to detect changes
-async function getComponentHash(category, name) {
-    const componentPath = path.join(PKG_UI, 'src', 'components', category, name);
-    
-    try {
-        const files = await fs.promises.readdir(componentPath, { recursive: true });
-        const hashes = [];
+// ---- Command Line Options Parser ----
+function parseArgs(args) {
+    const options = {
+        skipCache: false,
+        noCache: false,
+        cleanupTsconfig: true,
+        concurrency: null,
+        maxWorkers: '4',
+        checkTimeout: 45000,
+        cacheMaxAge: 24 * 60 * 60 * 1000, // 24 hours in ms
+        storybookUrl: 'http://192.168.166.133:6008',
+        skipStorybookPing: false,
+        parallel: true,
+        verbose: false,
+        outputFile: 'status.md',
+        help: false,
+        filter: null, // Filter components by pattern
+        category: null, // Filter by category
+        failFast: false, // Stop on first failure
+        dryRun: false, // Show what would be checked without running
+    };
+
+    let i = 0;
+    while (i < args.length) {
+        const arg = args[i];
         
-        for (const file of files) {
-            // Skip non-source files
-            if (file.includes('node_modules') || file.includes('.git')) continue;
-            if (!file.match(/\.(ts|tsx|js|jsx|css|scss|md)$/)) continue;
-            
-            const filePath = path.join(componentPath, file);
-            const stat = await fs.promises.stat(filePath);
-            
-            if (stat.isFile()) {
-                const content = await fs.promises.readFile(filePath);
-                hashes.push(crypto.createHash('md5').update(content).digest('hex'));
-            }
+        // Help
+        if (arg === '--help' || arg === '-h') {
+            options.help = true;
+            return options;
         }
         
-        return crypto.createHash('md5').update(hashes.sort().join('')).digest('hex');
-    } catch (error) {
-        return null; // Component doesn't exist or error reading
+        // Options with values
+        if (arg === '--concurrency' && i + 1 < args.length) {
+            options.concurrency = parseInt(args[++i]);
+        } else if (arg === '--max-workers' && i + 1 < args.length) {
+            options.maxWorkers = args[++i];
+        } else if (arg === '--check-timeout' && i + 1 < args.length) {
+            options.checkTimeout = parseInt(args[++i]);
+        } else if (arg === '--cache-max-age' && i + 1 < args.length) {
+            options.cacheMaxAge = parseInt(args[++i]) || options.cacheMaxAge;
+        } else if (arg === '--storybook-url' && i + 1 < args.length) {
+            options.storybookUrl = args[++i];
+        } else if (arg === '--output' && i + 1 < args.length) {
+            options.outputFile = args[++i];
+        } else if (arg === '--filter' && i + 1 < args.length) {
+            options.filter = args[++i];
+        } else if (arg === '--category' && i + 1 < args.length) {
+            options.category = args[++i];
+        }
+        // Boolean flags
+        else if (arg === '--skip-cache') {
+            options.skipCache = true;
+        } else if (arg === '--no-cache') {
+            options.noCache = true;
+        } else if (arg === '--no-cleanup-tsconfig') {
+            options.cleanupTsconfig = false;
+        } else if (arg === '--skip-storybook-ping') {
+            options.skipStorybookPing = true;
+        } else if (arg === '--no-parallel') {
+            options.parallel = false;
+        } else if (arg === '--verbose' || arg === '-v') {
+            options.verbose = true;
+        } else if (arg === '--fail-fast') {
+            options.failFast = true;
+        } else if (arg === '--dry-run') {
+            options.dryRun = true;
+        }
+        // Unknown option
+        else if (arg.startsWith('-')) {
+            console.error(`Unknown option: ${arg}`);
+            console.error('Run with --help for usage information');
+            process.exit(1);
+        }
+        
+        i++;
     }
+    
+    return options;
+}
+
+function showHelp() {
+    console.log(`
+Usage: pnpm batch:check [options]
+
+Options:
+  --skip-cache             Skip cache, force full check for all components
+  --no-cache               Disable cache completely (alias for skip-cache)
+  --no-cleanup-tsconfig    Don't cleanup generated tsconfig files
+  --skip-storybook-ping    Skip initial Storybook reachability check
+  --no-parallel            Disable parallel execution mode
+  --verbose, -v            Verbose output
+  --fail-fast              Stop on first component failure
+  --dry-run                Show what would be checked without running
+  --help, -h               Show this help message
+
+  --concurrency <n>        Max concurrent checks (default: CPU count, max 4)
+  --max-workers <n>        Max workers for tests (default: 4)
+  --check-timeout <ms>     Timeout for each check in ms (default: 45000)
+  --cache-max-age <ms>     Cache max age in ms (default: 86400000 = 24h)
+  --storybook-url <url>    Storybook URL (default: http://192.168.166.133:6008)
+  --output <file>          Output report file (default: status.md)
+  --filter <pattern>       Filter components by pattern (regex)
+  --category <name>        Check only components in specified category
+
+Examples:
+  pnpm batch:check
+  pnpm batch:check --skip-cache
+  pnpm batch:check --concurrency 8 --verbose
+  pnpm batch:check --category form
+  pnpm batch:check --filter "^Button|Input$"
+  pnpm batch:check --fail-fast --no-parallel
+`);
 }
 
 // Analyze component complexity for smart batching
@@ -110,8 +197,8 @@ async function cleanupTsConfigFiles() {
     global.createdTsConfigFiles.clear();
 }
 
-// Get all component directories
-function getAllComponents() {
+// Get all component directories with optional filters
+function getAllComponents(options) {
     const componentsDir = path.join(PKG_UI, 'src', 'components');
     
     if (!fs.existsSync(componentsDir)) {
@@ -125,12 +212,25 @@ function getAllComponents() {
 
     const components = [];
     for (const category of categories) {
+        // Apply category filter if specified
+        if (options.category && category !== options.category) {
+            continue;
+        }
+        
         const categoryPath = path.join(componentsDir, category);
         const componentNames = fs.readdirSync(categoryPath, { withFileTypes: true })
             .filter(dirent => dirent.isDirectory())
             .map(dirent => dirent.name);
         
         for (const componentName of componentNames) {
+            // Apply name filter if specified
+            if (options.filter) {
+                const regex = new RegExp(options.filter);
+                if (!regex.test(componentName)) {
+                    continue;
+                }
+            }
+            
             components.push({ category, name: componentName });
         }
     }
@@ -138,21 +238,23 @@ function getAllComponents() {
 }
 
 // Run check for a single component with caching
-async function runComponentCheck(category, componentName, useCache = true) {
+async function runComponentCheck(category, componentName, options) {
     const componentPath = path.join(PKG_UI, 'src', 'components', category, componentName);
     const tsconfigPath = path.join(componentPath, 'tsconfig.json');
     const cacheKey = `${category}/${componentName}`;
     
+    // Load cache
+    const cache = getAllCacheEntries();
+    
     // Check cache if enabled
-    if (useCache && process.env.SKIP_CACHE !== 'true') {
-        const hash = await getComponentHash(category, componentName);
-        const cached = componentCache[cacheKey];
+    if (!options.skipCache && !options.noCache) {
+        const hash = await getComponentHashByName(category, componentName);
+        const cached = cache[cacheKey];
         
         if (cached && cached.hash === hash && cached.status === 'PASS') {
             const age = Date.now() - cached.timestamp;
-            const maxAge = 24 * 60 * 60 * 1000; // 24 hours
             
-            if (age < maxAge) {
+            if (age < options.cacheMaxAge) {
                 console.log(`✅ ${cacheKey}: CACHED PASS (unchanged)`);
                 return { 
                     status: 'PASS', 
@@ -169,37 +271,27 @@ async function runComponentCheck(category, componentName, useCache = true) {
     try {
         console.log(`🔍 Checking ${category}/${componentName}...`);
         
-        // Execute check with optimizations
-        const { stdout, stderr } = await execAsync(
-            `pnpm check:component ${category} ${componentName}`, 
-            {
-                cwd: PKG_UI,
-                encoding: 'utf-8',
-                maxBuffer: 1024 * 1024 * 10, // 10MB
-                timeout: parseInt(process.env.CHECK_TIMEOUT) || 45000, // 45s default
-                env: { 
-                    ...process.env,
-                    SKIP_STORYBOOK_PING: 'true', // Skip redundant pings
-                    PARALLEL: 'true', // Enable parallel mode in check-component
-                    MAX_WORKERS: process.env.MAX_WORKERS || '4'
-                }
-            }
-        );
+        // Build command with options
+        const cmdArgs = [category, componentName];
+        if (options.skipCache || options.noCache) cmdArgs.push('--skip-cache');
+        if (options.skipStorybookPing) cmdArgs.push('--skip-storybook-ping');
+        if (!options.parallel) cmdArgs.push('--no-parallel');
+        if (options.maxWorkers) cmdArgs.push('--max-workers', options.maxWorkers);
+        if (options.verbose) cmdArgs.push('--verbose');
         
-        // Update cache on success
-        if (useCache) {
-            const hash = await getComponentHash(category, componentName);
-            componentCache[cacheKey] = {
-                hash,
-                status: 'PASS',
-                reason: 'All checks passed',
-                timestamp: Date.now()
-            };
-            // Save cache periodically
-            if (Object.keys(componentCache).length % 10 === 0) {
-                fs.writeFileSync(cacheFile, JSON.stringify(componentCache, null, 2));
+        const cmd = `pnpm check:component ${cmdArgs.join(' ')}`;
+        
+        // Execute check with optimizations
+        const { stdout, stderr } = await execAsync(cmd, {
+            cwd: PKG_UI,
+            encoding: 'utf-8',
+            maxBuffer: 1024 * 1024 * 10, // 10MB
+            timeout: options.checkTimeout,
+            env: { 
+                ...process.env,
+                BATCH_MODE: 'true' // Indicate this is running from batch script
             }
-        }
+        });
         
         // Track created tsconfig
         if (!tsconfigExistedBefore && fs.existsSync(tsconfigPath)) {
@@ -207,6 +299,7 @@ async function runComponentCheck(category, componentName, useCache = true) {
         }
         
         console.log(`✅ ${category}/${componentName}: PASS`);
+        
         return { status: 'PASS', reason: 'All checks passed' };
         
     } catch (error) {
@@ -219,57 +312,23 @@ async function runComponentCheck(category, componentName, useCache = true) {
         const errorOutput = (error.stdout || '') + (error.stderr || '') || error.message || 'Unknown error';
         let reason = extractFailureReason(errorOutput);
         
-        // Update cache on failure
-        if (useCache) {
-            const hash = await getComponentHash(category, componentName);
-            componentCache[cacheKey] = {
-                hash,
-                status: 'FAIL',
-                reason,
-                timestamp: Date.now()
-            };
+        console.log(`❌ ${category}/${componentName}: FAIL - ${reason}`);
+        
+        if (options.failFast) {
+            throw new Error(`Component ${category}/${componentName} failed: ${reason}`);
         }
         
-        console.log(`❌ ${category}/${componentName}: FAIL - ${reason}`, errorOutput);
         return { status: 'FAIL', reason };
     }
 }
 
-// Extract meaningful failure reason from error output
-function extractFailureReason(errorOutput) {
-    // Look for phase-based failures first
-    const phaseMatch = errorOutput.match(/\[Phase (\d+)\/\d+\]\s+(.+?)[\n\r]/);
-    if (phaseMatch) {
-        const phaseName = phaseMatch[2];
-        if (errorOutput.includes('✗ Failed:')) {
-            const failedCheck = errorOutput.match(/✗ Failed:\s+(.+)/);
-            if (failedCheck) {
-                return `${phaseName}: ${failedCheck[1]}`;
-            }
-        }
-        return `Phase ${phaseMatch[1]}: ${phaseName}`;
-    }
-    
-    // Look for step-based failures
-    const stepMatch = errorOutput.match(/\[(\d+\/\d+)\]\s+(.+?)(?:\n|$)/);
-    if (stepMatch) {
-        return `Step ${stepMatch[1]}: ${stepMatch[2]}`;
-    }
-    
-    // Specific error patterns
-    if (errorOutput.includes('error TS')) return 'TypeScript compilation error';
-    if (errorOutput.includes('ESLint')) return 'ESLint validation failed';
-    if (errorOutput.includes('components.tasks.md')) return 'Missing entry in components.tasks.md';
-    if (errorOutput.includes('Storybook test')) return 'Storybook test failures';
-    if (errorOutput.includes('Stories coverage')) return 'Missing stories coverage';
-    
-    return 'Check failed';
-}
-
 // Run checks with smart parallelization
-async function runChecksInParallel(components, maxConcurrency) {
+async function runChecksInParallel(components, options) {
     const results = [];
     const startTime = Date.now();
+    
+    // Load cache at the beginning
+    loadCache();
     
     // Analyze complexity and sort
     console.log('📊 Analyzing component complexity...');
@@ -281,7 +340,7 @@ async function runChecksInParallel(components, maxConcurrency) {
     analyzedComponents.sort((a, b) => a.complexity - b.complexity);
     
     console.log(`📈 Complexity range: ${analyzedComponents[0].complexity} - ${analyzedComponents[analyzedComponents.length - 1].complexity}`);
-    console.log(`🚀 Starting parallel execution (concurrency: ${maxConcurrency})`);
+    console.log(`🚀 Starting parallel execution (concurrency: ${options.concurrency})`);
     
     // Process with dynamic concurrency
     const queue = [...analyzedComponents];
@@ -290,9 +349,9 @@ async function runChecksInParallel(components, maxConcurrency) {
     
     while (queue.length > 0 || inProgress.size > 0) {
         // Start new tasks up to concurrency limit
-        while (queue.length > 0 && inProgress.size < maxConcurrency) {
+        while (queue.length > 0 && inProgress.size < options.concurrency) {
             const component = queue.shift();
-            const promise = runComponentCheck(component.category, component.name)
+            const promise = runComponentCheck(component.category, component.name, options)
                 .then(result => {
                     inProgress.delete(promise);
                     completed++;
@@ -321,18 +380,28 @@ async function runChecksInParallel(components, maxConcurrency) {
         }
     }
     
-    // Save final cache
-    fs.writeFileSync(cacheFile, JSON.stringify(componentCache, null, 2));
-    
     return results;
 }
 
 // Generate status markdown report
-function generateStatusReport(results) {
+function generateStatusReport(results, options) {
     const timestamp = new Date().toISOString();
     
     let content = `# Component Check Status Report\n\n`;
     content += `Generated: ${timestamp}\n\n`;
+    
+    // Add configuration info if verbose
+    if (options.verbose) {
+        content += `## Configuration\n\n`;
+        content += `- Concurrency: ${options.concurrency}\n`;
+        content += `- Cache: ${options.skipCache || options.noCache ? 'Disabled' : 'Enabled'}\n`;
+        content += `- Parallel mode: ${options.parallel ? 'Enabled' : 'Disabled'}\n`;
+        content += `- Timeout: ${options.checkTimeout}ms\n`;
+        if (options.filter) content += `- Filter: ${options.filter}\n`;
+        if (options.category) content += `- Category: ${options.category}\n`;
+        content += `\n`;
+    }
+    
     content += `## Summary\n\n`;
     
     const passed = results.filter(r => r.status === 'PASS').length;
@@ -395,47 +464,59 @@ function generateStatusReport(results) {
 }
 
 // Pre-flight checks
-async function preScriptAsserts() {
-    const storybookUrl = process.env.STORYBOOK_URL || 'http://192.168.166.133:6008';
-    console.log('🔍 Verifying Storybook is running...');
-    await pingStorybook(storybookUrl);
-    console.log('✅ Storybook is reachable\n');
+async function preScriptAsserts(options) {
+    if (!options.skipStorybookPing) {
+        console.log('🔍 Verifying Storybook is running...');
+        await pingStorybook(options.storybookUrl);
+        console.log('✅ Storybook is reachable\n');
+    }
 }
 
 // Main execution
-async function execute() {
-    console.log('🚀 Starting batch component check (optimized parallel mode)...\n');
+async function execute(options) {
     
     // Pre-flight checks
-    await preScriptAsserts();
+    await preScriptAsserts(options);
     
     // Get all components
-    const components = getAllComponents();
+    const components = getAllComponents(options);
     
     if (components.length === 0) {
         console.error('❌ No components found to check');
+        if (options.filter) console.error(`   Filter pattern: ${options.filter}`);
+        if (options.category) console.error(`   Category filter: ${options.category}`);
         process.exit(1);
     }
     
     console.log(`Found ${components.length} components to check`);
     
-    // Determine concurrency
-    const cpuCount = os.cpus().length;
-    const defaultConcurrency = Math.max(4, Math.min(cpuCount, 4));
-    const maxConcurrency = parseInt(process.env.CHECK_CONCURRENCY) || defaultConcurrency;
+    // Dry run mode - just show what would be checked
+    if (options.dryRun) {
+        console.log('\n🔍 DRY RUN - Components that would be checked:\n');
+        components.forEach(c => console.log(`  - ${c.category}/${c.name}`));
+        console.log(`\nTotal: ${components.length} components`);
+        return;
+    }
     
-    console.log(`System CPUs: ${cpuCount}, Using concurrency: ${maxConcurrency}`);
-    console.log(`Cache: ${process.env.SKIP_CACHE === 'true' ? 'Disabled' : 'Enabled'}`);
-    console.log(`Parallel mode: Enabled\n`);
+    // Determine concurrency
+    if (!options.concurrency) {
+        const cpuCount = os.cpus().length;
+        options.concurrency = Math.max(2, Math.min(cpuCount, 4));
+    }
+    
+    console.log(`System CPUs: ${os.cpus().length}, Using concurrency: ${options.concurrency}`);
+    console.log(`Cache: ${options.skipCache || options.noCache ? 'Disabled' : 'Enabled'}`);
+    console.log(`Parallel mode: ${options.parallel ? 'Enabled' : 'Disabled'}\n`);
     
     // Run checks
     const startTime = Date.now();
-    const results = await runChecksInParallel(components, maxConcurrency);
+    const results = await runChecksInParallel(components, options);
     const duration = ((Date.now() - startTime) / 1000).toFixed(1);
     
     // Generate report
+    const statusFile = path.join(PKG_UI, options.outputFile);
     console.log('\n📝 Generating status report...');
-    const reportContent = generateStatusReport(results);
+    const reportContent = generateStatusReport(results, options);
     fs.writeFileSync(statusFile, reportContent);
     
     console.log(`✨ Status report written to: ${statusFile}`);
@@ -454,7 +535,7 @@ async function execute() {
     console.log(`⚡ Average: ${(duration / components.length).toFixed(2)}s per component`);
     
     // Cleanup
-    if (process.env.CLEANUP_TSCONFIG !== 'false') {
+    if (options.cleanupTsconfig) {
         await cleanupTsConfigFiles();
     }
     
@@ -482,16 +563,24 @@ process.on('uncaughtException', async (error) => {
 
 // Run
 async function main() {
-  try {
-    console.time('Total check time');
-    await execute();
-  } catch (error) {
-      console.error('❌ Fatal error:', error);
-      await cleanupTsConfigFiles();
-      process.exit(1);
-  } finally {
-      console.timeEnd('Total check time');
-  }
+    console.log('🚀 Starting batch component check (optimized parallel mode)...\n');
+    const options = parseArgs(process.argv.slice(2));
+    
+    if (options.help) {
+        showHelp();
+        process.exit(0);
+    }
+    
+    try {
+        console.time('Total check time');
+        await execute(options);
+    } catch (error) {
+        console.error('❌ Fatal error:', error);
+        await cleanupTsConfigFiles();
+        process.exit(1);
+    } finally {
+        console.timeEnd('Total check time');
+    }
 }
 
 main();

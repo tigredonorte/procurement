@@ -17,6 +17,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   collapsedWidth = 64,
   position = 'left',
   className,
+  ...rest
 }) => {
   // Prevent unused variable warning for onToggle
   void _onToggle;
@@ -62,6 +63,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   return (
     <Box
       className={className}
+      {...rest}
       sx={{
         width: currentWidth,
         height: '100vh',
@@ -76,11 +78,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
   );
 };
 
-export const SidebarHeader: React.FC<SidebarHeaderProps> = ({ children }) => {
+export const SidebarHeader: React.FC<SidebarHeaderProps> = ({ children, ...rest }) => {
   const theme = useTheme();
 
   return (
     <Box
+      {...rest}
       sx={{
         padding: theme.spacing(2),
         borderBottom: `1px solid ${theme.palette.divider}`,
@@ -93,9 +96,10 @@ export const SidebarHeader: React.FC<SidebarHeaderProps> = ({ children }) => {
   );
 };
 
-export const SidebarContent: React.FC<SidebarContentProps> = ({ children }) => {
+export const SidebarContent: React.FC<SidebarContentProps> = ({ children, ...rest }) => {
   return (
     <Box
+      {...rest}
       sx={{
         flex: 1,
         overflow: 'auto',
@@ -106,11 +110,12 @@ export const SidebarContent: React.FC<SidebarContentProps> = ({ children }) => {
   );
 };
 
-export const SidebarFooter: React.FC<SidebarFooterProps> = ({ children }) => {
+export const SidebarFooter: React.FC<SidebarFooterProps> = ({ children, ...rest }) => {
   const theme = useTheme();
 
   return (
     <Box
+      {...rest}
       sx={{
         padding: theme.spacing(2),
         borderTop: `1px solid ${theme.palette.divider}`,

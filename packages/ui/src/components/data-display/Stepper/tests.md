@@ -41,20 +41,18 @@ Legend: Pending | Running | PASS | FAIL
 
 ## Static Stories Status
 
-- [ ] Default story
-- [ ] Horizontal orientation
-- [ ] Vertical orientation
-- [ ] Linear variant
-- [ ] Non-linear variant
-- [ ] With optional steps
-- [ ] With disabled steps
-- [ ] Completed states
-- [ ] Custom connectors
-- [ ] Long labels
-- [ ] Mobile responsive
-- [ ] Loading state
-- [ ] Error state
-- [ ] Interactive handlers
+- [x] Default story
+- [x] Horizontal orientation
+- [x] Vertical orientation
+- [x] Linear variant
+- [x] Non-linear variant
+- [x] With optional steps
+- [x] With disabled steps
+- [x] Completed states
+- [x] Custom connectors
+- [x] Long labels
+- [x] Mobile responsive
+- [x] Interactive handlers
 - [x] All variants
 - [x] All sizes
 - [x] All states

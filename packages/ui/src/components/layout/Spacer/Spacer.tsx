@@ -10,30 +10,37 @@ export const Spacer: React.FC<SpacerProps> = ({
   height,
   flex = false,
   className,
+  'data-testid': dataTestId,
 }) => {
   const theme = useTheme();
 
   const getSpacing = () => {
     switch (size) {
-      case 'xs': return theme.spacing(0.5);
-      case 'sm': return theme.spacing(1);
-      case 'md': return theme.spacing(2);
-      case 'lg': return theme.spacing(3);
-      case 'xl': return theme.spacing(4);
-      default: return theme.spacing(2);
+      case 'xs':
+        return theme.spacing(0.5);
+      case 'sm':
+        return theme.spacing(1);
+      case 'md':
+        return theme.spacing(2);
+      case 'lg':
+        return theme.spacing(3);
+      case 'xl':
+        return theme.spacing(4);
+      default:
+        return theme.spacing(2);
     }
   };
 
   const getDimensions = () => {
     const spacing = getSpacing();
-    
+
     let finalWidth = width;
     let finalHeight = height;
 
     if (direction === 'horizontal' || direction === 'both') {
       finalWidth = width ?? spacing;
     }
-    
+
     if (direction === 'vertical' || direction === 'both') {
       finalHeight = height ?? spacing;
     }
@@ -46,6 +53,7 @@ export const Spacer: React.FC<SpacerProps> = ({
   return (
     <Box
       className={className}
+      data-testid={dataTestId}
       sx={{
         width: dimensions.width,
         height: dimensions.height,

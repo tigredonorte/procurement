@@ -22,8 +22,9 @@ const UploadButton = React.forwardRef<HTMLInputElement, UploadButtonProps>(
       errorText,
       icon,
       className,
+      'data-testid': dataTestId,
     },
-    ref
+    ref,
   ) => {
     const theme = useTheme();
     const inputRef = useRef<HTMLInputElement>(null);
@@ -39,88 +40,100 @@ const UploadButton = React.forwardRef<HTMLInputElement, UploadButtonProps>(
     const progress = externalUploading ? externalProgress : state.uploadProgress;
     const currentError = errorText || state.error;
 
-    const validateFile = useCallback((file: globalThis.File): string | null => {
-      // Size validation
-      if (maxSizeMB && file.size > maxSizeMB * 1024 * 1024) {
-        return `File size must be less than ${maxSizeMB}MB`;
-      }
-
-      // Custom validation
-      if (validate) {
-        return validate(file);
-      }
-
-      return null;
-    }, [maxSizeMB, validate]);
-
-    const handleFileSelect = useCallback(async (file: globalThis.File) => {
-      const validationError = validateFile(file);
-      if (validationError) {
-        setState(prev => ({ ...prev, error: validationError }));
-        return;
-      }
-
-      // Clear any previous errors
-      setState(prev => ({ ...prev, error: null }));
-
-      // Always call onSelect
-      onSelect(file);
-
-      // Handle built-in upload if provided
-      if (onUpload && !externalUploading) {
-        try {
-          setState(prev => ({ ...prev, isUploading: true, uploadProgress: 0 }));
-          
-          // Simulate progress for demonstration (in real implementation, this would be handled by the upload function)
-          const progressInterval = globalThis.setInterval(() => {
-            setState(prev => {
-              if (prev.uploadProgress >= 90) {
-                globalThis.clearInterval(progressInterval);
-                return prev;
-              }
-              return { ...prev, uploadProgress: prev.uploadProgress + 10 };
-            });
-          }, 100);
-
-          await onUpload(file);
-          
-          globalThis.clearInterval(progressInterval);
-          setState(prev => ({ ...prev, isUploading: false, uploadProgress: 100 }));
-          
-          // Reset progress after a delay
-          globalThis.setTimeout(() => {
-            setState(prev => ({ ...prev, uploadProgress: 0 }));
-          }, 1000);
-        } catch (error) {
-          setState(prev => ({
-            ...prev,
-            isUploading: false,
-            uploadProgress: 0,
-            error: error instanceof Error ? error.message : 'Upload failed'
-          }));
+    const validateFile = useCallback(
+      (file: globalThis.File): string | null => {
+        // Size validation
+        if (maxSizeMB && file.size > maxSizeMB * 1024 * 1024) {
+          return `File size must be less than ${maxSizeMB}MB`;
         }
-      }
-    }, [onSelect, onUpload, validateFile, externalUploading]);
 
-    const handleInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-      const file = event.target.files?.[0];
-      if (file) {
-        handleFileSelect(file);
-      }
-    }, [handleFileSelect]);
+        // Custom validation
+        if (validate) {
+          return validate(file);
+        }
 
-    const handleDragEnter = useCallback((event: React.DragEvent) => {
-      event.preventDefault();
-      event.stopPropagation();
-      if (!disabled) {
-        setState(prev => ({ ...prev, isDragOver: true }));
-      }
-    }, [disabled]);
+        return null;
+      },
+      [maxSizeMB, validate],
+    );
+
+    const handleFileSelect = useCallback(
+      async (file: globalThis.File) => {
+        const validationError = validateFile(file);
+        if (validationError) {
+          setState((prev) => ({ ...prev, error: validationError }));
+          return;
+        }
+
+        // Clear any previous errors
+        setState((prev) => ({ ...prev, error: null }));
+
+        // Always call onSelect
+        onSelect(file);
+
+        // Handle built-in upload if provided
+        if (onUpload && !externalUploading) {
+          try {
+            setState((prev) => ({ ...prev, isUploading: true, uploadProgress: 0 }));
+
+            // Simulate progress for demonstration (in real implementation, this would be handled by the upload function)
+            const progressInterval = globalThis.setInterval(() => {
+              setState((prev) => {
+                if (prev.uploadProgress >= 90) {
+                  globalThis.clearInterval(progressInterval);
+                  return prev;
+                }
+                return { ...prev, uploadProgress: prev.uploadProgress + 10 };
+              });
+            }, 100);
+
+            await onUpload(file);
+
+            globalThis.clearInterval(progressInterval);
+            setState((prev) => ({ ...prev, isUploading: false, uploadProgress: 100 }));
+
+            // Reset progress after a delay
+            globalThis.setTimeout(() => {
+              setState((prev) => ({ ...prev, uploadProgress: 0 }));
+            }, 1000);
+          } catch (error) {
+            setState((prev) => ({
+              ...prev,
+              isUploading: false,
+              uploadProgress: 0,
+              error: error instanceof Error ? error.message : 'Upload failed',
+            }));
+          }
+        }
+      },
+      [onSelect, onUpload, validateFile, externalUploading],
+    );
+
+    const handleInputChange = useCallback(
+      (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+          handleFileSelect(file);
+        }
+      },
+      [handleFileSelect],
+    );
+
+    const handleDragEnter = useCallback(
+      (event: React.DragEvent) => {
+        event.preventDefault();
+        event.stopPropagation();
+        if (!disabled) {
+          setState((prev) => ({ ...prev, isDragOver: true }));
+        }
+      },
+      [disabled],
+    );
 
     const handleDragLeave = useCallback((event: React.DragEvent) => {
       event.preventDefault();
       event.stopPropagation();
-      setState(prev => ({ ...prev, isDragOver: false }));
+      setState((prev) => ({ ...prev, isDragOver: false }));
     }, []);
 
     const handleDragOver = useCallback((event: React.DragEvent) => {
@@ -128,18 +141,21 @@ const UploadButton = React.forwardRef<HTMLInputElement, UploadButtonProps>(
       event.stopPropagation();
     }, []);
 
-    const handleDrop = useCallback((event: React.DragEvent) => {
-      event.preventDefault();
-      event.stopPropagation();
-      setState(prev => ({ ...prev, isDragOver: false }));
+    const handleDrop = useCallback(
+      (event: React.DragEvent) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setState((prev) => ({ ...prev, isDragOver: false }));
 
-      if (disabled) return;
+        if (disabled) return;
 
-      const file = event.dataTransfer.files[0];
-      if (file) {
-        handleFileSelect(file);
-      }
-    }, [disabled, handleFileSelect]);
+        const file = event.dataTransfer.files[0];
+        if (file) {
+          handleFileSelect(file);
+        }
+      },
+      [disabled, handleFileSelect],
+    );
 
     const handleButtonClick = useCallback(() => {
       inputRef.current?.click();
@@ -164,19 +180,18 @@ const UploadButton = React.forwardRef<HTMLInputElement, UploadButtonProps>(
           padding: 3,
           textAlign: 'center',
           cursor: disabled ? 'not-allowed' : 'pointer',
-          backgroundColor: state.isDragOver 
-            ? theme.palette.primary.main + '0A' 
-            : 'transparent',
+          backgroundColor: state.isDragOver ? theme.palette.primary.main + '0A' : 'transparent',
           transition: 'all 0.2s ease-in-out',
-          ...((!disabled) && {
+          ...(!disabled && {
             '&:hover': {
               borderColor: theme.palette.primary.main,
               backgroundColor: theme.palette.primary.main + '05',
-            }
+            },
           }),
           opacity: disabled ? 0.6 : 1,
         }}
         className={className}
+        data-testid={dataTestId}
         role="button"
         tabIndex={disabled ? -1 : 0}
         onKeyDown={(e) => {
@@ -207,6 +222,7 @@ const UploadButton = React.forwardRef<HTMLInputElement, UploadButtonProps>(
         onClick={handleButtonClick}
         startIcon={icon || <AttachFileOutlined />}
         className={className}
+        data-testid={dataTestId}
         aria-describedby={[helperId, errorId].filter(Boolean).join(' ') || undefined}
         sx={{
           ...(variant === 'ghost' && {
@@ -233,22 +249,18 @@ const UploadButton = React.forwardRef<HTMLInputElement, UploadButtonProps>(
           disabled={disabled}
           aria-hidden="true"
         />
-        
+
         {variant === 'dropzone' ? renderDropzone() : renderButton()}
-        
+
         {isUploading && progress > 0 && (
           <Box sx={{ mt: 1 }}>
-            <LinearProgress 
-              variant="determinate" 
-              value={progress}
-              sx={{ borderRadius: 1 }}
-            />
+            <LinearProgress variant="determinate" value={progress} sx={{ borderRadius: 1 }} />
             <Typography variant="caption" sx={{ mt: 0.5, display: 'block' }}>
               {Math.round(progress)}% uploaded
             </Typography>
           </Box>
         )}
-        
+
         {helperText && !currentError && (
           <Typography
             id={helperId}
@@ -259,7 +271,7 @@ const UploadButton = React.forwardRef<HTMLInputElement, UploadButtonProps>(
             {helperText}
           </Typography>
         )}
-        
+
         {currentError && (
           <Typography
             id={errorId}
@@ -271,13 +283,19 @@ const UploadButton = React.forwardRef<HTMLInputElement, UploadButtonProps>(
             {currentError}
           </Typography>
         )}
-        
+
         {/* Screen reader announcements for drag and drop */}
         <div
           aria-live="polite"
           aria-atomic="true"
           className="sr-only"
-          style={{ position: 'absolute', left: '-10000px', width: '1px', height: '1px', overflow: 'hidden' }}
+          style={{
+            position: 'absolute',
+            left: '-10000px',
+            width: '1px',
+            height: '1px',
+            overflow: 'hidden',
+          }}
         >
           {variant === 'dropzone' && state.isDragOver && 'File ready to drop'}
           {isUploading && `Upload in progress: ${Math.round(progress)}%`}
@@ -285,7 +303,7 @@ const UploadButton = React.forwardRef<HTMLInputElement, UploadButtonProps>(
         </div>
       </Box>
     );
-  }
+  },
 );
 
 UploadButton.displayName = 'UploadButton';

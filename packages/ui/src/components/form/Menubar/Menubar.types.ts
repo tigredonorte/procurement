@@ -36,6 +36,7 @@ export interface MenubarProps {
   onClick?: (item: MenubarItem) => void;
   onFocus?: () => void;
   onBlur?: () => void;
+  'data-testid'?: string;
 }
 
 export interface MenubarGroupProps {

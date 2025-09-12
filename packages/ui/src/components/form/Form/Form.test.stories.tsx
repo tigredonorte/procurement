@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { userEvent, within, expect, fn } from 'storybook/test';
+import { userEvent, within, expect, fn, waitFor } from 'storybook/test';
 import { Typography, Button, TextField } from '@mui/material';
 
 import { Form, FormField } from './Form';
@@ -36,16 +36,18 @@ export const BasicInteraction: Story = {
           <TextField
             type="email"
             placeholder="Enter your email"
-            data-testid="email-input"
             fullWidth
+            defaultValue=""
+            inputProps={{ 'data-testid': 'email-input' }}
           />
         </FormField>
         <FormField name="password" label="Password" required>
           <TextField
             type="password"
             placeholder="Enter your password"
-            data-testid="password-input"
             fullWidth
+            defaultValue=""
+            inputProps={{ 'data-testid': 'password-input' }}
           />
         </FormField>
         <Button variant="contained" type="submit" fullWidth data-testid="submit-button">
@@ -61,21 +63,28 @@ export const BasicInteraction: Story = {
     const form = canvas.getByRole('form');
     expect(form).toBeInTheDocument();
 
-    // Find form elements
-    const emailInput = canvas.getByTestId('email-input');
-    const passwordInput = canvas.getByTestId('password-input');
+    // Find form elements - use the input elements directly
+    const emailInput = canvas.getByTestId('email-input') as HTMLInputElement;
+    const passwordInput = canvas.getByTestId('password-input') as HTMLInputElement;
     const submitButton = canvas.getByTestId('submit-button');
 
     expect(emailInput).toBeInTheDocument();
     expect(passwordInput).toBeInTheDocument();
     expect(submitButton).toBeInTheDocument();
 
+    // Clear inputs first
+    await userEvent.clear(emailInput);
+    await userEvent.clear(passwordInput);
+
     // Test basic interactions
     await userEvent.type(emailInput, 'test@example.com');
     await userEvent.type(passwordInput, 'password123');
 
-    expect(emailInput).toHaveValue('test@example.com');
-    expect(passwordInput).toHaveValue('password123');
+    // Wait for the values to be updated
+    await waitFor(() => {
+      expect(emailInput).toHaveValue('test@example.com');
+      expect(passwordInput).toHaveValue('password123');
+    });
   },
 };
 
@@ -88,10 +97,18 @@ export const KeyboardNavigation: Story = {
     children: (
       <>
         <FormField name="field1" label="First Field" required>
-          <TextField placeholder="First field" data-testid="first-field" fullWidth />
+          <TextField
+            placeholder="First field"
+            fullWidth
+            inputProps={{ 'data-testid': 'first-field' }}
+          />
         </FormField>
         <FormField name="field2" label="Second Field" required>
-          <TextField placeholder="Second field" data-testid="second-field" fullWidth />
+          <TextField
+            placeholder="Second field"
+            fullWidth
+            inputProps={{ 'data-testid': 'second-field' }}
+          />
         </FormField>
         <Button variant="contained" type="submit" data-testid="submit-btn" fullWidth>
           Submit
@@ -107,16 +124,22 @@ export const KeyboardNavigation: Story = {
     const submitButton = canvas.getByTestId('submit-btn');
 
     // Focus first field
-    firstField.focus();
-    expect(firstField).toHaveFocus();
+    await userEvent.click(firstField);
+    await waitFor(() => {
+      expect(firstField).toHaveFocus();
+    });
 
     // Tab to second field
     await userEvent.tab();
-    expect(secondField).toHaveFocus();
+    await waitFor(() => {
+      expect(secondField).toHaveFocus();
+    });
 
     // Tab to submit button
     await userEvent.tab();
-    expect(submitButton).toHaveFocus();
+    await waitFor(() => {
+      expect(submitButton).toHaveFocus();
+    });
   },
 };
 
@@ -133,10 +156,18 @@ export const ResponsiveDesign: Story = {
         </Typography>
         <div data-testid="responsive-container">
           <FormField name="firstName" label="First Name" required>
-            <TextField placeholder="First name" data-testid="first-name" fullWidth />
+            <TextField
+              placeholder="First name"
+              fullWidth
+              inputProps={{ 'data-testid': 'first-name' }}
+            />
           </FormField>
           <FormField name="lastName" label="Last Name" required>
-            <TextField placeholder="Last name" data-testid="last-name" fullWidth />
+            <TextField
+              placeholder="Last name"
+              fullWidth
+              inputProps={{ 'data-testid': 'last-name' }}
+            />
           </FormField>
         </div>
       </>
@@ -195,11 +226,19 @@ export const VisualStates: Story = {
         </Typography>
 
         <FormField name="normal" label="Normal State">
-          <TextField placeholder="Normal input" data-testid="normal-input" fullWidth />
+          <TextField
+            placeholder="Normal input"
+            fullWidth
+            inputProps={{ 'data-testid': 'normal-input' }}
+          />
         </FormField>
 
         <FormField name="required" label="Required Field" required>
-          <TextField placeholder="Required input" data-testid="required-input" fullWidth />
+          <TextField
+            placeholder="Required input"
+            fullWidth
+            inputProps={{ 'data-testid': 'required-input' }}
+          />
         </FormField>
 
         <Button variant="contained" data-testid="submit-button" fullWidth>
@@ -245,7 +284,11 @@ export const EdgeCases: Story = {
         </FormField>
 
         <FormField name="longText" label="Very Long Label That Should Handle Overflow Gracefully">
-          <TextField placeholder="Long text input" data-testid="long-text-input" fullWidth />
+          <TextField
+            placeholder="Long text input"
+            fullWidth
+            inputProps={{ 'data-testid': 'long-text-input' }}
+          />
         </FormField>
 
         <Button variant="contained" type="submit" fullWidth data-testid="edge-submit">
@@ -266,5 +309,218 @@ export const EdgeCases: Story = {
 
     const submitButton = canvas.getByTestId('edge-submit');
     expect(submitButton).toBeInTheDocument();
+  },
+};
+
+// Test 6: Screen Reader Test
+export const ScreenReader: Story = {
+  args: {
+    variant: 'vertical',
+    maxWidth: 'sm',
+    spacing: 'md',
+    children: (
+      <>
+        <FormField name="accessible" label="Accessible Field" required>
+          <TextField
+            placeholder="Accessible input"
+            fullWidth
+            inputProps={{
+              'data-testid': 'accessible-input',
+              'aria-label': 'Accessible Field',
+              'aria-required': 'true',
+            }}
+          />
+        </FormField>
+        <Button variant="contained" type="submit" fullWidth aria-label="Submit form">
+          Submit
+        </Button>
+      </>
+    ),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const accessibleInput = canvas.getByTestId('accessible-input');
+    expect(accessibleInput).toHaveAttribute('aria-label', 'Accessible Field');
+    expect(accessibleInput).toHaveAttribute('aria-required', 'true');
+
+    const submitButton = canvas.getByRole('button', { name: 'Submit form' });
+    expect(submitButton).toBeInTheDocument();
+  },
+};
+
+// Test 7: Focus Management Test
+export const FocusManagement: Story = {
+  args: {
+    variant: 'vertical',
+    maxWidth: 'sm',
+    spacing: 'md',
+    onFocus: fn(),
+    onBlur: fn(),
+    children: (
+      <>
+        <FormField name="focusTest" label="Focus Test Field">
+          <TextField
+            placeholder="Focus test"
+            fullWidth
+            inputProps={{ 'data-testid': 'focus-input' }}
+            onFocus={fn()}
+            onBlur={fn()}
+          />
+        </FormField>
+      </>
+    ),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const focusInput = canvas.getByTestId('focus-input');
+
+    // Test focus
+    await userEvent.click(focusInput);
+    await waitFor(() => {
+      expect(focusInput).toHaveFocus();
+    });
+
+    // Test blur
+    await userEvent.tab();
+    await waitFor(() => {
+      expect(focusInput).not.toHaveFocus();
+    });
+  },
+};
+
+// Test 8: Theme Variations Test
+export const ThemeVariations: Story = {
+  args: {
+    variant: 'vertical',
+    maxWidth: 'sm',
+    spacing: 'md',
+    children: (
+      <>
+        <Typography variant="h6" mb={2}>
+          Theme Variations
+        </Typography>
+        <FormField name="themed" label="Themed Field">
+          <TextField
+            placeholder="Themed input"
+            fullWidth
+            inputProps={{ 'data-testid': 'themed-input' }}
+          />
+        </FormField>
+      </>
+    ),
+  },
+  parameters: {
+    backgrounds: {
+      default: 'dark',
+    },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const themedInput = canvas.getByTestId('themed-input');
+    expect(themedInput).toBeInTheDocument();
+  },
+};
+
+// Test 9: Performance Test
+export const Performance: Story = {
+  args: {
+    variant: 'vertical',
+    maxWidth: 'lg',
+    spacing: 'sm',
+    children: (
+      <>
+        <Typography variant="h6" mb={2}>
+          Performance Test - Many Fields
+        </Typography>
+        {Array.from({ length: 10 }, (_, i) => (
+          <FormField key={i} name={`field${i}`} label={`Field ${i + 1}`}>
+            <TextField
+              placeholder={`Field ${i + 1}`}
+              fullWidth
+              inputProps={{ 'data-testid': `field-${i}` }}
+            />
+          </FormField>
+        ))}
+      </>
+    ),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Check that all fields are rendered
+    for (let i = 0; i < 10; i++) {
+      const field = canvas.getByTestId(`field-${i}`);
+      expect(field).toBeInTheDocument();
+    }
+  },
+};
+
+// Test 10: Integration Test
+export const Integration: Story = {
+  args: {
+    variant: 'vertical',
+    maxWidth: 'md',
+    spacing: 'md',
+    onSubmit: fn(),
+    children: (
+      <>
+        <Typography variant="h6" mb={2}>
+          Complete Form Integration
+        </Typography>
+        <FormField name="username" label="Username" required>
+          <TextField
+            placeholder="Enter username"
+            fullWidth
+            inputProps={{ 'data-testid': 'username' }}
+          />
+        </FormField>
+        <FormField name="email" label="Email" required>
+          <TextField
+            type="email"
+            placeholder="Enter email"
+            fullWidth
+            inputProps={{ 'data-testid': 'email' }}
+          />
+        </FormField>
+        <FormField name="bio" label="Bio">
+          <TextField
+            multiline
+            rows={4}
+            placeholder="Tell us about yourself"
+            fullWidth
+            inputProps={{ 'data-testid': 'bio' }}
+          />
+        </FormField>
+        <Button variant="contained" type="submit" fullWidth data-testid="submit">
+          Submit Form
+        </Button>
+      </>
+    ),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Fill out the form
+    const username = canvas.getByTestId('username');
+    const email = canvas.getByTestId('email');
+    const bio = canvas.getByTestId('bio');
+    const submit = canvas.getByTestId('submit');
+
+    await userEvent.type(username, 'testuser');
+    await userEvent.type(email, 'test@example.com');
+    await userEvent.type(bio, 'This is my bio');
+
+    // Verify values
+    await waitFor(() => {
+      expect(username).toHaveValue('testuser');
+      expect(email).toHaveValue('test@example.com');
+      expect(bio).toHaveValue('This is my bio');
+    });
+
+    // Submit button should be enabled
+    expect(submit).toBeEnabled();
   },
 };

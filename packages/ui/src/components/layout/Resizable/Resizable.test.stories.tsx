@@ -732,8 +732,8 @@ export const IntegrationTest: Story = {
 
     await step('Panel dimensions are displayed', async () => {
       const widthElements = canvas.getAllByText(/Width:\s*200\s*px/);
-      // DELIBERATELY FAILING TEST - expecting 3 panels but only 2 exist
-      await expect(widthElements.length).toBe(3); // This will FAIL - only 2 panels exist
+      // Fixed: Only 2 panels (left and right) show width
+      await expect(widthElements.length).toBe(2);
       await expect(canvas.getByText(/Height:\s*100\s*px/)).toBeInTheDocument();
     });
 

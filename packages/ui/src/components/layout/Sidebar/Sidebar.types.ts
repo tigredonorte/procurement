@@ -1,8 +1,8 @@
-import { ReactNode } from 'react';
+import { ReactNode, HTMLAttributes } from 'react';
 
 export type SidebarVariant = 'fixed' | 'collapsible' | 'floating' | 'glass';
 
-export interface SidebarProps {
+export interface SidebarProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   variant?: SidebarVariant;
   open?: boolean;
@@ -13,14 +13,14 @@ export interface SidebarProps {
   className?: string;
 }
 
-export interface SidebarHeaderProps {
+export interface SidebarHeaderProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
 }
 
-export interface SidebarContentProps {
+export interface SidebarContentProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
 }
 
-export interface SidebarFooterProps {
+export interface SidebarFooterProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
 }

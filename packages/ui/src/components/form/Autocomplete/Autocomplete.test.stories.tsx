@@ -179,6 +179,10 @@ export const GhostTextArrowRight: Story = {
     await userEvent.click(input);
     await userEvent.type(input, 'ch');
 
+    // Wait for listbox to appear first
+    const listbox = await canvas.findByRole('listbox');
+    await expect(listbox).toBeInTheDocument();
+
     // Verify suggestion appears
     const options = canvas.getAllByRole('option');
     await expect(options).toHaveLength(1);
@@ -507,6 +511,10 @@ export const EdgeCases: Story = {
 
     // Test empty string search
     await userEvent.type(input, ' ');
+
+    // Wait for listbox to appear
+    const listbox = await canvas.findByRole('listbox');
+    await expect(listbox).toBeInTheDocument();
 
     // Should handle empty and special characters
     const options = canvas.getAllByRole('option');

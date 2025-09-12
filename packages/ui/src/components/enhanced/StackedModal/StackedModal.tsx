@@ -216,7 +216,7 @@ const useFocusTrap = (ref: React.RefObject<HTMLElement>, isActive: boolean, disa
     const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
 
     // Focus first element
-    window.window.setTimeout(() => firstElement?.focus(), 100);
+    window.setTimeout(() => firstElement?.focus(), 100);
 
     const handleTabKey = (e: globalThis.KeyboardEvent) => {
       if (e.key !== 'Tab') return;
@@ -499,8 +499,8 @@ export const StackedModal: FC<StackedModalProps> = ({
       setShowSkeleton(true);
     } else {
       // Delay hiding skeleton for smooth transition
-      const timer = window.window.setTimeout(() => setShowSkeleton(false), 200);
-      return () => window.window.clearTimeout(timer);
+      const timer = window.setTimeout(() => setShowSkeleton(false), 200);
+      return () => window.clearTimeout(timer);
     }
   }, [loading]);
 
@@ -519,17 +519,17 @@ export const StackedModal: FC<StackedModalProps> = ({
       previousRoleRef.current = modalRole;
       setModalRole(newRole);
 
-      window.window.setTimeout(() => setIsAnimating(false), 300);
+      window.setTimeout(() => setIsAnimating(false), 300);
     }
   }, [stack, modalId, open, pushModal, modalRole, getModalRole, isModalInStack]);
 
   // Clean up on close
   useEffect(() => {
     if (!open && isModalInStack(modalId)) {
-      const timer = window.window.setTimeout(() => {
+      const timer = window.setTimeout(() => {
         popModal(modalId);
       }, 300);
-      return () => window.window.clearTimeout(timer);
+      return () => window.clearTimeout(timer);
     }
   }, [open, modalId, popModal, isModalInStack]);
 
@@ -801,6 +801,6 @@ export const DemoApp: FC = () => {
   );
 };
 
-// Re-export everything for convenience
-export { ModalStackProvider as StackedModalProvider } from './StackedModal';
-export { useModalStack as useStackedModal } from './StackedModal';
+// Create aliases for convenience
+export { ModalStackProvider as StackedModalProvider };
+export { useModalStack as useStackedModal };

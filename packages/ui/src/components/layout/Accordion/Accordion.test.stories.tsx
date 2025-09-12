@@ -386,6 +386,10 @@ export const FocusManagement: Story = {
       await userEvent.tab();
       const cancelAction = canvas.getByTestId('action-cancel');
       await expect(cancelAction).toHaveFocus();
+
+      await userEvent.tab();
+      const saveAction = canvas.getByTestId('action-save');
+      await expect(saveAction).toHaveFocus();
     });
 
     await step('Focus restoration after collapse', async () => {
@@ -1062,7 +1066,7 @@ export const Integration: Story = {
               <AccordionSummary expandIcon={<ExpandMore />}>
                 <Typography>Panel 2: Dynamic Content</Typography>
               </AccordionSummary>
-              <AccordionDetails>
+              <AccordionDetails data-testid="panel2-content">
                 <Stack spacing={1}>
                   {!data.loaded ? (
                     <Typography data-testid="loading-text">Loading content...</Typography>

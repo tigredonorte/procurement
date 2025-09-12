@@ -48,6 +48,7 @@ export const Menubar: React.FC<MenubarProps> = ({
   onClick,
   onFocus,
   onBlur,
+  'data-testid': dataTestId,
 }) => {
   const theme = useTheme();
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
@@ -59,7 +60,12 @@ export const Menubar: React.FC<MenubarProps> = ({
   };
 
   const handleMenuClose = () => {
+    const previousMenu = activeMenu;
     setActiveMenu(null);
+    // Return focus to the button that opened the menu
+    if (previousMenu && menuRefs.current[previousMenu]) {
+      menuRefs.current[previousMenu].focus();
+    }
   };
 
   const handleItemClick = (item: MenubarItem) => {
@@ -233,6 +239,7 @@ export const Menubar: React.FC<MenubarProps> = ({
     return (
       <Box key={item.id}>
         <Button
+          data-testid={`menubar-button-${item.id}`}
           onClick={(e) => {
             if (hasChildren) {
               handleMenuOpen(item.id, e.currentTarget);
@@ -240,9 +247,27 @@ export const Menubar: React.FC<MenubarProps> = ({
               handleItemClick(item);
             }
           }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              if (hasChildren) {
+                handleMenuOpen(item.id, e.currentTarget);
+              } else {
+                handleItemClick(item);
+              }
+            }
+          }}
+          onMouseDown={(e) => {
+            // Prevent default to maintain focus
+            e.preventDefault();
+          }}
+          onFocus={onFocus}
+          onBlur={onBlur}
           disabled={item.disabled || disabled}
           startIcon={item.icon}
           endIcon={hasChildren ? <KeyboardArrowDownIcon /> : null}
+          aria-haspopup={hasChildren ? 'menu' : undefined}
+          aria-expanded={hasChildren ? activeMenu === item.id : undefined}
           sx={{
             color: 'inherit',
             textTransform: 'none',
@@ -257,6 +282,7 @@ export const Menubar: React.FC<MenubarProps> = ({
             anchorEl={menuRefs.current[item.id]}
             open={activeMenu === item.id}
             onClose={handleMenuClose}
+            autoFocus
             PaperProps={{
               sx: {
                 minWidth: 200,
@@ -294,6 +320,8 @@ export const Menubar: React.FC<MenubarProps> = ({
 
   const content = (
     <Toolbar
+      role="toolbar"
+      aria-label="Main navigation"
       sx={{
         ...getVariantStyles(),
         width: fullWidth ? '100%' : 'auto',
@@ -301,8 +329,6 @@ export const Menubar: React.FC<MenubarProps> = ({
         alignItems: orientation === 'vertical' ? 'flex-start' : 'center',
         gap: 1,
       }}
-      onFocus={onFocus}
-      onBlur={onBlur}
     >
       {logo && <Box sx={{ mr: 2, display: 'flex', alignItems: 'center' }}>{logo}</Box>}
 
@@ -345,11 +371,13 @@ export const Menubar: React.FC<MenubarProps> = ({
     <AppBar
       position={sticky ? 'sticky' : 'static'}
       className={className}
+      data-testid={dataTestId}
       sx={{
         ...getVariantStyles(),
         ...style,
       }}
       elevation={0}
+      component="header"
     >
       {content}
     </AppBar>

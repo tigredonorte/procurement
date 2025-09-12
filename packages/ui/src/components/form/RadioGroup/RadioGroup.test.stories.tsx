@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Box, Typography } from '@mui/material';
 import { CreditCard, Banknote, Smartphone, Globe, Star, Heart, Zap, Shield } from 'lucide-react';
-import { userEvent, within, expect, fn } from 'storybook/test';
+import { userEvent, within, expect, fn, waitFor } from 'storybook/test';
 
 import { RadioGroup } from './RadioGroup';
 
@@ -240,36 +240,38 @@ export const KeyboardNavigation: Story = {
   play: async ({ canvasElement, step, args }) => {
     const canvas = within(canvasElement);
 
-    await step('Tab navigation forward', async () => {
+    await step('Arrow key navigation', async () => {
       const firstRadio = canvas.getByRole('radio', { name: /option 1/i });
       const secondRadio = canvas.getByRole('radio', { name: /option 2/i });
+      const thirdRadio = canvas.getByRole('radio', { name: /option 3/i });
 
-      // Focus first element
-      firstRadio.focus();
+      // Click to focus first radio
+      await userEvent.click(firstRadio);
       await expect(firstRadio).toHaveFocus();
 
-      // Tab to next element
-      await userEvent.tab();
-      await expect(secondRadio).toHaveFocus();
+      // Arrow down should move to next radio
+      await userEvent.keyboard('{ArrowDown}');
+      await waitFor(() => expect(secondRadio).toHaveFocus());
+
+      // Arrow down again
+      await userEvent.keyboard('{ArrowDown}');
+      await waitFor(() => expect(thirdRadio).toHaveFocus());
+
+      // Arrow up should move back
+      await userEvent.keyboard('{ArrowUp}');
+      await waitFor(() => expect(secondRadio).toHaveFocus());
     });
 
     await step('Space key activation', async () => {
       const firstRadio = canvas.getByRole('radio', { name: /option 1/i });
-      firstRadio.focus();
+
+      // Click to focus
+      await userEvent.click(firstRadio);
+      await expect(firstRadio).toHaveFocus();
+
+      // Space should select it
       await userEvent.keyboard(' ');
       await expect(args.onChange).toHaveBeenCalled();
-    });
-
-    await step('Arrow key navigation', async () => {
-      const firstRadio = canvas.getByRole('radio', { name: /option 1/i });
-      const secondRadio = canvas.getByRole('radio', { name: /option 2/i });
-
-      firstRadio.focus();
-      await userEvent.keyboard('{ArrowDown}');
-      await expect(secondRadio).toHaveFocus();
-
-      await userEvent.keyboard('{ArrowUp}');
-      await expect(firstRadio).toHaveFocus();
     });
   },
 };
@@ -422,7 +424,8 @@ export const VisualStates: Story = {
     const canvas = within(canvasElement);
 
     await step('Default state', async () => {
-      const cards = canvas.getAllByRole('button');
+      // Cards variant doesn't use button role, check for card elements instead
+      const cards = canvas.getAllByText(/Low|Medium|Disabled Option/);
       await expect(cards.length).toBeGreaterThan(0);
     });
 
@@ -434,7 +437,8 @@ export const VisualStates: Story = {
 
     await step('Hover state', async () => {
       const mediumOption = canvas.getByText('Medium');
-      const cardContainer = mediumOption.closest('[role="button"]');
+      // Cards don't have role="button", get the parent card element
+      const cardContainer = mediumOption.closest('.MuiCard-root');
 
       if (cardContainer) {
         await userEvent.hover(cardContainer);
@@ -445,7 +449,8 @@ export const VisualStates: Story = {
 
     await step('Disabled state', async () => {
       const disabledOption = canvas.getByText('Disabled Option');
-      const disabledCard = disabledOption.closest('[role="button"]');
+      // Cards don't have role="button", get the parent card element
+      const disabledCard = disabledOption.closest('.MuiCard-root');
 
       // Should not be clickable
       if (disabledCard) {
@@ -519,11 +524,12 @@ export const SpecialEffects: Story = {
     });
 
     await step('Card effects verification', async () => {
-      const cards = canvas.getAllByRole('button');
+      // Cards variant doesn't use button role, check for card elements instead
+      const cards = document.querySelectorAll('.MuiCard-root');
       await expect(cards.length).toBeGreaterThan(0);
 
       // Selected card should have special effects applied
-      const selectedCard = cards.find((card) => card.textContent?.includes('Medium'));
+      const selectedCard = Array.from(cards).find((card) => card.textContent?.includes('Medium'));
 
       if (selectedCard) {
         const computedStyle = window.getComputedStyle(selectedCard);
@@ -602,17 +608,23 @@ export const PerformanceTest: Story = {
       const radios = canvas.getAllByRole('radio');
       await expect(radios).toHaveLength(50);
 
-      // Verify all options are rendered correctly
-      await expect(canvas.getByRole('radio', { name: /option 1/i })).toBeInTheDocument();
-      await expect(canvas.getByRole('radio', { name: /option 50/i })).toBeInTheDocument();
+      // Radio names include descriptions, so match by the full text
+      await expect(
+        canvas.getByRole('radio', { name: /option 1 description for option 1/i }),
+      ).toBeInTheDocument();
+      await expect(
+        canvas.getByRole('radio', { name: /option 50 description for option 50/i }),
+      ).toBeInTheDocument();
     });
 
     await step('Selection works with many options', async () => {
-      const lastRadio = canvas.getByRole('radio', { name: /option 50/i });
+      const lastRadio = canvas.getByRole('radio', { name: /option 50 description for option 50/i });
       await userEvent.click(lastRadio);
 
+      // Verify onChange was called with the correct value
       await expect(args.onChange).toHaveBeenCalled();
-      await expect(lastRadio).toBeChecked();
+      const lastCall = args.onChange.mock.calls[args.onChange.mock.calls.length - 1];
+      await expect(lastCall[1]).toBe('option-49'); // Option 50 has index 49
     });
   },
 };

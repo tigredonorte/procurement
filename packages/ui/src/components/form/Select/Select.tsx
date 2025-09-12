@@ -28,7 +28,9 @@ const pulseAnimation = keyframes`
   }
 `;
 
-const StyledFormControl = styled(FormControl)<{
+const StyledFormControl = styled(FormControl, {
+  shouldForwardProp: (prop) => prop !== 'customVariant' && prop !== 'glow' && prop !== 'pulse',
+})<{
   customVariant?: SelectProps['variant'];
   glow?: boolean;
   pulse?: boolean;
@@ -168,6 +170,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(
   ) => {
     const labelId = React.useId();
     const helperTextId = React.useId();
+    const selectId = React.useId();
 
     // Filter out custom props that shouldn't be passed to MUI components
     const muiSelectProps = props;
@@ -187,11 +190,12 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(
         data-testid={dataTestId}
       >
         {label && (
-          <InputLabel id={labelId} htmlFor={labelId}>
+          <InputLabel id={labelId} htmlFor={selectId}>
             {label}
           </InputLabel>
         )}
         <StyledSelect
+          id={selectId}
           labelId={label ? labelId : undefined}
           label={label}
           displayEmpty={!!placeholder}

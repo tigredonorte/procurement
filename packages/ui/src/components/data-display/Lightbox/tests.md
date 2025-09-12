@@ -1,4 +1,4 @@
-# Lightbox Component - Test Status [omega-960]
+# Lightbox Component - Test Status [omega-9004]
 
 ## Overview
 
