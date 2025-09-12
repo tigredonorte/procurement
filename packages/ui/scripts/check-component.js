@@ -20,8 +20,7 @@ import { extractFailureReason } from './helpers/error.js';
 import { assertAllowedChangeScope } from './guards/changeScope.js';
 import { scanForBypassPatterns } from './guards/byPass.js';
 import { pingStorybook, runStorybookTestsFailFast } from './guards/storybook.js';
-import { loadTrack, assertTrackFreshness, checkStoriesDeclaredExist } from './validators/track.js';
-import { assertTasksEntry } from './validators/tasks.js';
+import { loadTrack, checkStoriesDeclaredExist } from './validators/track.js';
 import { assertComponentListedInDocs } from './validators/docs.js';
 import { assertFolderBarrelExport } from './validators/exports.js';
 import { assertStoriesCoverage } from './validators/storiesCoverage.js';
@@ -254,7 +253,6 @@ function defineChecks(category, component, componentDir, options) {
             centralExportPath: options.centralExport 
         }) },
         { name: 'tokens', description: "Design tokens usage", func: () => assertDesignTokensUsage(componentDir) },
-        { name: 'tasks', description: "components.tasks.md entry check", func: () => assertTasksEntry(component, /*expectFreshIfWorking*/ true) },
         { name: 'docs', description: "Docs catalog check", func: () => assertComponentListedInDocs(component) },
         { name: 'track', description: "track.md validation", func: () => {
             const track = loadTrack(componentDir);

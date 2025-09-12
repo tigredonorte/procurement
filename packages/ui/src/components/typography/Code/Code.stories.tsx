@@ -478,7 +478,7 @@ export const ColorThemes: Story = {
           <Typography variant="subtitle2" gutterBottom>
             Light Theme
           </Typography>
-          <Code variant="block" language="javascript" theme="light">
+          <Code variant="block" language="javascript">
             {sampleCode}
           </Code>
         </Box>
@@ -487,7 +487,7 @@ export const ColorThemes: Story = {
           <Typography variant="subtitle2" gutterBottom>
             Dark Theme
           </Typography>
-          <Code variant="block" language="javascript" theme="dark">
+          <Code variant="highlight" language="javascript">
             {sampleCode}
           </Code>
         </Box>
@@ -496,7 +496,7 @@ export const ColorThemes: Story = {
           <Typography variant="subtitle2" gutterBottom>
             GitHub Theme
           </Typography>
-          <Code variant="block" language="javascript" theme="github">
+          <Code variant="block" language="javascript">
             {sampleCode}
           </Code>
         </Box>
@@ -505,7 +505,7 @@ export const ColorThemes: Story = {
           <Typography variant="subtitle2" gutterBottom>
             Monokai Theme
           </Typography>
-          <Code variant="block" language="javascript" theme="monokai">
+          <Code variant="block" language="javascript">
             {sampleCode}
           </Code>
         </Box>
@@ -592,7 +592,7 @@ yarn add @company/ui-components`}
         <Typography paragraph>
           Import and use the <Code variant="inline">Button</Code> component:
         </Typography>
-        <Code variant="block" language="javascript" showLineNumbers copyable>
+        <Code variant="block" language="javascript" lineNumbers copyable>
           {`import { Button } from '@company/ui-components';
 
 function App() {

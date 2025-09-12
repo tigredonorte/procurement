@@ -117,6 +117,8 @@ export const Autocomplete = <T = AutocompleteOption,>({
   const [composition, setComposition] = useState(false);
   const [filteredSuggestions, setFilteredSuggestions] = useState<T[]>(suggestions);
   const [isInputFocused, setIsInputFocused] = useState(false);
+  const [justCompletedGhost, setJustCompletedGhost] = useState(false);
+  const [userClosedDropdown, setUserClosedDropdown] = useState(false);
 
   // Refs
   const inputRef = useRef<HTMLInputElement>(null);
@@ -180,13 +182,32 @@ export const Autocomplete = <T = AutocompleteOption,>({
     setFilteredSuggestions(filtered);
 
     // Open dropdown immediately when we have filtered results and input is focused
-    if (filtered.length > 0 && value.trim() && isInputFocused && !composition) {
+    // but not if we just completed a ghost text completion or user explicitly closed it
+    if (
+      filtered.length > 0 &&
+      value.trim() &&
+      isInputFocused &&
+      !composition &&
+      !justCompletedGhost &&
+      !userClosedDropdown
+    ) {
       setOpen(true);
       if (activeIndex === -1) {
         setActiveIndex(0);
       }
     }
-  }, [suggestions, value, async, getLabel, matchMode, isInputFocused, composition, activeIndex]);
+  }, [
+    suggestions,
+    value,
+    async,
+    getLabel,
+    matchMode,
+    isInputFocused,
+    composition,
+    activeIndex,
+    justCompletedGhost,
+    userClosedDropdown,
+  ]);
 
   // Ghost text computation using Filter.tsx proven pattern
   useEffect(() => {
@@ -220,6 +241,16 @@ export const Autocomplete = <T = AutocompleteOption,>({
       setActiveIndex(-1);
     }
   }, [isLoading, value, disabled]);
+
+  // Reset ghost completion flag after a short delay
+  useEffect(() => {
+    if (justCompletedGhost) {
+      const timer = setTimeout(() => {
+        setJustCompletedGhost(false);
+      }, 50); // Short delay to allow the filtering effect to run once with the flag set
+      return () => clearTimeout(timer);
+    }
+  }, [justCompletedGhost]);
 
   // Ghost text completion is now handled directly in keyboard handler
 
@@ -264,6 +295,7 @@ export const Autocomplete = <T = AutocompleteOption,>({
           event.preventDefault();
           if (!open && filteredSuggestions.length > 0) {
             setOpen(true);
+            setUserClosedDropdown(false); // Reset when user explicitly opens with arrow
           }
           setActiveIndex((prev) => {
             const max = Math.min(filteredSuggestions.length - 1, maxVisibleItems - 1);
@@ -294,6 +326,7 @@ export const Autocomplete = <T = AutocompleteOption,>({
           if (ghost && isInputFocused && filteredSuggestions.length > 0) {
             event.preventDefault();
             const newValue = value + ghost;
+            setJustCompletedGhost(true);
             setInputValue(newValue);
             debouncedOnChange(newValue);
             setGhost('');
@@ -317,6 +350,7 @@ export const Autocomplete = <T = AutocompleteOption,>({
             });
             if (firstSuggestion) {
               const newValue = getLabel(firstSuggestion); // Use complete original suggestion to preserve case
+              setJustCompletedGhost(true);
               setInputValue(newValue);
               debouncedOnChange(newValue);
             }
@@ -331,6 +365,7 @@ export const Autocomplete = <T = AutocompleteOption,>({
           event.preventDefault();
           setOpen(false);
           setActiveIndex(-1);
+          setUserClosedDropdown(true);
           if (event.detail === 2) {
             // Double escape clears value
             setInputValue('');
@@ -383,6 +418,7 @@ export const Autocomplete = <T = AutocompleteOption,>({
       setInputValue(newValue);
       debouncedOnChange(newValue);
       setActiveIndex(-1);
+      setUserClosedDropdown(false); // Reset when user starts typing
     },
     [debouncedOnChange],
   );
@@ -410,6 +446,7 @@ export const Autocomplete = <T = AutocompleteOption,>({
   const handleClickAway = useCallback(() => {
     setOpen(false);
     setActiveIndex(-1);
+    setUserClosedDropdown(true); // Track that user closed it via click away
   }, []);
 
   // Scroll active item into view

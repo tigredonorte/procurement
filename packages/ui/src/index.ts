@@ -21,7 +21,7 @@ export * from './components/navigation/ContextMenu';
 export * from './components/navigation/DropdownMenu';
 export * from './components/navigation/NavigationMenu';
 export * from './components/navigation/Pagination';
-export * from './components/navigation/ScrollArea';
+export * from './components/layout/ScrollArea';
 export * from './components/navigation/Tabs';
 
 // Layout Components (from 08-core-components.md specification)

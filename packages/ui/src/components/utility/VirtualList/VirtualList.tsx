@@ -15,6 +15,8 @@ export const VirtualList: React.FC<VirtualListProps> = ({
   onScroll,
   className,
   style,
+  'data-testid': dataTestId,
+  'aria-label': ariaLabel,
 }) => {
   const [scrollTop, setScrollTop] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -153,6 +155,9 @@ export const VirtualList: React.FC<VirtualListProps> = ({
     <Box
       ref={containerRef}
       className={className}
+      data-testid={dataTestId}
+      role="list"
+      aria-label={ariaLabel}
       sx={{
         height,
         width,
@@ -187,6 +192,8 @@ export const VirtualGrid: React.FC<VirtualGridProps> = ({
   onScroll,
   className,
   style,
+  'data-testid': dataTestId,
+  'aria-label': ariaLabel,
 }) => {
   const [scrollTop, setScrollTop] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -258,6 +265,9 @@ export const VirtualGrid: React.FC<VirtualGridProps> = ({
     <Box
       ref={containerRef}
       className={className}
+      data-testid={dataTestId}
+      role="grid"
+      aria-label={ariaLabel}
       sx={{
         height,
         width,

@@ -149,41 +149,37 @@ export const FormInteraction: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const messageInput = canvas.getByTestId('message-input');
+
+    // Get input and button
+    const messageInput = canvas.getByLabelText('Toast Message') as HTMLInputElement;
     const submitButton = canvas.getByTestId('submit-form');
 
-    // Ensure button starts disabled
+    // Initially button should be disabled (no message)
     expect(submitButton).toBeDisabled();
 
-    // Focus and type in the input field
-    await userEvent.click(messageInput);
+    // Type message to enable button
     await userEvent.type(messageInput, 'Test form message');
 
-    // Wait for button to become enabled due to state update
-    await waitFor(
-      () => {
-        expect(submitButton).not.toBeDisabled();
-      },
-      { timeout: 3000 },
-    );
+    // Wait a bit for React state to update
+    await new Promise((resolve) => setTimeout(resolve, 100));
 
-    // Now click the enabled button
+    // Button should now be enabled
+    expect(submitButton).not.toBeDisabled();
+
+    // Click to submit
     await userEvent.click(submitButton);
 
+    // Wait for toast to appear
     await waitFor(() => {
       const toastElement = document.querySelector('[role="alert"]');
       expect(toastElement).toBeInTheDocument();
+      expect(toastElement).toHaveTextContent('Test form message');
     });
 
-    // Test action button in toast
-    await waitFor(() => {
-      const actionButton =
-        document.querySelector('button:contains("Undo")') ||
-        document.querySelector('[role="alert"] button');
-      if (actionButton) {
-        expect(actionButton).toBeInTheDocument();
-      }
-    });
+    // Verify action button exists
+    const actionButton = document.querySelector('[role="alert"] button:not([aria-label="close"])');
+    expect(actionButton).toBeInTheDocument();
+    expect(actionButton).toHaveTextContent('Undo');
   },
 };
 

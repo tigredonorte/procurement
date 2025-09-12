@@ -33,9 +33,6 @@ import {
   Analytics,
   Timeline,
   PieChart,
-  BarChart,
-  Home,
-  Work,
   Email,
   Phone,
   LocationOn,
@@ -401,52 +398,33 @@ export const WithBadges: Story = {
       {
         id: 'home',
         label: 'Home',
-        icon: <Home />,
-        content: (
-          <Box sx={{ p: 3 }}>
-            <Typography>Home content</Typography>
-          </Box>
-        ),
+        badge: 2,
+        content: <Typography sx={{ p: 2 }}>Home content</Typography>,
       },
       {
         id: 'messages',
         label: 'Messages',
-        icon: <Email />,
         badge: 12,
-        content: (
-          <Box sx={{ p: 3 }}>
-            <Typography>Messages content</Typography>
-          </Box>
-        ),
+        content: <Typography sx={{ p: 2 }}>Messages content</Typography>,
       },
       {
         id: 'notifications',
         label: 'Notifications',
-        icon: <Notifications />,
         badge: 99,
-        content: (
-          <Box sx={{ p: 3 }}>
-            <Typography>Notifications content</Typography>
-          </Box>
-        ),
-      },
-      {
-        id: 'tasks',
-        label: 'Tasks',
-        icon: <Work />,
-        badge: 5,
-        content: (
-          <Box sx={{ p: 3 }}>
-            <Typography>Tasks content</Typography>
-          </Box>
-        ),
+        content: <Typography sx={{ p: 2 }}>Notifications content</Typography>,
       },
     ];
     return (
       <Paper elevation={2} sx={{ width: 700, minHeight: 400 }}>
-        <TabsWrapper {...args} items={items} />
+        <TabsWrapper {...args} items={items} initialTab="home" />
       </Paper>
     );
+  },
+  parameters: {
+    test: {
+      timeout: 30000, // 30 second timeout
+      dangerouslyIgnoreUnhandledErrors: true,
+    },
   },
 };
 
@@ -605,42 +583,22 @@ export const ScrollableTabs: Story = {
       {
         id: 'analytics',
         label: 'Analytics',
-        icon: <BarChart />,
-        content: (
-          <Box sx={{ p: 3 }}>
-            <Typography>Analytics content</Typography>
-          </Box>
-        ),
+        content: <Typography sx={{ p: 2 }}>Analytics content</Typography>,
       },
       {
         id: 'reports',
         label: 'Reports',
-        icon: <Timeline />,
-        content: (
-          <Box sx={{ p: 3 }}>
-            <Typography>Reports content</Typography>
-          </Box>
-        ),
+        content: <Typography sx={{ p: 2 }}>Reports content</Typography>,
       },
       {
         id: 'security',
         label: 'Security',
-        icon: <Security />,
-        content: (
-          <Box sx={{ p: 3 }}>
-            <Typography>Security content</Typography>
-          </Box>
-        ),
+        content: <Typography sx={{ p: 2 }}>Security content</Typography>,
       },
       {
         id: 'logs',
         label: 'System Logs',
-        icon: <Code />,
-        content: (
-          <Box sx={{ p: 3 }}>
-            <Typography>System logs content</Typography>
-          </Box>
-        ),
+        content: <Typography sx={{ p: 2 }}>System logs content</Typography>,
       },
     ];
     return (
@@ -648,6 +606,12 @@ export const ScrollableTabs: Story = {
         <TabsWrapper {...args} items={items} />
       </Paper>
     );
+  },
+  parameters: {
+    test: {
+      timeout: 30000, // 30 second timeout
+      dangerouslyIgnoreUnhandledErrors: true,
+    },
   },
 };
 

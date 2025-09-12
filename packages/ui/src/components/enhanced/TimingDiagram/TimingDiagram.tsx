@@ -368,7 +368,7 @@ export const TimingDiagram: FC<TimingDiagramProps> = ({
   );
 
   return (
-    <DiagramContainer elevation={2} role="region" aria-label="Timing diagram">
+    <DiagramContainer elevation={2} role="region" aria-label="Timing diagram" tabIndex={0}>
       <Typography variant="h6" fontWeight="bold" gutterBottom>
         Request Timing
       </Typography>
