@@ -117,7 +117,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Test
-        # TODO: Remove continue-on-error once pre-existing test failures in
-        # @procurement/ai-script-checks are resolved
+        # NOTE: continue-on-error is intentional — @procurement/ai-script-checks
+        # has pre-existing test failures unrelated to this PR. Remove once fixed.
         continue-on-error: true
         run: pnpm turbo run test

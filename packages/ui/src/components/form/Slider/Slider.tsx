@@ -289,7 +289,7 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(
       glow = false,
       glass = false,
       gradient = false,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars -- reserved for future thumb customization
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars -- intentionally destructured to exclude from ...props spread
       thumbIcon,
       showMarks = false,
       customMarks,

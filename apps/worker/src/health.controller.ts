@@ -24,7 +24,7 @@ export class HealthController {
       status: 'ok',
       timestamp: new Date().toISOString(),
       service: 'worker',
-      version: getVersion(), // reads from package.json at runtime
+      version: getVersion(), // loaded from package.json via readFileSync
     };
   }
 }
