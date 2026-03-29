@@ -289,7 +289,7 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(
       glow = false,
       glass = false,
       gradient = false,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars -- reserved for future thumb customization
       thumbIcon,
       showMarks = false,
       customMarks,
@@ -302,8 +302,8 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(
     ref,
   ) => {
     const displayValue = Array.isArray(value)
-      ? `${formatValue ? formatValue(value[0] as number) : value[0]}${unit} - ${formatValue ? formatValue(value[1] as number) : value[1]}${unit}`
-      : `${formatValue ? formatValue(value as number) : value}${unit}`;
+      ? `${formatValue ? formatValue(value[0] as number) : (value[0] ?? 0)}${unit} - ${formatValue ? formatValue(value[1] as number) : (value[1] ?? 0)}${unit}`
+      : `${formatValue ? formatValue(value as number) : (value ?? 0)}${unit}`;
 
     const marks =
       variant === 'marks' || showMarks

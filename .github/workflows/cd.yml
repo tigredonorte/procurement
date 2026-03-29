@@ -83,7 +83,7 @@ jobs:
           if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
             echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
           else
-            echo "tag=main" >> $GITHUB_OUTPUT
+            echo "tag=main" >> $GITHUB_OUTPUT # default to branch name for non-tag pushes
           fi
 
       - name: Deploy via SSH

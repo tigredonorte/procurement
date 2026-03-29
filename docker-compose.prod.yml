@@ -116,6 +116,8 @@ services:
     environment:
       - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN}
       - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
+    # Using start-dev until external DB and hostname are configured.
+    # Switch to: command: start --hostname=<domain> --db=postgres --db-url=<url>
     command: start-dev
     restart: unless-stopped
 
