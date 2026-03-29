@@ -6,7 +6,7 @@ export default defineConfig(() => {
 
   const entry = component
     ? globSync(`src/components/**/${component}/index.{ts,tsx}`)
-    : ['src/index.ts'];
+    : ['src/index.ts']; // default entry point
 
   if (component && entry.length === 0) {
     // eslint-disable-next-line no-console

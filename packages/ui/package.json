@@ -20,6 +20,7 @@
     "build-storybook": "storybook build",
     "lint": "eslint .",
     "type-check": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
     "check:component": "node scripts/check-component.js",
     "check:components:batch": "node scripts/batch-component-check.js"
   },

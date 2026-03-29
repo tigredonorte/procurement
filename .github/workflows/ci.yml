@@ -85,15 +85,6 @@ jobs:
       - name: Build
         run: pnpm turbo run build
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-artifacts
-          path: |
-            apps/*/dist
-            packages/*/dist
-          retention-days: 1
-
   test:
     name: Test
     runs-on: ubuntu-latest
