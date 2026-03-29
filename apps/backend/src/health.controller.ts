@@ -2,18 +2,18 @@ import { Controller, Get } from '@nestjs/common';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
-let cachedVersion = '0.0.0';
+let cachedVersion: string | null = null;
 
 function getVersion(): string {
-  if (cachedVersion === '0.0.0') {
+  if (cachedVersion === null) {
     try {
       const pkg = JSON.parse(readFileSync(join(__dirname, '..', 'package.json'), 'utf-8'));
       cachedVersion = pkg.version ?? '0.0.0';
     } catch {
-      // fallback already set
+      cachedVersion = '0.0.0';
     }
   }
-  return cachedVersion;
+  return cachedVersion!;
 }
 
 @Controller('health')

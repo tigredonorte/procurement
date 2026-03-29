@@ -116,7 +116,7 @@ services:
     environment:
       - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN}
       - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
-    command: start
+    command: start-dev
     restart: unless-stopped
 
 volumes:
