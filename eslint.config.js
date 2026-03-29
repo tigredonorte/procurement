@@ -72,6 +72,13 @@ export default [
     },
   },
   {
-    ignores: ['**/dist/**', '**/build/**', '**/coverage/**', '**/.husky/**'],
+    ignores: [
+      '**/dist/**',
+      '**/build/**',
+      '**/coverage/**',
+      '**/.husky/**',
+      '**/tsup.config.bundled_*',
+      '**/storybook-static/**',
+    ],
   },
 ];

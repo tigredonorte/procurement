@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev": "tsc -w -p tsconfig.json",
+    "dev": "tsc -w -p tsconfig.json & node --watch dist/main.js",
     "build": "tsc -p tsconfig.json",
     "start": "node dist/main.js",
     "lint": "eslint src --ext .ts",
