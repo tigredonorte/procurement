@@ -1,0 +1,333 @@
+version: '3.8'
+
+# Docker Swarm stack for the Procurement monorepo.
+#
+# Key differences from docker-compose.prod.yml:
+#   - No `build:` directives — Swarm only uses pre-built images from ghcr.io
+#   - `depends_on:` is replaced by restart_policy + healthcheck (Swarm ignores depends_on)
+#   - Sensitive values reference Docker secrets instead of plain env vars
+#   - Every service has a `deploy:` block for replica count, rolling updates, and restart policy
+#   - Portainer and Traefik are added as infrastructure services
+#
+# One-time secret creation on the Swarm manager (run scripts/setup-swarm.sh):
+#   echo "value" | docker secret create procurement_mongodb_username -
+#   echo "value" | docker secret create procurement_mongodb_password -
+#   echo "value" | docker secret create procurement_keycloak_admin -
+#   echo "value" | docker secret create procurement_keycloak_admin_password -
+#   echo "value" | docker secret create procurement_keycloak_client_secret -
+#
+# Deploy:
+#   docker stack deploy -c docker-stack.yml procurement
+
+x-default-deploy: &default-deploy
+  # Shared deploy defaults — override per service as needed
+  restart_policy:
+    condition: on-failure
+    delay: 5s
+    max_attempts: 3
+    window: 120s
+  update_config:
+    # start-first ensures the new container is healthy before the old one stops
+    order: start-first
+    failure_action: rollback
+    delay: 10s
+    parallelism: 1
+  rollback_config:
+    order: stop-first
+    failure_action: pause
+
+services:
+  # ---------------------------------------------------------------------------
+  # Traefik — reverse proxy and TLS termination
+  # Listens on 80/443, routes traffic to frontend and backend by hostname/path.
+  # ---------------------------------------------------------------------------
+  traefik:
+    image: traefik:v3.0
+    command:
+      # Use the Docker Swarm provider — reads labels from services
+      - "--providers.swarm=true"
+      - "--providers.swarm.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      # Automatic Let's Encrypt TLS — replace the email placeholder
+      - "--certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL:-admin@example.com}"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+      - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
+      # Redirect all HTTP → HTTPS
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      # Expose the Traefik dashboard on port 8081 (bind to 127.0.0.1 only)
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
+    ports:
+      - "80:80"
+      - "443:443"
+      # Dashboard — restrict to localhost in production; expose via SSH tunnel
+      - "127.0.0.1:8081:8080"
+    volumes:
+      # Read-only access to the Docker socket for service discovery
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik_certs:/letsencrypt
+    networks:
+      - proxy
+    deploy:
+      <<: *default-deploy
+      replicas: 1
+      placement:
+        # Traefik must run on a manager to read Swarm service labels
+        constraints:
+          - node.role == manager
+      labels:
+        - "traefik.enable=true"
+        # Dashboard route — protect this in production with middleware
+        - "traefik.http.routers.traefik-dashboard.rule=Host(`traefik.${DOMAIN:-localhost}`)"
+        - "traefik.http.routers.traefik-dashboard.entrypoints=websecure"
+        - "traefik.http.routers.traefik-dashboard.tls.certresolver=letsencrypt"
+        - "traefik.http.routers.traefik-dashboard.service=api@internal"
+
+  # ---------------------------------------------------------------------------
+  # Portainer — Docker Swarm management UI
+  # Access at https://portainer.<DOMAIN> after first deploy.
+  # ---------------------------------------------------------------------------
+  portainer:
+    image: portainer/portainer-ce:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - portainer_data:/data
+    networks:
+      - proxy
+    deploy:
+      <<: *default-deploy
+      replicas: 1
+      placement:
+        # Portainer agent must run on a manager node to manage the full cluster
+        constraints:
+          - node.role == manager
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.portainer.rule=Host(`portainer.${DOMAIN:-localhost}`)"
+        - "traefik.http.routers.portainer.entrypoints=websecure"
+        - "traefik.http.routers.portainer.tls.certresolver=letsencrypt"
+        - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+
+  # ---------------------------------------------------------------------------
+  # Frontend — Next.js / React SPA served by nginx
+  # ---------------------------------------------------------------------------
+  frontend:
+    image: ${REGISTRY:-ghcr.io}/${IMAGE_NAME:-tigredonorte/procurement}/frontend:${IMAGE_TAG:-latest}
+    environment:
+      - NODE_ENV=production
+    networks:
+      - proxy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    deploy:
+      <<: *default-deploy
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.frontend.rule=Host(`${DOMAIN:-localhost}`)"
+        - "traefik.http.routers.frontend.entrypoints=websecure"
+        - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
+        - "traefik.http.services.frontend.loadbalancer.server.port=80"
+
+  # ---------------------------------------------------------------------------
+  # Backend — NestJS API
+  # ---------------------------------------------------------------------------
+  backend:
+    image: ${REGISTRY:-ghcr.io}/${IMAGE_NAME:-tigredonorte/procurement}/backend:${IMAGE_TAG:-latest}
+    environment:
+      - NODE_ENV=production
+      - PORT=4000
+      # Non-sensitive config passed as env vars
+      - KEYCLOAK_REALM=${KEYCLOAK_REALM:-procurement}
+      - KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID:-procurement-backend}
+      # Connection strings point to the internal service names
+      - MONGODB_URI=mongodb://$(cat /run/secrets/procurement_mongodb_username):$(cat /run/secrets/procurement_mongodb_password)@mongodb:27017/${MONGODB_DATABASE:-procurement}?authSource=admin
+      - REDIS_URL=redis://redis:6379
+      - KEYCLOAK_URL=http://keycloak:8080
+      # Secret-file path env vars — the app must read these at startup
+      # Alternative: use entrypoint shim to inject secrets into the environment
+      - KEYCLOAK_CLIENT_SECRET_FILE=/run/secrets/procurement_keycloak_client_secret
+    secrets:
+      - procurement_mongodb_username
+      - procurement_mongodb_password
+      - procurement_keycloak_client_secret
+    networks:
+      - proxy
+      - internal
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:4000/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    deploy:
+      <<: *default-deploy
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        # Route /api/* traffic to the backend
+        - "traefik.http.routers.backend.rule=Host(`${DOMAIN:-localhost}`) && PathPrefix(`/api`)"
+        - "traefik.http.routers.backend.entrypoints=websecure"
+        - "traefik.http.routers.backend.tls.certresolver=letsencrypt"
+        - "traefik.http.services.backend.loadbalancer.server.port=4000"
+
+  # ---------------------------------------------------------------------------
+  # Worker — background job processor
+  # No public port; communicates internally with MongoDB and Redis.
+  # ---------------------------------------------------------------------------
+  worker:
+    image: ${REGISTRY:-ghcr.io}/${IMAGE_NAME:-tigredonorte/procurement}/worker:${IMAGE_TAG:-latest}
+    environment:
+      - NODE_ENV=production
+      - PORT=4001
+      - KEYCLOAK_REALM=${KEYCLOAK_REALM:-procurement}
+      - KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID:-procurement-worker}
+      - MONGODB_URI=mongodb://$(cat /run/secrets/procurement_mongodb_username):$(cat /run/secrets/procurement_mongodb_password)@mongodb:27017/${MONGODB_DATABASE:-procurement}?authSource=admin
+      - REDIS_URL=redis://redis:6379
+      - KEYCLOAK_URL=http://keycloak:8080
+      - KEYCLOAK_CLIENT_SECRET_FILE=/run/secrets/procurement_keycloak_client_secret
+    secrets:
+      - procurement_mongodb_username
+      - procurement_mongodb_password
+      - procurement_keycloak_client_secret
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:4001/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    deploy:
+      <<: *default-deploy
+      replicas: 1
+
+  # ---------------------------------------------------------------------------
+  # MongoDB — primary data store
+  # Not scalable as a single node; volume must be on the manager node.
+  # For production HA, replace with a MongoDB Atlas connection string.
+  # ---------------------------------------------------------------------------
+  mongodb:
+    image: mongo:6
+    # No host port published — only reachable from within internal network
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      # Reads credentials from Docker secrets via secret files
+      - MONGO_INITDB_ROOT_USERNAME_FILE=/run/secrets/procurement_mongodb_username
+      - MONGO_INITDB_ROOT_PASSWORD_FILE=/run/secrets/procurement_mongodb_password
+      - MONGO_INITDB_DATABASE=${MONGODB_DATABASE:-procurement}
+    secrets:
+      - procurement_mongodb_username
+      - procurement_mongodb_password
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    deploy:
+      <<: *default-deploy
+      replicas: 1
+      placement:
+        # Pin to manager to guarantee volume access; remove constraint if using
+        # a distributed storage solution (e.g. NFS, Longhorn, Ceph)
+        constraints:
+          - node.role == manager
+      # MongoDB should not be rolled while data is being written — use stop-first
+      update_config:
+        order: stop-first
+        failure_action: rollback
+
+  # ---------------------------------------------------------------------------
+  # Redis — session cache and job queue
+  # ---------------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis_data:/data
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    deploy:
+      <<: *default-deploy
+      replicas: 1
+
+  # ---------------------------------------------------------------------------
+  # Keycloak — identity and access management
+  # NOTE: start-dev is kept for parity with docker-compose.prod.yml.
+  # For a fully hardened setup, switch to `start` with an external Postgres DB
+  # and set --hostname=keycloak.<DOMAIN>.
+  # ---------------------------------------------------------------------------
+  keycloak:
+    image: quay.io/keycloak/keycloak:22.0
+    command: start-dev
+    environment:
+      - KEYCLOAK_ADMIN_FILE=/run/secrets/procurement_keycloak_admin
+      - KEYCLOAK_ADMIN_PASSWORD_FILE=/run/secrets/procurement_keycloak_admin_password
+    secrets:
+      - procurement_keycloak_admin
+      - procurement_keycloak_admin_password
+    networks:
+      - proxy
+      - internal
+    deploy:
+      <<: *default-deploy
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.keycloak.rule=Host(`auth.${DOMAIN:-localhost}`)"
+        - "traefik.http.routers.keycloak.entrypoints=websecure"
+        - "traefik.http.routers.keycloak.tls.certresolver=letsencrypt"
+        - "traefik.http.services.keycloak.loadbalancer.server.port=8080"
+
+# ---------------------------------------------------------------------------
+# Secrets — must be created on the Swarm manager before deploying.
+# See scripts/setup-swarm.sh for the creation commands.
+# ---------------------------------------------------------------------------
+secrets:
+  procurement_mongodb_username:
+    external: true
+  procurement_mongodb_password:
+    external: true
+  procurement_keycloak_admin:
+    external: true
+  procurement_keycloak_admin_password:
+    external: true
+  procurement_keycloak_client_secret:
+    external: true
+
+# ---------------------------------------------------------------------------
+# Networks
+# ---------------------------------------------------------------------------
+networks:
+  # proxy: services that need Traefik routing (public-facing)
+  proxy:
+    driver: overlay
+    attachable: true
+  # internal: services that communicate only within the stack
+  internal:
+    driver: overlay
+    attachable: false
+
+# ---------------------------------------------------------------------------
+# Volumes — named volumes are stored on the node where the service runs
+# ---------------------------------------------------------------------------
+volumes:
+  mongodb_data:
+  redis_data:
+  portainer_data:
+  traefik_certs:

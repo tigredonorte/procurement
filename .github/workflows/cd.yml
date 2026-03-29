@@ -74,30 +74,27 @@ jobs:
       cancel-in-progress: false
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Determine image tag
-        id: tag
+      # Portainer webhook triggers a stack re-pull and redeploy of all services
+      # whose image tag has changed. No SSH access required on the Droplet.
+      #
+      # Required GitHub secret:
+      #   PORTAINER_WEBHOOK_URL — copied from Portainer UI:
+      #     Stacks → procurement → Webhooks → copy URL
+      #
+      # The webhook performs the equivalent of:
+      #   docker stack deploy -c docker-stack.yml procurement
+      # using the image tags already pushed to ghcr.io in the previous job.
+      - name: Trigger Portainer stack redeploy
         run: |
-          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
-            echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
-          else
-            echo "tag=main" >> $GITHUB_OUTPUT # default to branch name for non-tag pushes
+          HTTP_STATUS=$(curl --silent --output /dev/null --write-out "%{http_code}" \
+            --max-time 30 \
+            -X POST "${{ secrets.PORTAINER_WEBHOOK_URL }}")
+
+          echo "Portainer webhook responded with HTTP ${HTTP_STATUS}"
+
+          if [[ "${HTTP_STATUS}" != "200" && "${HTTP_STATUS}" != "204" ]]; then
+            echo "ERROR: Portainer webhook returned unexpected status ${HTTP_STATUS}"
+            exit 1
           fi
 
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.DEPLOY_SSH_KEY }}
-          script: |
-            cd /opt/procurement
-            export REGISTRY=${{ env.REGISTRY }}
-            export IMAGE_NAME=${{ env.IMAGE_NAME }}
-            export IMAGE_TAG=${{ steps.tag.outputs.tag }}
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            docker compose -f docker-compose.prod.yml pull
-            docker compose -f docker-compose.prod.yml up -d --remove-orphans
-            docker image prune -f
+          echo "Stack redeploy triggered successfully."
