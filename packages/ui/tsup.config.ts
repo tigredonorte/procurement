@@ -1,5 +1,5 @@
-import { globSync } from 'fs';
 import { defineConfig } from 'tsup';
+import { globSync } from 'tinyglobby';
 
 export default defineConfig(() => {
   const component = process.env.COMPONENT;
