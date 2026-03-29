@@ -1,6 +1,6 @@
 # Stage 1: Install dependencies
 FROM node:20-alpine AS deps
-RUN corepack enable && corepack prepare pnpm@9.0.0 --activate
+RUN corepack enable && corepack prepare pnpm@10.15.1 --activate
 WORKDIR /workspace
 
 COPY pnpm-workspace.yaml package.json pnpm-lock.yaml turbo.json ./
@@ -23,7 +23,7 @@ RUN pnpm turbo run build --filter=@procurement/backend
 FROM builder AS deployer
 WORKDIR /workspace
 
-RUN pnpm deploy --filter=@procurement/backend --prod /app
+RUN pnpm --filter=@procurement/backend deploy --prod /app
 
 # Stage 4: Production runtime
 FROM node:20-alpine AS runtime

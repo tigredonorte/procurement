@@ -79,8 +79,8 @@ services:
 
   mongodb:
     image: mongo:6
-    ports:
-      - "27017:27017"
+    # Ports not exposed to host in production — only accessible within Docker network
+    # Uncomment for debugging: ports: ["27017:27017"]
     volumes:
       - mongodb_data:/data/db
     environment:
@@ -97,8 +97,8 @@ services:
 
   redis:
     image: redis:7-alpine
-    ports:
-      - "${REDIS_PORT:-6379}:6379"
+    # Ports not exposed to host in production — only accessible within Docker network
+    # Uncomment for debugging: ports: ["${REDIS_PORT:-6379}:6379"]
     volumes:
       - redis_data:/data
     restart: unless-stopped
@@ -114,8 +114,8 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN:-admin}
-      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD:-change-me-in-production}
+      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
     command: start
     restart: unless-stopped
 

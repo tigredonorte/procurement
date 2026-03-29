@@ -1,11 +1,11 @@
+import { globSync } from 'fs';
 import { defineConfig } from 'tsup';
-import { glob } from 'glob';
 
 export default defineConfig(() => {
   const component = process.env.COMPONENT;
 
   const entry = component
-    ? glob.sync(`src/components/**/${component}/index.{ts,tsx}`)
+    ? globSync(`src/components/**/${component}/index.{ts,tsx}`)
     : ['src/index.ts'];
 
   if (component && entry.length === 0) {
