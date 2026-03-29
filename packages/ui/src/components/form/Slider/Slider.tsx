@@ -1,6 +1,7 @@
 import React, { forwardRef } from 'react';
-import { Slider as MuiSlider, Box, Typography, alpha, keyframes, Theme } from '@mui/material';
+import { Slider as MuiSlider, Box, Typography, alpha, keyframes } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { Theme } from '@mui/material/styles';
 
 import { SliderProps } from './Slider.types';
 
@@ -46,29 +47,30 @@ const gradientShiftAnimation = keyframes`
 const getColorFromTheme = (theme: Theme, color: string) => {
   if (color === 'neutral') {
     return {
-      main: theme.palette.grey[700],
-      dark: theme.palette.grey[800],
-      light: theme.palette.grey[500],
+      main: theme.palette.grey?.[700] || '#616161',
+      dark: theme.palette.grey?.[800] || '#424242',
+      light: theme.palette.grey?.[500] || '#9e9e9e',
       contrastText: '#fff',
     };
   }
 
-  const colorMap = {
+  type PaletteColor = { main: string; dark: string; light: string; contrastText: string };
+  const colorMap: Record<string, PaletteColor> = {
     primary: theme.palette.primary,
     secondary: theme.palette.secondary,
     success: theme.palette.success,
     warning: theme.palette.warning,
     danger: theme.palette.error,
-  } as const;
+  };
 
-  const palette = colorMap[color as keyof typeof colorMap] || theme.palette.primary;
+  const palette = colorMap[color] || theme.palette.primary;
 
   // Ensure palette has required properties
   return {
-    main: palette.main,
-    dark: palette.dark || palette.main,
-    light: palette.light || palette.main,
-    contrastText: palette.contrastText || '#fff',
+    main: palette?.main || theme.palette.primary.main,
+    dark: palette?.dark || palette?.main || theme.palette.primary.dark,
+    light: palette?.light || palette?.main || theme.palette.primary.light,
+    contrastText: palette?.contrastText || '#fff',
   };
 };
 
@@ -118,9 +120,9 @@ const StyledSlider = styled(MuiSlider, {
       ...(gradient && {
         background:
           customVariant === 'gradient'
-            ? `linear-gradient(90deg, 
-              ${colorPalette.light} 0%, 
-              ${colorPalette.main} 50%, 
+            ? `linear-gradient(90deg,
+              ${colorPalette.light} 0%,
+              ${colorPalette.main} 50%,
               ${colorPalette.dark} 100%)`
             : `linear-gradient(90deg, ${colorPalette.light}, ${colorPalette.main})`,
         backgroundSize: '200% 100%',
@@ -161,9 +163,9 @@ const StyledSlider = styled(MuiSlider, {
         border: `1px solid ${alpha(theme.palette.divider, 0.2)}`,
       }),
       ...(customVariant === 'gradient' && {
-        background: `linear-gradient(90deg, 
-          ${alpha(theme.palette.action.disabled, 0.2)}, 
-          ${alpha(theme.palette.action.disabled, 0.3)}, 
+        background: `linear-gradient(90deg,
+          ${alpha(theme.palette.action.disabled, 0.2)},
+          ${alpha(theme.palette.action.disabled, 0.3)},
           ${alpha(theme.palette.action.disabled, 0.2)})`,
       }),
     },
@@ -287,6 +289,8 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(
       glow = false,
       glass = false,
       gradient = false,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      thumbIcon,
       showMarks = false,
       customMarks,
       unit = '',
@@ -298,8 +302,8 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(
     ref,
   ) => {
     const displayValue = Array.isArray(value)
-      ? `${formatValue ? formatValue(value[0] ?? 0) : (value[0] ?? 0)}${unit} - ${formatValue ? formatValue(value[1] ?? 0) : (value[1] ?? 0)}${unit}`
-      : `${formatValue ? formatValue((value as number) ?? 0) : (value ?? 0)}${unit}`;
+      ? `${formatValue ? formatValue(value[0] as number) : value[0]}${unit} - ${formatValue ? formatValue(value[1] as number) : value[1]}${unit}`
+      : `${formatValue ? formatValue(value as number) : value}${unit}`;
 
     const marks =
       variant === 'marks' || showMarks

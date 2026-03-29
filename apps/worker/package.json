@@ -2,15 +2,23 @@
   "name": "@procurement/worker",
   "private": true,
   "version": "0.0.0",
-  "packageManager": "pnpm@9.0.0",
-  "engines": {
-    "node": ">=18.0.0",
-    "pnpm": ">=9.0.0",
-    "npm": "please-use-pnpm",
-    "yarn": "please-use-pnpm"
-  },
   "scripts": {
-    "preinstall": "npx only-allow pnpm",
-    "dev": "tsx watch src/index.ts"
+    "dev": "tsc -w -p tsconfig.json",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/main.js",
+    "lint": "eslint src --ext .ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@nestjs/common": "^10.3.0",
+    "@nestjs/core": "^10.3.0",
+    "@nestjs/platform-express": "^10.3.0",
+    "@procurement/config": "workspace:*",
+    "reflect-metadata": "^0.2.0",
+    "rxjs": "^7.8.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.4.0"
   }
 }

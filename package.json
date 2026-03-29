@@ -13,10 +13,12 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky install",
-    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "dev": "turbo run dev",
+    "test": "turbo run test",
     "format": "prettier -w .",
-    "typecheck": "tsc -p tsconfig.base.json --noEmit",
-    "dev:docker": "docker compose up --build",
     "lint-staged": "lint-staged"
   },
   "devDependencies": {
@@ -31,7 +33,7 @@
     "husky": "^9.0.0",
     "lint-staged": "^15.0.0",
     "prettier": "^3.2.0",
-    "tsx": "^4.7.0",
+    "turbo": "^2.8.21",
     "typescript": "^5.4.0"
   }
 }

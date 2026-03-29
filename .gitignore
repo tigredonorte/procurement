@@ -9,3 +9,4 @@ coverage
 storybook-static
 tsconfig.temp.*.json
 .claude
+.turbo
